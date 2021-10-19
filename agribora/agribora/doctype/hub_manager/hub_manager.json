@@ -1,0 +1,54 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:hub_manager",
+ "creation": "2021-10-13 13:26:27.297648",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "hub_manager",
+  "wards"
+ ],
+ "fields": [
+  {
+   "fieldname": "hub_manager",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Hub Manager",
+   "options": "User",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "wards",
+   "fieldtype": "Table MultiSelect",
+   "label": "wards",
+   "options": "Ward Detail"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2021-10-13 15:08:30.140661",
+ "modified_by": "Administrator",
+ "module": "Agribora",
+ "name": "Hub Manager",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
