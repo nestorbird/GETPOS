@@ -7,8 +7,6 @@ from frappe.utils.password import update_password as _update_password, check_pas
 from frappe.utils import (cint, flt, has_gravatar, escape_html, format_datetime,
         now_datetime, get_formatted_email, today)
 
-
-
 @frappe.whitelist( allow_guest=True )
 def login(usr, pwd):
     try:
@@ -37,8 +35,6 @@ def login(usr, pwd):
         "email":user.email
     }
 
-
-
 def generate_keys(user):
     user_details = frappe.get_doc('User', user)
     api_secret = frappe.generate_hash(length=15)
@@ -51,20 +47,6 @@ def generate_keys(user):
     user_details.save()
 
     return api_secret
-
-# from frappe import FrappeClient
-
-# conn = FrappeClient("example.org")
-# conn.login("mail@example.org", "password")
-
-# doc = conn.get_doc('User', 'mail@example.org')
-# doc['new_password'] = 'My new password'
-# conn.update(doc)
-
-# def validate_reset_password(self):
-#     pass
-    
-
 
 @frappe.whitelist(allow_guest=True)
 @rate_limit(key='user', limit=get_password_reset_limit, seconds = 24*60*60, methods=['POST'])
@@ -86,10 +68,6 @@ def reset_password(user):
                 frappe.clear_messages()
                 return 'not found'
 
-
-
-
-
 @frappe.whitelist( allow_guest=True )
 def forgot_password( user,send_email=False, password_expired=False):
                 from frappe.utils import random_string, get_url
@@ -105,15 +83,13 @@ def forgot_password( user,send_email=False, password_expired=False):
                 if send_email:
                         user.password_reset_mail(link)
 
-
                 return link
+
 
 @frappe.whitelist( allow_guest=True )
 def password_reset_mail(user, link):
                 user.send_login_mail(("Password Reset"),
                         "password_reset", {"link": link}, now=True) 
-                
-                 
 
 @frappe.whitelist( allow_guest=True )                
 def send_login_mail(user, subject, template, add_args, now=None):
@@ -138,6 +114,24 @@ def send_login_mail(user, subject, template, add_args, now=None):
                 sender = frappe.session.user not in STANDARD_USERS and get_formatted_email(frappe.session.user) or None
 
                 frappe.sendmail(recipients=user.email, sender=sender)
+                
+
+@frappe.whitelist(allow_guest=True)
+def get_abbr(string):
+    abbr = ''.join(c[0] for c in string.split()).upper()
+    return abbr
+
+
+
+
+
+
+
+
+
+
+
+                 
 
 
 
@@ -152,10 +146,7 @@ def send_login_mail(user, subject, template, add_args, now=None):
     
   
 
-@frappe.whitelist(allow_guest=True)
-def get_abbr(string):
-    abbr = ''.join(c[0] for c in string.split()).upper()
-    return abbr
+
 
 
 
