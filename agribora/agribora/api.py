@@ -52,7 +52,7 @@ def generate_keys(user):
 # this is email going for the password reset
 @frappe.whitelist(allow_guest=True)
 @rate_limit(key='user', limit=get_password_reset_limit, seconds = 24*60*60, methods=['POST'])
-def reset_password(user):
+def forgot_password(user):
         if user=="Administrator":
                 return 'not allowed'
 
@@ -72,15 +72,15 @@ def reset_password(user):
         
 # this is for forgot-password message
 @frappe.whitelist( allow_guest=True )
-def forgot_password( user,send_email=False, password_expired=False):
+def reset_password( user,send_email=False, password_expired=False):
                 from frappe.utils import random_string, get_url
 
                 key = random_string(32)
                 # user.db_set("reset_password_key", key)
 
-                url = "/forgot-password?key=" + key
+                url = "/update-password?key=" + key
                 if password_expired:
-                        url = "/forgot-password?key=" + key + '&password_expired=true'
+                        url = "/update-password?key=" + key + '&password_expired=true'
 
                 link = get_url(url)
                 if send_email:
