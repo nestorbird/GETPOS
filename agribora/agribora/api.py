@@ -7,6 +7,7 @@ from frappe.utils.password import update_password as _update_password, check_pas
 from frappe.utils import (cint, flt, has_gravatar, escape_html, format_datetime,
         now_datetime, get_formatted_email, today)
 
+# this is for login api
 @frappe.whitelist( allow_guest=True )
 def login(usr, pwd):
     try:
@@ -48,6 +49,7 @@ def generate_keys(user):
 
     return api_secret
 
+# this is email going for the password reset
 @frappe.whitelist(allow_guest=True)
 @rate_limit(key='user', limit=get_password_reset_limit, seconds = 24*60*60, methods=['POST'])
 def reset_password(user):
@@ -67,7 +69,8 @@ def reset_password(user):
         except frappe.DoesNotExistError:
                 frappe.clear_messages()
                 return 'not found'
-
+        
+# this is for forgot-password message
 @frappe.whitelist( allow_guest=True )
 def forgot_password( user,send_email=False, password_expired=False):
                 from frappe.utils import random_string, get_url
@@ -115,7 +118,7 @@ def send_login_mail(user, subject, template, add_args, now=None):
 
                 frappe.sendmail(recipients=user.email, sender=sender)
                 
-
+# this is your code
 @frappe.whitelist(allow_guest=True)
 def get_abbr(string):
     abbr = ''.join(c[0] for c in string.split()).upper()
