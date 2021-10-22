@@ -93,10 +93,7 @@ doctype_js = {
 
 doc_events = {
 	"Warehouse": {
-		"validate": ["agribora.agribora.hooks.warehouse.validate_hub_manager"]
-	},
-	"Customer": {
-		"validate": "agribora.agribora.hooks.get_hub_manager_for_customer.get_hub_manager"
+		"validate": "agribora.agribora.hooks.warehouse.validate_hub_manager"
 	}
 }
 
