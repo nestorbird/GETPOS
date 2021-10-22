@@ -28,8 +28,14 @@
   }
  ],
  "index_web_pages_for_search": 1,
- "links": [],
- "modified": "2021-10-13 15:08:30.140661",
+ "links": [
+  {
+   "group": "Warehouse",
+   "link_doctype": "Warehouse",
+   "link_fieldname": "warehouse_name"
+  }   
+ ],
+ "modified": "2021-10-22 13:28:26.715310",
  "modified_by": "Administrator",
  "module": "Agribora",
  "name": "Hub Manager",
