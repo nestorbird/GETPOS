@@ -85,9 +85,7 @@ def reset_password( user,send_email=False, password_expired=False):
                 link = get_url(url)
                 if send_email:
                         user.password_reset_mail(link)
-
                 return link
-
 
 @frappe.whitelist( allow_guest=True )
 def password_reset_mail(user, link):
@@ -117,45 +115,21 @@ def send_login_mail(user, subject, template, add_args, now=None):
                 sender = frappe.session.user not in STANDARD_USERS and get_formatted_email(frappe.session.user) or None
 
                 frappe.sendmail(recipients=user.email, sender=sender)
-                
+
 # this is your code
 @frappe.whitelist(allow_guest=True)
 def get_abbr(string):
     abbr = ''.join(c[0] for c in string.split()).upper()
     return abbr
 
+# this is for customer list api
+@frappe.whitelist(allow_guest=True)
+def customer_list():
+        res = frappe.db.get_all('Customer')
+        return res
 
-
-
-
-
-
-
-
-
-
-                 
-
-
-
-		
-
-
-
-
-       
-       
-
-    
-  
-
-
-
-
-
-
-   
-
-
-
-
+# this is for customer detail api
+@frappe.whitelist(allow_guest=True)
+def customer_list_detail(name):
+        detail = frappe.db.get_value("Customer",name,["customer_name","email_id","mobile_no","ward","name","creation"],as_dict=1)
+        return detail              
