@@ -1,6 +1,7 @@
 import frappe
 from frappe import auth
 from frappe import _
+from frappe.exceptions import Redirect
 STANDARD_USERS = ("Guest", "Administrator")
 from frappe.rate_limiter import rate_limit
 from frappe.utils.password import update_password as _update_password, check_password, get_password_reset_limit
@@ -18,7 +19,7 @@ def login(usr, pwd):
         frappe.clear_messages()
         frappe.local.response["message"] = {
             "success_key":0,
-            "message":"Recheck the credentials and enter again to proceed"
+            "message":"Incorrect Username or Password"
         }
 
         return
@@ -28,13 +29,15 @@ def login(usr, pwd):
 
     frappe.response["message"] = {
         "success_key":1,
-        "message":"Authentication success",
+        "message":"success",
         "sid":frappe.session.sid,
         "api_key":user.api_key,
         "api_secret":api_generate,
         "username":user.username,
         "email":user.email
     }
+#     frappe.local.response[“type”] = "Redirect"
+#     frappe.local.response[“location”] = “/all-products”
 
 def generate_keys(user):
     user_details = frappe.get_doc('User', user)
@@ -132,4 +135,35 @@ def customer_list():
 @frappe.whitelist(allow_guest=True)
 def customer_list_detail(name):
         detail = frappe.db.get_value("Customer",name,["customer_name","email_id","mobile_no","ward","name","creation"],as_dict=1)
-        return detail              
+        return detail   
+
+# this id for terms and conditions api
+@frappe.whitelist(allow_guest=True)
+def terms_and_conditions():
+        term = frappe.db.get_value("Terms and Conditions","Terms and Conditions for agribora","terms")
+        return term
+
+# this is for privacy policy api
+@frappe.whitelist(allow_guest=True)
+def privacy_policy():
+        policy = frappe.db.get_value("Privacy Policy","Privacy Policy for agribora","privacy")
+        return policy 
+
+# this is for customer list belomg with hub manager
+@frappe.whitelist(allow_guest=True)
+def get_cust_belong_hubmngr():
+        cust = frappe.get_all("Customer")
+        hub = frappe.get_all("Hub Manager")
+        list = [ ]
+        for x in hub:
+                for y in cust:
+                        if x==y:
+                                list.append(x)
+        return list
+
+#this is for cust belong with hub manager detail
+@frappe.whitelist(allow_guest=True)
+def customer_list_belong_with_hub_detail(name):
+        detail = frappe.db.get_value("Customer",name,["customer_name","email_id","mobile_no","ward","name","creation"],as_dict=1)
+        return detail   
+
