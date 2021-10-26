@@ -8,15 +8,16 @@ class Ward(Document):
 	pass
 
 @frappe.whitelist(allow_guest=True)
-def get_unassigned_ward():
-	unassigned_ward_list = []
+def get_assigned_ward():
+	assigned_ward_list = []
 	ward_list=frappe.db.sql(""" 
 		SELECT 
 			distinct(ward)
-		FROM `tabWard Detail`""",as_dict = 1)
+		FROM `tabWard Detail`
+		WHERE parenttype = 'Hub Manager'""",as_dict = 1)
 	for item in ward_list:
-		unassigned_ward_list.append(item.ward)
-	return unassigned_ward_list
+		assigned_ward_list.append(item.ward)
+	return assigned_ward_list
 
 @frappe.whitelist(allow_guest=True)
 def get_ward_by_hub_manager(hub_manager):

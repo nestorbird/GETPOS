@@ -32,10 +32,10 @@
   {
    "group": "Warehouse",
    "link_doctype": "Warehouse",
-   "link_fieldname": "warehouse_name"
-  }   
+   "link_fieldname": "hub_manager"
+  }
  ],
- "modified": "2021-10-22 13:28:26.715310",
+ "modified": "2021-10-25 18:39:29.238422",
  "modified_by": "Administrator",
  "module": "Agribora",
  "name": "Hub Manager",

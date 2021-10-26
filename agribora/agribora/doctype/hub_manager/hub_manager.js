@@ -3,18 +3,21 @@
 
 frappe.ui.form.on('Hub Manager', {
 	refresh: function(frm){
-		frappe.call({
-			method: "agribora.agribora.doctype.ward.ward.get_unassigned_ward",
-			callback: (r)=> {
-				console.log(r.message);
-				frm.set_query('wards', () => {
-					return {
-						filters: {
-							ward: ['not in', r.message]
-						}
-					}
-				});
-			}
-		});
+		set_ward_filter(frm);
 	}
 });
+
+function set_ward_filter(frm){
+	frappe.call({
+		method: "agribora.agribora.doctype.ward.ward.get_assigned_ward",
+		callback: (r)=> {
+			frm.set_query('wards', () => {
+				return {
+					filters: {
+						name: ['not in', r.message]
+					}
+				}
+			});
+		}
+	});
+}
