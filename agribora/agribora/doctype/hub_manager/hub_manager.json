@@ -33,7 +33,7 @@
    "group": "Warehouse",
    "link_doctype": "Warehouse",
    "link_fieldname": "warehouse_name"
-  }   
+  }
  ],
  "modified": "2021-10-22 13:28:26.715310",
  "modified_by": "Administrator",
