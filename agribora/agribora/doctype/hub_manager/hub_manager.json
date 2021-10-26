@@ -8,7 +8,8 @@
  "engine": "InnoDB",
  "field_order": [
   "hub_manager",
-  "wards"
+  "wards",
+  "account"
  ],
  "fields": [
   {
@@ -25,6 +26,12 @@
    "fieldtype": "Table MultiSelect",
    "label": "wards",
    "options": "Ward Detail"
+  },
+  {
+   "fieldname": "account",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Account"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -35,7 +42,7 @@
    "link_fieldname": "warehouse_name"
   }
  ],
- "modified": "2021-10-22 13:28:26.715310",
+ "modified": "2021-10-26 09:33:42.693483",
  "modified_by": "Administrator",
  "module": "Agribora",
  "name": "Hub Manager",

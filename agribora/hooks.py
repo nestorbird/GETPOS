@@ -32,7 +32,8 @@ app_license = "MIT"
 
 # include js in doctype views
 doctype_js = {
-	"Sales Order" : "public/js/doctype_js/sales_order.js"
+	"Sales Order" : "public/js/doctype_js/sales_order.js",
+	"Account" : "public/js/doctype_js/account.js"
 }
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
@@ -94,6 +95,9 @@ doctype_js = {
 doc_events = {
 	"Warehouse": {
 		"validate": "agribora.agribora.hooks.warehouse.validate_hub_manager"
+	},
+	"Account": {
+		"validate": "agribora.agribora.hooks.account.set_account_hub_manager"
 	}
 }
 
