@@ -33,7 +33,11 @@ app_license = "MIT"
 # include js in doctype views
 doctype_js = {
 	"Sales Order" : "public/js/doctype_js/sales_order.js",
-	"Account" : "public/js/doctype_js/account.js"
+# <<<<<<< HEAD
+	"Account" : "public/js/doctype_js/account.js",
+# =======
+	"Warehouse" : "public/js/doctype_js/warehouse.js"
+# >>>>>>> 05c5f2b82d63c72b896a9a56cec6978c83fe579e
 }
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
@@ -77,7 +81,7 @@ doctype_js = {
 # }
 #
 # has_permission = {
-# 	"Event": "frappe.desk.doctype.event.event.has_permission",
+# 	"Event": "frappe.desk.doctype.eveprint(type(hub_manager))nt.event.has_permission",
 # }
 
 # DocType Class
@@ -96,9 +100,9 @@ doc_events = {
 	"Warehouse": {
 		"validate": "agribora.agribora.hooks.warehouse.validate_hub_manager"
 	},
-	"Account": {
-		"validate": "agribora.agribora.hooks.account.set_account_hub_manager"
-	}
+	# "Account": {
+	# 	"validate": "agribora.agribora.hooks.account.set_account_hub_manager"
+	# }
 }
 
 # Scheduled Tasks
