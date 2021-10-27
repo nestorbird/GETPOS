@@ -8,9 +8,9 @@ from frappe.model.naming import make_autoname
 
 
 class HubManager(Document):
-	def autoname(self):
-		full_name = frappe.db.sql("""SELECT full_name FROM tabUser WHERE email = %s""",(self.hub_manager),as_dict=True)
-		self.name = make_autoname(full_name + "-.DD." + "-.MM." + "-.YYYY." + "####")
+	# def autoname(self):
+	# 	full_name = frappe.db.sql("""SELECT full_name FROM tabUser WHERE email = %s""",(self.hub_manager),as_dict=True)
+	# 	self.name = make_autoname(full_name + "-.DD." + "-.MM." + "-.YYYY." + "####")
 	def on_update(self):
 		self.add_hub_manager_to_customer()
 		self.remove_hub_manager_from_customer()
