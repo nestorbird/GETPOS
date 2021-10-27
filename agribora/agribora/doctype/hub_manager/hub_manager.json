@@ -1,14 +1,14 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "field:hub_manager",
  "creation": "2021-10-13 13:26:27.297648",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
   "hub_manager",
-  "wards",
-  "account"
+  "wards"
  ],
  "fields": [
   {
@@ -25,12 +25,6 @@
    "fieldtype": "Table MultiSelect",
    "label": "wards",
    "options": "Ward Detail"
-  },
-  {
-   "fieldname": "account",
-   "fieldtype": "Data",
-   "hidden": 1,
-   "label": "Account"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -41,7 +35,7 @@
    "link_fieldname": "warehouse_name"
   }
  ],
- "modified": "2021-10-27 08:14:22.439604",
+ "modified": "2021-10-27 08:28:19.242616",
  "modified_by": "Administrator",
  "module": "Agribora",
  "name": "Hub Manager",
