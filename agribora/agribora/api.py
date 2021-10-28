@@ -1,6 +1,7 @@
 import frappe
 from frappe import auth
 from frappe import _
+from frappe.exceptions import Redirect
 STANDARD_USERS = ("Guest", "Administrator")
 from frappe.rate_limiter import rate_limit
 from frappe.utils.password import update_password as _update_password, check_password, get_password_reset_limit
@@ -18,24 +19,26 @@ def login(usr, pwd):
         frappe.clear_messages()
         frappe.local.response["message"] = {
             "success_key":0,
-            "message":"Recheck the credentials and enter again to proceed"
+            "message":"Incorrect Username or Password"
         }
-
+        
         return
+
 
     api_generate = generate_keys(frappe.session.user)
     user = frappe.get_doc('User', frappe.session.user)
 
     frappe.response["message"] = {
         "success_key":1,
-        "message":"Authentication success",
+        "message":"success",
         "sid":frappe.session.sid,
         "api_key":user.api_key,
         "api_secret":api_generate,
         "username":user.username,
         "email":user.email
-    }
-
+    } 
+        
+ 
 def generate_keys(user):
     user_details = frappe.get_doc('User', user)
     api_secret = frappe.generate_hash(length=15)
@@ -48,9 +51,10 @@ def generate_keys(user):
     user_details.save()
 
     return api_secret
+       
 
 # this is email going for the password reset
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist()
 @rate_limit(key='user', limit=get_password_reset_limit, seconds = 24*60*60, methods=['POST'])
 def forgot_password(user):
         if user=="Administrator":
@@ -71,12 +75,12 @@ def forgot_password(user):
                 return 'not found'
         
 # this is for forgot-password message
-@frappe.whitelist( allow_guest=True )
+@frappe.whitelist()
 def reset_password( user,send_email=False, password_expired=False):
                 from frappe.utils import random_string, get_url
 
                 key = random_string(32)
-                # user.db_set("reset_password_key", key)
+                
 
                 url = "/update-password?key=" + key
                 if password_expired:
@@ -85,9 +89,7 @@ def reset_password( user,send_email=False, password_expired=False):
                 link = get_url(url)
                 if send_email:
                         user.password_reset_mail(link)
-
                 return link
-
 
 @frappe.whitelist( allow_guest=True )
 def password_reset_mail(user, link):
@@ -117,7 +119,7 @@ def send_login_mail(user, subject, template, add_args, now=None):
                 sender = frappe.session.user not in STANDARD_USERS and get_formatted_email(frappe.session.user) or None
 
                 frappe.sendmail(recipients=user.email, sender=sender)
-                
+
 # this is your code
 @frappe.whitelist(allow_guest=True)
 def get_abbr(string):
@@ -128,34 +130,19 @@ def get_abbr(string):
 
 
 
+# this id for terms and conditions api
+@frappe.whitelist()
+def terms_and_conditions():
+        term = frappe.db.get_value("Terms and Conditions","Terms and Conditions for agribora","terms")
+        return term
 
+# this is for privacy policy api
+@frappe.whitelist()
+def privacy_policy():
+        policy = frappe.db.get_value("Privacy Policy","Privacy Policy for agribora","privacy")
+        return policy
 
-
-
-
-
-                 
-
-
-
-		
-
-
-
-
-       
-       
-
-    
-  
-
-
-
-
-
-
-   
-
-
-
-
+#this is for customer list by hub manager
+@frappe.whitelist()
+def get_customer_list_by_hubmanager(hub_manager):
+              return frappe.db.get_list('Customer',{'hub_manager': hub_manager},["customer_name","email_id","mobile_no","ward","name","creation"])
