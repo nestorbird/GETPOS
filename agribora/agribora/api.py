@@ -147,7 +147,7 @@ def terms_and_conditions():
 @frappe.whitelist(allow_guest=True)
 def privacy_policy():
         policy = frappe.db.get_value("Privacy Policy","Privacy Policy for agribora","privacy")
-        return policy 
+        return policy
 
 # this is for customer list belomg with hub manager
 @frappe.whitelist(allow_guest=True)
