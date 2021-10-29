@@ -104,9 +104,12 @@ doc_events = {
 	"Warehouse": {
 		"validate": "agribora.agribora.hooks.warehouse.validate_hub_manager"
 	},
-	# "Account": {
-	# 	"validate": "agribora.agribora.hooks.account.set_account_hub_manager"
-	# }
+	"Sales Order": {
+		"validate" : "agribora.agribora.hooks.sales_order.autoname"
+	},
+	"Customer" : {
+		"validate" : "agribora.agribora.hooks.customer.validate"
+	}
 }
 
 # Scheduled Tasks

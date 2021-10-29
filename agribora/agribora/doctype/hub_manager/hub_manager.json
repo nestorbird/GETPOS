@@ -1,7 +1,6 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:hub_manager",
  "creation": "2021-10-13 13:26:27.297648",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -36,6 +35,7 @@
    "link_fieldname": "warehouse_name"
   }
  ],
+<<<<<<< HEAD
  "modified": "2021-10-27 08:28:19.242616",
 =======
    "link_fieldname": "hub_manager"
@@ -43,6 +43,9 @@
  ],
  "modified": "2021-10-25 18:39:29.238422",
 >>>>>>> b1e78cafb1bd79676036f0125f389a9bbdc1d0e3
+=======
+ "modified": "2021-10-28 10:08:17.601837",
+>>>>>>> Dev-Hemant
  "modified_by": "Administrator",
  "module": "Agribora",
  "name": "Hub Manager",

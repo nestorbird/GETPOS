@@ -165,5 +165,5 @@ def get_cust_belong_hubmngr():
 @frappe.whitelist(allow_guest=True)
 def customer_list_belong_with_hub_detail(name):
         detail = frappe.db.get_value("Customer",name,["customer_name","email_id","mobile_no","ward","name","creation"],as_dict=1)
-        return detail   
+        return detail
 

@@ -4,16 +4,23 @@ refresh: function(frm){
 	}
 });
 function set_hub_manager_filter(frm){
-frappe.call({
-		method: "agribora.agribora.doctype.hub_manager.hub_manager.get_assigned_hub_manager",
-		callback: (r)=> {
-			frm.set_query('hub_manager', () => {
-				return {
-					filters: {
-						name: ['not in', r.message]
-					}
-				}
-			});
-		}
-	});
+  frappe.db.get_list('Account', {
+        fields: ['hub_manager'],
+        filters: {
+            hub_manager: ["!=", '']
+        },
+        as_list: 1
+    }).then(records => {
+        let hub_manager_list = []
+        for(let i = 0; i< records.length; i++){
+            hub_manager_list.push(records[i].toString())
+        }
+        frm.set_query('hub_manager', () => {
+            return {
+                filters: {
+                    hub_manager: ['not in', hub_manager_list]
+                }
+            }
+        });
+    })
 }
