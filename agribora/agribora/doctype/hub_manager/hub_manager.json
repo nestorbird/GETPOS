@@ -1,7 +1,6 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:hub_manager",
  "creation": "2021-10-13 13:26:27.297648",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -35,7 +34,7 @@
    "link_fieldname": "warehouse_name"
   }
  ],
- "modified": "2021-10-27 08:28:19.242616",
+ "modified": "2021-10-28 10:08:17.601837",
  "modified_by": "Administrator",
  "module": "Agribora",
  "name": "Hub Manager",
