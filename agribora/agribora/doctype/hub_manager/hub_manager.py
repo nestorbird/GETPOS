@@ -8,9 +8,12 @@ from frappe.model.naming import make_autoname
 
 
 class HubManager(Document):
+<<<<<<< HEAD
 	# def autoname(self):
 	# 	full_name = frappe.db.sql("""SELECT full_name FROM tabUser WHERE email = %s""",(self.hub_manager),as_dict=True)
 	# 	self.name = make_autoname(full_name + "-.DD." + "-.MM." + "-.YYYY." + "####")
+=======
+>>>>>>> b1e78cafb1bd79676036f0125f389a9bbdc1d0e3
 	def on_update(self):
 		self.add_hub_manager_to_customer()
 		self.remove_hub_manager_from_customer()
@@ -43,6 +46,7 @@ class HubManager(Document):
 			for customer in customer_list:
 				doc = frappe.get_doc('Customer', customer.name)
 				doc.hub_manager = ''
+<<<<<<< HEAD
 				doc.save()
 
 @frappe.whitelist(allow_guest=True)
@@ -58,3 +62,6 @@ def get_assigned_hub_manager():
 		print(items.hub_manager)
 		assigned_hub_manager.append(items.hub_manager)
 	return assigned_hub_manager
+=======
+				doc.save()
+>>>>>>> b1e78cafb1bd79676036f0125f389a9bbdc1d0e3
