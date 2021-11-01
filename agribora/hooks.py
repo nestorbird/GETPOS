@@ -105,7 +105,8 @@ doc_events = {
 	},
 	"Sales Order":{
 		"on_submit": "agribora.agribora.hooks.sales_order.on_submit",
-		"validate": "agribora.agribora.hooks.sales_order.validate"
+		"validate": ["agribora.agribora.hooks.sales_order.validate",
+					 "agribora.agribora.hooks.sales_order.autoname"]
 	},
 	"Sales Invoice":{
 		"on_submit": "agribora.agribora.hooks.sales_invoice.on_submit"
