@@ -142,7 +142,6 @@ def privacy_policy():
         policy = frappe.db.get_value("Privacy Policy","Privacy Policy for agribora","privacy")
         return policy
 
-
 #this is for customer list by hub manager
 @frappe.whitelist()
 def get_customer_list_by_hubmanager(hub_manager):
