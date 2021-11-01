@@ -1,17 +1,19 @@
 import frappe
 from frappe.model.naming import make_autoname
-
-
-def autoname(doc,method):
-    f_name, l_name = frappe.db.get_value('User', {'email': doc.hub_manager}, ['first_name', 'last_name'])
-    doc.name = make_autoname(f_name[0] + l_name[0]  + "-.YYYY." + "-.MM." + "-." + "####")
 from erpnext.selling.doctype.sales_order.sales_order import make_sales_invoice
+
+
+# def autoname(doc,method):
+#     f_name, l_name = frappe.db.get_value('User', {'email': doc.hub_manager}, ['first_name', 'last_name'])
+#     doc.name = make_autoname(f_name[0] + l_name[0]  + "-.YYYY." + "-.MM." + "-." + "####")
 
 def on_submit(doc, method):
     create_sales_invoice_from_sales_order(doc)
 
 def validate(doc, method):
     set_warehouse(doc)
+    f_name, l_name = frappe.db.get_value('User', {'email': doc.hub_manager}, ['first_name', 'last_name'])
+    doc.name = make_autoname(f_name[0] + l_name[0] + "-.YYYY." + "-.MM." + "-." + "####")
 
 def create_sales_invoice_from_sales_order(doc):
     sales_invoice = make_sales_invoice(doc.name)
