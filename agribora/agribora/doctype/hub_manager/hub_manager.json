@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "field:hub_manager",
  "creation": "2021-10-13 13:26:27.297648",
  "doctype": "DocType",
  "editable_grid": 1,
