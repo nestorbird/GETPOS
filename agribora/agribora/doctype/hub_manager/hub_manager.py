@@ -42,17 +42,4 @@ class HubManager(Document):
 				doc.hub_manager = ''
 				doc.save()
 
-@frappe.whitelist(allow_guest=True)
-def get_assigned_hub_manager():
-	assigned_hub_manager = []
-	hub_manager_list = frappe.db.sql("""SELECT hub_manager
-		FROM `tabAccount`
-		""",as_dict = 1)
-	print("---------------------------")
-	print(type(hub_manager_list))
-	for items in hub_manager_list:
-		print("---------------------------")
-		print(items.hub_manager)
-		assigned_hub_manager.append(items.hub_manager)
-	return assigned_hub_manager
 

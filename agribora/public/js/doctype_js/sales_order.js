@@ -1,6 +1,5 @@
 frappe.ui.form.on('Sales Order', {
      hub_manager: function(frm){
-             console.log('sales order inside');
              frappe.call({
                  method: "agribora.agribora.doctype.ward.ward.get_ward_by_hub_manager",
                  args:{
@@ -16,6 +15,5 @@ frappe.ui.form.on('Sales Order', {
                      });
                  }
              });
-        
      },
 });

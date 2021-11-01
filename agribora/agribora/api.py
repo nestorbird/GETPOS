@@ -140,29 +140,8 @@ def terms_and_conditions():
 @frappe.whitelist()
 def privacy_policy():
         policy = frappe.db.get_value("Privacy Policy","Privacy Policy for agribora","privacy")
-<<<<<<< HEAD
-        return policy 
-
-# this is for customer list belomg with hub manager
-@frappe.whitelist(allow_guest=True)
-def get_cust_belong_hubmngr():
-        cust = frappe.get_all("Customer")
-        hub = frappe.get_all("Hub Manager")
-        list = [ ]
-        for x in hub:
-                for y in cust:
-                        if x==y:
-                                list.append(x)
-        return list
-
-#this is for cust belong with hub manager detail
-@frappe.whitelist(allow_guest=True)
-def customer_list_belong_with_hub_detail(name):
-        detail = frappe.db.get_value("Customer",name,["customer_name","email_id","mobile_no","ward","name","creation"],as_dict=1)
-        return detail
-=======
         return policy
->>>>>>> a429c1f7e4b44c1a9d3225c51ed6b36e6db91e6c
+
 
 #this is for customer list by hub manager
 @frappe.whitelist()
