@@ -1,10 +1,20 @@
 frappe.ui.form.on('Account', {
+<<<<<<< HEAD
 refresh: function(frm){
 		set_hub_manager_filter(frm);
 	}
 });
 function set_hub_manager_filter(frm){
   frappe.db.get_list('Account', {
+=======
+	refresh: function(frm){
+        set_hub_manager_filter(frm);
+	}
+})
+
+function set_hub_manager_filter(frm){
+    frappe.db.get_list('Account', {
+>>>>>>> a429c1f7e4b44c1a9d3225c51ed6b36e6db91e6c
         fields: ['hub_manager'],
         filters: {
             hub_manager: ["!=", '']

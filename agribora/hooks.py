@@ -33,11 +33,16 @@ app_license = "MIT"
 # include js in doctype views
 doctype_js = {
 	"Sales Order" : "public/js/doctype_js/sales_order.js",
+<<<<<<< HEAD
 
 	"Account" : "public/js/doctype_js/account.js",
 
 	"Warehouse" : "public/js/doctype_js/warehouse.js"
 
+=======
+	"Warehouse" : "public/js/doctype_js/warehouse.js",
+	"Account" : "public/js/doctype_js/account.js"
+>>>>>>> a429c1f7e4b44c1a9d3225c51ed6b36e6db91e6c
 }
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
@@ -100,11 +105,20 @@ doc_events = {
 	"Warehouse": {
 		"validate": "agribora.agribora.hooks.warehouse.validate_hub_manager"
 	},
+<<<<<<< HEAD
 	"Sales Order": {
 		"validate" : "agribora.agribora.hooks.sales_order.autoname"
 	},
 	"Customer" : {
 		"validate" : "agribora.agribora.hooks.customer.validate"
+=======
+	"Sales Order":{
+		"on_submit": "agribora.agribora.hooks.sales_order.on_submit",
+		"validate": "agribora.agribora.hooks.sales_order.validate"
+	},
+	"Sales Invoice":{
+		"on_submit": "agribora.agribora.hooks.sales_invoice.on_submit"
+>>>>>>> a429c1f7e4b44c1a9d3225c51ed6b36e6db91e6c
 	}
 }
 
