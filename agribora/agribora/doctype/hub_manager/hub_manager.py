@@ -5,6 +5,7 @@
 import frappe
 from frappe.model.document import Document
 
+
 class HubManager(Document):
 	def on_update(self):
 		self.add_hub_manager_to_customer()
@@ -39,3 +40,5 @@ class HubManager(Document):
 				doc = frappe.get_doc('Customer', customer.name)
 				doc.hub_manager = ''
 				doc.save()
+
+

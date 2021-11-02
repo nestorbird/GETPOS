@@ -145,4 +145,12 @@ def privacy_policy():
 #this is for customer list by hub manager
 @frappe.whitelist()
 def get_customer_list_by_hubmanager(hub_manager):
-              return frappe.db.get_list('Customer',{'hub_manager': hub_manager},["customer_name","email_id","mobile_no","ward","name","creation"])
+                return frappe.db.get_list('Customer',{'hub_manager': hub_manager},["customer_name","email_id","mobile_no","ward","name","creation"])
+        
+#this is for item list by hub manager
+@frappe.whitelist()
+def get_item_list_by_hubmanager(hub_manager):
+        return frappe.db.sql("""select i.item_code,i.item_name,i.item_group,i.description,i.opening_stock,i.standard_rate,i.has_variants,i.variant_based_on,i.image from `tabItem` i JOIN `tabHub Manager Detail` h
+                        ON h.parent = i.name and
+                        h.parenttype = 'Item' and
+                        h.hub_manager = %s""",hub_manager, as_dict=1)                   
