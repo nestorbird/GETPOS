@@ -6,7 +6,9 @@ STANDARD_USERS = ("Guest", "Administrator")
 from frappe.rate_limiter import rate_limit
 from frappe.utils.password import update_password as _update_password, check_password, get_password_reset_limit
 from frappe.utils import (cint, flt, has_gravatar, escape_html, format_datetime,
-        now_datetime, get_formatted_email, today)
+        now_datetime, get_formatted_email, today, add_days, cint)
+
+import json
 
 # this is for login api
 @frappe.whitelist( allow_guest=True )
@@ -153,4 +155,63 @@ def get_item_list_by_hubmanager(hub_manager):
         return frappe.db.sql("""select i.item_code,i.item_name,i.item_group,i.description,i.opening_stock,i.standard_rate,i.has_variants,i.variant_based_on,i.image from `tabItem` i JOIN `tabHub Manager Detail` h
                         ON h.parent = i.name and
                         h.parenttype = 'Item' and
-                        h.hub_manager = %s""",hub_manager, as_dict=1)                   
+                        h.hub_manager = %s""",hub_manager, as_dict=1)
+
+@frappe.whitelist()
+def sync_sales_order(sales_orders={}):
+        if sales_orders:
+                for item in sales_orders.get("order_list"):
+                        create_sales_order(item)
+                
+                return {
+                        "success": 1,
+                        "message": "sales order syn completed"
+                }
+
+def create_sales_order(doc):
+        sales_order = frappe.new_doc("Sales Order")
+        sales_order.hub_manager = doc.get("hub_manager")
+        sales_order.ward = doc.get("ward")
+        sales_order.customer = doc.get("customer")
+        sales_order.transaction_date = doc.get("transaction_date")
+        sales_order.delivery_date = doc.get("delivery_date")
+        for item in doc.get("items"):
+                sales_order.append("items", {
+                        "item_code": item.get("item_code"),
+                        "qty": item.get("qty"),
+                        "rate": item.get("rate")
+                })
+        sales_order.status = doc.get("status")
+        sales_order.mode_of_payment = doc.get("mode_of_payment")
+        sales_order.mpesa_no = doc.get("mpesa_no")
+        sales_order.save()
+        sales_order.submit()
+        frappe.db.commit()
+
+@frappe.whitelist()
+def get_sales_order_list(hub_manager = None, days = None):
+        from_date = add_days(today(), -cint(days))
+        filters = { 'hub_manager': hub_manager, 'from_date': from_date, 'to_date': today()}
+        order_list = frappe.db.sql("""
+                SELECT 
+                        s.name, s.transaction_date, s.ward, s.customer,s.customer_name, 
+                        s.ward, s.hub_manager, s.grand_total, s.mode_of_payment, 
+                        s.mpesa_no, s.contact_display as contact_name,
+                        s.contact_phone, s.contact_mobile, s.contact_email,
+                        s.hub_manager,
+                        u.full_name as hub_manager_name
+                FROM `tabSales Order` s, `tabUser` u
+                WHERE s.hub_manager = u.name and s.hub_manager = %(hub_manager)s
+                        and s.docstatus = 1 and s.transaction_date between %(from_date)s and %(to_date)s        
+        """, values = filters, as_dict= True)
+        for item in order_list:
+                item_details = frappe.db.sql("""
+                        SELECT
+                                so.item_code, so.item_name, so.qty, 
+                                so.uom, so.rate, so.amount
+                        FROM `tabSales Order Item` so, `tabSales Order` s
+                        WHERE so.parent = s.name and so.parent = %s and
+                                so.parenttype = 'Sales Order' 
+                """, (item.name), as_dict = True)
+                item['items'] = item_details
+        return order_list
