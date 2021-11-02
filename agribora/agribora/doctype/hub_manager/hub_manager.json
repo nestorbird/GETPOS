@@ -8,7 +8,9 @@
  "engine": "InnoDB",
  "field_order": [
   "hub_manager",
-  "wards"
+  "wards",
+  "column_break_3",
+  "series"
  ],
  "fields": [
   {
@@ -25,6 +27,15 @@
    "fieldtype": "Table MultiSelect",
    "label": "wards",
    "options": "Ward Detail"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "series",
+   "fieldtype": "Data",
+   "label": "series"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -35,7 +46,7 @@
    "link_fieldname": "hub_manager"
   }
  ],
- "modified": "2021-10-25 18:39:29.238422",
+ "modified": "2021-11-02 09:46:12.745076",
  "modified_by": "Administrator",
  "module": "Agribora",
  "name": "Hub Manager",
