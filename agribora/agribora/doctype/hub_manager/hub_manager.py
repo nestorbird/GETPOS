@@ -5,7 +5,6 @@
 import frappe
 from frappe.model.document import Document
 
-
 class HubManager(Document):
 	def on_update(self):
 		self.add_hub_manager_to_customer()
@@ -41,4 +40,7 @@ class HubManager(Document):
 				doc.hub_manager = ''
 				doc.save()
 
-
+@frappe.whitelist(allow_guest=True)
+def get_hub_manager(ward):
+	hub_manager = frappe.db.get_value('Ward Detail', {'ward': ward}, ['parent'])
+	return hub_manager

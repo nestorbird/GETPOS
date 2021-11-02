@@ -34,7 +34,8 @@ app_license = "MIT"
 doctype_js = {
 	"Sales Order" : "public/js/doctype_js/sales_order.js",
 	"Warehouse": "public/js/doctype_js/warehouse.js",
-	"Account": "public/js/doctype_js/account.js"
+	"Account": "public/js/doctype_js/account.js",
+	"Customer": "public/js/doctype_js/customer.js"
 }
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
@@ -97,9 +98,9 @@ doc_events = {
 	"Warehouse": {
 		"validate": "agribora.agribora.hooks.warehouse.validate_hub_manager"
 	},
-	"Customer" : {
-		"validate" : "agribora.agribora.hooks.customer.validate"
-	},
+	# "Customer" : {
+	# 	"validate" : "agribora.agribora.hooks.customer.validate"
+	# },
 	"Sales Order":{
 		"on_submit": "agribora.agribora.hooks.sales_order.on_submit",
 		"validate": "agribora.agribora.hooks.sales_order.validate"
