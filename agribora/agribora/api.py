@@ -8,8 +8,6 @@ from frappe.utils.password import update_password as _update_password, check_pas
 from frappe.utils import (cint, flt, has_gravatar, escape_html, format_datetime,
         now_datetime, get_formatted_email, today, add_days, cint)
 
-import json
-
 # this is for login api
 @frappe.whitelist( allow_guest=True )
 def login(usr, pwd):
@@ -189,20 +187,25 @@ def create_sales_order(doc):
         frappe.db.commit()
 
 @frappe.whitelist()
-def get_sales_order_list(hub_manager = None, days = None):
-        from_date = add_days(today(), -cint(days))
-        filters = { 'hub_manager': hub_manager, 'from_date': from_date, 'to_date': today()}
+def get_sales_order_list(hub_manager = None, page_no = None):
+        sales_history_count = frappe.db.get_single_value('Agribora Setting', 'sales_history_count')
+        if page_no:
+                limit = cint(page_no) * cint(sales_history_count)
+        else:
+                limit = cint(sales_history_count)
+        filters = { 'hub_manager': hub_manager, 'limit': cint(limit)}
         order_list = frappe.db.sql("""
                 SELECT 
                         s.name, s.transaction_date, s.ward, s.customer,s.customer_name, 
                         s.ward, s.hub_manager, s.grand_total, s.mode_of_payment, 
                         s.mpesa_no, s.contact_display as contact_name,
                         s.contact_phone, s.contact_mobile, s.contact_email,
-                        s.hub_manager,
+                        s.hub_manager, s.creation,
                         u.full_name as hub_manager_name
                 FROM `tabSales Order` s, `tabUser` u
                 WHERE s.hub_manager = u.name and s.hub_manager = %(hub_manager)s
-                        and s.docstatus = 1 and s.transaction_date between %(from_date)s and %(to_date)s        
+                        and s.docstatus = 1 
+                        order by s.creation desc limit %(limit)s   
         """, values = filters, as_dict= True)
         for item in order_list:
                 item_details = frappe.db.sql("""
