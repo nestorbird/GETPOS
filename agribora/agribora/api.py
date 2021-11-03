@@ -155,17 +155,6 @@ def get_item_list_by_hubmanager(hub_manager):
                         h.parenttype = 'Item' and
                         h.hub_manager = %s""",hub_manager, as_dict=1)
 
-# @frappe.whitelist()
-# def sync_sales_order(sales_orders={}):
-#         if sales_orders:
-#                 for item in sales_orders.get("order_list"):
-#                         create_sales_order(item)
-                
-#                 return {
-#                         "success": 1,
-#                         "message": "sales order syn completed"
-#                 }
-
 @frappe.whitelist()
 def create_sales_order(order_list = {}):
         sales_order = frappe.new_doc("Sales Order")
@@ -189,13 +178,16 @@ def create_sales_order(order_list = {}):
         return sales_order
 
 @frappe.whitelist()
-def get_sales_order_list(hub_manager = None, page_no = None):
+def get_sales_order_list(hub_manager = None, page_no = 1):
         sales_history_count = frappe.db.get_single_value('Agribora Setting', 'sales_history_count')
-        if page_no:
-                limit = cint(page_no) * cint(sales_history_count)
+        limit = cint(sales_history_count)
+        if page_no == 1:
+                row_no = 0
         else:
-                limit = cint(sales_history_count)
-        filters = { 'hub_manager': hub_manager, 'limit': cint(limit)}
+                page_no = cint(page_no) - 1
+                row_no = cint(page_no * cint(sales_history_count))
+
+        filters = { 'hub_manager': hub_manager, 'limit': cint(limit), 'row_no': cint(row_no)}
         order_list = frappe.db.sql("""
                 SELECT 
                         s.name, s.transaction_date, s.ward, s.customer,s.customer_name, 
@@ -207,7 +199,7 @@ def get_sales_order_list(hub_manager = None, page_no = None):
                 FROM `tabSales Order` s, `tabUser` u
                 WHERE s.hub_manager = u.name and s.hub_manager = %(hub_manager)s
                         and s.docstatus = 1 
-                        order by s.creation desc limit %(limit)s   
+                        order by s.creation desc limit %(row_no)s , %(limit)s
         """, values = filters, as_dict= True)
         for item in order_list:
                 item_details = frappe.db.sql("""
