@@ -101,7 +101,6 @@ doc_events = {
 	"Customer" : {
 		"validate" : "agribora.agribora.hooks.customer.validate"
 	},
-
 	"Sales Order":{
 		"on_submit": "agribora.agribora.hooks.sales_order.on_submit",
 		"validate": "agribora.agribora.hooks.sales_order.validate"
