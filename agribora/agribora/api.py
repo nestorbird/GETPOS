@@ -6,7 +6,7 @@ STANDARD_USERS = ("Guest", "Administrator")
 from frappe.rate_limiter import rate_limit
 from frappe.utils.password import update_password as _update_password, check_password, get_password_reset_limit
 from frappe.utils import (cint, flt, has_gravatar, escape_html, format_datetime,
-        now_datetime, get_formatted_email, today)
+        now_datetime, get_formatted_email, today, add_days, cint)
 
 # this is for login api
 @frappe.whitelist( allow_guest=True )
@@ -21,8 +21,9 @@ def login(usr, pwd):
             "success_key":0,
             "message":"Incorrect Username or Password"
         }
-
+        
         return
+
 
     api_generate = generate_keys(frappe.session.user)
     user = frappe.get_doc('User', frappe.session.user)
@@ -35,10 +36,9 @@ def login(usr, pwd):
         "api_secret":api_generate,
         "username":user.username,
         "email":user.email
-    }
-#     frappe.local.response[“type”] = "Redirect"
-#     frappe.local.response[“location”] = “/all-products”
-
+    } 
+        
+ 
 def generate_keys(user):
     user_details = frappe.get_doc('User', user)
     api_secret = frappe.generate_hash(length=15)
@@ -51,9 +51,10 @@ def generate_keys(user):
     user_details.save()
 
     return api_secret
+       
 
 # this is email going for the password reset
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist()
 @rate_limit(key='user', limit=get_password_reset_limit, seconds = 24*60*60, methods=['POST'])
 def forgot_password(user):
         if user=="Administrator":
@@ -74,12 +75,12 @@ def forgot_password(user):
                 return 'not found'
         
 # this is for forgot-password message
-@frappe.whitelist( allow_guest=True )
+@frappe.whitelist()
 def reset_password( user,send_email=False, password_expired=False):
                 from frappe.utils import random_string, get_url
 
                 key = random_string(32)
-                # user.db_set("reset_password_key", key)
+                
 
                 url = "/update-password?key=" + key
                 if password_expired:
@@ -125,45 +126,95 @@ def get_abbr(string):
     abbr = ''.join(c[0] for c in string.split()).upper()
     return abbr
 
-# this is for customer list api
-@frappe.whitelist(allow_guest=True)
-def customer_list():
-        res = frappe.db.get_all('Customer')
-        return res
 
-# this is for customer detail api
-@frappe.whitelist(allow_guest=True)
-def customer_list_detail(name):
-        detail = frappe.db.get_value("Customer",name,["customer_name","email_id","mobile_no","ward","name","creation"],as_dict=1)
-        return detail   
+
+
 
 # this id for terms and conditions api
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist()
 def terms_and_conditions():
         term = frappe.db.get_value("Terms and Conditions","Terms and Conditions for agribora","terms")
         return term
 
 # this is for privacy policy api
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist()
 def privacy_policy():
         policy = frappe.db.get_value("Privacy Policy","Privacy Policy for agribora","privacy")
-        return policy 
+        return policy
 
-# this is for customer list belomg with hub manager
-@frappe.whitelist(allow_guest=True)
-def get_cust_belong_hubmngr():
-        cust = frappe.get_all("Customer")
-        hub = frappe.get_all("Hub Manager")
-        list = [ ]
-        for x in hub:
-                for y in cust:
-                        if x==y:
-                                list.append(x)
-        return list
+#this is for customer list by hub manager
+@frappe.whitelist()
+def get_customer_list_by_hubmanager(hub_manager):
+                return frappe.db.get_list('Customer',{'hub_manager': hub_manager},["customer_name","email_id","mobile_no","ward","name","creation"])
+        
+#this is for item list by hub manager
+@frappe.whitelist()
+def get_item_list_by_hubmanager(hub_manager):
+        return frappe.db.sql("""select i.item_code,i.item_name,i.item_group,i.description,i.opening_stock,i.standard_rate,i.has_variants,i.variant_based_on,i.image from `tabItem` i JOIN `tabHub Manager Detail` h
+                        ON h.parent = i.name and
+                        h.parenttype = 'Item' and
+                        h.hub_manager = %s""",hub_manager, as_dict=1)
 
-#this is for cust belong with hub manager detail
-@frappe.whitelist(allow_guest=True)
-def customer_list_belong_with_hub_detail(name):
-        detail = frappe.db.get_value("Customer",name,["customer_name","email_id","mobile_no","ward","name","creation"],as_dict=1)
-        return detail   
+@frappe.whitelist()
+def sync_sales_order(sales_orders={}):
+        if sales_orders:
+                for item in sales_orders.get("order_list"):
+                        create_sales_order(item)
+                
+                return {
+                        "success": 1,
+                        "message": "sales order syn completed"
+                }
 
+def create_sales_order(doc):
+        sales_order = frappe.new_doc("Sales Order")
+        sales_order.hub_manager = doc.get("hub_manager")
+        sales_order.ward = doc.get("ward")
+        sales_order.customer = doc.get("customer")
+        sales_order.transaction_date = doc.get("transaction_date")
+        sales_order.delivery_date = doc.get("delivery_date")
+        for item in doc.get("items"):
+                sales_order.append("items", {
+                        "item_code": item.get("item_code"),
+                        "qty": item.get("qty"),
+                        "rate": item.get("rate")
+                })
+        sales_order.status = doc.get("status")
+        sales_order.mode_of_payment = doc.get("mode_of_payment")
+        sales_order.mpesa_no = doc.get("mpesa_no")
+        sales_order.save()
+        sales_order.submit()
+        frappe.db.commit()
+
+@frappe.whitelist()
+def get_sales_order_list(hub_manager = None, page_no = None):
+        sales_history_count = frappe.db.get_single_value('Agribora Setting', 'sales_history_count')
+        if page_no:
+                limit = cint(page_no) * cint(sales_history_count)
+        else:
+                limit = cint(sales_history_count)
+        filters = { 'hub_manager': hub_manager, 'limit': cint(limit)}
+        order_list = frappe.db.sql("""
+                SELECT 
+                        s.name, s.transaction_date, s.ward, s.customer,s.customer_name, 
+                        s.ward, s.hub_manager, s.grand_total, s.mode_of_payment, 
+                        s.mpesa_no, s.contact_display as contact_name,
+                        s.contact_phone, s.contact_mobile, s.contact_email,
+                        s.hub_manager, s.creation,
+                        u.full_name as hub_manager_name
+                FROM `tabSales Order` s, `tabUser` u
+                WHERE s.hub_manager = u.name and s.hub_manager = %(hub_manager)s
+                        and s.docstatus = 1 
+                        order by s.creation desc limit %(limit)s   
+        """, values = filters, as_dict= True)
+        for item in order_list:
+                item_details = frappe.db.sql("""
+                        SELECT
+                                so.item_code, so.item_name, so.qty, 
+                                so.uom, so.rate, so.amount
+                        FROM `tabSales Order Item` so, `tabSales Order` s
+                        WHERE so.parent = s.name and so.parent = %s and
+                                so.parenttype = 'Sales Order' 
+                """, (item.name), as_dict = True)
+                item['items'] = item_details
+        return order_list
