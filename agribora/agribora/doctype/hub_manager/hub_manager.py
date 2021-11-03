@@ -42,4 +42,3 @@ class HubManager(Document):
 				doc.save()
 
 
-
