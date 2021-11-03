@@ -155,36 +155,38 @@ def get_item_list_by_hubmanager(hub_manager):
                         h.parenttype = 'Item' and
                         h.hub_manager = %s""",hub_manager, as_dict=1)
 
-@frappe.whitelist()
-def sync_sales_order(sales_orders={}):
-        if sales_orders:
-                for item in sales_orders.get("order_list"):
-                        create_sales_order(item)
+# @frappe.whitelist()
+# def sync_sales_order(sales_orders={}):
+#         if sales_orders:
+#                 for item in sales_orders.get("order_list"):
+#                         create_sales_order(item)
                 
-                return {
-                        "success": 1,
-                        "message": "sales order syn completed"
-                }
+#                 return {
+#                         "success": 1,
+#                         "message": "sales order syn completed"
+#                 }
 
-def create_sales_order(doc):
+@frappe.whitelist()
+def create_sales_order(order_list = {}):
         sales_order = frappe.new_doc("Sales Order")
-        sales_order.hub_manager = doc.get("hub_manager")
-        sales_order.ward = doc.get("ward")
-        sales_order.customer = doc.get("customer")
-        sales_order.transaction_date = doc.get("transaction_date")
-        sales_order.delivery_date = doc.get("delivery_date")
-        for item in doc.get("items"):
+        sales_order.hub_manager = order_list.get("hub_manager")
+        sales_order.ward = order_list.get("ward")
+        sales_order.customer = order_list.get("customer")
+        sales_order.transaction_date = order_list.get("transaction_date")
+        sales_order.delivery_date = order_list.get("delivery_date")
+        for item in order_list.get("items"):
                 sales_order.append("items", {
                         "item_code": item.get("item_code"),
                         "qty": item.get("qty"),
                         "rate": item.get("rate")
                 })
-        sales_order.status = doc.get("status")
-        sales_order.mode_of_payment = doc.get("mode_of_payment")
-        sales_order.mpesa_no = doc.get("mpesa_no")
+        sales_order.status = order_list.get("status")
+        sales_order.mode_of_payment = order_list.get("mode_of_payment")
+        sales_order.mpesa_no = order_list.get("mpesa_no")
         sales_order.save()
         sales_order.submit()
         frappe.db.commit()
+        return sales_order
 
 @frappe.whitelist()
 def get_sales_order_list(hub_manager = None, page_no = None):
