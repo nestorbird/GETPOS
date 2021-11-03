@@ -8,8 +8,9 @@ def on_submit(doc, method):
 
 def validate(doc, method):
     set_warehouse(doc)
-    hub_manager_series = frappe.db.get_value('Hub Manager', doc.hub_manager, 'series')
-    doc.name = make_autoname(hub_manager_series)
+    if doc.is_new():
+        hub_manager_series = frappe.db.get_value('Hub Manager', doc.hub_manager, 'series')
+        doc.name = make_autoname(hub_manager_series)
 
 def create_sales_invoice_from_sales_order(doc):
     sales_invoice = make_sales_invoice(doc.name)
