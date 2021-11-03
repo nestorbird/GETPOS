@@ -9,7 +9,7 @@ def on_submit(doc, method):
 def validate(doc, method):
     set_warehouse(doc)
     f_name, l_name = frappe.db.get_value('User', {'email': doc.hub_manager}, ['first_name', 'last_name'])
-    doc.name = make_autoname(f_name[0] + l_name[0] +"-" + doc.ward + "-.YYYY." + "-.MM." + "-." + "####")
+ doc.name = make_autoname(f_name[0] + l_name[0] + "-.YYYY." + "-.MM." + "-." + "####")
 
 def create_sales_invoice_from_sales_order(doc):
     sales_invoice = make_sales_invoice(doc.name)
