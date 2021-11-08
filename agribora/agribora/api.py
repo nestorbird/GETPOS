@@ -9,7 +9,7 @@ from frappe.utils import (cint, flt, has_gravatar, escape_html, format_datetime,
         now_datetime, get_formatted_email, today, add_days, cint)
 from erpnext.accounts.utils import get_balance_on
 
-# Login Api
+
 @frappe.whitelist( allow_guest=True )
 def login(usr, pwd):
     try:
@@ -42,8 +42,8 @@ def login(usr, pwd):
         "username":user.username,
         "email":user.email
     } 
-        
- 
+
+
 def generate_keys(user):
     user_details = frappe.get_doc('User', user)
     api_secret = frappe.generate_hash(length=15)
@@ -58,7 +58,7 @@ def generate_keys(user):
     return api_secret, user_details.api_key
        
 
-# this is email going for the password reset
+
 @frappe.whitelist(allow_guest=True)
 @rate_limit(key='user', limit=get_password_reset_limit, seconds = 24*60*60, methods=['POST'])
 def forgot_password(user):
@@ -79,7 +79,7 @@ def forgot_password(user):
                 frappe.clear_messages()
                 return 'not found'
         
-# this is for forgot-password message
+
 @frappe.whitelist(allow_guest=True)
 def reset_password( user,send_email=False, password_expired=False):
                 from frappe.utils import random_string, get_url
@@ -125,7 +125,7 @@ def send_login_mail(user, subject, template, add_args, now=None):
 
                 frappe.sendmail(recipients=user.email, sender=sender)
 
-# this is your code
+
 @frappe.whitelist(allow_guest=True)
 def get_abbr(string):
     abbr = ''.join(c[0] for c in string.split()).upper()
@@ -153,7 +153,7 @@ def privacy_policy():
 def get_customer_list_by_hubmanager(hub_manager):
                 return frappe.db.get_list('Customer',{'hub_manager': hub_manager},["customer_name","email_id","mobile_no","ward","name","creation"])
         
-#this is for item list by hub manager
+
 @frappe.whitelist()
 def get_item_list_by_hubmanager(hub_manager):
         return frappe.db.sql("""
@@ -170,22 +170,24 @@ def get_item_list_by_hubmanager(hub_manager):
 def get_details_by_hubmanager(hub_manager):
         hub_manager_detail = frappe.db.sql("""
                         SELECT
-                                u.name, u.email, u.mobile_no,
+                                u.name, u.full_name,
+                                u.email, u.mobile_no,
                                 h.hub_manager, h.series
-                        FROM `tabUser` u, `tabHub Manager` h    
+                        FROM `tabUser` u, `tabHub Manager` h
                         WHERE h.hub_manager = u.name and
                         h.hub_manager = %s
                         """,hub_manager, as_dict=1)
         cash_balance = get_balance(hub_manager)
-        hub_manager_detail[0]['Balance']  = cash_balance[0]
-        hub_manager_detail[0]['Transaction Date']  = cash_balance[1]
+        hub_manager_detail[0]['balance']  = cash_balance
+        hub_manager_detail[0]['last_transaction_date']  = get_last_transaction_date(hub_manager)
         return hub_manager_detail
 
 @frappe.whitelist()
 def get_balance(hub_manager):
-        account, transaction_date = frappe.db.get_value('Account', {'hub_manager': hub_manager}, ['name', 'modified'])
+        #transaction date is not correct
+        account = frappe.db.get_value('Account', {'hub_manager': hub_manager}, 'name')
         account_balance = get_balance_on(account)
-        return account_balance, transaction_date
+        return account_balance
 
 @frappe.whitelist()
 def create_sales_order(order_list = {}):
@@ -211,6 +213,7 @@ def create_sales_order(order_list = {}):
 
 @frappe.whitelist()
 def get_sales_order_list(hub_manager = None, page_no = 1):
+        sales_order_history= frappe._dict()
         sales_history_count = frappe.db.get_single_value('Agribora Setting', 'sales_history_count')
         limit = cint(sales_history_count)
         if page_no == 1:
@@ -243,4 +246,34 @@ def get_sales_order_list(hub_manager = None, page_no = 1):
                                 so.parenttype = 'Sales Order' 
                 """, (item.name), as_dict = True)
                 item['items'] = item_details
-        return order_list
+        number_of_orders = get_sales_order_count(hub_manager)
+        sales_order_history['order_list'] = order_list
+        sales_order_history['number_of_orders'] = number_of_orders
+        return sales_order_history
+
+@frappe.whitelist()
+def get_sales_order_count(hub_manager):
+        number_of_orders = frappe.db.sql("""
+                SELECT 
+                        count(s.name)
+                FROM `tabSales Order` s, `tabUser` u
+                WHERE s.hub_manager = u.name and s.hub_manager = %s
+                        and s.docstatus = 1 
+                        order by s.creation desc
+        """, (hub_manager))[0][0]
+        return number_of_orders
+
+@frappe.whitelist()
+def get_last_transaction_date(hub_manager):
+        account = frappe.db.get_value('Account', {'hub_manager': hub_manager, 'disabled': 0}, 'name')
+        transaction_date = frappe.db.get_list("GL Entry",
+                        filters={
+                                'account': account,
+                                'voucher_type': ["!=",'Period Closing Voucher'],
+                                'is_cancelled': 0
+                        },
+                        fields= ['posting_date'],
+                        order_by = "posting_date desc",
+                        as_list = 1
+        )[0][0]
+        return transaction_date
