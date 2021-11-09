@@ -133,20 +133,20 @@ def get_abbr(string):
 
 @frappe.whitelist(allow_guest=True)
 def terms_and_conditions():
-        terms_and_condition = frappe.db.get_list("Terms and Conditions",
-                filters= {
-                        'disabled': 0, 
-                },
-                fields= ['terms'])[0]
+        terms_and_condition = frappe.db.sql("""
+                SELECT terms
+                FROM `tabTerms and Conditions`
+                WHERE disabled = 0
+        """)[0][0]
         return terms_and_condition
 
 @frappe.whitelist(allow_guest=True)
 def privacy_policy():
-        privacy_policy = frappe.db.get_list("Privacy Policy",
-                filters= {
-                        'disabled': 0, 
-                },
-                fields= ['privacy_policy'])[0]
+        privacy_policy = frappe.db.sql("""
+                SELECT privacy_policy
+                FROM `tabPrivacy Policy`
+                WHERE disabled = 0
+        """)[0][0]
         return privacy_policy
         
 @frappe.whitelist()
