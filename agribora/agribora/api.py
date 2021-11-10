@@ -310,9 +310,21 @@ def get_item_stock_balance(hub_manager, item_code, last_sync_date=None, last_syn
                 last_entry = get_stock_ledger_entries(args, ">", "desc", "limit 1", for_update=False, check_serial_no=False)
                 if last_entry:
                         res['available_qty'] = get_stock_balance(item_code, warehouse, last_entry[0].posting_date, last_entry[0].posting_time)
+                        res['posting_date'] = last_entry[0].posting_date
+                        res['posting_time'] = last_entry[0].posting_time
                 else:
                         res['available_qty'] = "no updated stock"
         else:
                 res['available_qty'] = get_stock_balance(item_code, warehouse)
+                args = {
+		"item_code": item_code,
+		"warehouse":warehouse,
+		"posting_date": nowdate(),
+		"posting_time": nowtime()
+                }
+                last_entry = get_previous_sle(args)
+                if last_entry:
+                        res['posting_date'] = last_entry.get("posting_date")
+                        res['posting_time'] = last_entry.get("posting_time")
         
         return res
