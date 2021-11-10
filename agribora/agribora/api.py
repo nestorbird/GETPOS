@@ -6,8 +6,10 @@ STANDARD_USERS = ("Guest", "Administrator")
 from frappe.rate_limiter import rate_limit
 from frappe.utils.password import update_password as _update_password, check_password, get_password_reset_limit
 from frappe.utils import (cint, flt, has_gravatar, escape_html, format_datetime,
-        now_datetime, get_formatted_email, today, add_days, cint)
+        now_datetime, get_formatted_email, today, add_days, nowdate, nowtime)
 from erpnext.accounts.utils import get_balance_on
+from erpnext.stock.utils import get_stock_balance
+from erpnext.stock.stock_ledger import get_previous_sle, get_stock_ledger_entries
 
 
 @frappe.whitelist( allow_guest=True )
@@ -150,21 +152,34 @@ def privacy_policy():
         return privacy_policy
         
 @frappe.whitelist()
-def get_customer_list_by_hubmanager(hub_manager):
-                return frappe.db.get_list('Customer',{'hub_manager': hub_manager},["customer_name","email_id","mobile_no","ward","name","creation"])
+def get_customer_list_by_hubmanager(hub_manager, last_sync = None):
+        filters = {'hub_manager': hub_manager}
+        if last_sync:
+                filters['modified'] = [">=", last_sync]
+        return frappe.db.get_list('Customer',
+                filters = filters,
+                fields = ["customer_name","email_id","mobile_no","ward","name","creation"])
         
 
 @frappe.whitelist()
-def get_item_list_by_hubmanager(hub_manager):
+def get_item_list_by_hubmanager(hub_manager, last_sync = None):
+        filters = {'hub_manager': hub_manager}
+        conditions = "h.hub_manager = %(hub_manager)s "
+        if last_sync:
+                filters['last_sync'] = last_sync
+                conditions += "and (i.modified >= %(last_sync)s or p.modified >= %(last_sync)s)"
+
         return frappe.db.sql("""
                 SELECT 
                         i.item_code, i.item_name, i.item_group, i.description,
                         i.opening_stock, i.standard_rate, i.has_variants, i.variant_based_on,
-                        i.image 
-                FROM `tabItem` i, `tabHub Manager Detail` h
-                WHERE   h.parent = i.name and
-                        h.parenttype = 'Item' and
-                        h.hub_manager = %s""",hub_manager, as_dict=1)
+                        i.image, p.price_list_rate
+                FROM `tabItem` i, `tabHub Manager Detail` h, `tabItem Price` p
+                WHERE   h.parent = i.name and h.parenttype = 'Item' 
+                        and p.item_code = i.name and p.selling =1
+                        and p.price_list_rate > 0 
+                        and {conditions}
+                        """.format(conditions=conditions), values=filters, as_dict=1)
 
 @frappe.whitelist()
 def get_details_by_hubmanager(hub_manager):
@@ -184,7 +199,7 @@ def get_details_by_hubmanager(hub_manager):
 
 @frappe.whitelist()
 def get_balance(hub_manager):
-        #transaction date is not correct
+
         account = frappe.db.get_value('Account', {'hub_manager': hub_manager}, 'name')
         account_balance = get_balance_on(account)
         return account_balance
@@ -209,7 +224,10 @@ def create_sales_order(order_list = {}):
         sales_order.save()
         sales_order.submit()
         frappe.db.commit()
-        return sales_order
+        res= frappe._dict()
+        res['name'] = sales_order.name
+        res['docstatus'] = sales_order.docstatus
+        return res
 
 @frappe.whitelist()
 def get_sales_order_list(hub_manager = None, page_no = 1):
@@ -277,3 +295,24 @@ def get_last_transaction_date(hub_manager):
                         as_list = 1
         )[0][0]
         return transaction_date
+
+@frappe.whitelist()
+def get_item_stock_balance(hub_manager, item_code, last_sync_date=None, last_sync_time="00:00"):
+        res = frappe._dict()
+        warehouse = frappe.db.get_value('Warehouse', {'hub_manager': hub_manager}, 'name')
+        if last_sync_date and last_sync_time:
+                args = {
+		"item_code": item_code,
+		"warehouse":warehouse,
+		"posting_date": last_sync_date,
+		"posting_time": last_sync_time
+                }
+                last_entry = get_stock_ledger_entries(args, ">", "desc", "limit 1", for_update=False, check_serial_no=False)
+                if last_entry:
+                        res['available_qty'] = get_stock_balance(item_code, warehouse, last_entry[0].posting_date, last_entry[0].posting_time)
+                else:
+                        res['available_qty'] = "no updated stock"
+        else:
+                res['available_qty'] = get_stock_balance(item_code, warehouse)
+        
+        return res
