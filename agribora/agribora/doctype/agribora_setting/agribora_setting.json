@@ -6,6 +6,7 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "base_url",
   "sales_history_count"
  ],
  "fields": [
@@ -17,12 +18,18 @@
    "in_list_view": 1,
    "label": "Sales History count",
    "reqd": 1
+  },
+  {
+   "fieldname": "base_url",
+   "fieldtype": "Data",
+   "label": "Base URL",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2021-11-02 18:18:57.814202",
+ "modified": "2021-11-11 10:26:32.293993",
  "modified_by": "Administrator",
  "module": "Agribora",
  "name": "Agribora Setting",
