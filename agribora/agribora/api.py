@@ -163,7 +163,8 @@ def get_customer_list_by_hubmanager(hub_manager, last_sync = None):
 
 @frappe.whitelist()
 def get_item_list_by_hubmanager(hub_manager, last_sync = None):
-        filters = {'hub_manager': hub_manager}
+        base_url = frappe.db.get_single_value('Agribora Setting', 'base_url')
+        filters = {'hub_manager': hub_manager, "base_url": base_url}
         conditions = "h.hub_manager = %(hub_manager)s "
         if last_sync:
                 filters['last_sync'] = last_sync
@@ -172,9 +173,9 @@ def get_item_list_by_hubmanager(hub_manager, last_sync = None):
         return frappe.db.sql("""
                 SELECT 
                         i.item_code, i.item_name, i.item_group, i.description,
-                        i.opening_stock, i.standard_rate, i.has_variants, i.variant_based_on,
-                        i.image, p.price_list_rate
-                FROM `tabItem` i, `tabHub Manager Detail` h, `tabItem Price` p
+                        i.has_variants, i.variant_based_on,
+                        if(i.image = null, null, concat(%(base_url)s, i.image)) as image, p.price_list_rate
+                FROM `tabItem` i, `tabHub Manager Detail` h,`tabItem Price` p
                 WHERE   h.parent = i.name and h.parenttype = 'Item' 
                         and p.item_code = i.name and p.selling =1
                         and p.price_list_rate > 0 
@@ -199,7 +200,6 @@ def get_details_by_hubmanager(hub_manager):
 
 @frappe.whitelist()
 def get_balance(hub_manager):
-
         account = frappe.db.get_value('Account', {'hub_manager': hub_manager}, 'name')
         account_balance = get_balance_on(account)
         return account_balance

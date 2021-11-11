@@ -108,6 +108,9 @@ doc_events = {
 	"Sales Invoice":{
 		"on_submit": "agribora.agribora.hooks.sales_invoice.on_submit"
 
+	},
+	"Item Price":{
+		"validate": "agribora.agribora.hooks.item_price.validate_item_price"
 	}
 }
 
