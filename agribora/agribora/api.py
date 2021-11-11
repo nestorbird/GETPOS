@@ -200,7 +200,6 @@ def get_details_by_hubmanager(hub_manager):
 
 @frappe.whitelist()
 def get_balance(hub_manager):
-
         account = frappe.db.get_value('Account', {'hub_manager': hub_manager}, 'name')
         account_balance = get_balance_on(account)
         return account_balance
