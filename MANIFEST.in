@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include agribora *.css
+recursive-include agribora *.csv
+recursive-include agribora *.html
+recursive-include agribora *.ico
+recursive-include agribora *.js
+recursive-include agribora *.json
+recursive-include agribora *.md
+recursive-include agribora *.png
+recursive-include agribora *.py
+recursive-include agribora *.svg
+recursive-include agribora *.txt
+recursive-exclude agribora *.pyc
