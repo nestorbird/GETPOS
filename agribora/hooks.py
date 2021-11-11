@@ -37,7 +37,6 @@ doctype_js = {
 	"Account": "public/js/doctype_js/account.js",
 	"Customer": "public/js/doctype_js/customer.js"
 }
-
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -108,16 +107,9 @@ doc_events = {
 	},
 	"Sales Invoice":{
 		"on_submit": "agribora.agribora.hooks.sales_invoice.on_submit"
-	},
-	"Item Price":{
-		"validate": "agribora.agribora.hooks.item_price.validate_item_price"
+
 	}
-	
 }
-
-
- 
-
 
 # Scheduled Tasks
 # ---------------
