@@ -65,6 +65,11 @@ class HubManager(Document):
 
 @frappe.whitelist(allow_guest=True)
 def get_hub_manager(ward):
-	hub_manager = frappe.db.get_value('Ward Detail', {'ward': ward,'is_assigned': True}, ['parent'])
+	hub_manager = frappe.db.get_value('Ward Detail', 
+					{
+						'ward': ward,
+						'is_assigned': 1,
+						'parenttype': 'Hub Manager'},
+					['parent'])
 	return hub_manager
 
