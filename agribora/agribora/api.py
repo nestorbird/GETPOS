@@ -150,16 +150,25 @@ def privacy_policy():
                 WHERE disabled = 0
         """)[0][0]
         return privacy_policy
-        
+
 @frappe.whitelist()
 def get_customer_list_by_hubmanager(hub_manager, last_sync = None):
-        filters = {'hub_manager': hub_manager}
+        base_url = frappe.db.get_single_value('Agribora Setting', 'base_url')
+        filters = {'hub_manager': hub_manager, "base_url": base_url}
+        conditions = "hub_manager = %(hub_manager)s "
         if last_sync:
-                filters['modified'] = [">=", last_sync]
-        return frappe.db.get_list('Customer',
-                filters = filters,
-                fields = ["customer_name","email_id","mobile_no","ward","name","creation"])
-        
+                filters['last_sync'] = last_sync
+                conditions += "and modified >= %(last_sync)s"
+        return frappe.db.sql("""
+                SELECT
+                        customer_name, email_id, mobile_no,
+                        ward, ward_name, name, creation,
+                        modified, 
+                        if((image = null or image = ''), null, 
+                        if(image LIKE 'http%%', image, concat(%(base_url)s, image))) as image
+                FROM `tabCustomer`
+                WHERE {conditions}
+                """.format(conditions=conditions), values=filters, as_dict=1)
 
 @frappe.whitelist()
 def get_item_list_by_hubmanager(hub_manager, last_sync = None):
@@ -174,13 +183,15 @@ def get_item_list_by_hubmanager(hub_manager, last_sync = None):
                 SELECT 
                         i.item_code, i.item_name, i.item_group, i.description,
                         i.has_variants, i.variant_based_on,
-                        if(i.image = null, null, concat(%(base_url)s, i.image)) as image, p.price_list_rate
+                        if((i.image = null or image = ''), null, 
+                        if(i.image LIKE 'http%%', i.image, concat(%(base_url)s, i.image))) as image,
+                        p.price_list_rate, i.modified as item_modified, p.modified as price_modified 
                 FROM `tabItem` i, `tabHub Manager Detail` h,`tabItem Price` p
                 WHERE   h.parent = i.name and h.parenttype = 'Item' 
                         and p.item_code = i.name and p.selling =1
                         and p.price_list_rate > 0 
                         and {conditions}
-                        """.format(conditions=conditions), values=filters, as_dict=1)
+                """.format(conditions=conditions), values=filters, as_dict=1)
 
 @frappe.whitelist()
 def get_details_by_hubmanager(hub_manager):
@@ -194,8 +205,16 @@ def get_details_by_hubmanager(hub_manager):
                         h.hub_manager = %s
                         """,hub_manager, as_dict=1)
         cash_balance = get_balance(hub_manager)
+        wards = frappe.db.sql("""
+                SELECT
+                        ward, is_assigned
+                FROM `tabWard Detail`
+                WHERE parent = %s
+                and parenttype = 'Hub Manager'
+        """,hub_manager, as_dict=1)
         hub_manager_detail[0]['balance']  = cash_balance
         hub_manager_detail[0]['last_transaction_date']  = get_last_transaction_date(hub_manager)
+        hub_manager_detail[0]['wards']  = wards
         return hub_manager_detail
 
 @frappe.whitelist()
