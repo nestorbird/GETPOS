@@ -14,6 +14,7 @@ class HubManager(Document):
 		self.add_hub_manager_to_customer()
 		self.remove_hub_manager_from_customer()
 
+
 	def set_naming_series(self):
 		if not self.series:
 			first_name, last_name = frappe.db.get_value('User', self.hub_manager, ['first_name', 'last_name'])
@@ -64,6 +65,11 @@ class HubManager(Document):
 
 @frappe.whitelist(allow_guest=True)
 def get_hub_manager(ward):
-	hub_manager = frappe.db.get_value('Ward Detail', {'ward': ward}, ['parent'])
+	hub_manager = frappe.db.get_value('Ward Detail', 
+					{
+						'ward': ward,
+						'is_assigned': 1,
+						'parenttype': 'Hub Manager'},
+					['parent'])
 	return hub_manager
 
