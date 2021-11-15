@@ -23,12 +23,6 @@
    "unique": 1
   },
   {
-   "fieldname": "wards",
-   "fieldtype": "Table MultiSelect",
-   "label": "wards",
-   "options": "Ward Detail"
-  },
-  {
    "fieldname": "column_break_3",
    "fieldtype": "Column Break"
   },
@@ -36,6 +30,12 @@
    "fieldname": "series",
    "fieldtype": "Data",
    "label": "series"
+  },
+  {
+   "fieldname": "wards",
+   "fieldtype": "Table",
+   "label": "wards",
+   "options": "Ward Detail"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -46,7 +46,7 @@
    "link_fieldname": "hub_manager"
   }
  ],
- "modified": "2021-11-02 09:46:12.745076",
+ "modified": "2021-11-12 16:51:56.067109",
  "modified_by": "Administrator",
  "module": "Agribora",
  "name": "Hub Manager",
