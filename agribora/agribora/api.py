@@ -172,13 +172,47 @@ def get_customer_list_by_hubmanager(hub_manager, last_sync = None):
 
 @frappe.whitelist()
 def get_item_list_by_hubmanager(hub_manager, last_sync = None):
+        item_list_based_stock_sync = []
+        if last_sync:
+                arr =last_sync.split(" ")
+                last_sync_date = arr[0]
+                if len(arr) < 2:
+                        last_sync_time = '00:00:00'
+                else:
+                        last_sync_time = arr[1]
         base_url = frappe.db.get_single_value('Agribora Setting', 'base_url')
         filters = {'hub_manager': hub_manager, "base_url": base_url}
         conditions = "h.hub_manager = %(hub_manager)s "
+        item_list = get_item_list(filters, conditions)
+        for item in item_list:
+                if last_sync:
+                        stock_detail = get_item_stock_balance(hub_manager, item.item_code, last_sync_date, last_sync_time)
+                        if stock_detail:
+                                item_list_based_stock_sync.append(item)
+                else:
+                        stock_detail = get_item_stock_balance(hub_manager, item.item_code)
+                        item.available_qty = stock_detail.get("available_qty")
+                        item.stock_posting_date = stock_detail.get("posting_date")
+                        item.stock_posting_time = stock_detail.get("posting_time")
         if last_sync:
                 filters['last_sync'] = last_sync
                 conditions += "and (i.modified >= %(last_sync)s or p.modified >= %(last_sync)s)"
+                item_list_syn_based = get_item_list(filters, conditions)
+                for i in item_list_based_stock_sync:
+                        if i in item_list_syn_based:
+                                item_list_syn_based.remove(i)
+                item_list = item_list_based_stock_sync + item_list_syn_based
+                for item in item_list:
+                        stock_detail = get_item_stock_balance(hub_manager, item.item_code)
+                        item.available_qty = stock_detail.get("available_qty")
+                        item.stock_posting_date = stock_detail.get("posting_date")
+                        item.stock_posting_time = stock_detail.get("posting_time")
+                return item_list
+        else:
+                return item_list
 
+@frappe.whitelist()
+def get_item_list(filters, conditions, item_code = None):
         return frappe.db.sql("""
                 SELECT 
                         i.item_code, i.item_name, i.item_group, i.description,
@@ -191,7 +225,7 @@ def get_item_list_by_hubmanager(hub_manager, last_sync = None):
                         and p.item_code = i.name and p.selling =1
                         and p.price_list_rate > 0 
                         and {conditions}
-                """.format(conditions=conditions), values=filters, as_dict=1)
+        """.format(conditions=conditions), values=filters, as_dict=1)
 
 @frappe.whitelist()
 def get_details_by_hubmanager(hub_manager):
@@ -331,8 +365,7 @@ def get_item_stock_balance(hub_manager, item_code, last_sync_date=None, last_syn
                         res['available_qty'] = get_stock_balance(item_code, warehouse, last_entry[0].posting_date, last_entry[0].posting_time)
                         res['posting_date'] = last_entry[0].posting_date
                         res['posting_time'] = last_entry[0].posting_time
-                else:
-                        res['available_qty'] = "no updated stock"
+
         else:
                 res['available_qty'] = get_stock_balance(item_code, warehouse)
                 args = {
