@@ -4,6 +4,7 @@
 frappe.ui.form.on('Hub Manager', {
 	refresh: function(frm){
 		set_ward_filter(frm);
+		frm.get_field("wards").grid.df.cannot_delete_rows = true;
 	}
 });
 
