@@ -172,8 +172,8 @@ def get_customer_list_by_hubmanager(hub_manager, last_sync = None):
         if len(res) == 0:
                 frappe.clear_messages()
                 frappe.local.response["message"] = [{
-                        "success_key":0,
-                        "message":"Invalid values please check your hub manager value"
+                        "success_key":1,
+                        "message":"No values found for this hub manager"
                         }]
         else:                
                 return res
@@ -218,8 +218,8 @@ def get_item_list_by_hubmanager(hub_manager, last_sync = None):
                 if len(item_list) == 0:
                         frappe.clear_messages()
                         frappe.local.response["message"] = [{
-                                "success_key":0,
-                                "message":"Invalid values please check your hub manager value"
+                                "success_key":1,
+                                "message":"No values found for this hub manager"
                         }]
                 else:
                         return item_list        
@@ -227,8 +227,8 @@ def get_item_list_by_hubmanager(hub_manager, last_sync = None):
                 if len(item_list) == 0:
                         frappe.clear_messages()
                         frappe.local.response["message"] = [{
-                                "success_key":0,
-                                "message":"Invalid values please check your hub manager value"
+                                "success_key":1,
+                                "message":"No values found for this hub manager"
                         }]
                 else:
                         return item_list 
@@ -276,8 +276,8 @@ def get_details_by_hubmanager(hub_manager):
         except Exception:
                 frappe.clear_messages()
                 frappe.local.response["message"] = [{
-                        "success_key":0,
-                        "message":"Invalid values please check your hub manager value"
+                        "success_key":1,
+                        "message":"No values found for this hub manager"
                 }]
 
 @frappe.whitelist()
@@ -371,8 +371,8 @@ def get_sales_order_list(hub_manager = None, page_no = 1):
         if len(order_list) == 0 and number_of_orders == 0:
                 frappe.clear_messages()
                 frappe.local.response["message"] = [{
-                        "success_key":0,
-                        "message":"Invalid values please check your hub manager value"
+                        "success_key":1,
+                        "message":"no values found for this hub manager"
                         }]
         else:                
                 return sales_order_history
