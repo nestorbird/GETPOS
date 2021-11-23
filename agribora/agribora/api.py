@@ -153,33 +153,37 @@ def privacy_policy():
 
 @frappe.whitelist()
 def get_customer_list_by_hubmanager(hub_manager, last_sync = None):
+        res = frappe._dict()
         base_url = frappe.db.get_single_value('Agribora Setting', 'base_url')
         filters = {'hub_manager': hub_manager, "base_url": base_url}
         conditions = "hub_manager = %(hub_manager)s "
         if last_sync:
                 filters['last_sync'] = last_sync
                 conditions += "and modified >= %(last_sync)s"
-        res = frappe.db.sql("""
+        customer_list = frappe.db.sql("""
                 SELECT
                         customer_name, email_id, mobile_no,
                         ward, ward_name, name, creation,
-                        modified, 
+                        modified,disabled,
                         if((image = null or image = ''), null, 
                         if(image LIKE 'http%%', image, concat(%(base_url)s, image))) as image
                 FROM `tabCustomer`
                 WHERE {conditions}
                 """.format(conditions=conditions), values=filters, as_dict=1)
-        if len(res) == 0:
+        if len(customer_list) == 0:
                 frappe.clear_messages()
                 frappe.local.response["message"] = [{
                         "success_key":1,
                         "message":"No values found for this hub manager"
                         }]
-        else:                
-                return res
+        else:
+                res["success_key"] = 1
+                res["customer_list"] = customer_list          
+                return res 
 
 @frappe.whitelist()
 def get_item_list_by_hubmanager(hub_manager, last_sync = None):
+        res = frappe._dict()
         item_list_based_stock_sync = []
         if last_sync:
                 arr =last_sync.split(" ")
@@ -222,7 +226,9 @@ def get_item_list_by_hubmanager(hub_manager, last_sync = None):
                                 "message":"No values found for this hub manager"
                         }]
                 else:
-                        return item_list        
+                        res["success_key"] = 1
+                        res["item_list"] = item_list 
+                        return res        
         else:
                 if len(item_list) == 0:
                         frappe.clear_messages()
@@ -231,7 +237,9 @@ def get_item_list_by_hubmanager(hub_manager, last_sync = None):
                                 "message":"No values found for this hub manager"
                         }]
                 else:
-                        return item_list 
+                        res["success_key"] = 1
+                        res["item_list"] = item_list
+                        return res 
 
 @frappe.whitelist()
 def get_item_list(filters, conditions, item_code = None):
@@ -252,15 +260,20 @@ def get_item_list(filters, conditions, item_code = None):
 @frappe.whitelist()
 def get_details_by_hubmanager(hub_manager):
         try:
+                base_url = frappe.db.get_single_value('Agribora Setting', 'base_url')
+                filters = {'hub_manager': hub_manager, "base_url": base_url}
+                conditions = "hub_manager = %(hub_manager)s "
                 hub_manager_detail = frappe.db.sql("""
                         SELECT
                                 u.name, u.full_name,
                                 u.email, u.mobile_no,
-                                h.hub_manager, h.series
+                                h.hub_manager, h.series,
+                                if((u.user_image = null or u.user_image = ''), null, 
+                                if(u.user_image LIKE 'http%%', u.user_image, concat(%(base_url)s, u.user_image))) as image
                         FROM `tabUser` u, `tabHub Manager` h
                         WHERE h.hub_manager = u.name and
-                        h.hub_manager = %s
-                        """,hub_manager, as_dict=1)
+                        h.hub_manager = %(hub_manager)s
+                        """.format(conditions=conditions), values=filters, as_dict=1)
                 cash_balance = get_balance(hub_manager)
                 wards = frappe.db.sql("""
                 SELECT
@@ -272,7 +285,10 @@ def get_details_by_hubmanager(hub_manager):
                 hub_manager_detail[0]['balance']  = cash_balance
                 hub_manager_detail[0]['last_transaction_date']  = get_last_transaction_date(hub_manager)
                 hub_manager_detail[0]['wards']  = wards
-                return hub_manager_detail
+                hub = frappe._dict()
+                hub["success_key"] = 1
+                hub["hub_manager_details"] = hub_manager_detail
+                return hub
         except Exception:
                 frappe.clear_messages()
                 frappe.local.response["message"] = [{
@@ -342,6 +358,7 @@ def get_sales_order_list(hub_manager = None, page_no = 1):
                 row_no = cint(page_no * cint(sales_history_count))
 
         filters = { 'hub_manager': hub_manager, 'limit': cint(limit), 'row_no': cint(row_no)}
+        sales_order_history["success_key"] = 1  
         order_list = frappe.db.sql("""
                 SELECT 
                         s.name, s.transaction_date, s.ward, s.customer,s.customer_name, 
@@ -374,7 +391,7 @@ def get_sales_order_list(hub_manager = None, page_no = 1):
                         "success_key":1,
                         "message":"no values found for this hub manager"
                         }]
-        else:                
+        else:              
                 return sales_order_history
 
 
