@@ -75,10 +75,11 @@ def forgot_password(user):
                 user.reset_password(send_email=True)
 
                 return frappe.msgprint(_("Password reset instructions have been sent to your email"))
-
+                
         except frappe.DoesNotExistError:
                 frappe.clear_messages()
                 return 'not found'
+        
         
 
 @frappe.whitelist(allow_guest=True)
@@ -285,12 +286,20 @@ def get_details_by_hubmanager(hub_manager):
                 WHERE parent = %s
                 and parenttype = 'Hub Manager'
         """,hub_manager, as_dict=1)
-                hub_manager_detail[0]['balance']  = cash_balance
-                hub_manager_detail[0]['last_transaction_date']  = get_last_transaction_date(hub_manager)
-                hub_manager_detail[0]['wards']  = wards
+
                 res["success_key"] = 1
-                res["hub_manager_details"] = hub_manager_detail
-                return hub
+                res["message"] = "success" 
+                res["name"] = hub_manager_detail[0]["name"]
+                res["full_name"] = hub_manager_detail[0]["full_name"]
+                res["email"] = hub_manager_detail[0]["email"]
+                res["mobile_no"] = hub_manager_detail[0]["mobile_no"]
+                res["hub_manager"] = hub_manager_detail[0]["hub_manager"]
+                res["series"] = hub_manager_detail[0]["series"]
+                res["image"] = hub_manager_detail[0]["image"]
+                res["balance"] = cash_balance
+                res["last_transaction_date"] = get_last_transaction_date(hub_manager)
+                res["wards"] = wards
+                return res
         except Exception as e:
                 frappe.clear_messages()
                 frappe.local.response["message"] = [{
