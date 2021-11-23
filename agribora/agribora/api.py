@@ -56,7 +56,6 @@ def generate_keys(user):
 
     user_details.api_secret = api_secret
     user_details.save()
-
     return api_secret, user_details.api_key
        
 
@@ -178,6 +177,7 @@ def get_customer_list_by_hubmanager(hub_manager, last_sync = None):
                         }]
         else:
                 res["success_key"] = 1
+                res["message"] = "success"
                 res["customer_list"] = customer_list          
                 return res 
 
@@ -227,6 +227,7 @@ def get_item_list_by_hubmanager(hub_manager, last_sync = None):
                         }]
                 else:
                         res["success_key"] = 1
+                        res["message"] = "success"
                         res["item_list"] = item_list 
                         return res        
         else:
@@ -238,6 +239,7 @@ def get_item_list_by_hubmanager(hub_manager, last_sync = None):
                         }]
                 else:
                         res["success_key"] = 1
+                        res["message"] = "success"
                         res["item_list"] = item_list
                         return res 
 
@@ -260,6 +262,7 @@ def get_item_list(filters, conditions, item_code = None):
 @frappe.whitelist()
 def get_details_by_hubmanager(hub_manager):
         try:
+                res = frappe._dict()
                 base_url = frappe.db.get_single_value('Agribora Setting', 'base_url')
                 filters = {'hub_manager': hub_manager, "base_url": base_url}
                 conditions = "hub_manager = %(hub_manager)s "
@@ -272,7 +275,7 @@ def get_details_by_hubmanager(hub_manager):
                                 if(u.user_image LIKE 'http%%', u.user_image, concat(%(base_url)s, u.user_image))) as image
                         FROM `tabUser` u, `tabHub Manager` h
                         WHERE h.hub_manager = u.name and
-                        h.hub_manager = %(hub_manager)s
+                        {conditions}
                         """.format(conditions=conditions), values=filters, as_dict=1)
                 cash_balance = get_balance(hub_manager)
                 wards = frappe.db.sql("""
@@ -285,14 +288,13 @@ def get_details_by_hubmanager(hub_manager):
                 hub_manager_detail[0]['balance']  = cash_balance
                 hub_manager_detail[0]['last_transaction_date']  = get_last_transaction_date(hub_manager)
                 hub_manager_detail[0]['wards']  = wards
-                hub = frappe._dict()
-                hub["success_key"] = 1
-                hub["hub_manager_details"] = hub_manager_detail
+                res["success_key"] = 1
+                res["hub_manager_details"] = hub_manager_detail
                 return hub
-        except Exception:
+        except Exception as e:
                 frappe.clear_messages()
                 frappe.local.response["message"] = [{
-                        "success_key":1,
+                        "success_key":0,
                         "message":"No values found for this hub manager"
                 }]
 
@@ -305,6 +307,7 @@ def get_balance(hub_manager):
 @frappe.whitelist()
 def create_sales_order(order_list = {}):
         try:
+                res= frappe._dict()
                 sales_order = frappe.new_doc("Sales Order")
                 sales_order.hub_manager = order_list.get("hub_manager")
                 sales_order.ward = order_list.get("ward")
@@ -323,32 +326,22 @@ def create_sales_order(order_list = {}):
                 sales_order.save()
                 sales_order.submit()
                 frappe.db.commit()
-                res= frappe._dict()
                 res['success_key'] = 1
                 res['message'] = "success"
-                res["api_response"] ={"name" : sales_order.name,
-                 "doc status" : sales_order.docstatus}
+                res["sales_order"] ={"name" : sales_order.name,
+                 "doc_status" : sales_order.docstatus}
                 return res
-        except frappe.exceptions.LinkValidationError:
+        except Exception as e:
              frappe.clear_messages()
              del frappe.local.response["exc_type"]
              frappe.local.response["message"] = {
                 "success_key":0,
-                "message":"Invalid values please check your request parameters",
-                "api_response":{}
-        }
-        except:
-                frappe.clear_messages()
-                del frappe.local.response["exc_type"]
-                frappe.local.response["message"] = {
-                "success_key":0,
-                "message":"Invalid values please check your request parameters",
-                "api_response":{}
+                "message":"Invalid values please check your request parameters"
         }
 
 @frappe.whitelist()
 def get_sales_order_list(hub_manager = None, page_no = 1):
-        sales_order_history= frappe._dict()
+        res= frappe._dict()
         sales_history_count = frappe.db.get_single_value('Agribora Setting', 'sales_history_count')
         limit = cint(sales_history_count)
         if page_no == 1:
@@ -358,7 +351,6 @@ def get_sales_order_list(hub_manager = None, page_no = 1):
                 row_no = cint(page_no * cint(sales_history_count))
 
         filters = { 'hub_manager': hub_manager, 'limit': cint(limit), 'row_no': cint(row_no)}
-        sales_order_history["success_key"] = 1  
         order_list = frappe.db.sql("""
                 SELECT 
                         s.name, s.transaction_date, s.ward, s.customer,s.customer_name, 
@@ -383,7 +375,6 @@ def get_sales_order_list(hub_manager = None, page_no = 1):
                 """, (item.name), as_dict = True)
                 item['items'] = item_details
         number_of_orders = get_sales_order_count(hub_manager)
-        sales_order_history['order_list'] = order_list
         sales_order_history['number_of_orders'] = number_of_orders
         if len(order_list) == 0 and number_of_orders == 0:
                 frappe.clear_messages()
@@ -391,8 +382,12 @@ def get_sales_order_list(hub_manager = None, page_no = 1):
                         "success_key":1,
                         "message":"no values found for this hub manager"
                         }]
-        else:              
-                return sales_order_history
+        else:
+                res["success_key"] = 1
+                res["message"] = "success"
+                res['order_list'] = order_list
+                res['number_of_orders'] = number_of_orders                
+                return res
 
 
 
