@@ -159,7 +159,7 @@ def get_customer_list_by_hubmanager(hub_manager, last_sync = None):
         if last_sync:
                 filters['last_sync'] = last_sync
                 conditions += "and modified >= %(last_sync)s"
-        return frappe.db.sql("""
+        res = frappe.db.sql("""
                 SELECT
                         customer_name, email_id, mobile_no,
                         ward, ward_name, name, creation,
@@ -169,6 +169,14 @@ def get_customer_list_by_hubmanager(hub_manager, last_sync = None):
                 FROM `tabCustomer`
                 WHERE {conditions}
                 """.format(conditions=conditions), values=filters, as_dict=1)
+        if len(res) == 0:
+                frappe.clear_messages()
+                frappe.local.response["message"] = [{
+                        "success_key":0,
+                        "message":"Invalid values please check your hub manager value"
+                        }]
+        else:                
+                return res
 
 @frappe.whitelist()
 def get_item_list_by_hubmanager(hub_manager, last_sync = None):
@@ -207,9 +215,23 @@ def get_item_list_by_hubmanager(hub_manager, last_sync = None):
                         item.available_qty = stock_detail.get("available_qty")
                         item.stock_posting_date = stock_detail.get("posting_date")
                         item.stock_posting_time = stock_detail.get("posting_time")
-                return item_list
+                if len(item_list) == 0:
+                        frappe.clear_messages()
+                        frappe.local.response["message"] = [{
+                                "success_key":0,
+                                "message":"Invalid values please check your hub manager value"
+                        }]
+                else:
+                        return item_list        
         else:
-                return item_list
+                if len(item_list) == 0:
+                        frappe.clear_messages()
+                        frappe.local.response["message"] = [{
+                                "success_key":0,
+                                "message":"Invalid values please check your hub manager value"
+                        }]
+                else:
+                        return item_list 
 
 @frappe.whitelist()
 def get_item_list(filters, conditions, item_code = None):
@@ -226,10 +248,11 @@ def get_item_list(filters, conditions, item_code = None):
                         and p.price_list_rate > 0 
                         and {conditions}
         """.format(conditions=conditions), values=filters, as_dict=1)
-
+        
 @frappe.whitelist()
 def get_details_by_hubmanager(hub_manager):
-        hub_manager_detail = frappe.db.sql("""
+        try:
+                hub_manager_detail = frappe.db.sql("""
                         SELECT
                                 u.name, u.full_name,
                                 u.email, u.mobile_no,
@@ -238,18 +261,24 @@ def get_details_by_hubmanager(hub_manager):
                         WHERE h.hub_manager = u.name and
                         h.hub_manager = %s
                         """,hub_manager, as_dict=1)
-        cash_balance = get_balance(hub_manager)
-        wards = frappe.db.sql("""
+                cash_balance = get_balance(hub_manager)
+                wards = frappe.db.sql("""
                 SELECT
                         ward, is_assigned
                 FROM `tabWard Detail`
                 WHERE parent = %s
                 and parenttype = 'Hub Manager'
         """,hub_manager, as_dict=1)
-        hub_manager_detail[0]['balance']  = cash_balance
-        hub_manager_detail[0]['last_transaction_date']  = get_last_transaction_date(hub_manager)
-        hub_manager_detail[0]['wards']  = wards
-        return hub_manager_detail
+                hub_manager_detail[0]['balance']  = cash_balance
+                hub_manager_detail[0]['last_transaction_date']  = get_last_transaction_date(hub_manager)
+                hub_manager_detail[0]['wards']  = wards
+                return hub_manager_detail
+        except Exception:
+                frappe.clear_messages()
+                frappe.local.response["message"] = [{
+                        "success_key":0,
+                        "message":"Invalid values please check your hub manager value"
+                }]
 
 @frappe.whitelist()
 def get_balance(hub_manager):
@@ -259,28 +288,47 @@ def get_balance(hub_manager):
 
 @frappe.whitelist()
 def create_sales_order(order_list = {}):
-        sales_order = frappe.new_doc("Sales Order")
-        sales_order.hub_manager = order_list.get("hub_manager")
-        sales_order.ward = order_list.get("ward")
-        sales_order.customer = order_list.get("customer")
-        sales_order.transaction_date = order_list.get("transaction_date")
-        sales_order.delivery_date = order_list.get("delivery_date")
-        for item in order_list.get("items"):
-                sales_order.append("items", {
-                        "item_code": item.get("item_code"),
-                        "qty": item.get("qty"),
-                        "rate": item.get("rate")
-                })
-        sales_order.status = order_list.get("status")
-        sales_order.mode_of_payment = order_list.get("mode_of_payment")
-        sales_order.mpesa_no = order_list.get("mpesa_no")
-        sales_order.save()
-        sales_order.submit()
-        frappe.db.commit()
-        res= frappe._dict()
-        res['name'] = sales_order.name
-        res['docstatus'] = sales_order.docstatus
-        return res
+        try:
+                sales_order = frappe.new_doc("Sales Order")
+                sales_order.hub_manager = order_list.get("hub_manager")
+                sales_order.ward = order_list.get("ward")
+                sales_order.customer = order_list.get("customer")
+                sales_order.transaction_date = order_list.get("transaction_date")
+                sales_order.delivery_date = order_list.get("delivery_date")
+                for item in order_list.get("items"):
+                        sales_order.append("items", {
+                                "item_code": item.get("item_code"),
+                                "qty": item.get("qty"),
+                                "rate": item.get("rate")
+                        })
+                sales_order.status = order_list.get("status")
+                sales_order.mode_of_payment = order_list.get("mode_of_payment")
+                sales_order.mpesa_no = order_list.get("mpesa_no")
+                sales_order.save()
+                sales_order.submit()
+                frappe.db.commit()
+                res= frappe._dict()
+                res['success_key'] = 1
+                res['message'] = "success"
+                res["api_response"] ={"name" : sales_order.name,
+                 "doc status" : sales_order.docstatus}
+                return res
+        except frappe.exceptions.LinkValidationError:
+             frappe.clear_messages()
+             del frappe.local.response["exc_type"]
+             frappe.local.response["message"] = {
+                "success_key":0,
+                "message":"Invalid values please check your request parameters",
+                "api_response":{}
+        }
+        except:
+                frappe.clear_messages()
+                del frappe.local.response["exc_type"]
+                frappe.local.response["message"] = {
+                "success_key":0,
+                "message":"Invalid values please check your request parameters",
+                "api_response":{}
+        }
 
 @frappe.whitelist()
 def get_sales_order_list(hub_manager = None, page_no = 1):
@@ -320,7 +368,16 @@ def get_sales_order_list(hub_manager = None, page_no = 1):
         number_of_orders = get_sales_order_count(hub_manager)
         sales_order_history['order_list'] = order_list
         sales_order_history['number_of_orders'] = number_of_orders
-        return sales_order_history
+        if len(order_list) == 0 and number_of_orders == 0:
+                frappe.clear_messages()
+                frappe.local.response["message"] = [{
+                        "success_key":0,
+                        "message":"Invalid values please check your hub manager value"
+                        }]
+        else:                
+                return sales_order_history
+
+
 
 @frappe.whitelist()
 def get_sales_order_count(hub_manager):
