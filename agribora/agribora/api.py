@@ -349,17 +349,23 @@ def create_sales_order(order_list = {}):
         }
 
 @frappe.whitelist()
-def get_sales_order_list(hub_manager = None, page_no = 1):
+def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_date = nowdate()):
         res= frappe._dict()
+        filters = {'hub_manager': hub_manager, 'from_date': from_date, 'to_date': to_date}
         sales_history_count = frappe.db.get_single_value('Agribora Setting', 'sales_history_count')
         limit = cint(sales_history_count)
-        if page_no == 1:
-                row_no = 0
+        if from_date:
+                conditions = " and s.transaction_date between %(from_date)s and %(to_date)s order by s.creation desc"
         else:
-                page_no = cint(page_no) - 1
-                row_no = cint(page_no * cint(sales_history_count))
-
-        filters = { 'hub_manager': hub_manager, 'limit': cint(limit), 'row_no': cint(row_no)}
+                if page_no == 1:
+                        row_no = 0
+                        conditions = " order by s.creation desc limit %(row_no)s , %(limit)s"
+                else:
+                        page_no = cint(page_no) - 1
+                        row_no = cint(page_no * cint(sales_history_count))
+                        conditions = " order by s.creation desc limit %(row_no)s , %(limit)s"
+                filters['limit'] = cint(limit)
+                filters['row_no'] = cint(row_no)        
         order_list = frappe.db.sql("""
                 SELECT 
                         s.name, s.transaction_date, s.ward, s.customer,s.customer_name, 
@@ -371,8 +377,8 @@ def get_sales_order_list(hub_manager = None, page_no = 1):
                 FROM `tabSales Order` s, `tabUser` u
                 WHERE s.hub_manager = u.name and s.hub_manager = %(hub_manager)s
                         and s.docstatus = 1 
-                        order by s.creation desc limit %(row_no)s , %(limit)s
-        """, values = filters, as_dict= True)
+                        {conditions}
+        """.format(conditions=conditions), values = filters, as_dict= True)
         for item in order_list:
                 item_details = frappe.db.sql("""
                         SELECT
@@ -383,8 +389,11 @@ def get_sales_order_list(hub_manager = None, page_no = 1):
                                 so.parenttype = 'Sales Order' 
                 """, (item.name), as_dict = True)
                 item['items'] = item_details
-        number_of_orders = get_sales_order_count(hub_manager)
-        sales_order_history['number_of_orders'] = number_of_orders
+        if from_date:
+                number_of_orders = len(order_list)
+        else:
+                number_of_orders = get_sales_order_count(hub_manager)
+
         if len(order_list) == 0 and number_of_orders == 0:
                 frappe.clear_messages()
                 frappe.local.response["message"] = [{
