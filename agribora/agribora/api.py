@@ -144,13 +144,13 @@ def terms_and_conditions():
 
 
 @frappe.whitelist(allow_guest=True)
-def privacy_policy():
-        privacy_policy = frappe.db.sql("""
-                SELECT privacy_policy
-                FROM `tabPrivacy Policy`
+def privacy_policy_and_terms():
+        privacy_policy_and_terms = frappe.db.sql("""
+                SELECT privacy_policy,terms_and_conditions
+                FROM `tabPrivacy Policy and Terms`
                 WHERE disabled = 0
-        """)[0][0]
-        return privacy_policy
+        """)
+        return privacy_policy_and_terms
 
 @frappe.whitelist()
 def get_customer_list_by_hubmanager(hub_manager, last_sync = None):
@@ -206,7 +206,7 @@ def get_item_list_by_hubmanager(hub_manager, last_sync = None):
                 else:
                         stock_detail = get_item_stock_balance(hub_manager, item.item_code)
                         item.available_qty = stock_detail.get("available_qty")
-                        item.stock_modified = stock_detail.get("posting_date")+" "+str(stock_detail.get("posting_time"))
+                        item.stock_modified = str(stock_detail.get("posting_date"))+" "+str(stock_detail.get("posting_time"))
         if last_sync:
                 filters['last_sync'] = last_sync
                 conditions += "and (i.modified >= %(last_sync)s or p.modified >= %(last_sync)s)"
@@ -218,7 +218,7 @@ def get_item_list_by_hubmanager(hub_manager, last_sync = None):
                 for item in item_list:
                         stock_detail = get_item_stock_balance(hub_manager, item.item_code)
                         item.available_qty = stock_detail.get("available_qty")
-                        item.stock_modified = stock_detail.get("posting_date")+" "+str(stock_detail.get("posting_time"))
+                        item.stock_modified = str(stock_detail.get("posting_date"))+" "+str(stock_detail.get("posting_time"))
                 if len(item_list) == 0:
                         frappe.clear_messages()
                         frappe.local.response["message"] = {
@@ -408,7 +408,7 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
                 return res
         
         
-        
+               
 @frappe.whitelist()
 def get_sales_order_count(hub_manager):
         number_of_orders = frappe.db.sql("""
