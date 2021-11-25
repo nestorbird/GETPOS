@@ -142,14 +142,15 @@ def terms_and_conditions():
         """)[0][0]
         return terms_and_condition
 
+
 @frappe.whitelist(allow_guest=True)
 def privacy_policy():
-        privacy_policy = frappe.db.sql("""
-                SELECT privacy_policy
-                FROM `tabPrivacy Policy`
+        privacy_policy_and_terms = frappe.db.sql("""
+                SELECT privacy_policy,terms_and_conditions
+                FROM `tabPrivacy Policy and Terms`
                 WHERE disabled = 0
-        """)[0][0]
-        return privacy_policy
+        """)
+        return privacy_policy_and_terms
 
 @frappe.whitelist()
 def get_customer_list_by_hubmanager(hub_manager, last_sync = None):
@@ -172,10 +173,10 @@ def get_customer_list_by_hubmanager(hub_manager, last_sync = None):
                 """.format(conditions=conditions), values=filters, as_dict=1)
         if len(customer_list) == 0:
                 frappe.clear_messages()
-                frappe.local.response["message"] = [{
+                frappe.local.response["message"] = {
                         "success_key":1,
                         "message":"No values found for this hub manager"
-                        }]
+                        }
         else:
                 res["success_key"] = 1
                 res["message"] = "success"
@@ -205,8 +206,7 @@ def get_item_list_by_hubmanager(hub_manager, last_sync = None):
                 else:
                         stock_detail = get_item_stock_balance(hub_manager, item.item_code)
                         item.available_qty = stock_detail.get("available_qty")
-                        item.stock_posting_date = stock_detail.get("posting_date")
-                        item.stock_posting_time = stock_detail.get("posting_time")
+                        item.stock_modified = stock_detail.get("posting_date")+" "+str(stock_detail.get("posting_time"))
         if last_sync:
                 filters['last_sync'] = last_sync
                 conditions += "and (i.modified >= %(last_sync)s or p.modified >= %(last_sync)s)"
@@ -218,14 +218,13 @@ def get_item_list_by_hubmanager(hub_manager, last_sync = None):
                 for item in item_list:
                         stock_detail = get_item_stock_balance(hub_manager, item.item_code)
                         item.available_qty = stock_detail.get("available_qty")
-                        item.stock_posting_date = stock_detail.get("posting_date")
-                        item.stock_posting_time = stock_detail.get("posting_time")
+                        item.stock_modified = stock_detail.get("posting_date")+" "+str(stock_detail.get("posting_time"))
                 if len(item_list) == 0:
                         frappe.clear_messages()
-                        frappe.local.response["message"] = [{
+                        frappe.local.response["message"] = {
                                 "success_key":1,
                                 "message":"No values found for this hub manager"
-                        }]
+                        }
                 else:
                         res["success_key"] = 1
                         res["message"] = "success"
@@ -234,10 +233,10 @@ def get_item_list_by_hubmanager(hub_manager, last_sync = None):
         else:
                 if len(item_list) == 0:
                         frappe.clear_messages()
-                        frappe.local.response["message"] = [{
+                        frappe.local.response["message"] = {
                                 "success_key":1,
                                 "message":"No values found for this hub manager"
-                        }]
+                        }
                 else:
                         res["success_key"] = 1
                         res["message"] = "success"
@@ -302,10 +301,10 @@ def get_details_by_hubmanager(hub_manager):
                 return res
         except Exception as e:
                 frappe.clear_messages()
-                frappe.local.response["message"] = [{
+                frappe.local.response["message"] = {
                         "success_key":0,
                         "message":"No values found for this hub manager"
-                }]
+                }
 
 @frappe.whitelist()
 def get_balance(hub_manager):
@@ -396,10 +395,10 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
 
         if len(order_list) == 0 and number_of_orders == 0:
                 frappe.clear_messages()
-                frappe.local.response["message"] = [{
+                frappe.local.response["message"] = {
                         "success_key":1,
                         "message":"no values found for this hub manager"
-                        }]
+                        }
         else:
                 res["success_key"] = 1
                 res["message"] = "success"
