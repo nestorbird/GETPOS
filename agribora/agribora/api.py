@@ -145,12 +145,12 @@ def terms_and_conditions():
 
 @frappe.whitelist(allow_guest=True)
 def privacy_policy():
-        privacy_policy_and_terms = frappe.db.sql("""
-                SELECT privacy_policy,terms_and_conditions
-                FROM `tabPrivacy Policy and Terms`
+        privacy_policy = frappe.db.sql("""
+                SELECT privacy_policy
+                FROM `tabPrivacy Policy`
                 WHERE disabled = 0
-        """)
-        return privacy_policy_and_terms
+        """)[0][0]
+        return privacy_policy
 
 @frappe.whitelist()
 def get_customer_list_by_hubmanager(hub_manager, last_sync = None):
