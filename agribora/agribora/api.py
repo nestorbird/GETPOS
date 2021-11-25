@@ -334,7 +334,9 @@ def create_sales_order(order_list = {}):
                 sales_order.hub_manager = order_list.get("hub_manager")
                 sales_order.ward = order_list.get("ward")
                 sales_order.customer = order_list.get("customer")
-                sales_order.transaction_date = order_list.get("transaction_date")
+                arr = order_list.get("transaction_date").split(" ")
+                sales_order.transaction_date = arr[0]
+                sales_order.transaction_time = arr[1]
                 sales_order.delivery_date = order_list.get("delivery_date")
                 for item in order_list.get("items"):
                         sales_order.append("items", {
@@ -382,7 +384,7 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
                 filters['row_no'] = cint(row_no)        
         order_list = frappe.db.sql("""
                 SELECT 
-                        s.name, s.transaction_date, s.ward, s.customer,s.customer_name, 
+                        s.name, s.transaction_date, s.transaction_time, s.ward, s.customer,s.customer_name, 
                         s.ward, s.hub_manager, s.grand_total, s.mode_of_payment, 
                         s.mpesa_no, s.contact_display as contact_name,
                         s.contact_phone, s.contact_mobile, s.contact_email,
