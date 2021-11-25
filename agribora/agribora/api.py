@@ -74,13 +74,18 @@ def forgot_password(user):
                 user.validate_reset_password()
                 user.reset_password(send_email=True)
 
-                return frappe.msgprint(_("Password reset instructions have been sent to your email"))
+                return  {
+                        "success_key":1,
+                        "message":"Password reset instructions have been sent to your email"
+                        }
                 
         except frappe.DoesNotExistError:
                 frappe.clear_messages()
-                return 'not found'
-        
-        
+                del frappe.local.response["exc_type"]
+                frappe.local.response["message"] = {
+                        "success_key":0,
+                        "message":"User not found"
+                        }
 
 @frappe.whitelist(allow_guest=True)
 def reset_password( user,send_email=False, password_expired=False):
@@ -144,13 +149,22 @@ def terms_and_conditions():
 
 
 @frappe.whitelist(allow_guest=True)
-def privacy_policy():
-        privacy_policy = frappe.db.sql("""
-                SELECT privacy_policy
-                FROM `tabPrivacy Policy`
+def privacy_policy_and_terms():
+        privacy_policy_and_terms = frappe.db.sql("""
+                SELECT privacy_policy,terms_and_conditions
+                FROM `tabPrivacy Policy and Terms`
                 WHERE disabled = 0
-        """)[0][0]
-        return privacy_policy
+        """)
+        res = {"success_key":1,
+                "message":"success",
+                "Privacy_Policy":privacy_policy_and_terms[0][0],
+                "Terms_and_Conditions":privacy_policy_and_terms[0][1]}
+        if res["Privacy_Policy"]=="" or res["Terms_and_Conditions"]=="":
+                return {
+            "success_key":0,
+            "message":"no value found for privacy policy and terms"
+        }
+        return res
 
 @frappe.whitelist()
 def get_customer_list_by_hubmanager(hub_manager, last_sync = None):
