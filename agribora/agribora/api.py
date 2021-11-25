@@ -342,10 +342,11 @@ def create_sales_order(order_list = {}):
         except Exception as e:
              frappe.clear_messages()
              del frappe.local.response["exc_type"]
-             frappe.local.response["message"] = {
+             frappe.local.response["message"] ={
                 "success_key":0,
                 "message":"Invalid values please check your request parameters"
         }
+
 
 @frappe.whitelist()
 def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_date = nowdate()):
@@ -405,9 +406,9 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
                 res['order_list'] = order_list
                 res['number_of_orders'] = number_of_orders                
                 return res
-
-
-
+        
+        
+        
 @frappe.whitelist()
 def get_sales_order_count(hub_manager):
         number_of_orders = frappe.db.sql("""
