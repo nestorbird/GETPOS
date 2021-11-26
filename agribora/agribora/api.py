@@ -314,6 +314,7 @@ def get_details_by_hubmanager(hub_manager):
                 res["wards"] = wards
                 return res
         except Exception as e:
+                print(frappe.get_traceback())
                 frappe.clear_messages()
                 frappe.local.response["message"] = {
                         "success_key":0,
@@ -367,7 +368,8 @@ def create_sales_order(order_list = {}):
 @frappe.whitelist()
 def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_date = nowdate()):
         res= frappe._dict()
-        filters = {'hub_manager': hub_manager, 'from_date': from_date, 'to_date': to_date}
+        base_url = frappe.db.get_single_value('Agribora Setting', 'base_url')
+        filters = {'hub_manager': hub_manager, 'from_date': from_date, 'to_date': to_date, 'base_url': base_url}
         sales_history_count = frappe.db.get_single_value('Agribora Setting', 'sales_history_count')
         limit = cint(sales_history_count)
         if from_date:
@@ -389,21 +391,25 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
                         s.mpesa_no, s.contact_display as contact_name,
                         s.contact_phone, s.contact_mobile, s.contact_email,
                         s.hub_manager, s.creation,
-                        u.full_name as hub_manager_name
-                FROM `tabSales Order` s, `tabUser` u
-                WHERE s.hub_manager = u.name and s.hub_manager = %(hub_manager)s
-                        and s.docstatus = 1 
+                        u.full_name as hub_manager_name,
+                        if((c.image = null or c.image = ''), null, 
+                        if(c.image LIKE 'http%%', c.image, concat(%(base_url)s, c.image))) as image
+                FROM `tabSales Order` s, `tabUser` u, `tabCustomer` c
+                WHERE s.hub_manager = u.name and s.customer = c.name 
+                        and s.hub_manager = %(hub_manager)s and s.docstatus = 1 
                         {conditions}
         """.format(conditions=conditions), values = filters, as_dict= True)
         for item in order_list:
                 item_details = frappe.db.sql("""
                         SELECT
                                 so.item_code, so.item_name, so.qty, 
-                                so.uom, so.rate, so.amount
-                        FROM `tabSales Order Item` so, `tabSales Order` s
-                        WHERE so.parent = s.name and so.parent = %s and
-                                so.parenttype = 'Sales Order' 
-                """, (item.name), as_dict = True)
+                                so.uom, so.rate, so.amount,
+                                if((i.image = null or i.image = ''), null, 
+                                if(i.image LIKE 'http%%', i.image, concat(%s, i.image))) as image
+                        FROM `tabSales Order Item` so, `tabSales Order` s, `tabItem` i
+                        WHERE so.parent = s.name and so.item_code = i.item_code 
+                                and so.parent = %s and so.parenttype = 'Sales Order' 
+                """, (base_url,item.name), as_dict = True)
                 item['items'] = item_details
         if from_date:
                 number_of_orders = len(order_list)
@@ -449,7 +455,11 @@ def get_last_transaction_date(hub_manager):
                         fields= ['posting_date'],
                         order_by = "posting_date desc",
                         as_list = 1
-        )[0][0]
+        )
+        if transaction_date:
+                transaction_date = transaction_date[0][0]
+        else:
+                transaction_date = None
         return transaction_date
 
 @frappe.whitelist()
