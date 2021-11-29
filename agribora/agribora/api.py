@@ -386,7 +386,7 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
                 filters['row_no'] = cint(row_no)        
         order_list = frappe.db.sql("""
                 SELECT 
-                        s.name, s.transaction_date, s.transaction_time, s.ward, s.customer,s.customer_name, 
+                        s.name, s.transaction_date, TIME_FORMAT(s.transaction_time, '%%T') as transaction_time, s.ward, s.customer,s.customer_name, 
                         s.ward, s.hub_manager, s.grand_total, s.mode_of_payment, 
                         s.mpesa_no, s.contact_display as contact_name,
                         s.contact_phone, s.contact_mobile, s.contact_email,
