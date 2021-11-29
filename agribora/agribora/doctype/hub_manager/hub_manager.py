@@ -75,3 +75,13 @@ def get_hub_manager(ward):
 					['parent'])
 	return hub_manager
 
+@frappe.whitelist(allow_guest=True)
+def get_hub_manager_list():
+	hub_managers = []
+	hub_manager_list=frappe.db.sql(""" 
+		SELECT 
+			name
+		FROM `tabHub Manager`""",as_dict = 1)
+	for item in hub_manager_list:
+		hub_managers.append(item.name)
+	return hub_managers
