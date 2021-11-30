@@ -106,7 +106,25 @@ def reset_password( user,send_email=False, password_expired=False):
 @frappe.whitelist( allow_guest=True )
 def password_reset_mail(user, link):
                 user.send_login_mail(("Password Reset"),
-                        "password_reset", {"link": link}, now=True) 
+                        "password_reset", {"link": link}, now=True)
+
+@frappe.whitelist()
+def change_password(usr, pwd):
+        username = frappe.db.get_value("User", usr, 'name')
+        if username:
+                user_doc = frappe.get_doc("User", usr)
+                user_doc.new_password = pwd
+                user_doc.save()
+                frappe.db.commit()
+                frappe.local.response["message"] = {
+                "success_key":1,
+                "message":"success"
+                }
+        else:
+                frappe.local.response["message"] = {
+                "success_key":1,
+                "message":"User not found"
+                }
 
 @frappe.whitelist( allow_guest=True )                
 def send_login_mail(user, subject, template, add_args, now=None):
