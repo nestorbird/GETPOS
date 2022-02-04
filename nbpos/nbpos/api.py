@@ -1,4 +1,5 @@
 import frappe
+import json
 from frappe import auth
 from frappe import _
 from frappe.exceptions import Redirect
@@ -345,8 +346,12 @@ def get_balance(hub_manager):
         account_balance = get_balance_on(account)
         return account_balance
 
+
 @frappe.whitelist()
-def create_sales_order(order_list = {}):
+def create_sales_order():
+        order_list = frappe.request.data
+        order_list = json.loads(order_list)
+        order_list = order_list["order_list"]
         try:
                 res= frappe._dict()
                 sales_order = frappe.new_doc("Sales Order")
@@ -446,9 +451,8 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
                 res['order_list'] = order_list
                 res['number_of_orders'] = number_of_orders                
                 return res
-        
-        
-               
+
+                      
 @frappe.whitelist()
 def get_sales_order_count(hub_manager):
         number_of_orders = frappe.db.sql("""
@@ -511,3 +515,7 @@ def get_item_stock_balance(hub_manager, item_code, last_sync_date=None, last_syn
                         res['posting_time'] = last_entry.get("posting_time")
         
         return res
+
+
+       
+

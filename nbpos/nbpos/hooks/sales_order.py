@@ -12,6 +12,7 @@ def validate(doc, method):
         hub_manager_series = frappe.db.get_value('Hub Manager', doc.hub_manager, 'series')
         doc.name = make_autoname(hub_manager_series)
 
+
 def create_sales_invoice_from_sales_order(doc):
     sales_invoice = make_sales_invoice(doc.name)
     sales_invoice.posting_date = doc.transaction_date
