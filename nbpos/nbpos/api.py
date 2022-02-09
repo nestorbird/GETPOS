@@ -1,5 +1,6 @@
 import frappe
 import json
+import requests
 from frappe import auth
 from frappe import _
 from frappe.exceptions import Redirect
@@ -379,6 +380,7 @@ def create_sales_order():
                 res["sales_order"] ={"name" : sales_order.name,
                  "doc_status" : sales_order.docstatus}
                 return res
+
         except Exception as e:
              frappe.clear_messages()
              del frappe.local.response["exc_type"]
@@ -516,6 +518,60 @@ def get_item_stock_balance(hub_manager, item_code, last_sync_date=None, last_syn
         
         return res
 
+@frappe.whitelist()
+def get_customer(mobile_no):
+        res=frappe._dict()
+        sql = frappe.db.sql(""" SELECT EXISTS(SELECT * FROM `tabCustomer` where mobile_no = '{0}')""".format(mobile_no))
+        result = sql[0][0]
+        if result == 1:
+                customer_detail = frappe.db.sql("""SELECT name,customer_name,customer_primary_contact,
+                        mobile_no,email_id,primary_address,hub_manager FROM `tabCustomer` WHERE 
+                        mobile_no = '{0}'""".format(mobile_no),as_dict=1)
+                return customer_detail
 
-       
+        else:
+                res["mobile_no"] = mobile_no
+                res["message"] = "Mobile Number Does Not Exist"
+                return res
+
+
+@frappe.whitelist()
+def create_customer():
+        customer_detail = frappe.request.data
+        customer_detail = json.loads(customer_detail)
+
+        try:
+                res= frappe._dict()
+                customer = frappe.new_doc("Customer")
+                customer.customer_name = customer_detail.get("customer_name")
+                customer.mobile_no = customer_detail.get("mobile_no")
+                customer.email_id = customer_detail.get("email_id")
+                
+                customer.save(ignore_permissions=True)
+                customer.submit()
+                frappe.db.commit()
+                res['success_key'] = 1
+                res['message'] = "success"
+                res["customer"] ={"name" : customer.name,
+                 "mobile_no" : customer.mobile_no,
+                 "email_id":customer.email_id
+                 }
+                return res
+
+
+        except Exception as e:
+                frappe.clear_messages()
+                frappe.local.response["message"] ={
+                        "success_key":0,
+                        "message":"Invalid values please check your request parameters"
+                }
+
+
+
+                
+
+
+
+
+
 

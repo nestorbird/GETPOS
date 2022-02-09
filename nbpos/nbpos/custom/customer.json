@@ -54,7 +54,7 @@
    "read_only": 0,
    "read_only_depends_on": null,
    "report_hide": 0,
-   "reqd": 1,
+   "reqd": 0,
    "search_index": 0,
    "translatable": 0,
    "unique": 0,
@@ -231,7 +231,24 @@
    "property_type": "Check",
    "row_name": null,
    "value": "0"
-  }
+  },
+  {
+  "default_value": null,
+  "doc_type": "Customer",
+  "docstatus": 0,
+  "doctype": "Property Setter",
+  "doctype_or_field": "DocField",
+  "field_name": "mobile_no",
+  "modified": "2022-02-08 18:48:36.300002",
+  "name": "Customer-mobile_no-reqd",
+  "parent": null,
+  "parentfield": null,
+  "parenttype": null,
+  "property": "reqd",
+  "property_type": "Check",
+  "row_name": null,
+  "value": "1"
+ }
  ],
  "sync_on_migrate": 1
 }
