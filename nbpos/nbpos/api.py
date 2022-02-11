@@ -526,11 +526,15 @@ def get_customer(mobile_no):
         if result == 1:
                 customer_detail = frappe.db.sql("""SELECT name,customer_name,customer_primary_contact,
                         mobile_no,email_id,primary_address,hub_manager FROM `tabCustomer` WHERE 
-                        mobile_no = '{0}'""".format(mobile_no),as_dict=1)
-                return customer_detail
-
+                        mobile_no = '{0}'""".format(mobile_no),as_dict=True)
+                res['success_key'] = 1
+                res['message'] = "success"
+                res['customer'] = customer_detail
+                return res
+               
         else:
-                res["mobile_no"] = mobile_no
+                res["success_key"] = 0
+                res['mobile_no'] = mobile_no
                 res["message"] = "Mobile Number Does Not Exist"
                 return res
 

@@ -1,4 +1,5 @@
 import frappe
+from frappe.model.naming import make_autoname
 
 def validate(doc,method):
     if not doc.hub_manager:
@@ -11,6 +12,10 @@ def validate(doc,method):
                         ['parent'])
         doc.hub_manager = hub_manager
 
+def validate(doc,method):
+        doc.name = make_autoname("CUST"+"-.YYYY." +"-.###")
+
+
 @frappe.whitelist(allow_guest=True)
 def get_customer_by_ward(ward):
     assigned_customer_list = []
@@ -22,4 +27,6 @@ def get_customer_by_ward(ward):
     for item in customer_list:
         assigned_customer_list.append(item.name)
     return assigned_customer_list
+
+
 
