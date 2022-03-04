@@ -1,5 +1,5 @@
 import frappe
-from frappe.utils import today,getdate
+from frappe.utils import today,getdate,flt
 
 
 def get_price_list(item_code):
@@ -17,22 +17,42 @@ def get_price_list(item_code):
 @frappe.whitelist()
 def get_items():
     data = []
-    all_groups = frappe.get_list('Item Group',filters={'is_group':0,'name':['not in',('Extra')]},fields=['name'])
+    all_groups = frappe.get_list('Item Group',filters={'is_group':0,'name':['not in',('Extra')],
+                                'parent_item_group':['not in',('Extra')]},
+                                fields=['name'])
     for group in all_groups:
         group_dict = {}
         all_extra_items = frappe.get_list('Item Group Multiselect',filters={'item_group':group.name},fields=['parent'])
         attributes = []
+        attributes_dict = {}
+        product_price_addition = 0
         if all_extra_items:
             for extra_item in all_extra_items:
+                extra_item_doc = frappe.get_doc('Item',extra_item.parent)
                 extra_item_price = get_price_list(extra_item.parent)
-                attributes.append({'id':extra_item.parent,'name':frappe.db.get_value('Item',extra_item.parent,'item_name'),\
-                                    'price':extra_item_price if extra_item_price else ''})
+                if not attributes_dict.get(extra_item_doc.item_group):
+                    attributes_dict.update({f'{extra_item_doc.item_group}':{'name':f'Choose {extra_item_doc.item_group}','type': 'multiselect',
+                                    'options': [{ 'id':  extra_item_doc.name, 'name':extra_item_doc.item_name,
+                                    'price': extra_item_price if extra_item_price else '','selected':True}],
+                                    }})
+                    product_price_addition += flt(extra_item_price)
+                else:
+                    attributes_dict.get(extra_item_doc.item_group).get('options').append({'id': extra_item_doc.name,
+                                        'name': extra_item_doc.item_name, 'selected': False, 
+                                        'price':extra_item_price if extra_item_price else ''})
+                
+        if attributes_dict:
+            for x in attributes_dict.items():
+                attributes.append(x[1])
+                    
+        
+        #### Getting Items ####
         all_items = frappe.get_list('Item',filters={'item_group':group.name,'disabled':0},fields=['*'])
         if all_items:
             group_dict.update({'item_group':group.name,'items':[]}) 
             for item in all_items:
                 item_dict = {'id':item.name,'name':item.item_name,'attributes':attributes}
-                item_price = get_price_list(item.name)
+                item_price = flt(get_price_list(item.name)) + product_price_addition
                 if item_price:
                     item_dict.update({'product_price':item_price})
                 

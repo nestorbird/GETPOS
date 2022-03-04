@@ -373,7 +373,7 @@
    "columns": 0,
    "creation": "2022-03-01 13:39:28.803994",
    "default": null,
-   "depends_on": "eval:doc.item_group === 'Extra'",
+   "depends_on": "",
    "description": null,
    "docstatus": 0,
    "dt": "Item",
