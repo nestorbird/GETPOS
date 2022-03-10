@@ -558,6 +558,7 @@ def create_customer():
                 res['success_key'] = 1
                 res['message'] = "success"
                 res["customer"] ={"name" : customer.name,
+                "customer_name": customer.customer_name,
                  "mobile_no" : customer.mobile_no,
                  "email_id":customer.email_id
                  }
