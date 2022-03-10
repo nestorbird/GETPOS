@@ -554,7 +554,6 @@ def create_customer():
                 customer.territory = 'All Territories'
                 
                 customer.save(ignore_permissions=True)
-                customer.submit()
                 frappe.db.commit()
                 res['success_key'] = 1
                 res['message'] = "success"
