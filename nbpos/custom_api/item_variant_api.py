@@ -43,14 +43,22 @@ def get_items():
             for extra_item in all_extra_items:
                 extra_item_doc = frappe.get_doc('Item',extra_item.parent)
                 extra_item_price = get_price_list(extra_item.parent)
+
+                #Checking Stock
+                extra_item_stock = ''
                 if extra_item_doc.is_stock_item:
                     extra_item_stock = get_stock_qty(extra_item_doc)
+
                 if not attributes_dict.get(extra_item_doc.item_group):
+                    # Checking item group
+                    moq, select_type = frappe.db.get_value('Item Group',extra_item_doc.item_group,['moq','select_type'])
+
                     attributes_dict.update({f'{extra_item_doc.item_group}':{'name':f'Choose {extra_item_doc.item_group}',
-                                    'type': 'multiselect','moq':frappe.db.get_value('Item Group',extra_item_doc.item_group,'moq'),
+                                    'type': select_type,'moq':moq,
                                     'options': [{ 'id':  extra_item_doc.name, 'name':extra_item_doc.item_name,
                                     'price': extra_item_price if extra_item_price else '','selected':True,
-                                    'warehouse':extra_item_stock.get('warehouse'),'stock_qty':extra_item_stock.get('stock_qty')}],
+                                    'warehouse':extra_item_stock.get('warehouse') if extra_item_stock else -1,
+                                    'stock_qty':extra_item_stock.get('stock_qty') if extra_item_stock else -1}],
                                     }})
                     product_price_addition += flt(extra_item_price)
                 else:
@@ -74,9 +82,12 @@ def get_items():
                 item_price = flt(get_price_list(item.name)) + product_price_addition
                 if item_price:
                     item_dict.update({'product_price':item_price})
+                
+                # Checking Stock
+                item_stock = {'warehouse':-1,'stock_qty':-1}
                 if item.is_stock_item:
                     item_stock = get_stock_qty(item)
-                    item_dict.update(item_stock)
+                item_dict.update(item_stock)
                 
                 group_dict.get('items').append(item_dict)
             data.append(group_dict)
