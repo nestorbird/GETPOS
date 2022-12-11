@@ -363,12 +363,7 @@ def create_sales_order():
                 sales_order.transaction_date = arr[0]
                 sales_order.transaction_time = arr[1]
                 sales_order.delivery_date = order_list.get("delivery_date")
-                for item in order_list.get("items"):
-                        sales_order.append("items", {
-                                "item_code": item.get("item_code"),
-                                "qty": item.get("qty"),
-                                "rate": item.get("rate")
-                        })
+                sales_order = add_items_in_order(sales_order, order_list.get("items"))
                 sales_order.status = order_list.get("status")
                 sales_order.mode_of_payment = order_list.get("mode_of_payment")
                 sales_order.mpesa_no = order_list.get("mpesa_no")
@@ -382,13 +377,29 @@ def create_sales_order():
                 return res
 
         except Exception as e:
-             frappe.clear_messages()
-             del frappe.local.response["exc_type"]
-             frappe.local.response["message"] ={
+                print(frappe.local.response)
+                frappe.clear_messages()
+                del frappe.local.response["exc_type"]
+                frappe.local.response["message"] ={
                 "success_key":0,
-                "message":"Invalid values please check your request parameters"
-        }
+                "message":e
+                        }
 
+def add_items_in_order(sales_order, items):
+        for item in items:
+                sales_order.append("items", {
+                        "item_code": item.get("item_code"),
+                        "qty": item.get("qty"),
+                        "rate": item.get("rate")
+                })
+                if item.get("sub_items"):
+                        for extra_item in item.get("sub_items"):
+                              sales_order.append("items", {
+                                "item_code": extra_item.get("item_code"),
+                                "qty": extra_item.get("qty"),
+                                "rate": extra_item.get("rate")
+                                })
+        return sales_order
 
 @frappe.whitelist()
 def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_date = nowdate()):
