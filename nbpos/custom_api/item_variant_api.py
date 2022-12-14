@@ -78,7 +78,8 @@ def get_items():
         if all_items:
             group_dict.update({'item_group':group.name,'items':[]}) 
             for item in all_items:
-                item_dict = {'id':item.name,'name':item.item_name,'attributes':attributes}
+                image = get_image_from_item(item.name)
+                item_dict = {'id':item.name,'name':item.item_name,'attributes':attributes, 'image': image}
                 item_price = flt(get_price_list(item.name)) + product_price_addition
                 if item_price:
                     item_dict.update({'product_price':item_price})
@@ -92,4 +93,18 @@ def get_items():
                 group_dict.get('items').append(item_dict)
             data.append(group_dict)
     return data
+def get_image_from_item(name):
+    base_url = frappe.db.get_single_value('nbpos Setting', 'base_url')
+    filters={'name': name, 'base_url': base_url}
+    image = frappe.db.sql("""
+        SELECT
+                if((image = NULL or image = ''), null, 
+                if(image LIKE 'http%%', image, concat(%(base_url)s, image))) as image
+        FROM tabItem
+        WHERE name = %(name)s
+    """,values=filters)
+    if image:
+        return image[0][0]
+    else: 
+        return None
         
