@@ -397,7 +397,8 @@ def add_items_in_order(sales_order, items):
                               sales_order.append("items", {
                                 "item_code": extra_item.get("item_code"),
                                 "qty": extra_item.get("qty"),
-                                "rate": extra_item.get("rate")
+                                "rate": extra_item.get("rate"),
+                                "associated_item": item.get('item_code')
                                 })
         return sales_order
 
@@ -438,7 +439,8 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
         for item in order_list:
                 item_details = frappe.db.sql("""
                         SELECT
-                                so.item_code, so.item_name, so.qty, 
+                                so.item_code, so.item_name, so.qty,
+                                if(so.associated_item is not null, so.associated_item,'') as associated_item, 
                                 so.uom, so.rate, so.amount,
                                 if((i.image = null or i.image = ''), null, 
                                 if(i.image LIKE 'http%%', i.image, concat(%s, i.image))) as image
