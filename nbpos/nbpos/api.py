@@ -440,15 +440,26 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
                 item_details = frappe.db.sql("""
                         SELECT
                                 so.item_code, so.item_name, so.qty,
-                                if(so.associated_item is not null, so.associated_item,'') as associated_item, 
                                 so.uom, so.rate, so.amount,
                                 if((i.image = null or i.image = ''), null, 
                                 if(i.image LIKE 'http%%', i.image, concat(%s, i.image))) as image
                         FROM `tabSales Order Item` so, `tabSales Order` s, `tabItem` i
                         WHERE so.parent = s.name and so.item_code = i.item_code 
                                 and so.parent = %s and so.parenttype = 'Sales Order' 
+                                and so.associated_item is null
                 """, (base_url,item.name), as_dict = True)
-                item['items'] = item_details
+
+                
+                associate_items = get_sub_items(item.name)
+                new_item_details = []
+                if associate_items:
+                        for so_item in item_details :
+                                so_item['sub_items'] = list(filter( lambda x : x.get("associated_item")== so_item.get("item_code"), associate_items  ) )
+                                
+                                new_item_details.append(so_item)
+                                
+                item['items'] = new_item_details
+
         if from_date:
                 number_of_orders = len(order_list)
         else:
@@ -585,6 +596,22 @@ def create_customer():
                         "message":"Invalid values please check your request parameters"
                 }
 
+def get_sub_items(name):
+        base_url = frappe.db.get_single_value('nbpos Setting', 'base_url')
+        filters={'name': name ,  'base_url': base_url}
+        sub_items = frappe.db.sql("""
+                SELECT
+                soi.item_code , soi.item_name, soi.qty,soi.uom , soi.rate , 
+                soi.amount, soi.associated_item ,
+                if((image = NULL or image = ''), "", 
+                if(image LIKE 'http%%', image, concat(%(base_url)s, image))) as image
+                FROM `tabSales Order` so , `tabSales Order Item` soi
+                WHERE so.name = soi.parent and so.name = %(name)s and soi.associated_item is not null
+                """,values=filters ,  as_dict = True)
+        if sub_items:
+                return sub_items
+        else:
+                return ""
 
 
                 
