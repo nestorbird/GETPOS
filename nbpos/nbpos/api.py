@@ -562,6 +562,25 @@ def get_customer(mobile_no):
                 res["message"] = "Mobile Number Does Not Exist"
                 return res
 
+@frappe.whitelist()
+def get_all_customer():
+        try:
+                customer = frappe.qb.DocType('Customer')
+                customer = (
+                        frappe.qb.from_(customer)
+                        .select(customer.name , customer.customer_name ,
+                                customer.mobile_no , customer.email_id)
+                        .where(customer.disabled == 0)     
+                        ).run(as_dict=1)
+
+                return customer
+
+        except Exception as e:
+                frappe.clear_messages()
+                frappe.local.response["message"] = {
+                "success_key":0,
+                "message":"No Customer found on DB"
+                }
 
 @frappe.whitelist()
 def create_customer():
@@ -576,7 +595,7 @@ def create_customer():
                 customer.email_id = customer_detail.get("email_id")
                 customer.customer_group = 'All Customer Groups'
                 customer.territory = 'All Territories'
-                
+
                 customer.save(ignore_permissions=True)
                 frappe.db.commit()
                 res['success_key'] = 1
