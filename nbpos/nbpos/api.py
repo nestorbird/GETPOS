@@ -586,34 +586,39 @@ def get_all_customer():
 def create_customer():
         customer_detail = frappe.request.data
         customer_detail = json.loads(customer_detail)
+        res = frappe._dict()
 
-        try:
-                res= frappe._dict()
-                customer = frappe.new_doc("Customer")
-                customer.customer_name = customer_detail.get("customer_name")
-                customer.mobile_no = customer_detail.get("mobile_no")
-                customer.email_id = customer_detail.get("email_id")
-                customer.customer_group = 'All Customer Groups'
-                customer.territory = 'All Territories'
-
-                customer.save(ignore_permissions=True)
-                frappe.db.commit()
-                res['success_key'] = 1
-                res['message'] = "success"
-                res["customer"] ={"name" : customer.name,
-                "customer_name": customer.customer_name,
-                 "mobile_no" : customer.mobile_no,
-                 "email_id":customer.email_id
-                 }
+        if frappe.db.exists({"doctype":"Customer" , 'mobile_no': customer_detail.get("mobile_no") }):
+                res["success_key"] = 0
+                res["message"] = "Customer already present with this mobile no."
                 return res
+        else: 
+                try:
+                        
+                        customer = frappe.new_doc("Customer")
+                        customer.customer_name = customer_detail.get("customer_name")
+                        customer.mobile_no = customer_detail.get("mobile_no")
+                        customer.email_id = customer_detail.get("email_id")
+                        customer.customer_group = 'All Customer Groups'
+                        customer.territory = 'All Territories'
 
+                        customer.save(ignore_permissions=True)
+                        frappe.db.commit()
+                        res['success_key'] = 1
+                        res['message'] = "success"
+                        res["customer"] ={"name" : customer.name,
+                                "customer_name": customer.customer_name,
+                                "mobile_no" : customer.mobile_no,
+                                "email_id":customer.email_id
+                                }
+                        return res
 
-        except Exception as e:
-                frappe.clear_messages()
-                frappe.local.response["message"] ={
-                        "success_key":0,
-                        "message":"Invalid values please check your request parameters"
-                }
+                except Exception as e:
+                        frappe.clear_messages()
+                        frappe.local.response["message"] ={
+                                "success_key":0,
+                                "message":"Invalid values please check your request parameters"
+                        }
 
 def get_sub_items(name):
         base_url = frappe.db.get_single_value('nbpos Setting', 'base_url')
