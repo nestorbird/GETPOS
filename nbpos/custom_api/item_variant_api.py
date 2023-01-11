@@ -43,6 +43,7 @@ def get_items():
             for extra_item in all_extra_items:
                 extra_item_doc = frappe.get_doc('Item',extra_item.parent)
                 extra_item_price = get_price_list(extra_item.parent)
+                item_tax = get_item_taxes(extra_item.parent)
 
                 #Checking Stock
                 extra_item_stock = ''
@@ -56,6 +57,7 @@ def get_items():
                     attributes_dict.update({f'{extra_item_doc.item_group}':{'name':f'Choose {extra_item_doc.item_group}',
                                     'type': select_type,'moq':moq,
                                     'options': [{ 'id':  extra_item_doc.name, 'name':extra_item_doc.item_name,
+                                    'tax':item_tax if item_tax  else '',
                                     'price': extra_item_price if extra_item_price else '','selected':True,
                                     'warehouse':extra_item_stock.get('warehouse') if extra_item_stock else -1,
                                     'stock_qty':extra_item_stock.get('stock_qty') if extra_item_stock else -1}],
@@ -79,7 +81,8 @@ def get_items():
             group_dict.update({'item_group':group.name,'items':[]}) 
             for item in all_items:
                 image = get_image_from_item(item.name)
-                item_dict = {'id':item.name,'name':item.item_name,'attributes':attributes, 'image': image}
+                item_taxes = get_item_taxes(item.name)
+                item_dict = {'id':item.name,'name':item.item_name,'attributes':attributes, 'image': image , "tax":item_taxes}
                 item_price = flt(get_price_list(item.name)) + product_price_addition
                 if item_price:
                     item_dict.update({'product_price':item_price})
@@ -108,3 +111,17 @@ def get_image_from_item(name):
     else: 
         return None
         
+def get_item_taxes(name):
+    filters={'name': name}
+    tax = frappe.db.sql("""
+    SELECT
+        it.item_tax_template , 
+        ittd.tax_rate
+    FROM `tabItem` i , `tabItem Tax` it , `tabItem Tax Template` itt , `tabItem Tax Template Detail` ittd
+    WHERE i.name = it.parent and i.name = %(name)s and
+    it.item_tax_template = itt.name and itt.name = ittd.parent
+    """,values=filters ,  as_dict = True)
+    if tax:
+        return tax
+    else: 
+        return ""
