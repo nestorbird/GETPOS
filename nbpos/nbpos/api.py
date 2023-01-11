@@ -588,15 +588,13 @@ def create_customer():
         customer_detail = frappe.request.data
         customer_detail = json.loads(customer_detail)
         res = frappe._dict()
-
-        if frappe.db.exists({"doctype":"Customer" , 'mobile_no': customer_detail.get("mobile_no") }):
-                res["success_key"] = 0
-                res["message"] = "Customer already present with this mobile no."
-                res["customer"] = []
-                return res
-        else: 
-                try:
-                        
+        try:
+                if customer_detail.get("mobile_no") and frappe.db.exists({"doctype":"Customer" , 'mobile_no': customer_detail.get("mobile_no") } ):
+                        res["success_key"] = 0
+                        res["message"] = "Customer already present with this mobile no."
+                        res["customer"] = []
+                        return res
+                else: 
                         customer = frappe.new_doc("Customer")
                         customer.customer_name = customer_detail.get("customer_name")
                         customer.mobile_no = customer_detail.get("mobile_no")
@@ -615,13 +613,13 @@ def create_customer():
                                 }
                         return res
 
-                except Exception as e:
-                        frappe.clear_messages()
-                        frappe.local.response["message"] ={
-                                "success_key":0,
-                                "message":"Invalid values please check your request parameters"
-                        }
-
+        except Exception as e:
+                frappe.clear_messages()
+                frappe.local.response["message"] ={
+                        "success_key":0,
+                        "message":"Invalid values please check your request parameters"  
+                }
+                
 def get_sub_items(name):
         base_url = frappe.db.get_single_value('nbpos Setting', 'base_url')
         filters={'name': name ,  'base_url': base_url}
