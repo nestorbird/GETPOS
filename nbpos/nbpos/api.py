@@ -554,8 +554,7 @@ def get_customer(mobile_no):
                 res['success_key'] = 1
                 res['message'] = "success"
                 res['customer'] = customer_detail
-                return res
-               
+                return res        
         else:
                 res["success_key"] = 0
                 res['mobile_no'] = mobile_no
@@ -564,23 +563,25 @@ def get_customer(mobile_no):
 
 @frappe.whitelist()
 def get_all_customer():
-        try:
-                customer = frappe.qb.DocType('Customer')
-                customer = (
-                        frappe.qb.from_(customer)
-                        .select(customer.name , customer.customer_name ,
-                                customer.mobile_no , customer.email_id)
-                        .where(customer.disabled == 0)     
-                        ).run(as_dict=1)
+        res=frappe._dict()
+        customer = frappe.qb.DocType('Customer')
+        customer = (
+                frappe.qb.from_(customer)
+                .select(customer.name , customer.customer_name ,
+                        customer.mobile_no , customer.email_id)
+                .where(customer.disabled == 0)
+                ).run(as_dict=1)
 
-                return customer
-
-        except Exception as e:
-                frappe.clear_messages()
-                frappe.local.response["message"] = {
-                "success_key":0,
-                "message":"No Customer found on DB"
-                }
+        if customer:
+                res['success_key'] = 1
+                res['message'] = "success"
+                res['customer'] = customer
+                return res
+        else:
+                res["success_key"] = 0
+                res["message"] = "No Customer found on DB"
+                res['customer']= customer
+                return res
 
 @frappe.whitelist()
 def create_customer():
@@ -591,6 +592,7 @@ def create_customer():
         if frappe.db.exists({"doctype":"Customer" , 'mobile_no': customer_detail.get("mobile_no") }):
                 res["success_key"] = 0
                 res["message"] = "Customer already present with this mobile no."
+                res["customer"] = []
                 return res
         else: 
                 try:
