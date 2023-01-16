@@ -35,6 +35,8 @@ def get_items():
                                 fields=['name'])
     for group in all_groups:
         group_dict = {}
+        item_group_tax= get_item_group_taxes(group.name)
+        item_group_image = get_image_from_item_group(group.name)
         all_extra_items = frappe.get_list('Item Group Multiselect',filters={'item_group':group.name},fields=['parent'])
         attributes = []
         attributes_dict = {}
@@ -43,7 +45,6 @@ def get_items():
             for extra_item in all_extra_items:
                 extra_item_doc = frappe.get_doc('Item',extra_item.parent)
                 extra_item_price = get_price_list(extra_item.parent)
-                item_tax = get_item_taxes(extra_item.parent)
 
                 #Checking Stock
                 extra_item_stock = ''
@@ -57,7 +58,6 @@ def get_items():
                     attributes_dict.update({f'{extra_item_doc.item_group}':{'name':f'Choose {extra_item_doc.item_group}',
                                     'type': select_type,'moq':moq,
                                     'options': [{ 'id':  extra_item_doc.name, 'name':extra_item_doc.item_name,
-                                    'tax':item_tax if item_tax  else '',
                                     'price': extra_item_price if extra_item_price else '','selected':True,
                                     'warehouse':extra_item_stock.get('warehouse') if extra_item_stock else -1,
                                     'stock_qty':extra_item_stock.get('stock_qty') if extra_item_stock else -1}],
@@ -78,11 +78,11 @@ def get_items():
         #### Getting Items ####
         all_items = frappe.get_list('Item',filters={'item_group':group.name,'disabled':0},fields=['*'])
         if all_items:
-            group_dict.update({'item_group':group.name,'items':[]}) 
+            group_dict.update({'item_group':group.name, 'item_group_tax':item_group_tax, 
+            'item_group_image':item_group_image, 'items':[]}) 
             for item in all_items:
                 image = get_image_from_item(item.name)
-                item_taxes = get_item_taxes(item.name)
-                item_dict = {'id':item.name,'name':item.item_name,'attributes':attributes, 'image': image , "tax":item_taxes}
+                item_dict = {'id':item.name,'name':item.item_name,'attributes':attributes, 'image': image}
                 item_price = flt(get_price_list(item.name)) + product_price_addition
                 if item_price:
                     item_dict.update({'product_price':item_price})
@@ -96,6 +96,7 @@ def get_items():
                 group_dict.get('items').append(item_dict)
             data.append(group_dict)
     return data
+
 def get_image_from_item(name):
     base_url = frappe.db.get_single_value('nbpos Setting', 'base_url')
     filters={'name': name, 'base_url': base_url}
@@ -111,17 +112,32 @@ def get_image_from_item(name):
     else: 
         return None
         
-def get_item_taxes(name):
+def get_item_group_taxes(name):
     filters={'name': name}
     tax = frappe.db.sql("""
     SELECT
         it.item_tax_template , 
         ittd.tax_rate
-    FROM `tabItem` i , `tabItem Tax` it , `tabItem Tax Template` itt , `tabItem Tax Template Detail` ittd
-    WHERE i.name = it.parent and i.name = %(name)s and
+    FROM `tabItem Group` ig , `tabItem Tax` it , `tabItem Tax Template` itt , `tabItem Tax Template Detail` ittd
+    WHERE ig.name = it.parent and ig.name = %(name)s and
     it.item_tax_template = itt.name and itt.name = ittd.parent
     """,values=filters ,  as_dict = True)
     if tax:
         return tax
+    else: 
+        return ""
+
+def get_image_from_item_group(name):
+    base_url = frappe.db.get_single_value('nbpos Setting', 'base_url')
+    filters={'name': name, 'base_url': base_url}
+    image = frappe.db.sql("""
+        SELECT
+                if((image = NULL or image = ''), null, 
+                if(image LIKE 'http%%', image, concat(%(base_url)s, image))) as image
+        FROM `tabItem Group`
+        WHERE name = %(name)s
+    """,values=filters)
+    if image:
+        return image[0][0]
     else: 
         return ""
