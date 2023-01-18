@@ -25,7 +25,7 @@ def create_sales_invoice_from_sales_order(doc):
 
 def set_warehouse(doc):
     if not doc.set_warehouse:
-        doc.set_warehouse = frappe.db.get_value('Warehouse', {'hub_manager': doc.hub_manager}, 'name')
+        doc.set_warehouse = frappe.db.get_value('Warehouse', {'warehouse_name': 'Stores'}, 'name')
         for item in doc.items:
             item.warehouse = doc.set_warehouse
 
