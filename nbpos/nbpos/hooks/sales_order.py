@@ -1,6 +1,7 @@
 import frappe
 from frappe.model.naming import make_autoname
 from erpnext.selling.doctype.sales_order.sales_order import make_sales_invoice
+from erpnext.controllers.accounts_controller import get_taxes_and_charges
 
 
 def on_submit(doc, method):
@@ -8,9 +9,10 @@ def on_submit(doc, method):
 
 def validate(doc, method):
     set_warehouse(doc)
-    if doc.is_new():
-        hub_manager_series = frappe.db.get_value('Hub Manager', doc.hub_manager, 'series')
-        doc.name = make_autoname(hub_manager_series)
+    # add_taxes(doc)
+    # if doc.is_new():
+    #     hub_manager_series = frappe.db.get_value('Hub Manager', doc.hub_manager, 'series')
+    #     doc.name = make_autoname(hub_manager_series)
 
 
 def create_sales_invoice_from_sales_order(doc):
@@ -29,3 +31,10 @@ def set_warehouse(doc):
         for item in doc.items:
             item.warehouse = doc.set_warehouse
 
+
+def add_taxes(doc):
+    taxes = get_taxes_and_charges("Sales Taxes and Charges Template" , "General - NP")
+    frappe.log_error(str(type(taxes)), "Test log")
+    doc.taxes = []
+    for tax in taxes:
+        doc.append('taxes',tax)
