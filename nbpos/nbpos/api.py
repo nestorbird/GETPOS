@@ -561,17 +561,23 @@ def get_customer(mobile_no):
                 res["message"] = "Mobile Number Does Not Exist"
                 return res
 
+
 @frappe.whitelist()
-def get_all_customer():
+def get_all_customer(search=None):
         res=frappe._dict()
         customer = frappe.qb.DocType('Customer')
-        customer = (
+        if search:
+                customer = (
+                        frappe.qb.from_(customer)
+                        .select(customer.name , customer.customer_name ,customer.mobile_no , customer.email_id)
+                        .where(customer.disabled == 0).where(customer.mobile_no.like("%"+search+"%"))
+                        ).run(as_dict=1)
+        else:
+                customer = (
                 frappe.qb.from_(customer)
-                .select(customer.name , customer.customer_name ,
-                        customer.mobile_no , customer.email_id)
+                .select(customer.name , customer.customer_name ,customer.mobile_no , customer.email_id)
                 .where(customer.disabled == 0)
                 ).run(as_dict=1)
-
         if customer:
                 res['success_key'] = 1
                 res['message'] = "success"
@@ -582,6 +588,8 @@ def get_all_customer():
                 res["message"] = "No Customer found on DB"
                 res['customer']= customer
                 return res
+        
+        
 
 @frappe.whitelist()
 def create_customer():
@@ -642,6 +650,13 @@ def get_sub_items(name):
 
 
 
-
-
-
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
