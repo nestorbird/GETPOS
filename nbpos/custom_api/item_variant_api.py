@@ -129,6 +129,7 @@ def get_image_from_item_group(name):
         return image[0][0]
     else: 
         return ""
+        
 
 def get_item_taxes(name):
     filters={'name': name}
@@ -143,4 +144,4 @@ def get_item_taxes(name):
     if tax:
         return tax
     else: 
-        return ""
+        return []
