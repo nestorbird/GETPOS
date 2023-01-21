@@ -27,7 +27,7 @@ fixtures = [
 ]
 # include js, css files in header of desk.html
 # app_include_css = "/assets/nbpos/css/nbpos.css"
-# app_include_js = "/assets/nbpos/js/nbpos.js"
+app_include_js = "/assets/nbpos/js/nbpos.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/nbpos/css/nbpos.css"
@@ -60,7 +60,7 @@ doctype_js = {
 # ----------
 
 # application home page (will override Website Settings)
-# home_page = "login"
+# home_page = "/app/point-of-sale"
 
 # website user home page (by Role)
 # role_home_page = {
