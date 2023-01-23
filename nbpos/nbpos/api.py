@@ -367,9 +367,10 @@ def create_sales_order():
                 sales_order.status = order_list.get("status")
                 sales_order.mode_of_payment = order_list.get("mode_of_payment")
                 sales_order.mpesa_no = order_list.get("mpesa_no")
+                sales_order.coupon_code = order_list.get("coupon_code")
+                #sales_order.taxes_and_charges = "General - NP"   
                 sales_order.save()
                 sales_order.submit()
-                frappe.db.commit()
                 res['success_key'] = 1
                 res['message'] = "success"
                 res["sales_order"] ={"name" : sales_order.name,
@@ -403,39 +404,42 @@ def add_items_in_order(sales_order, items):
         return sales_order
 
 @frappe.whitelist()
-def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_date = nowdate()):
+def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_date = nowdate() , mobile_no = None):
         res= frappe._dict()
         base_url = frappe.db.get_single_value('nbpos Setting', 'base_url')
-        filters = {'hub_manager': hub_manager, 'from_date': from_date, 'to_date': to_date, 'base_url': base_url}
+        filters = {'hub_manager': hub_manager, 'base_url': base_url}
         sales_history_count = frappe.db.get_single_value('nbpos Setting', 'sales_history_count')
         limit = cint(sales_history_count)
+        conditions = ""
+        if mobile_no:
+                conditions += f" and s.contact_mobile like '%{str(mobile_no).strip()}%'"
+        
         if from_date:
-                conditions = " and s.transaction_date between %(from_date)s and %(to_date)s order by s.creation desc"
+                conditions += " and s.transaction_date between {} and {} order by s.creation desc".format(frappe.db.escape(from_date), frappe.db.escape(to_date))
         else:
                 if page_no == 1:
                         row_no = 0
-                        conditions = " order by s.creation desc limit %(row_no)s , %(limit)s"
+                        conditions += f" order by s.creation desc limit {row_no} , {limit}"
                 else:
                         page_no = cint(page_no) - 1
                         row_no = cint(page_no * cint(sales_history_count))
-                        conditions = " order by s.creation desc limit %(row_no)s , %(limit)s"
-                filters['limit'] = cint(limit)
-                filters['row_no'] = cint(row_no)        
-        order_list = frappe.db.sql("""
-                SELECT 
-                        s.name, s.transaction_date, TIME_FORMAT(s.transaction_time, '%%T') as transaction_time, s.ward, s.customer,s.customer_name, 
+                        conditions += f" order by s.creation desc limit {row_no} , {limit}"
+                        
+        order_list = frappe.db.sql("""SELECT 
+                        s.name, s.transaction_date, TIME_FORMAT(s.transaction_time, '%T') as transaction_time, s.ward, s.customer,s.customer_name, 
                         s.ward, s.hub_manager, s.grand_total, s.mode_of_payment, 
                         s.mpesa_no, s.contact_display as contact_name,
                         s.contact_phone, s.contact_mobile, s.contact_email,
                         s.hub_manager, s.creation,
                         u.full_name as hub_manager_name,
                         if((c.image = null or c.image = ''), null, 
-                        if(c.image LIKE 'http%%', c.image, concat(%(base_url)s, c.image))) as image
+                        if(c.image LIKE 'http%%', c.image, concat({base_url}, c.image))) as image
                 FROM `tabSales Order` s, `tabUser` u, `tabCustomer` c
                 WHERE s.hub_manager = u.name and s.customer = c.name 
-                        and s.hub_manager = %(hub_manager)s and s.docstatus = 1 
-                        {conditions}
-        """.format(conditions=conditions), values = filters, as_dict= True)
+                        and s.hub_manager = {hub_manager}  and s.docstatus = 1 
+                         {conditions}
+        """.format(conditions=conditions, hub_manager= frappe.db.escape(hub_manager),
+        base_url= frappe.db.escape(base_url)), as_dict= True)
         for item in order_list:
                 item_details = frappe.db.sql("""
                         SELECT
@@ -478,7 +482,8 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
                 res['number_of_orders'] = number_of_orders                
                 return res
 
-                      
+
+
 @frappe.whitelist()
 def get_sales_order_count(hub_manager):
         number_of_orders = frappe.db.sql("""
@@ -562,26 +567,34 @@ def get_customer(mobile_no):
                 return res
 
 @frappe.whitelist()
-def get_all_customer():
-        res=frappe._dict()
-        customer = frappe.qb.DocType('Customer')
-        customer = (
-                frappe.qb.from_(customer)
-                .select(customer.name , customer.customer_name ,
-                        customer.mobile_no , customer.email_id)
-                .where(customer.disabled == 0)
-                ).run(as_dict=1)
+def get_all_customer(search=None, from_date=None):
+    res=frappe._dict()
+    customer = frappe.qb.DocType('Customer')
+    if search:
+        query = """SELECT name, customer_name, mobile_no, email_id
+        FROM `tabCustomer`
+        WHERE disabled = 0 AND mobile_no LIKE %s"""
+        params = ("%"+search+"%",)
+    else:
+        query = """SELECT name, customer_name, mobile_no, email_id
+        FROM `tabCustomer`
+        WHERE disabled = 0 """
+        params = ()
+    if from_date:
+        query += "AND modified >= %s"
+        params += (from_date,)
+    customer = frappe.db.sql(query, params, as_dict=1)
+    if customer:
+        res['success_key'] = 1
+        res['message'] = "success"
+        res['customer'] = customer
+        return res
+    else:
+        res["success_key"] = 0
+        res["message"] = "No customer found"
+        res['customer']= customer
+        return res
 
-        if customer:
-                res['success_key'] = 1
-                res['message'] = "success"
-                res['customer'] = customer
-                return res
-        else:
-                res["success_key"] = 0
-                res["message"] = "No Customer found on DB"
-                res['customer']= customer
-                return res
 
 @frappe.whitelist()
 def create_customer():
@@ -637,8 +650,44 @@ def get_sub_items(name):
         else:
                 return ""
 
-
+             
+        
                 
+        
+
+@frappe.whitelist()
+def get_promo_code():
+        res = frappe._dict() 
+        coupon_code = frappe.qb.DocType('Coupon Code') 
+        pricing_rule = frappe.qb.DocType('Pricing Rule')
+        coupon_code =(
+        frappe.qb.from_(coupon_code).inner_join(pricing_rule) .on(coupon_code.pricing_rule == pricing_rule.name) 
+        .select(coupon_code.name , coupon_code.coupon_code, coupon_code.pricing_rule,
+        coupon_code.maximum_use, coupon_code.used, coupon_code.description, 
+        pricing_rule.valid_from , pricing_rule.valid_upto, pricing_rule.apply_on, 
+        pricing_rule.price_or_product_discount, pricing_rule.min_qty,
+        pricing_rule.max_qty, pricing_rule.min_amt, pricing_rule.max_amt, 
+        pricing_rule.rate_or_discount, pricing_rule.apply_discount_on, 
+        pricing_rule.discount_amount, pricing_rule.rate, pricing_rule.discount_percentage )
+        .where( (pricing_rule.apply_on == 'Transaction') 
+        & (pricing_rule.rate_or_discount == 'Discount Percentage') &
+        (pricing_rule.apply_discount_on == 'Grand Total') & 
+        (pricing_rule.price_or_product_discount == "Price")
+        )
+        ).run(as_dict=1)
+        
+        if coupon_code:
+                res['success_key'] = 1
+                res['message'] = "success"
+                res['coupon_code'] = coupon_code
+                return res
+        else:
+                res["success_key"] = 0
+                res["message"] = "No Coupon Code in DB"
+                res['coupon_code']= coupon_code
+                return res
+
+
 
 
 
