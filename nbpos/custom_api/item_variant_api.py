@@ -25,14 +25,16 @@ def get_stock_qty(item):
     else:
         return {'warehouse': '','stock_qty':0}
 
-
-
+        
+        
 @frappe.whitelist()
-def get_items():
+def get_items(from_date=None):
     data = []
-    all_groups = frappe.get_list('Item Group',filters={'is_group':0,'name':['not in',('Extra')],
-                                'parent_item_group':['not in',('Extra')]},
-                                fields=['name'])
+    filters = {'is_group':0,'name':['not in',('Extra')],
+                                'parent_item_group':['not in',('Extra')]}
+    if from_date:
+        filters.update({'modified':['>=',from_date]})
+    all_groups = frappe.get_list('Item Group',filters=filters,fields=['name'])
     for group in all_groups:
         group_dict = {}
         item_group_image = get_image_from_item_group(group.name)
@@ -99,6 +101,7 @@ def get_items():
                 group_dict.get('items').append(item_dict)
             data.append(group_dict)
     return data
+                   
 
 def get_image_from_item(name):
     base_url = frappe.db.get_single_value('nbpos Setting', 'base_url')
@@ -145,3 +148,12 @@ def get_item_taxes(name):
         return tax
     else: 
         return []
+        
+        
+        
+        
+        
+        
+        
+        
+        
