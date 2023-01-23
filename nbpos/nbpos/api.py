@@ -651,37 +651,31 @@ def get_sub_items(name):
                 return ""
 
              
+        
+                
+        
+
 @frappe.whitelist()
 def get_promo_code():
-        res = frappe._dict()
-        coupon_code = frappe.qb.DocType('Coupon Code')
+        res = frappe._dict() 
+        coupon_code = frappe.qb.DocType('Coupon Code') 
         pricing_rule = frappe.qb.DocType('Pricing Rule')
-        coupon_code = (
-                frappe.qb.from_(coupon_code)
-                .inner_join(pricing_rule)
-                .on(coupon_code.pricing_rule == pricing_rule.name)
-                .select(coupon_code.name ,
-                coupon_code.coupon_code,
-                coupon_code.pricing_rule,
-                coupon_code.maximum_use,
-                coupon_code.used,
-                coupon_code.description,
-                pricing_rule.valid_from , 
-                pricing_rule.valid_upto,
-                pricing_rule.apply_on,
-                pricing_rule.price_or_product_discount,
-                pricing_rule.min_qty,
-                pricing_rule.max_qty,
-                pricing_rule.min_amt,
-                pricing_rule.max_amt,
-                pricing_rule.rate_or_discount,
-                pricing_rule.apply_discount_on,
-                pricing_rule.discount_amount,
-                pricing_rule.rate,
-                pricing_rule.discount_percentage
-                )
-                ).run(as_dict=1)
-
+        coupon_code =(
+        frappe.qb.from_(coupon_code).inner_join(pricing_rule) .on(coupon_code.pricing_rule == pricing_rule.name) 
+        .select(coupon_code.name , coupon_code.coupon_code, coupon_code.pricing_rule,
+        coupon_code.maximum_use, coupon_code.used, coupon_code.description, 
+        pricing_rule.valid_from , pricing_rule.valid_upto, pricing_rule.apply_on, 
+        pricing_rule.price_or_product_discount, pricing_rule.min_qty,
+        pricing_rule.max_qty, pricing_rule.min_amt, pricing_rule.max_amt, 
+        pricing_rule.rate_or_discount, pricing_rule.apply_discount_on, 
+        pricing_rule.discount_amount, pricing_rule.rate, pricing_rule.discount_percentage )
+        .where( (pricing_rule.apply_on == 'Transaction') 
+        & (pricing_rule.rate_or_discount == 'Discount Percentage') &
+        (pricing_rule.apply_discount_on == 'Grand Total') & 
+        (pricing_rule.price_or_product_discount == "Price")
+        )
+        ).run(as_dict=1)
+        
         if coupon_code:
                 res['success_key'] = 1
                 res['message'] = "success"
@@ -692,21 +686,6 @@ def get_promo_code():
                 res["message"] = "No Coupon Code in DB"
                 res['coupon_code']= coupon_code
                 return res
-
-                
-
-
-
-        
-        
-        
-        
-        
-        
-        
-
-        
-        
 
 
 
