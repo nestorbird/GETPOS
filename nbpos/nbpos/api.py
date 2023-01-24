@@ -293,53 +293,60 @@ def get_item_list(filters, conditions, item_code = None):
                         and {conditions}
         """.format(conditions=conditions), values=filters, as_dict=1)
         
+        
+        
 @frappe.whitelist()
 def get_details_by_hubmanager(hub_manager):
-        try:
-                res = frappe._dict()
-                base_url = frappe.db.get_single_value('nbpos Setting', 'base_url')
-                filters = {'hub_manager': hub_manager, "base_url": base_url}
-                conditions = "hub_manager = %(hub_manager)s "
-                hub_manager_detail = frappe.db.sql("""
-                        SELECT
-                                u.name, u.full_name,
-                                u.email, u.mobile_no,
-                                h.hub_manager, h.series,
-                                if((u.user_image = null or u.user_image = ''), null, 
-                                if(u.user_image LIKE 'http%%', u.user_image, concat(%(base_url)s, u.user_image))) as image
-                        FROM `tabUser` u, `tabHub Manager` h
-                        WHERE h.hub_manager = u.name and
-                        {conditions}
-                        """.format(conditions=conditions), values=filters, as_dict=1)
-                cash_balance = get_balance(hub_manager)
-                wards = frappe.db.sql("""
+    try:
+        res = frappe._dict()
+        base_url = frappe.db.get_single_value('nbpos Setting', 'base_url')
+        filters = {'hub_manager': hub_manager, "base_url": base_url}
+        currency = frappe.get_doc("Global Defaults").default_currency
+        currency_symbol=frappe.get_doc("Currency",currency).symbol
+        conditions = "hub_manager = %(hub_manager)s "
+        hub_manager_detail = frappe.db.sql("""
+                SELECT
+                        u.name, u.full_name,
+                        u.email, u.mobile_no,
+                        h.hub_manager, h.series,
+                        if((u.user_image = null or u.user_image = ''), null,
+                        if(u.user_image LIKE 'http%%', u.user_image, concat(%(base_url)s, u.user_image))) as image
+                FROM `tabUser` u, `tabHub Manager` h
+                WHERE h.hub_manager = u.name and
+                {conditions}
+                """.format(conditions=conditions), values=filters, as_dict=1)
+        cash_balance = get_balance(hub_manager)
+        wards = frappe.db.sql("""
                 SELECT
                         ward, is_assigned
                 FROM `tabWard Detail`
                 WHERE parent = %s
                 and parenttype = 'Hub Manager'
         """,hub_manager, as_dict=1)
+        res["success_key"] = 1
+        res["message"] = "success"
+        res["name"] = hub_manager_detail[0]["name"]
+        res["full_name"] = hub_manager_detail[0]["full_name"]
+        res["email"] = hub_manager_detail[0]["email"]
+        res["mobile_no"] = hub_manager_detail[0]["mobile_no"]
+        res["hub_manager"] = hub_manager_detail[0]["hub_manager"]
+        res["series"] = hub_manager_detail[0]["series"]
+        res["image"] = hub_manager_detail[0]["image"]
+        res["app_currency"] = currency_symbol
+        res["balance"] = cash_balance
+        res["last_transaction_date"] = get_last_transaction_date(hub_manager)
+        res["wards"] = wards
+   
+        return res
+    except Exception as e:
+        print(frappe.get_traceback())
+        frappe.clear_messages()
+        frappe.local.response["message"] = {
+                "success_key":0,
+                "message":"No values found for this hub manager"
+        }
 
-                res["success_key"] = 1
-                res["message"] = "success" 
-                res["name"] = hub_manager_detail[0]["name"]
-                res["full_name"] = hub_manager_detail[0]["full_name"]
-                res["email"] = hub_manager_detail[0]["email"]
-                res["mobile_no"] = hub_manager_detail[0]["mobile_no"]
-                res["hub_manager"] = hub_manager_detail[0]["hub_manager"]
-                res["series"] = hub_manager_detail[0]["series"]
-                res["image"] = hub_manager_detail[0]["image"]
-                res["balance"] = cash_balance
-                res["last_transaction_date"] = get_last_transaction_date(hub_manager)
-                res["wards"] = wards
-                return res
-        except Exception as e:
-                print(frappe.get_traceback())
-                frappe.clear_messages()
-                frappe.local.response["message"] = {
-                        "success_key":0,
-                        "message":"No values found for this hub manager"
-                }
+
 
 @frappe.whitelist()
 def get_balance(hub_manager):
@@ -603,10 +610,11 @@ def create_customer():
         res = frappe._dict()
         try:
                 if customer_detail.get("mobile_no") and frappe.db.exists({"doctype":"Customer" , 'mobile_no': customer_detail.get("mobile_no") } ):
-                        res["success_key"] = 0
-                        res["message"] = "Customer already present with this mobile no."
-                        res["customer"] = []
-                        return res
+                                existing_customer = frappe.db.get_value("Customer", {"mobile_no": customer_detail.get("mobile_no")}, ["name", "customer_name", "mobile_no", "email_id"], as_dict=True)
+                                res["success_key"] = 0
+                                res["message"] = "Customer already present with this mobile no."
+                                res["customer"] = existing_customer
+                                return res
                 else: 
                         customer = frappe.new_doc("Customer")
                         customer.customer_name = customer_detail.get("customer_name")
@@ -686,6 +694,8 @@ def get_promo_code():
                 res["message"] = "No Coupon Code in DB"
                 res['coupon_code']= coupon_code
                 return res
+
+
 
 
 

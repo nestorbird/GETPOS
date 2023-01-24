@@ -126,6 +126,7 @@ doc_events = {
 	"Item Price":{
 		"validate": "nbpos.nbpos.hooks.item_price.validate_item_price"
 	}
+	
 }
 # doc_events = {
 # 	"*": {
