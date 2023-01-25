@@ -649,7 +649,6 @@ def create_customer():
                         customer.email_id = customer_detail.get("email_id")
                         customer.customer_group = 'All Customer Groups'
                         customer.territory = 'All Territories'
-
                         customer.save(ignore_permissions=True)
                         frappe.db.commit()
                         res['success_key'] = 1
@@ -678,7 +677,7 @@ def get_sub_items(name):
                 if((image = NULL or image = ''), "", 
                 if(image LIKE 'http%%', image, concat(%(base_url)s, image))) as image
                 FROM `tabSales Order` so , `tabSales Order Item` soi
-                WHERE so.name = soi.parent and so.name = %(name)s and soi.associated_item is not null
+                WHERE so.name = soi.parent and so.name = %(name)s
                 """,values=filters ,  as_dict = True)
         if sub_items:
                 return sub_items
