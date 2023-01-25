@@ -375,7 +375,7 @@ def create_sales_order():
                 sales_order.mode_of_payment = order_list.get("mode_of_payment")
                 sales_order.mpesa_no = order_list.get("mpesa_no")
                 sales_order.coupon_code = order_list.get("coupon_code")
-                #sales_order.taxes_and_charges = "General - NP"   
+                sales_order = add_taxes(sales_order) 
                 sales_order.save()
                 sales_order.submit()
                 res['success_key'] = 1
@@ -395,10 +395,12 @@ def create_sales_order():
 
 def add_items_in_order(sales_order, items):
         for item in items:
+                item_tax_template = get_item_tax_template(item.get("item_code") )
                 sales_order.append("items", {
                         "item_code": item.get("item_code"),
                         "qty": item.get("qty"),
-                        "rate": item.get("rate")
+                        "rate": item.get("rate"),
+                        "item_tax_template": item_tax_template[0].name if item_tax_template else ""                
                 })
                 if item.get("sub_items"):
                         for extra_item in item.get("sub_items"):
@@ -410,6 +412,33 @@ def add_items_in_order(sales_order, items):
                                 })
         return sales_order
 
+
+def add_taxes(doc):
+        all_taxes = frappe.get_all('Account',filters={'account_name':["in",["Output Tax SGST","Output Tax CGST"]]},
+                                fields=['name','account_name'])
+        if all_taxes:
+                for tax in all_taxes:
+                        doc.append('taxes',{'charge_type':'On Net Total',
+                                        'account_head': tax.name,
+                                        'rate':0,
+                                        'cost_center':'Main - NP',
+                                        'description': tax.account_name
+                                        })
+        return doc
+        
+def get_item_tax_template(name):
+    filters={'name': name}
+    tax = frappe.db.sql("""
+    SELECT
+        it.item_tax_template
+    FROM `tabItem` i , `tabItem Tax` it
+    WHERE i.name = it.parent and i.name = %(name)s
+    """,values=filters ,  as_dict = True)
+    if tax:
+        return tax
+    else: 
+        return []
+        
 @frappe.whitelist()
 def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_date = nowdate() , mobile_no = None):
         res= frappe._dict()
@@ -434,7 +463,7 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
                         
         order_list = frappe.db.sql("""SELECT 
                         s.name, s.transaction_date, TIME_FORMAT(s.transaction_time, '%T') as transaction_time, s.ward, s.customer,s.customer_name, 
-                        s.ward, s.hub_manager, s.grand_total, s.mode_of_payment, 
+                        s.ward, s.hub_manager, s.total , s.total_taxes_and_charges , s.grand_total, s.mode_of_payment, 
                         s.mpesa_no, s.contact_display as contact_name,
                         s.contact_phone, s.contact_mobile, s.contact_email,
                         s.hub_manager, s.creation,
@@ -488,8 +517,6 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
                 res['order_list'] = order_list
                 res['number_of_orders'] = number_of_orders                
                 return res
-
-
 
 @frappe.whitelist()
 def get_sales_order_count(hub_manager):

@@ -9,7 +9,6 @@ def on_submit(doc, method):
 
 def validate(doc, method):
     set_warehouse(doc)
-    # add_taxes(doc)
     # if doc.is_new():
     #     hub_manager_series = frappe.db.get_value('Hub Manager', doc.hub_manager, 'series')
     #     doc.name = make_autoname(hub_manager_series)
@@ -31,10 +30,3 @@ def set_warehouse(doc):
         for item in doc.items:
             item.warehouse = doc.set_warehouse
 
-
-def add_taxes(doc):
-    taxes = get_taxes_and_charges("Sales Taxes and Charges Template" , "General - NP")
-    frappe.log_error(str(type(taxes)), "Test log")
-    doc.taxes = []
-    for tax in taxes:
-        doc.append('taxes',tax)
