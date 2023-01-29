@@ -24,6 +24,18 @@ fixtures = [
 			)
 		}
 	},
+		{
+		"doctype": "Print Format",
+		"filters": {
+			"name": (
+				"in",
+				(
+					"POS Print",
+					"GET POS Invoice"
+				)
+			)
+		}
+	},
 ]
 # include js, css files in header of desk.html
 # app_include_css = "/assets/nbpos/css/nbpos.css"
