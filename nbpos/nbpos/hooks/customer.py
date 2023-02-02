@@ -12,9 +12,14 @@ def validate(doc,method):
                         }, 
                         ['parent'])
         doc.hub_manager = hub_manager
+        
 
 def validate(doc,method):
         doc.name = make_autoname("CUST"+"-.YYYY." +"-.###")
+        existing_customer = frappe.db.get_value("Customer", {"mobile_no": doc.mobile_no})
+        if existing_customer:
+            frappe.throw(_("Customer With Mobile Number {0} Already Exists").format(frappe.bold(doc.mobile_no)))
+
 
 
 @frappe.whitelist(allow_guest=True)
@@ -31,10 +36,6 @@ def get_customer_by_ward(ward):
 
 
 
-def validate(self,doc):
-        existing_customer = frappe.db.get_value("Customer", {"mobile_no": self.mobile_no})
-        if existing_customer:
-            frappe.throw(_("Customer With Mobile Number {0} Already Exists").format(frappe.bold(self.mobile_no)))
 
 
 

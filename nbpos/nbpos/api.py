@@ -447,9 +447,7 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
         sales_history_count = frappe.db.get_single_value('nbpos Setting', 'sales_history_count')
         limit = cint(sales_history_count)
         conditions = ""
-        if mobile_no:
-                conditions += f" and s.contact_mobile like '%{str(mobile_no).strip()}%'"
-        
+       
         if from_date:
                 conditions += " and s.transaction_date between {} and {} order by s.creation desc".format(frappe.db.escape(from_date), frappe.db.escape(to_date))
         else:
@@ -499,24 +497,32 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
                                 new_item_details.append(so_item)
                                 
                 item['items'] = new_item_details
+        if mobile_no:
+                conditions += f" and s.contact_mobile like '%{str(mobile_no).strip()}%'"
 
-        if from_date:
-                number_of_orders = len(order_list)
+                number_of_orders = frappe.db.sql(f"SELECT COUNT(*) FROM `tabSales Order` s WHERE s.hub_manager = {frappe.db.escape(hub_manager)} and s.docstatus = 1 and s.contact_mobile like '%{str(mobile_no).strip()}%'")[0][0]
+
         else:
                 number_of_orders = get_sales_order_count(hub_manager)
+                
+        if from_date:
+                number_of_orders = len(order_list)
 
         if len(order_list) == 0 and number_of_orders == 0:
-                frappe.clear_messages()
-                frappe.local.response["message"] = {
-                        "success_key":1,
-                        "message":"no values found for this hub manager"
-                        }
+            frappe.clear_messages()
+            frappe.local.response["message"] = {
+                "success_key":1,
+                "message":"no values found for this hub manager "
+            }
         else:
-                res["success_key"] = 1
-                res["message"] = "success"
-                res['order_list'] = order_list
-                res['number_of_orders'] = number_of_orders                
-                return res
+            res["success_key"] = 1
+            res["message"] = "success"
+            res['order_list'] = order_list
+            res['number_of_orders'] = number_of_orders
+            return res
+       
+
+
 
 @frappe.whitelist()
 def get_sales_order_count(hub_manager):
@@ -529,6 +535,9 @@ def get_sales_order_count(hub_manager):
                         order by s.creation desc
         """, (hub_manager))[0][0]
         return number_of_orders
+
+
+
 
 @frappe.whitelist()
 def get_last_transaction_date(hub_manager):
