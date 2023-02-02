@@ -512,7 +512,7 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
             frappe.clear_messages()
             frappe.local.response["message"] = {
                 "success_key":1,
-                "message":"no values found for this hub manager"
+                "message":"no values found for this hub manager "
             }
         else:
             res["success_key"] = 1
