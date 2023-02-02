@@ -375,7 +375,7 @@ def create_sales_order():
                 sales_order.mode_of_payment = order_list.get("mode_of_payment")
                 sales_order.mpesa_no = order_list.get("mpesa_no")
                 sales_order.coupon_code = order_list.get("coupon_code")
-                sales_order = add_taxes(sales_order) 
+                # sales_order = add_taxes(sales_order) 
                 sales_order.save()
                 sales_order.submit()
                 res['success_key'] = 1
