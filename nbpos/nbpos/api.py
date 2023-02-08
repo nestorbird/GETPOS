@@ -447,6 +447,8 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
         sales_history_count = frappe.db.get_single_value('nbpos Setting', 'sales_history_count')
         limit = cint(sales_history_count)
         conditions = ""
+        if mobile_no:
+                conditions += f" and s.contact_mobile like '%{str(mobile_no).strip()}%'"
        
         if from_date:
                 conditions += " and s.transaction_date between {} and {} order by s.creation desc".format(frappe.db.escape(from_date), frappe.db.escape(to_date))
