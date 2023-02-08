@@ -77,9 +77,9 @@ def get_items(from_date=None):
             for x in attributes_dict.items():
                 attributes.append(x[1])
                     
-        
         #### Getting Items ####
         all_items = frappe.get_list('Item',filters={'item_group':group.name,'disabled':0},fields=['*'])
+      
         if all_items:
             group_dict.update({'item_group':group.name,
             'item_group_image':item_group_image, 'items':[]}) 
@@ -88,9 +88,10 @@ def get_items(from_date=None):
                 item_taxes = get_item_taxes(item.name)
                 item_dict = {'id':item.name,'name':item.item_name,'attributes':attributes, 'image': image
                 ,"tax":item_taxes}
-                item_price = flt(get_price_list(item.name)) + product_price_addition
+                item_price = flt(get_price_list(item.name))
                 if item_price:
                     item_dict.update({'product_price':item_price})
+                  
                 
                 # Checking Stock
                 item_stock = {'warehouse':-1,'stock_qty':-1}
