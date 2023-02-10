@@ -70,6 +70,8 @@ doctype_js = {
 
 # Home Pages
 # ----------
+home_page = "getpos"
+
 
 # application home page (will override Website Settings)
 # home_page = "/app/point-of-sale"
