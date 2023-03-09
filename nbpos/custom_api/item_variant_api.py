@@ -25,8 +25,21 @@ def get_stock_qty(item):
     else:
         return {'warehouse': '','stock_qty':0}
 
-        
-        
+def get_combo_items(name):
+    combo_items = frappe.db.sql(''' Select
+    pbi.item_code , 
+    pbi.description , 
+    pbi.qty , 
+    pbi.uom
+    from `tabProduct Bundle` pb , `tabProduct Bundle Item`  pbi
+    Where pbi.parent = pb.name and pbi.parent = %s
+    ''',(name), as_dict = True)
+
+    if combo_items:          
+        return combo_items
+    else:
+        return []
+    
 @frappe.whitelist()
 def get_items(from_date=None):
     data = []
@@ -86,7 +99,9 @@ def get_items(from_date=None):
             for item in all_items:
                 image = get_image_from_item(item.name)
                 item_taxes = get_item_taxes(item.name)
-                item_dict = {'id':item.name,'name':item.item_name,'attributes':attributes, 'image': image
+                combo_items = get_combo_items(item.name)
+
+                item_dict = {'id':item.name,'name':item.item_name, 'combo_items': combo_items, 'attributes':attributes, 'image': image
                 ,"tax":item_taxes}
                 item_price = flt(get_price_list(item.name))
                 if item_price:
