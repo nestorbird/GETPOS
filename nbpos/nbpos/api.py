@@ -438,6 +438,22 @@ def get_item_tax_template(name):
         return tax
     else: 
         return []
+
+def get_combo_items(name):
+        print(name)
+        combo_items = frappe.db.sql(''' Select 
+        pi.parent_item,
+        pi.item_code , 
+        pi.item_name ,
+        pi.qty , 
+        pi.uom
+        from `tabSales Order` so , `tabPacked Item`  pi
+        Where 
+        so.name = %s and
+        so.name = pi.parent
+        ''',(name), as_dict = True)
+     
+        return combo_items
         
 @frappe.whitelist()
 def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_date = nowdate() , mobile_no = None):
@@ -483,8 +499,10 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
                                 so.uom, so.rate, so.amount,
                                 if((i.image = null or i.image = ''), null, 
                                 if(i.image LIKE 'http%%', i.image, concat(%s, i.image))) as image
-                        FROM `tabSales Order Item` so, `tabSales Order` s, `tabItem` i
-                        WHERE so.parent = s.name and so.item_code = i.item_code 
+                        FROM 
+                                `tabSales Order` s, `tabItem` i, `tabSales Order Item` so
+                        WHERE 
+                                so.parent = s.name and so.item_code = i.item_code 
                                 and so.parent = %s and so.parenttype = 'Sales Order' 
                                 and so.associated_item is null
                 """, (base_url,item.name), as_dict = True)
@@ -497,6 +515,12 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
                                 so_item['sub_items'] = list(filter( lambda x : x.get("associated_item")== so_item.get("item_code"), associate_items  ) )
                                 
                                 new_item_details.append(so_item)
+                                
+                combo_items = get_combo_items(item.name)
+
+                if combo_items:
+                        for item_detail in new_item_details :
+                                item_detail["combo_items"] = list(filter( lambda x: x.get("parent_item") == item_detail.item_code , combo_items )) 
                                 
                 item['items'] = new_item_details
         if mobile_no:
