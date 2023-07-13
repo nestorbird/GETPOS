@@ -225,3 +225,5 @@ user_data_fields = [
 # 	"nbpos.auth.validate"
 # ]
 
+
+after_migrate = "nbpos.nbpos.after_migrate.main"
