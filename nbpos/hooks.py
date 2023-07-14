@@ -217,7 +217,7 @@ user_data_fields = [
 		"doctype": "{doctype_4}"
 	}
 ]
-
+after_migrate = "nbpos.nbpos.after_migrate.main"
 # Authentication and authorization
 # --------------------------------
 
@@ -226,4 +226,3 @@ user_data_fields = [
 # ]
 
 
-after_migrate = "nbpos.nbpos.after_migrate.main"
