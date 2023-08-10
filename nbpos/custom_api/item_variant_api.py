@@ -24,6 +24,7 @@ def get_stock_qty(item):
             
     else:
         return {'warehouse': '','stock_qty':0}
+    
 
 def get_combo_items(name):
     combo_items = frappe.db.sql(''' Select
@@ -51,7 +52,7 @@ def get_items(from_date=None):
     for group in all_groups:
         group_dict = {}
         item_group_image = get_image_from_item_group(group.name)
-        all_extra_items = frappe.get_list('Item Group Multiselect',filters={'item_group':group.name},fields=['parent'])
+        all_extra_items = frappe.get_list('Item Group Multiselect',parent_doctype="Item",filters={'item_group':group.name},fields=['parent'])
         attributes = []
         attributes_dict = {}
         product_price_addition = 0
