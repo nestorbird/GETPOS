@@ -3,7 +3,7 @@ from frappe.utils import today,getdate,flt
 
 
 def get_price_list(item_code):
-    all_item_price = frappe.get_list('Item Price',filters={'item_code':item_code,'selling':1,'price_list':'Standard Selling',
+    all_item_price = frappe.get_all('Item Price',filters={'item_code':item_code,'selling':1,'price_list':'Standard Selling',
                                     'valid_from':['<=',today()]},fields=['price_list_rate','valid_upto'],order_by='modified desc')
     if all_item_price:
                     for item_price in all_item_price:
@@ -16,7 +16,7 @@ def get_price_list(item_code):
     
 
 def get_stock_qty(item):
-    bin_list = frappe.get_list('Bin',filters={'item_code':item.item_code,'warehouse':['like','Stores%']},
+    bin_list = frappe.get_all('Bin',filters={'item_code':item.item_code,'warehouse':['like','Stores%']},
                             fields=['actual_qty','warehouse'],order_by='actual_qty desc',limit_start=0,
                             limit_page_length=21)
     if bin_list:
@@ -48,11 +48,11 @@ def get_items(from_date=None):
                                 'parent_item_group':['not in',('Extra')]}
     if from_date:
         filters.update({'modified':['>=',from_date]})
-    all_groups = frappe.get_list('Item Group',filters=filters,fields=['name'])
+    all_groups = frappe.get_all('Item Group',filters=filters,fields=['name'])
     for group in all_groups:
         group_dict = {}
         item_group_image = get_image_from_item_group(group.name)
-        all_extra_items = frappe.get_list('Item Group Multiselect',parent_doctype="Item",filters={'item_group':group.name},fields=['parent'])
+        all_extra_items = frappe.get_all('Item Group Multiselect',parent_doctype="Item",filters={'item_group':group.name},fields=['parent'])
         attributes = []
         attributes_dict = {}
         product_price_addition = 0
@@ -92,7 +92,7 @@ def get_items(from_date=None):
                 attributes.append(x[1])
                     
         #### Getting Items ####
-        all_items = frappe.get_list('Item',filters={'item_group':group.name,'disabled':0},fields=['*'])
+        all_items = frappe.get_all('Item',filters={'item_group':group.name,'disabled':0},fields=['*'])
       
         if all_items:
             group_dict.update({'item_group':group.name,

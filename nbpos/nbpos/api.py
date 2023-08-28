@@ -1,14 +1,10 @@
 import frappe
 import json
-import requests
-from frappe import auth
 from frappe import _
-from frappe.exceptions import Redirect
 STANDARD_USERS = ("Guest", "Administrator")
 from frappe.rate_limiter import rate_limit
-from frappe.utils.password import update_password as _update_password, check_password, get_password_reset_limit
-from frappe.utils import (cint, flt, has_gravatar, escape_html, format_datetime,
-        now_datetime, get_formatted_email, today, add_days, nowdate, nowtime)
+from frappe.utils.password import get_password_reset_limit
+from frappe.utils import (cint,get_formatted_email, nowdate, nowtime)
 from erpnext.accounts.utils import get_balance_on
 from erpnext.stock.utils import get_stock_balance
 from erpnext.stock.stock_ledger import get_previous_sle, get_stock_ledger_entries
@@ -20,45 +16,51 @@ def login(usr, pwd):
         login_manager = frappe.auth.LoginManager()
         login_manager.authenticate(user=usr, pwd=pwd)
         login_manager.post_login()
-    except frappe.exceptions.AuthenticationError:
+
+        user = frappe.get_doc('User', frappe.session.user)
+        
+        if user.api_key and user.api_secret:
+                user.api_secret = user.get_password('api_secret')
+        else:
+                api_generate = generate_keys(frappe.session.user)     
+
+
+        frappe.response["message"] = {
+                "success_key":1,
+                "message":"success",
+                "sid":frappe.session.sid,
+                "api_key":user.api_key if user.api_key else api_generate[1],
+                "api_secret": user.api_secret if user.api_secret else api_generate[0],
+                "username":user.username,
+                "email":user.email
+        }
+    except Exception as e:
         frappe.clear_messages()
         frappe.local.response["message"] = {
             "success_key":0,
-            "message":"Incorrect Username or Password"
+            "message":"Incorrect Username or Password",
+            "error":e
         }
         
-        return
-
-
-
-    user = frappe.get_doc('User', frappe.session.user)
-    if user.api_key and user.api_secret:
-            user.api_secret = user.get_password('api_secret')
-    else:
-            api_generate = generate_keys(frappe.session.user)       
-
-    frappe.response["message"] = {
-        "success_key":1,
-        "message":"success",
-        "sid":frappe.session.sid,
-        "api_key":user.api_key if user.api_key else api_generate[1],
-        "api_secret": user.api_secret if user.api_secret else api_generate[0],
-        "username":user.username,
-        "email":user.email
-    } 
+        return 
 
 
 def generate_keys(user):
     user_details = frappe.get_doc('User', user)
     api_secret = frappe.generate_hash(length=15)
 
-    if not user_details.api_key:
-        api_key = frappe.generate_hash(length=15)
-        user_details.api_key = api_key
+    # if not user_details.api_key:
+    api_key = frappe.generate_hash(length=15)
+    user_details.api_key = api_key
 
     user_details.api_secret = api_secret
-    user_details.save()
-    return api_secret, user_details.api_key
+    user_details.save(ignore_permissions=True)
+
+    if frappe.request.method == "GET":
+        frappe.db.commit()
+    
+
+    return user_details.get_password("api_secret"), user_details.api_key
        
 
 
@@ -217,6 +219,7 @@ def get_customer_list_by_hubmanager(hub_manager, last_sync = None):
                 res["customer_list"] = customer_list          
                 return res 
 
+# Not using for Mobile App
 @frappe.whitelist()
 def get_item_list_by_hubmanager(hub_manager, last_sync = None):
         res = frappe._dict()
@@ -303,43 +306,35 @@ def get_details_by_hubmanager(hub_manager):
         filters = {'hub_manager': hub_manager, "base_url": base_url}
         currency = frappe.get_doc("Global Defaults").default_currency
         currency_symbol=frappe.get_doc("Currency",currency).symbol
-        conditions = "hub_manager = %(hub_manager)s "
+        conditions = "email = %(hub_manager)s "
         hub_manager_detail = frappe.db.sql("""
                 SELECT
                         u.name, u.full_name,
-                        u.email, u.mobile_no,
-                        h.hub_manager, h.series,
-                        if((u.user_image = null or u.user_image = ''), null,
-                        if(u.user_image LIKE 'http%%', u.user_image, concat(%(base_url)s, u.user_image))) as image
-                FROM `tabUser` u, `tabHub Manager` h
-                WHERE h.hub_manager = u.name and
+                        u.email , if(u.mobile_no,u.mobile_no,'') as mobile_no,
+                        if(u.user_image, if(u.user_image LIKE 'http%%', u.user_image, concat(%(base_url)s, u.user_image)), '') as image
+                FROM `tabUser` u
+                WHERE
                 {conditions}
                 """.format(conditions=conditions), values=filters, as_dict=1)
         cash_balance = get_balance(hub_manager)
-        wards = frappe.db.sql("""
-                SELECT
-                        ward, is_assigned
-                FROM `tabWard Detail`
-                WHERE parent = %s
-                and parenttype = 'Hub Manager'
-        """,hub_manager, as_dict=1)
+        last_txn_date = get_last_transaction_date(hub_manager)
+       
         res["success_key"] = 1
         res["message"] = "success"
         res["name"] = hub_manager_detail[0]["name"]
         res["full_name"] = hub_manager_detail[0]["full_name"]
         res["email"] = hub_manager_detail[0]["email"]
         res["mobile_no"] = hub_manager_detail[0]["mobile_no"]
-        res["hub_manager"] = hub_manager_detail[0]["hub_manager"]
-        res["series"] = hub_manager_detail[0]["series"]
+        res["hub_manager"] = hub_manager_detail[0]["name"]
+        res["series"] = ""
         res["image"] = hub_manager_detail[0]["image"]
         res["app_currency"] = currency_symbol
         res["balance"] = cash_balance
-        res["last_transaction_date"] = get_last_transaction_date(hub_manager)
-        res["wards"] = wards
+        res["last_transaction_date"] =  last_txn_date if last_txn_date else ''
+        res["wards"] = []
    
         return res
     except Exception as e:
-        print(frappe.get_traceback())
         frappe.clear_messages()
         frappe.local.response["message"] = {
                 "success_key":0,
@@ -352,7 +347,7 @@ def get_details_by_hubmanager(hub_manager):
 def get_balance(hub_manager):
         account = frappe.db.get_value('Account', {'hub_manager': hub_manager}, 'name')
         account_balance = get_balance_on(account)
-        return account_balance
+        return account_balance if account_balance else 0.0
 
 
 @frappe.whitelist()
@@ -376,7 +371,6 @@ def create_sales_order():
                 sales_order.mpesa_no = order_list.get("mpesa_no")
                 sales_order.coupon_code = order_list.get("coupon_code")
                 # sales_order = add_taxes(sales_order) 
-                sales_order.save()
                 sales_order.submit()
                 res['success_key'] = 1
                 res['message'] = "success"

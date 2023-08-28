@@ -33,11 +33,14 @@
    "in_preview": 0,
    "in_standard_filter": 0,
    "insert_after": "account",
+   "is_system_generated": 1,
+   "is_virtual": 0,
    "label": "Debtor/Creditor Number",
    "length": 0,
    "mandatory_depends_on": null,
    "modified": "2021-10-13 12:51:35.401320",
    "modified_by": "Administrator",
+   "module": null,
    "name": "Party Account-debtor_creditor_number",
    "no_copy": 0,
    "non_negative": 0,
@@ -56,6 +59,7 @@
    "report_hide": 0,
    "reqd": 0,
    "search_index": 0,
+   "sort_options": 0,
    "translatable": 0,
    "unique": 0,
    "width": null
@@ -63,6 +67,7 @@
  ],
  "custom_perms": [],
  "doctype": "Party Account",
+ "links": [],
  "property_setters": [],
  "sync_on_migrate": 1
 }
