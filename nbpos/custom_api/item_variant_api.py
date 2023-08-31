@@ -111,14 +111,28 @@ def get_items(from_date=None):
                 
                 # Checking Stock
                 item_stock = {'warehouse':-1,'stock_qty':-1}
+                bundle_bin_qty = 1000000
                 if item.is_stock_item:
                     item_stock = get_stock_qty(item)
-                item_dict.update(item_stock)
+                    item_dict.update(item_stock)
+                # getting the reserve qty of child items in bundle so that end product can be calcuate as per the ready to use qty
+                elif len(item_dict.get("combo_items")) > 0:
+                    for item in item_dict.get("combo_items"):
+                        item_bin_qty = get_stock_qty(item)
+                        item.update(item_bin_qty)
+                        available_qty = item_bin_qty.get("stock_qty") / item.get("qty")
+                        if bundle_bin_qty > available_qty and frappe.get_value("Item", item.item_code, "is_stock_item"):
+                            bundle_bin_qty = available_qty
+                    item_stock["warehouse"] = item_dict.get("combo_items")[0].get("warehouse")
+                    item_stock["stock_qty"] = bundle_bin_qty
+                    item_dict.update(item_stock)
                 
+                # item_dict.update(item_stock)
+                    
                 group_dict.get('items').append(item_dict)
             data.append(group_dict)
     return data
-                   
+
 
 def get_image_from_item(name):
     base_url = frappe.db.get_single_value('nbpos Setting', 'base_url')

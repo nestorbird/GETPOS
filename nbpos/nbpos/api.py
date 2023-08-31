@@ -38,7 +38,7 @@ def login(usr, pwd):
         frappe.clear_messages()
         frappe.local.response["message"] = {
             "success_key":0,
-            "message":"Incorrect Username or Password",
+            "message":"Incorrect username or password",
             "error":e
         }
         
