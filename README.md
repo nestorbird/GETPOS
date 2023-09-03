@@ -6,7 +6,7 @@ This custom POS system is built to increase revenue and save time for every reta
 
 ## Get POS Features:-
 
-#### Offline Syncing
+## Offline Syncing
 
 Retail businesses opting for offline Get POS (Point of Sale) applications can easily synchronize data on the significant terminal and server. This software can also help to monitor the connection between retail POS offline Sync Service & channel database.
 
