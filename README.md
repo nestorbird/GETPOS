@@ -5,7 +5,7 @@ A cloud-based Get POS solution is a computerized system designed for your retail
 This custom POS system is built to increase revenue and save time for every retail and hospitality business chain that offers multi-location features such as inventory transfers, network pricing, and advanced reports.
 
 ## 
-##For support please get in touch with us at sales@nestorbird.com for demonstration.
+## For support please get in touch with us at sales@nestorbird.com for demonstration.
 
 ## Get POS Features:-
 
