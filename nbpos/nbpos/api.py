@@ -751,8 +751,19 @@ def get_promo_code():
                 return res
 
 
+@frappe.whitelist(allow_guest=True)
+def get_theme_settings():
+    theme_settings = frappe.get_doc("Theme Settings")
+    theme_settings_dict = {}
+    theme = frappe.get_meta("Theme Settings")
+    for field in theme.fields:
+        if field.fieldtype == "Color":
+            theme_settings_dict[field.fieldname] = theme_settings.get(field.fieldname)
 
-
+    res = {
+        "data": theme_settings_dict
+    }
+    return res
 
 
 
