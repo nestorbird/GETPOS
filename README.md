@@ -1,49 +1,87 @@
-# Get POS
+<div align="center">
+
+<!-- TODO: add link to website once it is ready -->
+<h1><a href="getpos.in" _blank=true>GETPOS</a></h1>
+
+Simple, yet powerful POS solutions for businesses
+
+
+</div>
+
+
+
+## Introduction
 
 A cloud-based Get POS solution is a computerized system designed for your retail store, restaurant, multi-store, and supermarket to manage transactions, orders, inventory, and in-store product sales in one go. 
 
 This custom POS system is built to increase revenue and save time for every retail and hospitality business chain that offers multi-location features such as inventory transfers, network pricing, and advanced reports.
 
-## 
-## For support please get in touch with us at sales@nestorbird.com for demonstration.
+It builds on top of [ERPNext](https://github.com/frappe/erpnext) and the [Frappe Framework](https://github.com/frappe/frappe) - incredible FOSS projects built and maintained by the incredible folks at Frappe. Go check these out if you haven't already!
 
-## Get POS Features:-
+## Key Features
 
-## Offline Syncing
+- Offline Syncing
+- Inventory Management
+- Order Management
+- Employee Management
+- Supplier Management
+- Reporting
+- Accounts & Payroll
+- Multi-location Management
 
-Retail businesses opting for offline Get POS (Point of Sale) applications can easily synchronize data on the significant terminal and server. This software can also help to monitor the connection between retail POS offline Sync Service & channel database.
+For a detailed overview of these features, please [refer to the documentation](https://docs.google.com/document/d/19IvnMz7VcNlf4JssE9n700WUasmYMhZkk7eM4ApfdBY/).
 
-#### Inventory Management
+## Installation
 
-With Get POS, you can manage your sales, orders, and deliveries in real time. Track your stock with the easy maintenance of optimal inventory levels, warehouse & ordering processes, location transits, and management of workflow activities. 
+Once you've [set up a Frappe site](https://frappeframework.com/docs/v14/user/en/installation/), installing GETPOS is simple:
 
-#### Order Management
 
-Custom POS System Development allows you to take orders online and quickly manage pickup and delivery. Now, you can associate the orders with the customer's file, containing their details, like Name and Contact No. & Description they would like to purchase.
+1. Download the app using the Bench CLI.
 
-#### Employee Management 
+    ```bash
+    bench get-app --branch [branch name] 
+    ```
 
-With the POS custom app, you can use your team's full potential by managing them effectively. The employee module helps you streamline critical processes like recruitment and training to payroll & leave management on one platform.
+    Replace `[branch name]` with the appropriate branch as per your setup:
 
-#### Accounts and Payroll
+    | Frappe Branch | GETPOS Branch           |
+    |---------------|-------------------------|
+    | version-14    | production              |
+    | develop       | deployment-development  |
+    | version-13    | production              |
 
-Built with the feature of recording all invoices, transaction values, no. of sold goods, and product descriptions, Get POS (Point-of-sale) mobile apps and web software help businesses manage sales, purchases, rentals, consignments, repairs, & accounting work efficiently. 
+    If it isn't specified, the `--branch` option will default to `deployment-development`.
 
-#### Reporting
+2. Install the app on your site.
 
-Say goodbye to manually crunching numbers by automating reports on the dashboard of Get POS software. You can quickly generate billing and stock reports every day. It will also help calculate profit and loss on a quarterly, half-yearly, & yearly basis. 
+    ```bash
+    bench --site [site name] install-app nbpos
+    ```
 
-#### Supplier Management
+## App Downloads
 
-Managing vendors with POS Application Development Solutions is suitable for retail businesses as the onboarding process helps train them to use the platform for maximum engagement with controlled costs, risks, & performance measures. 
 
-#### Workflow Automation
 
-With the Best Mobile POS system and its custom development, business chains can easily automate their workflows, like creating invoices, loyalty plans, multiple promotions, discount schemes, fixing offer duration, and controlling active & inactive coupons. 
+## Planned Features
 
-#### Multi-location Management
+- Integration with POS Awesome
+- Shift Management of POS Users
+- Loyalty Points to be used in Invoices
+- My Account feature for POS User
+    - Cash Refunds
+    - Paid In
+    - Paid Out
 
-Get POS for business helps manage multiple chains of your brand easily. Built with the feature to utilize cash flow across all store locations, it allows retrieval of ending tills and easily utilizes gift cards for customers. 
+
+## Contributing
+
+- [Issue Guidelines]()
+- [Pull Request Requirements]()
+
+## License
+
+[GNU General Public License (v3)]()
+
 
 
 ## Top Benefits of Get POS System for Your Business 
@@ -59,3 +97,6 @@ NestorBird’s Get POS system is the perfect solution for your hospitality busin
 #### For Supermarkets
 
 The custom Get POS software is specifically developed to meet the needs of supermarkets & grocery stores. With its advanced inventory management features and fast, accurate scanning capabilities, you can ensure your shelves are always stocked with the products your customers want. 
+
+
+####  For support please get in touch with us at sales@nestorbird.com for demonstration.
