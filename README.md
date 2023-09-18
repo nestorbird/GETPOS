@@ -1,7 +1,7 @@
 <div align="center">
 
 <!-- TODO: add link to website once it is ready -->
-<h1><a href="getpos.in" _blank=true>GETPOS</a></h1>
+<h1>[GETPOS](https://getpos.in)</h1>
 
 Simple, yet powerful POS solutions for businesses
 
