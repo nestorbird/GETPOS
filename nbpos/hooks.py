@@ -20,6 +20,8 @@ fixtures = [
 				"in",
 				(
 					"Sales Order Item-associated_item",
+                    "Sales Invoice-hub_manager",
+                    "Sales Order-hub_manager"
 				)
 			)
 		}

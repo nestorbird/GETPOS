@@ -371,15 +371,17 @@ def create_sales_order():
                 sales_order.mpesa_no = order_list.get("mpesa_no")
                 sales_order.coupon_code = order_list.get("coupon_code")
                 # sales_order = add_taxes(sales_order) 
+                sales_order.save()
                 sales_order.submit()
                 res['success_key'] = 1
                 res['message'] = "success"
                 res["sales_order"] ={"name" : sales_order.name,
                  "doc_status" : sales_order.docstatus}
+                
+                del frappe.local.response["exc_type"]
                 return res
 
         except Exception as e:
-                print(frappe.local.response)
                 frappe.clear_messages()
                 del frappe.local.response["exc_type"]
                 frappe.local.response["message"] ={

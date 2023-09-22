@@ -20,6 +20,7 @@ def create_sales_invoice_from_sales_order(doc):
     sales_invoice.posting_time = doc.transaction_time
     sales_invoice.due_date = doc.transaction_date
     sales_invoice.update_stock = 1
+    sales_invoice.save()
     sales_invoice.submit()
 
 def set_warehouse(doc):

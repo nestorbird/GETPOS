@@ -11,9 +11,9 @@ def create_payment_entry(doc):
     if doc.mode_of_payment == 'Cash':
         account = frappe.db.get_value('Account', 
                     {
-                        'hub_manager': doc.hub_manager,
                         'disabled': 0,
-                        'account_type': 'Cash'
+                        'account_type': 'Cash',
+                        'account_name': 'Cash'
                     },
                     'name')
         payment_entry.paid_to = account
@@ -22,4 +22,3 @@ def create_payment_entry(doc):
         payment_entry.reference_date = doc.posting_date
     payment_entry.save()
     payment_entry.submit()
-    frappe.db.commit()
