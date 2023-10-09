@@ -9,7 +9,13 @@
  "field_order": [
   "primary",
   "secondary",
-  "asset"
+  "asset",
+  "text_and_cancel_icon",
+  "shadow_border",
+  "hint_text",
+  "font_white_color",
+  "park_order_button",
+  "active"
  ],
  "fields": [
   {
@@ -26,12 +32,42 @@
    "fieldname": "asset",
    "fieldtype": "Color",
    "label": "Asset"
+  },
+  {
+   "fieldname": "text_and_cancel_icon",
+   "fieldtype": "Color",
+   "label": "Text and Cancel Icon"
+  },
+  {
+   "fieldname": "shadow_border",
+   "fieldtype": "Color",
+   "label": "Shadow Border"
+  },
+  {
+   "fieldname": "hint_text",
+   "fieldtype": "Color",
+   "label": "Hint Text"
+  },
+  {
+   "fieldname": "font_white_color",
+   "fieldtype": "Color",
+   "label": "Font White Color"
+  },
+  {
+   "fieldname": "park_order_button",
+   "fieldtype": "Color",
+   "label": "Park Order Button"
+  },
+  {
+   "fieldname": "active",
+   "fieldtype": "Color",
+   "label": "Active"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2023-09-13 15:41:44.835986",
+ "modified": "2023-10-05 14:02:56.556877",
  "modified_by": "Administrator",
  "module": "nbpos",
  "name": "Theme Settings",
