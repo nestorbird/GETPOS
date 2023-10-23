@@ -770,5 +770,26 @@ def get_theme_settings():
 
 
 
+@frappe.whitelist(allow_guest=True)
+def get_sales_taxes():
+        taxes_data=[]
+        tax_dict={}
+        all_taxes=frappe.get_all("Sales Taxes and Charges Template",'*')
+        for taxes in all_taxes:
+                tax_dict['name']=taxes['name']
+                tax_dict['title']=taxes['title']
+                tax_dict['is_default']=taxes['is_default']
+                tax_dict['disabled']=taxes['disabled']
+                tax_dict['company']=taxes['company']
+                tax_dict['tax_category']=taxes['tax_category']
+                tax_dict["tax"]=frappe.db.sql("""select charge_type, account_head, 
+                description, cost_center, rate,
+                account_currency ,tax_amount, total 
+                from `tabSales Taxes and Charges` where parent = '{tax_name}' """
+                .format(tax_name=taxes['name']), as_dict=1
+                )
+                print(tax_dict['tax'],'tax')
+                taxes_data.append(tax_dict)
+                tax_dict={}
 
-
+        return taxes_data
