@@ -767,29 +767,23 @@ def get_theme_settings():
     }
     return res
 
-
-
-
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist()
 def get_sales_taxes():
-        taxes_data=[]
-        tax_dict={}
-        all_taxes=frappe.get_all("Sales Taxes and Charges Template",'*')
-        for taxes in all_taxes:
-                tax_dict['name']=taxes['name']
-                tax_dict['title']=taxes['title']
-                tax_dict['is_default']=taxes['is_default']
-                tax_dict['disabled']=taxes['disabled']
-                tax_dict['company']=taxes['company']
-                tax_dict['tax_category']=taxes['tax_category']
-                tax_dict["tax"]=frappe.db.sql("""select charge_type, account_head, 
-                description, cost_center, rate,
-                account_currency ,tax_amount, total 
-                from `tabSales Taxes and Charges` where parent = '{tax_name}' """
-                .format(tax_name=taxes['name']), as_dict=1
-                )
-                print(tax_dict['tax'],'tax')
-                taxes_data.append(tax_dict)
-                tax_dict={}
+        taxes_data = frappe.db.sql("""
+                SELECT
+        stct.name AS name,stct.title AS title,stct.is_default AS is_default,stct.disabled AS disabled,stct.company AS company,stct.tax_category AS tax_category
+                FROM `tabSales Taxes and Charges Template` AS stct 
+        
+                """, as_dict=1)
 
+        tax = frappe.db.sql("""
+        SELECT stct.name as name ,
+        stc.charge_type AS charge_type , stc.account_head AS account_head , stc.description AS description , stc.cost_center AS cost_denter ,stc.rate as rate, 
+        stc.account_currency as account_currency , stc.tax_amount as tax_amount ,stc.total as total FROM `tabSales Taxes and Charges` AS stc INNER JOIN `tabSales Taxes and Charges Template`
+        as stct ON
+        stct.name=stc.parent 
+        """, as_dict=1)
+       
+        for i in taxes_data:
+                i['tax'] = [j for j in tax if i['name'] == j['name']]
         return taxes_data
