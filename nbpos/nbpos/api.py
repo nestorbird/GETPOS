@@ -767,8 +767,23 @@ def get_theme_settings():
     }
     return res
 
+@frappe.whitelist()
+def get_sales_taxes():
+        taxes_data = frappe.db.sql("""
+                SELECT
+        stct.name AS name,stct.title AS title,stct.is_default AS is_default,stct.disabled AS disabled,stct.company AS company,stct.tax_category AS tax_category
+                FROM `tabSales Taxes and Charges Template` AS stct 
+        
+                """, as_dict=1)
 
-
-
-
-
+        tax = frappe.db.sql("""
+        SELECT stct.name as name ,
+        stc.charge_type AS charge_type , stc.account_head AS account_head , stc.description AS description , stc.cost_center AS cost_denter ,stc.rate as rate, 
+        stc.account_currency as account_currency , stc.tax_amount as tax_amount ,stc.total as total FROM `tabSales Taxes and Charges` AS stc INNER JOIN `tabSales Taxes and Charges Template`
+        as stct ON
+        stct.name=stc.parent 
+        """, as_dict=1)
+       
+        for i in taxes_data:
+                i['tax'] = [j for j in tax if i['name'] == j['name']]
+        return taxes_data
