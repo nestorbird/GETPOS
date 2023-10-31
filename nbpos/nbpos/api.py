@@ -777,8 +777,8 @@ def get_sales_taxes():
                 """, as_dict=1)
 
         tax = frappe.db.sql("""
-        SELECT stct.name as name ,
-        stc.charge_type AS charge_type , stc.account_head AS account_head , stc.description AS description , stc.cost_center AS cost_denter ,stc.rate as rate, 
+        SELECT stct.name as name , stct.name as item_tax_template,
+        stc.charge_type AS charge_type , stc.account_head AS tax_type , stc.description AS description , stc.cost_center AS cost_denter ,stc.rate as tax_rate, 
         stc.account_currency as account_currency , stc.tax_amount as tax_amount ,stc.total as total FROM `tabSales Taxes and Charges` AS stc INNER JOIN `tabSales Taxes and Charges Template`
         as stct ON
         stct.name=stc.parent 
