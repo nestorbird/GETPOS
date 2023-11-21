@@ -22,12 +22,20 @@ def after_insert(doc, event=None):
             check_stock_items(doc)
 
 
-def check_stock_items(doc):pass
+def check_stock_items(doc):
+    doc = frappe.get_doc(doc.get('ref_doctype'), doc.get('docname'))
+    if doc.items:
+        for item in doc.items:
+            check_item(doc={'ref_doctype':'Item', 'docname': item.item_code})
+
 
 def check_item_tax_template(doc):
     doc = frappe.get_doc(doc.get('ref_doctype'), doc.get('docname'))
-    item_group_data = frappe.db.sql(''' select parent from `tabItem Tax` where parenttype='Item' and item_tax_template= %(name)s''',{'name': doc.name},
+    item_data = frappe.db.sql(''' select parent from `tabItem Tax` where parenttype='Item' and item_tax_template= %(name)s group by parent''',{'name': doc.name},
                                     as_dict=1 )
+    for item in item_data:
+        check_item(doc={'ref_doctype':'Item', 'docname': item.parent})
+    
 
 
 def check_price(doc):
@@ -35,9 +43,9 @@ def check_price(doc):
     item_group = frappe.get_cached_value('Item', doc.item_code, 'item_group')
     parent_item_group = frappe.get_cached_value('Item Group', item_group, fieldname="parent_item_group")
     if not parent_item_group == 'Extra':
-        data = get_items(item_group = doc.get('item_group'), item_code=doc.item_code, item_price=1)
+        data = get_items(item_group = doc.get('item_group'), item_code=doc.item_code)
     else:
-        data = get_items(extra_item_group = doc.get('item_group'), item_code=doc.item_code, item_price=1)
+        data = get_items(extra_item_group = doc.get('item_group'), item_code=doc.item_code)
 
     create_sync_reg_log(data)
 
@@ -56,10 +64,11 @@ def check_item(doc):
 
 def check_item_group(doc):
     doc = frappe.get_doc(doc.get('ref_doctype'), doc.get('docname'))
-    if not doc.get('parent_item_group') == 'Extra':
-        data = get_items(item_group = doc.name)
+    
+    if doc.get('parent_item_group') != 'Extra':
+        data = get_items(item_group = doc.get('name'))
     else:
-        data = get_items(extra_item_group = doc.name)
+        data = get_items(extra_item_group = doc.get('name'))
 
     create_sync_reg_log(data)
 

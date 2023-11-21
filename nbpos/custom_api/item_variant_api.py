@@ -45,12 +45,21 @@ def get_combo_items(name):
         return []
     
 @frappe.whitelist()
-def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=None, item_price=None, item_stock=None):
+def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=None):
+   
     data = []
     filters = {'is_group':0,'name':['not in',('Extra')],
                                 'parent_item_group':['not in',('Extra')]}
     if from_date:
         filters.update({'modified':['>=',from_date]})
+
+    if item_group:
+        filters.update({'name': item_group})
+    
+    if extra_item_group:
+        item_groups = get_related_item_groups(extra_item_group)
+        filters.update({'name':['in', item_groups]})
+
     all_groups = frappe.get_all('Item Group',filters=filters,fields=['name','image'])
     for group in all_groups:
         group_dict = {}
@@ -60,7 +69,12 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
         attributes = get_attributes_items(group)
                     
         #### Getting Items ####
-        all_items = frappe.get_all('Item',filters={'item_group':group.name,'disabled':0},fields=['*'])
+        filters = {'item_group':group.name,'disabled':0}
+        
+        if item_code and not extra_item_group :
+            filters.update({'name': item_code})
+
+        all_items = frappe.get_all('Item',filters = filters, fields=['*'])
       
         if all_items:
             group_dict.update({'item_group':group.name,
@@ -101,11 +115,19 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
             data.append(group_dict)
     return data
 
+def get_related_item_groups(extra_item_group):
+    item_groups = frappe.db.sql('''select distinct igm.item_group from `tabItem` i , `tabItem Group Multiselect`igm  
+                                where igm.parent = i.name and i.item_group = %(item_group)s''',{'item_group':extra_item_group}, as_dict=1)
+    
+    frappe.log_error('title', item_groups)
+    
+    return [item_group.item_group for item_group in item_groups]
+
 
 
 def get_attributes_items(group=None):
      # For Adding Extra Items in Item
-    all_extra_items = frappe.get_all('Item Group Multiselect',parent_doctype="Item",filters={'item_group':group.name},fields=['parent'],debug=True)
+    all_extra_items = frappe.get_all('Item Group Multiselect',parent_doctype="Item",filters={'item_group':group.name},fields=['parent'])
     attributes = []
     attributes_dict = {}
     product_price_addition = 0
@@ -158,10 +180,9 @@ def get_item_taxes(name):
     WHERE i.name = it.parent and i.name = %(name)s and
     it.item_tax_template = itt.name and itt.name = ittd.parent
     """,values=filters ,  as_dict = True)
-    if tax:
-        return tax
-    else: 
-        return []
+    
+    return tax
+    
         
         
         
