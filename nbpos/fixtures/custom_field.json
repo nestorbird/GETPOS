@@ -91,7 +91,7 @@
   "name": "Sales Invoice-hub_manager",
   "no_copy": 0,
   "non_negative": 0,
-  "options": "Hub Manager",
+  "options": "User",
   "permlevel": 0,
   "precision": "",
   "print_hide": 0,
