@@ -140,6 +140,9 @@ doc_events = {
 	},
 	"Item Price":{
 		"validate": "nbpos.nbpos.hooks.item_price.validate_item_price"
+	},
+    "Version":{
+        "after_insert": "nbpos.nbpos.hooks.version.after_insert"
 	}
 	
 }
