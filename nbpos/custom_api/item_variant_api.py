@@ -119,7 +119,6 @@ def get_related_item_groups(extra_item_group):
     item_groups = frappe.db.sql('''select distinct igm.item_group from `tabItem` i , `tabItem Group Multiselect`igm  
                                 where igm.parent = i.name and i.item_group = %(item_group)s''',{'item_group':extra_item_group}, as_dict=1)
     
-    frappe.log_error('title', item_groups)
     
     return [item_group.item_group for item_group in item_groups]
 
