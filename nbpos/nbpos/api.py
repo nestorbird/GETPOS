@@ -391,20 +391,26 @@ def create_sales_order():
 
 def add_items_in_order(sales_order, items):
         for item in items:
-                item_tax_template = get_item_tax_template(item.get("item_code") )
+                if item.get('tax'):
+                        item_tax_template = item.get('tax')[0].get('item_tax_template')
+
                 sales_order.append("items", {
                         "item_code": item.get("item_code"),
                         "qty": item.get("qty"),
                         "rate": item.get("rate"),
-                        "item_tax_template": item_tax_template[0].name if item_tax_template else ""                
+                        "item_tax_template": item_tax_template if item_tax_template else ""                
                 })
+
                 if item.get("sub_items"):
                         for extra_item in item.get("sub_items"):
+                              if extra_item.get('tax'):
+                                     extra_item_tax_template = extra_item.get('tax')[0].get('item_tax_template')
                               sales_order.append("items", {
                                 "item_code": extra_item.get("item_code"),
                                 "qty": extra_item.get("qty"),
                                 "rate": extra_item.get("rate"),
-                                "associated_item": item.get('item_code')
+                                "associated_item": item.get('item_code'),
+                                "item_tax_template": extra_item_tax_template if extra_item_tax_template else "" 
                                 })
         return sales_order
 
