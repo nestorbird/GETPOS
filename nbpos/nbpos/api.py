@@ -376,14 +376,15 @@ def create_sales_order():
                 res['success_key'] = 1
                 res['message'] = "success"
                 res["sales_order"] ={"name" : sales_order.name,
-                 "doc_status" : sales_order.docstatus}
-                
-                del frappe.local.response["exc_type"]
+                "doc_status" : sales_order.docstatus}
+                if "exc_type" in frappe.local.response:
+                        del frappe.local.response["exc_type"]
                 return res
 
         except Exception as e:
-                frappe.clear_messages()
-                del frappe.local.response["exc_type"]
+                # frappe.clear_messages()
+                if "exc_type" in frappe.local.response:
+                        del frappe.local.response["exc_type"]
                 frappe.local.response["message"] ={
                 "success_key":0,
                 "message":e
