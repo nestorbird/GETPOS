@@ -382,7 +382,6 @@ def create_sales_order():
                 return res
 
         except Exception as e:
-                # frappe.clear_messages()
                 if "exc_type" in frappe.local.response:
                         del frappe.local.response["exc_type"]
                 frappe.local.response["message"] ={
