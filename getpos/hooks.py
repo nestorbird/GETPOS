@@ -1,12 +1,12 @@
 from . import __version__ as app_version
 
-app_name = "nbpos"
-app_title = "nbpos"
-app_publisher = "swapnil"
-app_description = "nbpos"
+app_name = "getpos"
+app_title = "GETPOS"
+app_publisher = "Nestorbird"
+app_description = "GETPOS"
 app_icon = "octicon octicon-file-directory"
 app_color = "grey"
-app_email = "swapnil.pawar"
+app_email = "info@nestorbird.com"
 app_license = "MIT"
 
 # Includes in <head>
@@ -41,7 +41,7 @@ fixtures = [
 ]
 # include js, css files in header of desk.html
 # app_include_css = "/assets/nbpos/css/nbpos.css"
-app_include_js = "/assets/nbpos/js/nbpos.js"
+app_include_js = "/assets/getpos/js/nbpos.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/nbpos/css/nbpos.css"
@@ -125,24 +125,24 @@ doctype_js = {
 # Hook on document methods and events
 doc_events = {
 	"Warehouse": {
-		"validate": "nbpos.nbpos.hooks.warehouse.validate_hub_manager"
+		"validate": "getpos.getpos.hooks.warehouse.validate_hub_manager"
 	},
 	"Customer" : {
-		"validate" : "nbpos.nbpos.hooks.customer.validate"
+		"validate" : "getpos.getpos.hooks.customer.validate"
 	},
 	"Sales Order":{
-		"on_submit": "nbpos.nbpos.hooks.sales_order.on_submit",
-		"validate": "nbpos.nbpos.hooks.sales_order.validate"
+		"on_submit": "getpos.getpos.hooks.sales_order.on_submit",
+		"validate": "getpos.getpos.hooks.sales_order.validate"
 	},
 	"Sales Invoice":{
-		"on_submit": "nbpos.nbpos.hooks.sales_invoice.on_submit"
+		"on_submit": "getpos.getpos.hooks.sales_invoice.on_submit"
 
 	},
 	"Item Price":{
-		"validate": "nbpos.nbpos.hooks.item_price.validate_item_price"
+		"validate": "getpos.getpos.hooks.item_price.validate_item_price"
 	},
     "Version":{
-        "after_insert": "nbpos.nbpos.hooks.version.after_insert"
+        "after_insert": "getpos.getpos.hooks.version.after_insert"
 	}
 	
 }
