@@ -33,7 +33,7 @@
  "links": [],
  "modified": "2022-01-27 15:12:53.658737",
  "modified_by": "Administrator",
- "module": "nbpos",
+ "module": "getpos",
  "name": "Ward Detail",
  "owner": "Administrator",
  "permissions": [],

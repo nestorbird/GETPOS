@@ -23,7 +23,7 @@
  "links": [],
  "modified": "2022-03-01 13:39:20.970017",
  "modified_by": "Administrator",
- "module": "nbpos",
+ "module": "getpos",
  "name": "Item Group Multiselect",
  "owner": "Administrator",
  "permissions": [],

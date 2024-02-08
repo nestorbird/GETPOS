@@ -50,7 +50,7 @@
  "links": [],
  "modified": "2022-01-27 15:14:56.988195",
  "modified_by": "Administrator",
- "module": "nbpos",
+ "module": "getpos",
  "name": "Privacy Policy",
  "owner": "Administrator",
  "permissions": [

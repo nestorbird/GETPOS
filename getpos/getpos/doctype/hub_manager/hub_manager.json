@@ -48,7 +48,7 @@
  ],
  "modified": "2022-01-27 15:13:19.642083",
  "modified_by": "Administrator",
- "module": "nbpos",
+ "module": "getpos",
  "name": "Hub Manager",
  "owner": "Administrator",
  "permissions": [

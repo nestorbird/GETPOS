@@ -31,7 +31,7 @@
  "links": [],
  "modified": "2022-01-27 15:13:41.838465",
  "modified_by": "Administrator",
- "module": "nbpos",
+ "module": "getpos",
  "name": "nbpos Setting",
  "owner": "Administrator",
  "permissions": [
