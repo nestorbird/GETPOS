@@ -69,7 +69,7 @@
  "links": [],
  "modified": "2023-10-05 14:02:56.556877",
  "modified_by": "Administrator",
- "module": "nbpos",
+ "module": "getpos",
  "name": "Theme Settings",
  "owner": "Administrator",
  "permissions": [
