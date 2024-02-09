@@ -1,5 +1,5 @@
 import frappe, json
-from nbpos.custom_api.item_variant_api import get_items
+from getpos.custom_api.item_variant_api import get_items
 from frappe.utils import now
 
 def after_insert(doc, event=None):
