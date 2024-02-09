@@ -4,15 +4,15 @@ include *.json
 include *.md
 include *.py
 include *.txt
-recursive-include nbpos *.css
-recursive-include nbpos *.csv
-recursive-include nbpos *.html
-recursive-include nbpos *.ico
-recursive-include nbpos *.js
-recursive-include nbpos *.json
-recursive-include nbpos *.md
-recursive-include nbpos *.png
-recursive-include nbpos *.py
-recursive-include nbpos *.svg
-recursive-include nbpos *.txt
-recursive-exclude nbpos *.pyc
+recursive-include getpos *.css
+recursive-include getpos *.csv
+recursive-include getpos *.html
+recursive-include getpos *.ico
+recursive-include getpos *.js
+recursive-include getpos *.json
+recursive-include getpos *.md
+recursive-include getpos *.png
+recursive-include getpos *.py
+recursive-include getpos *.svg
+recursive-include getpos *.txt
+recursive-exclude getpos *.pyc
