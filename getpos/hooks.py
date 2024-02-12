@@ -124,9 +124,9 @@ doctype_js = {
 # ---------------
 # Hook on document methods and events
 doc_events = {
-	"Warehouse": {
-		"validate": "getpos.getpos.hooks.warehouse.validate_hub_manager"
-	},
+	# "Warehouse": {
+	# 	"validate": "getpos.getpos.hooks.warehouse.validate_hub_manager"
+	# },
 	"Customer" : {
 		"validate" : "getpos.getpos.hooks.customer.validate"
 	},
