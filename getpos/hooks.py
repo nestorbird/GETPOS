@@ -222,7 +222,7 @@ user_data_fields = [
 		"doctype": "{doctype_4}"
 	}
 ]
-after_migrate = "nbpos.nbpos.after_migrate.main"
+after_migrate = "getpos.getpos.after_migrate.main"
 # Authentication and authorization
 # --------------------------------
 
