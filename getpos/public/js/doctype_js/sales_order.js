@@ -2,7 +2,7 @@ frappe.ui.form.on('Sales Order', {
      hub_manager: function(frm){
          if(frm.doc.hub_manager){
             frappe.call({
-                method: "nbpos.nbpos.doctype.ward.ward.get_ward_by_hub_manager",
+                method: "getpos.getpos.doctype.ward.ward.get_ward_by_hub_manager",
                 args:{
                     hub_manager: frm.doc.hub_manager
                 },
@@ -21,7 +21,7 @@ frappe.ui.form.on('Sales Order', {
      ward: function(frm){
          if(frm.doc.ward){
             frappe.call({
-                method: "nbpos.nbpos.hooks.customer.get_customer_by_ward",
+                method: "getpos.getpos.hooks.customer.get_customer_by_ward",
                 args:{
                     ward: frm.doc.ward
                 },
