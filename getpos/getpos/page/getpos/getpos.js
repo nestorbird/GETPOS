@@ -53,7 +53,7 @@ frappe.pages['getpos'].on_page_load = function(wrapper) {
                 <li>Start Using: Begin managing your point-of-sale operations efficiently.</li>
             </ol>
         </div>
-    `);
+    `);              
     // Set about content
     aboutContent.html(`
         <div class="about-wrapper">
@@ -114,5 +114,5 @@ frappe.pages['getpos'].on_page_load = function(wrapper) {
     $('head').append(`<style>${customStyles}</style>`);
     // Trigger click event on instructions button to highlight it by default
     $('.instruction-button').trigger('click');
-}
+}          
 
