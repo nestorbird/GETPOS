@@ -103,7 +103,7 @@ frappe.pages['getpos'].on_page_load = function(wrapper) {
             background-color:#f0f8ff;
             width:75vw;
         }
-        .about-wrapper{
+        .about-wrapper{       
             margin-left:170px;
             margin-top: 10px;
             background-color:#f0f8ff;
@@ -113,6 +113,6 @@ frappe.pages['getpos'].on_page_load = function(wrapper) {
     // Append custom styles to the page
     $('head').append(`<style>${customStyles}</style>`);
     // Trigger click event on instructions button to highlight it by default
-    $('.instruction-button').trigger('click');
+    $('.instruction-button').trigger('click');         
 }          
 
