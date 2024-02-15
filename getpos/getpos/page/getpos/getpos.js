@@ -35,7 +35,7 @@ frappe.pages['getpos'].on_page_load = function(wrapper) {
     // Create div elements for instructions and about content
     var instructionsContent = $('<div>').addClass('instructions-content').hide().appendTo(wrapper);
     var aboutContent = $('<div>').addClass('about-content').hide().appendTo(wrapper);
-    // Set instructions content
+
     instructionsContent.html(`
         <div class="instruction-wrapper">      
             <h2>How to Use the Get POS App?</h2>
@@ -54,7 +54,7 @@ frappe.pages['getpos'].on_page_load = function(wrapper) {
             </ol>
         </div>
     `);              
-    // Set about content
+    
     aboutContent.html(`
         <div class="about-wrapper">
             <h3>About</h3>
@@ -75,7 +75,7 @@ frappe.pages['getpos'].on_page_load = function(wrapper) {
         <p>Contact No: +91-9878990102</p>
         </div>
     `);
-    // Custom CSS styles
+    
     var customStyles = `
         .heading {
             background-color: #F8F9FA;
