@@ -13,6 +13,9 @@ frappe.pages['getpos'].on_page_load = function(wrapper) {
             .click(function() {
                 $('.instructions-content').toggle();
                 $('.about-content').hide();
+                // Highlight instructions button
+                $(this).addClass('active');
+                $('.about-button').removeClass('active');
             });
         var aboutButton = $('<button>')
             .text('About')
@@ -20,6 +23,9 @@ frappe.pages['getpos'].on_page_load = function(wrapper) {
             .click(function() {
                 $('.about-content').toggle();
                 $('.instructions-content').hide();
+                // Highlight about button
+                $(this).addClass('active');
+                $('.instruction-button').removeClass('active');
             });
         heading.append(instructionsButton).append(aboutButton);
         $(page.body).prepend(heading);
@@ -86,9 +92,9 @@ frappe.pages['getpos'].on_page_load = function(wrapper) {
             outline: none;
             margin-left: 1vw;
             font-weight:bold;
-            font-size:1.7vw;
+            font-size:1.2vw;
         }
-        .instruction-button:hover, .about-button:hover {
+        .instruction-button.active, .about-button.active {
             background-color: #C7CED6;
         }
         .instruction-wrapper {
@@ -106,4 +112,7 @@ frappe.pages['getpos'].on_page_load = function(wrapper) {
     `;
     // Append custom styles to the page
     $('head').append(`<style>${customStyles}</style>`);
+    // Trigger click event on instructions button to highlight it by default
+    $('.instruction-button').trigger('click');
 }
+
