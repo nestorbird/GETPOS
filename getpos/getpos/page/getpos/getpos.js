@@ -31,10 +31,10 @@ frappe.pages['getpos'].on_page_load = function(wrapper) {
     var aboutContent = $('<div>').addClass('about-content').hide().appendTo(wrapper);
     // Set instructions content
     instructionsContent.html(`
-        <div class="instruction-wrapper">
+        <div class="instruction-wrapper">      
             <h2>How to Use the Get POS App?</h2>
             <h3>Instructions</h3>
-            <ol>
+            <ol>     
                 <li>Install Get POS App: Download it from the Google Play Store (Android) or the Apple App Store (iOS).</li>
                 <ul>
                     <li>Android Users: Search "Get POS App" in the Google Play Store, and tap "Install." <br> Download Now: <a href="https://play.google.com/store/apps/details?id=com.nestorbird.nb_pos">Android App Link</a></li>
