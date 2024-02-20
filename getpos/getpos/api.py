@@ -4,7 +4,7 @@ from frappe import _
 STANDARD_USERS = ("Guest", "Administrator")
 from frappe.rate_limiter import rate_limit
 from frappe.utils.password import get_password_reset_limit
-from frappe.utils import (cint,get_formatted_email, nowdate, nowtime)
+from frappe.utils import (cint,get_formatted_email, nowdate, nowtime, flt)
 from erpnext.accounts.utils import get_balance_on
 from erpnext.stock.utils import get_stock_balance
 from erpnext.stock.stock_ledger import get_previous_sle, get_stock_ledger_entries
@@ -365,34 +365,47 @@ def create_sales_order():
                 sales_order.transaction_date = arr[0]
                 sales_order.transaction_time = arr[1]
                 sales_order.delivery_date = order_list.get("delivery_date")
-                sales_order = add_items_in_order(sales_order, order_list.get("items"))
+                sales_order = add_items_in_order(sales_order, order_list.get("items"), order_list)
                 sales_order.status = order_list.get("status")
                 sales_order.mode_of_payment = order_list.get("mode_of_payment")
                 sales_order.mpesa_no = order_list.get("mpesa_no")
                 sales_order.coupon_code = order_list.get("coupon_code")
-                # sales_order = add_taxes(sales_order) 
+                
                 sales_order.save()
                 sales_order.submit()
+                
                 res['success_key'] = 1
                 res['message'] = "success"
-                res["sales_order"] ={"name" : sales_order.name,
-                 "doc_status" : sales_order.docstatus}
-                
-                del frappe.local.response["exc_type"]
+                res["sales_order"] ={
+                       "name" : sales_order.name,
+                        "doc_status" : sales_order.docstatus
+                        }
+                if frappe.local.response.get("exc_type"):
+                        del frappe.local.response["exc_type"]
                 return res
 
         except Exception as e:
+                if frappe.local.response.get("exc_type"):
+                        del frappe.local.response["exc_type"]
+
                 frappe.clear_messages()
-                del frappe.local.response["exc_type"]
+                
                 frappe.local.response["message"] ={
                 "success_key":0,
                 "message":e
                         }
 
-def add_items_in_order(sales_order, items):
+def add_items_in_order(sales_order, items, order_list):
+        sales_taxes = {}
         for item in items:
+                item_tax_template = ""
                 if item.get('tax'):
                         item_tax_template = item.get('tax')[0].get('item_tax_template')
+                        for tax in item.get('tax'):
+                                if sales_taxes.get(tax.get('tax_type')):
+                                        sales_taxes[f"{tax.get('tax_type')}"] = flt(sales_taxes[f"{tax.get('tax_type')}"]) + tax.get('tax_amount')
+                                else:
+                                        sales_taxes.update({f"{tax.get('tax_type')}": tax.get('tax_amount')})
 
                 sales_order.append("items", {
                         "item_code": item.get("item_code"),
@@ -411,7 +424,19 @@ def add_items_in_order(sales_order, items):
                                 "rate": extra_item.get("rate"),
                                 "associated_item": item.get('item_code'),
                                 "item_tax_template": extra_item_tax_template if extra_item_tax_template else "" 
-                                })
+                               })
+        
+        for key,value in sales_taxes.items():
+               sales_order.append("taxes", {"charge_type": "On Net Total", "account_head": key, "tax_amount": value, "description": key, })
+
+
+        if order_list.get('tax'):
+               for tax in order_list.get('tax'):
+                        sales_order.append("taxes", {"charge_type": "On Net Total", "account_head": tax.get('tax_type'), "tax_amount": tax.get('tax_amount'),
+                                                      "description": tax.get('tax_type'), "rate": tax.get('tax_rate')})
+        
+         
+
         return sales_order
 
 
