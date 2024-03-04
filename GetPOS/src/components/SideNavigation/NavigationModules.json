@@ -1,0 +1,19 @@
+{
+  "modules": [
+    {
+      "name": "Order",
+      "route": "",
+      "isActive": 1
+    },
+    {
+      "name": "History",
+      "route": "",
+      "isActive": 0
+    },
+    {
+      "name": "My Profile",
+      "route": "",
+      "isActive": 0
+    }
+  ]
+}

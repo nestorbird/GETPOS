@@ -1,0 +1,36 @@
+.side-navbar {
+  display: flex;
+  flex-direction: column;
+  width: 6rem;
+  background-color: white;
+  /* height: 100vh; */
+  position: fixed;
+}
+
+.side-navbar-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-item-card {
+  margin-top: 3rem;
+}
+
+.card {
+  width: 5rem;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border: 1px solid black;
+  height: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px;
+}
+
+.card-active {
+  background-color: #dc1e44;
+}

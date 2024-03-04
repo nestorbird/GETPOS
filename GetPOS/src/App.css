@@ -1,0 +1,156 @@
+body {
+  background-color: #f8f9fa;
+}
+.main-content {
+  display: flex;
+  flex-direction: row;
+  margin-left: 4rem;
+}
+.items-section {
+  width: 72rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.cart-section {
+  width: 36rem;
+  display: flex;
+  justify-content: end;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+}
+.column {
+  display: flex;
+  flex-direction: column;
+}
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #dc1e44;
+  width: 2rem;
+  height: 2rem;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+/* Safari */
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.modal-box {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0;
+  z-index: 999;
+}
+
+.popup {
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  width: 35%;
+  transition: all 5s ease-in-out;
+  min-height: 25vh;
+  position: absolute;
+  top: 10%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  border: 0;
+}
+
+.popup h2 {
+  margin-top: 0;
+  color: #333;
+  font-family: Tahoma, Arial, sans-serif;
+}
+
+.popup .modal-content {
+}
+
+.popup .close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  transition: all 200ms;
+  font-size: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+}
+a {
+  color: black;
+  text-decoration: none !important;
+}
+
+/* @media screen and (max-width: 769px) {
+  .popup {
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    width: 35%;
+    transition: all 5s ease-in-out;
+    max-height: 13%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
+}
+
+@media screen and (max-width: 1025px) {
+  .popup {
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    width: 35%;
+    transition: all 5s ease-in-out;
+    max-height: 16%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
+}
+
+@media only screen and (min-device-width: 1280px) and (max-device-width: 1920px) {
+  .popup {
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    width: 35%;
+    transition: all 5s ease-in-out;
+    max-height: 35%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
+} */
