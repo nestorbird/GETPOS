@@ -20,24 +20,33 @@ const GetCustomer = () => {
 
   return (
     <div className="column" style={{ alignItems: "center" }}>
-      <div className="search-customer-input">
+      <div className="input-search-box row">
         <input
-          type="text"
           className="search-customer-input"
+          type="text"
+          style={{
+            height: "3rem",
+            borderRadius: "8px",
+            border: "1px #d3d3d3",
+            outline: "1px solid black",
+          }}
           value={customerMobile}
           onChange={(e) => setCustomerMobile(e.target.value)}
-        />
+          placeholder="Search Customer"
+        ></input>
         <button
           style={{
-            marginTop: "6px",
-            height: "38px",
-            width: "7%",
-            borderRadius: "10px",
+            width: "3rem",
+            height: "54px",
+            borderRadius: "8px",
+            backgroundColor: "#dc1e44",
+            border: "1px #d3d3d3",
           }}
         >
-          <i className="fa fa-search"></i>
+          <span className="material-symbols-outlined">search</span>
         </button>
       </div>
+
       <div style={{ marginTop: "1rem" }}>
         <div className="card select-customer-section">
           {customerMobile.length > 6 &&

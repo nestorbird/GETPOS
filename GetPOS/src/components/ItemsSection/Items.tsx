@@ -176,21 +176,32 @@ const AllItems = (props) => {
                   <a href="" onClick={(e) => handleItem(e, item)}>
                     <div className="item-card">
                       <img
+                        className="item-card-image"
                         src={
                           item.image
                             ? item.image
                             : "/assets/getpos/images/Group 796.png"
                         }
                         alt="Order"
-                        style={{
-                          width: "4rem",
-                          borderRadius: "50%",
-                          maxHeight: "2.5rem",
-                        }}
                       />
+                      <div className="item-stock-card">
+                        <p style={{ fontSize: "12px", textAlign: "center" }}>
+                          {item.stock_qty}
+                        </p>
+                      </div>
 
-                      <div className="content" style={{}}>
-                        <h4 style={{ fontSize: "14px" }}>{item.name}</h4>
+                      <div className="item-content column">
+                        <h4 style={{ fontSize: "14px", marginBottom: "0" }}>
+                          {item.name}
+                        </h4>
+                        <h5
+                          style={{
+                            fontSize: "14px",
+                            marginTop: "1rem",
+                          }}
+                        >
+                          ₹ {item.product_price ? item.product_price : 0}
+                        </h5>
                       </div>
                     </div>
                   </a>

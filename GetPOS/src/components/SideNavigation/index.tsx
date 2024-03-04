@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./index.css";
 import NavigationItems from "./NavigationModules.json";
+import ExportSvg from "./NavigationSvg";
 
 const SideBar = () => {
   const [navigationItems, setNavigationItems] = useState(NavigationItems);
@@ -34,12 +35,21 @@ const SideBar = () => {
               <li className="navbar-item navbar-item-card">
                 <a href="" onClick={(e) => handleSideItem(e, item.name)}>
                   <div className={item.isActive ? "card card-active" : "card"}>
-                    <img
-                      src="/assets/getpos/images/Group 796.png"
-                      alt="Order"
-                      style={{}}
-                    />
-                    <div className="content">
+                    <div
+                      className={
+                        item.isActive
+                          ? "item-image item-image-active"
+                          : "item-image"
+                      }
+                    >
+                      <ExportSvg item={item} />
+                    </div>
+
+                    <div
+                      className={
+                        item.isActive ? "content content-active" : "content"
+                      }
+                    >
                       <h4>{item.name}</h4>
                     </div>
                   </div>

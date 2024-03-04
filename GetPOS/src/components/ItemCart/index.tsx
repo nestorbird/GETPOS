@@ -127,7 +127,7 @@ const ItemCart = (props) => {
 
   const placeOrder = (event) => {
     event.preventDefault();
-    console.log(cartListItems.cartItems, "Cart Items");
+
     call({
       order_list: {
         hub_manager: "akshay@yopmail.com",
@@ -153,7 +153,7 @@ const ItemCart = (props) => {
       },
     }).then((result) => {
       if (result?.message?.success_key === 1) {
-        console.log(result?.message?.sales_order?.name)
+        console.log(result?.message?.sales_order?.name);
         alert("order successful");
       }
     });
@@ -176,7 +176,7 @@ const ItemCart = (props) => {
           {cartListItems.cartItems?.length
             ? cartListItems.cartItems?.length
             : 0}
-          Items
+          &nbsp;Items
         </h2>
       </div>
       <div className="cart-items">

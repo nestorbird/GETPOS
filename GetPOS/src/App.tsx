@@ -29,26 +29,23 @@ function App() {
                   }}
                 >
                   <h1 style={{ marginLeft: "2rem" }}>Choose Category</h1>
-                  <div className="input-search-box">
+                  <div className="input-search-box row">
                     <button
                       style={{
-                        width: "2rem",
-                        height: "38px",
+                        width: "3rem",
+                        height: "3rem",
                         borderRadius: "8px",
                         backgroundColor: "#dc1e44",
                         border: "1px #d3d3d3",
                       }}
                     >
-                      <i className="fa fa-search"></i>
+                      <span className="material-symbols-outlined">search</span>
                     </button>
                     <input
+                      className="search-product-category"
                       type="text"
                       style={{
-                        marginRight: "2rem",
-                        height: "2rem",
-                        marginTop: "1rem",
-                        borderRadius: "8px",
-                        border: "1px #d3d3d3",
+                        
                       }}
                       placeholder="Search Product / Category"
                     ></input>

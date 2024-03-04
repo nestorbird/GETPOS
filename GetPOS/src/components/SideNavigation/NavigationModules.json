@@ -3,17 +3,20 @@
     {
       "name": "Order",
       "route": "",
-      "isActive": 1
+      "isActive": 1,
+      "image": "/assets/getpos/images/Group 796.svg"
     },
     {
       "name": "History",
       "route": "",
-      "isActive": 0
+      "isActive": 0,
+      "image": "/assets/getpos/images/Group 786.png"
     },
     {
       "name": "My Profile",
       "route": "",
-      "isActive": 0
+      "isActive": 0,
+      "image": "/assets/getpos/images/User Circle.png"
     }
   ]
 }

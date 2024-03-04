@@ -34,3 +34,13 @@
 .card-active {
   background-color: #dc1e44;
 }
+.content-active h4 {
+  color: white;
+}
+.item-image {
+  height: 2rem;
+}
+.item-image-active path,
+line {
+  
+}
