@@ -20,14 +20,16 @@ const ModalBox = (props) => {
       style={{
         visibility: showPopup ? "visible" : "hidden",
         opacity: showPopup ? "1" : "0",
-        backdropFilter: "blur(1px)"
+        backdropFilter: "blur(1px)",
       }}
     >
       <div className="popup">
         <h2>{title}</h2>
-        <a className="close" href="" onClick={handleCloseModal}>
-          &times;
-        </a>
+        {title && (
+          <a className="close" href="" onClick={handleCloseModal}>
+            &times;
+          </a>
+        )}
         <div className="modal-content">{htmlRender()}</div>
       </div>
     </div>

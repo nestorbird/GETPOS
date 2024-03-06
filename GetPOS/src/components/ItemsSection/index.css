@@ -92,6 +92,8 @@
   height: 3rem;
   border-radius: 10px;
   background-color: #dc1e44;
+  font-size: 14px;
+  color: white;
 }
 .select-customer-section {
   width: 31rem;
@@ -134,4 +136,28 @@
 .input-search-box {
   width: 32rem;
   margin-top: 1rem;
+}
+.no-record-customer {
+  width: 28rem;
+  border: none;
+  background-color: #fef9fa;
+  box-shadow: none;
+}
+.no-record-text {
+  text-align: center;
+  color: #dc1e44;
+}
+.new-customer-input {
+  border-radius: 10px;
+  margin: 1rem;
+  width: 21rem;
+  height: 2rem;
+  font-size: 14px;
+}
+button.new-customer-submit {
+  width: 21rem;
+  height: 3rem;
+  border-radius: 10px;
+  background-color: #dc1e44;
+  color: white;
 }

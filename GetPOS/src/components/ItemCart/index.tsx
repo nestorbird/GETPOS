@@ -160,14 +160,19 @@ const ItemCart = (props) => {
           success: true,
           sales_order: result?.message?.sales_order,
         });
-        alert("order successful");
       }
     });
   };
 
+  const handleClearData = (e) => {
+    setOrderData({ success: e });
+  };
+
   return (
     <>
-      {orderData?.success === true && <OrderSuccess orderData={orderData} />}
+      {orderData?.success === true && (
+        <OrderSuccess orderData={orderData} clearData={handleClearData} />
+      )}
       <div className="column" style={{ position: "fixed" }}>
         {cartListItems?.payloadData?.customer && (
           <div className="row">
