@@ -28,15 +28,19 @@ const GetCustomer = () => {
     }
   };
 
-  const handleCreateCustomer = (event) => {
+  const handleCreateCustomer = async (event) => {
+    console.log("Handle Create Customer Called");
     event.preventDefault();
-    call({
+    debugger;
+    const resp = await call({
       mobile_no: customerMobile,
       customer_name: newCustomerData.customer_name,
       email_id: newCustomerData.email_id,
-    }).then((result) => {
-      console.log(result);
     });
+    if (resp?.message?.success_key === 1) {
+      cartListItems.setPayloadData({ customer: resp?.message?.customer });
+    }
+    console.log(resp, "response123");
   };
 
   return (
@@ -54,11 +58,25 @@ const GetCustomer = () => {
             type="text"
             placeholder="Enter Name"
             className="new-customer-input"
+            value={newCustomer.customer_name}
+            onChange={(e) =>
+              setNewCustomerData({
+                ...newCustomerData,
+                ...{ customer_name: e.target.value },
+              })
+            }
           />
           <input
             type="text"
             className="new-customer-input"
             placeholder="Enter Email (Optional)"
+            value={newCustomer.email_id}
+            onChange={(e) =>
+              setNewCustomerData({
+                ...newCustomerData,
+                ...{ email_id: e.target.value },
+              })
+            }
           />
           <button
             className="new-customer-submit"
