@@ -80,3 +80,23 @@ h3 {
   margin-top: 10px;
   background-color: #fef9fa;
 }
+.order-success-content {
+  justify-content: center;
+  align-items: center;
+}
+.order-success-icon {
+  width: 5rem;
+}
+.custom-btns-success {
+  display: flex;
+  flex-direction: column;
+}
+button.btn-order-success {
+  margin: 10px;
+  width: 25rem;
+  height: 3rem;
+  background-color: #dc1e44;
+  border-radius: 10px;
+  color: white;
+  font-size: 14px;
+}

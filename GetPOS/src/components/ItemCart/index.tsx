@@ -160,14 +160,19 @@ const ItemCart = (props) => {
           success: true,
           sales_order: result?.message?.sales_order,
         });
-        alert("order successful");
       }
     });
   };
 
+  const handleClearData = (e) => {
+    setOrderData({ success: e });
+  };
+
   return (
     <>
-      {orderData?.success === true && <OrderSuccess orderData={orderData} />}
+      {orderData?.success === true && (
+        <OrderSuccess orderData={orderData} clearData={handleClearData} />
+      )}
       <div className="column" style={{ position: "fixed" }}>
         {cartListItems?.payloadData?.customer && (
           <div className="row">
@@ -269,7 +274,11 @@ const ItemCart = (props) => {
                 setTaxAccordion(taxAccordion === true ? false : true)
               }
             >
-              <h3>Total Tax ⬇️</h3>
+              <div className="row" style={{ alignItems: "center" }}>
+                <h3>Total Tax</h3>
+                <span className="material-symbols-outlined">expand_more</span>
+              </div>
+
               <h3>₹{totalTax(taxes)}</h3>
             </button>
             <div
