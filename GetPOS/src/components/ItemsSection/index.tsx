@@ -29,7 +29,7 @@ const ItemsSection = () => {
                   src={
                     item.item_group_image
                       ? item.item_group_image
-                      : "/assets/getpos/images/Group 796.png"
+                      : "/assets/getpos/images/no_image.png"
                   }
                   alt="Order"
                   style={{

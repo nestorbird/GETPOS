@@ -48,11 +48,35 @@
 }
 .cart-items {
   overflow-y: auto;
-  height: 11rem;
+  height: 12rem;
 }
 .place-order-btn {
   width: -webkit-fill-available;
   height: 3rem;
   background-color: #dc1e44;
   border-radius: 10px;
+}
+h3 {
+  color: black;
+}
+.qty-item-cart-section {
+  border: 1px solid #dc1e44;
+  height: 2rem;
+  border-radius: 5px;
+  margin-top: 10px;
+  width: 6rem;
+  background-color: #fef9fa;
+  z-index: 999;
+}
+.qty-cart-btn {
+  border: none;
+  width: 2.5rem;
+  background-color: white;
+  margin-left: 5px;
+  margin-right: 1px;
+}
+.qty-cart-item {
+  text-align: center;
+  margin-top: 10px;
+  background-color: #fef9fa;
 }

@@ -3,9 +3,11 @@ import "./index.css";
 import APIs from "../../constants/APIs";
 import { useFrappeGetCall, useFrappePostCall } from "frappe-react-sdk";
 import UserItemsContext from "../../common/cartContext";
+import OrderSuccess from "./Order";
 
 const ItemCart = (props) => {
   const [orderTaxes, setOrderTaxes] = useState([]);
+  const [orderData, setOrderData] = useState({ success: false });
 
   const cartListItems: any = useContext(UserItemsContext);
 
@@ -154,179 +156,183 @@ const ItemCart = (props) => {
     }).then((result) => {
       if (result?.message?.success_key === 1) {
         console.log(result?.message?.sales_order?.name);
+        setOrderData({
+          success: true,
+          sales_order: result?.message?.sales_order,
+        });
         alert("order successful");
       }
     });
   };
 
   return (
-    <div className="column" style={{ position: "fixed" }}>
-      {cartListItems?.payloadData?.customer && (
-        <div className="row">
-          <div className="card customer-cart-section">
-            <h4 style={{ color: "#dc1e44", fontSize: "19px" }}>
-              {cartListItems?.payloadData?.customer?.customer_name}
-            </h4>
-          </div>
-        </div>
-      )}
-      <div className="row cart-section">
-        <h2 style={{ margin: "1rem" }}>Cart</h2>
-        <h2 style={{ margin: "1rem", color: "green" }}>
-          {cartListItems.cartItems?.length
-            ? cartListItems.cartItems?.length
-            : 0}
-          &nbsp;Items
-        </h2>
-      </div>
-      <div className="cart-items">
-        {cartListItems.cartItems?.map((item) => {
-          return (
-            <div
-              className="row"
-              style={{
-                justifyContent: "space-between",
-                margin: "10px 20px 0 20px",
-              }}
-            >
-              <p style={{ fontSize: "18px" }}>
-                {item.name.length > 11 ? item.name.substr(0, 11) : item.name}
-              </p>
-              <div
-                className="row qty-cart-section"
-                style={{ marginTop: "-5px" }}
-              >
-                <button
-                  className="qty-btn"
-                  onClick={(e) => handleCartItem(e, item, 1)}
-                >
-                  +
-                </button>
-                <p className="qty-cart">{item.qty ? item.qty : 1}</p>
-                <button
-                  className="qty-btn"
-                  onClick={(e) => handleCartItem(e, item, -1)}
-                >
-                  -
-                </button>
-              </div>
-              <p style={{ fontSize: "18px" }}>
-                ₹ {item.qty * item.product_price}
-              </p>
+    <>
+      {orderData?.success === true && <OrderSuccess orderData={orderData} />}
+      <div className="column" style={{ position: "fixed" }}>
+        {cartListItems?.payloadData?.customer && (
+          <div className="row">
+            <div className="card customer-cart-section">
+              <h4 style={{ color: "#dc1e44", fontSize: "19px" }}>
+                {cartListItems?.payloadData?.customer?.customer_name}
+              </h4>
             </div>
-          );
-        })}
-      </div>
+          </div>
+        )}
+        <div className="row cart-section">
+          <h3 style={{ margin: "1rem" }}>Cart</h3>
+          <h3 style={{ margin: "1rem", color: "green" }}>
+            {cartListItems.cartItems?.length
+              ? cartListItems.cartItems?.length
+              : 0}
+            &nbsp;Items
+          </h3>
+        </div>
+        <div className="cart-items">
+          {cartListItems.cartItems?.map((item) => {
+            return (
+              <div
+                className="row"
+                style={{
+                  justifyContent: "space-between",
+                  margin: "10px 20px 0 20px",
+                }}
+              >
+                <p style={{ fontSize: "18px" }}>
+                  {item.name.length > 11 ? item.name.substr(0, 11) : item.name}
+                </p>
+                <div className="row qty-item-cart-section">
+                  <button
+                    className="qty-cart-btn"
+                    onClick={(e) => handleCartItem(e, item, 1)}
+                  >
+                    +
+                  </button>
+                  <p className="qty-cart-item">{item.qty ? item.qty : 1}</p>
+                  <button
+                    className="qty-cart-btn"
+                    onClick={(e) => handleCartItem(e, item, -1)}
+                  >
+                    -
+                  </button>
+                </div>
+                <p style={{ fontSize: "18px" }}>
+                  ₹ {item.qty * item.product_price}
+                </p>
+              </div>
+            );
+          })}
+        </div>
 
-      <div className="column">
-        <div
-          className="row"
-          style={{ justifyContent: "space-between", margin: "0 1rem 0 1rem" }}
-        >
-          <h3>Bill</h3>
-        </div>
-        <div
-          className="row"
-          style={{ justifyContent: "space-between", margin: "0 1rem 0 1rem" }}
-        >
-          <h3>Item Total</h3>
-          <h3>₹ {itemTotal}</h3>
-        </div>
-        <div
-          className="row"
-          style={{
-            justifyContent: "space-between",
-            margin: "0 1rem 0 1rem",
-            borderBottom: "1px solid black",
-          }}
-        >
-          <h3>Sub Total</h3>
-          <h3>₹ {itemTotal}</h3>
-        </div>
-        <div
-          className="column"
-          style={{
-            justifyContent: "space-between",
-            margin: "0 1rem 0 1rem",
-          }}
-        >
-          <button
-            className={
-              taxAccordion === true
-                ? "row cart-tax-accordion cart-tax-accordion-active"
-                : "row cart-tax-accordion"
-            }
-            style={{
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-            onClick={(e) =>
-              setTaxAccordion(taxAccordion === true ? false : true)
-            }
-          >
-            <h3>Total Tax ⬇️</h3>
-            <h3>₹{totalTax(taxes)}</h3>
-          </button>
+        <div className="column">
           <div
-            className="cart-tax-panel"
-            style={{ display: taxAccordion === true ? "block" : "none" }}
+            className="row"
+            style={{ justifyContent: "space-between", margin: "0 1rem 0 1rem" }}
           >
-            {<RenderTaxItem taxes={taxes} />}
+            <h3>Bill</h3>
           </div>
-          <div className="row" style={{ justifyContent: "space-between" }}>
-            <h2>Grand Total</h2>
-            <h2>₹{itemTotal + totalTax(taxes)}</h2>
+          <div
+            className="row"
+            style={{ justifyContent: "space-between", margin: "0 1rem 0 1rem" }}
+          >
+            <h3>Item Total</h3>
+            <h3>₹ {itemTotal}</h3>
           </div>
-
           <div
             className="row"
             style={{
               justifyContent: "space-between",
+              margin: "0 1rem 0 1rem",
+              borderBottom: "1px solid black",
             }}
           >
-            <a href="" onClick={(e) => handlePayment(e, "Card")}>
-              <div
-                className={
-                  cartListItems?.payloadData?.mode_of_payment &&
-                  cartListItems?.payloadData?.mode_of_payment === "Card"
-                    ? "payment-card row payment-card-active"
-                    : "payment-card row"
-                }
-              >
-                <img
-                  src="/assets/getpos/images/Group 282.svg"
-                  style={{ width: "4rem", height: "3rem" }}
-                />
-                <p style={{ marginLeft: "1rem", fontWeight: "bold" }}>Card</p>
-              </div>
-            </a>
-
-            <a href="" onClick={(e) => handlePayment(e, "Cash")}>
-              <div
-                className={
-                  cartListItems?.payloadData?.mode_of_payment &&
-                  cartListItems?.payloadData?.mode_of_payment === "Cash"
-                    ? "payment-card row payment-card-active"
-                    : "payment-card row"
-                }
-              >
-                <img
-                  src="/assets/getpos/images/Group%20283.svg"
-                  style={{ width: "4rem", height: "3rem" }}
-                />
-                <p style={{ marginLeft: "1rem", fontWeight: "bold" }}>Cash</p>
-              </div>
-            </a>
+            <h3>Sub Total</h3>
+            <h3>₹ {itemTotal}</h3>
           </div>
-
-          <div className="row" style={{ marginTop: "2rem" }}>
-            <button className="place-order-btn" onClick={placeOrder}>
-              Place Order
+          <div
+            className="column"
+            style={{
+              justifyContent: "space-between",
+              margin: "0 1rem 0 1rem",
+            }}
+          >
+            <button
+              className={
+                taxAccordion === true
+                  ? "row cart-tax-accordion cart-tax-accordion-active"
+                  : "row cart-tax-accordion"
+              }
+              style={{
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+              onClick={(e) =>
+                setTaxAccordion(taxAccordion === true ? false : true)
+              }
+            >
+              <h3>Total Tax ⬇️</h3>
+              <h3>₹{totalTax(taxes)}</h3>
             </button>
+            <div
+              className="cart-tax-panel"
+              style={{ display: taxAccordion === true ? "block" : "none" }}
+            >
+              {<RenderTaxItem taxes={taxes} />}
+            </div>
+            <div className="row" style={{ justifyContent: "space-between" }}>
+              <h3>Grand Total</h3>
+              <h3>₹{itemTotal + totalTax(taxes)}</h3>
+            </div>
+
+            <div
+              className="row"
+              style={{
+                justifyContent: "space-between",
+              }}
+            >
+              <a href="" onClick={(e) => handlePayment(e, "Card")}>
+                <div
+                  className={
+                    cartListItems?.payloadData?.mode_of_payment &&
+                    cartListItems?.payloadData?.mode_of_payment === "Card"
+                      ? "payment-card row payment-card-active"
+                      : "payment-card row"
+                  }
+                >
+                  <img
+                    src="/assets/getpos/images/Group 282.svg"
+                    style={{ width: "4rem", height: "3rem" }}
+                  />
+                  <p style={{ marginLeft: "1rem", fontWeight: "bold" }}>Card</p>
+                </div>
+              </a>
+
+              <a href="" onClick={(e) => handlePayment(e, "Cash")}>
+                <div
+                  className={
+                    cartListItems?.payloadData?.mode_of_payment &&
+                    cartListItems?.payloadData?.mode_of_payment === "Cash"
+                      ? "payment-card row payment-card-active"
+                      : "payment-card row"
+                  }
+                >
+                  <img
+                    src="/assets/getpos/images/Group%20283.svg"
+                    style={{ width: "4rem", height: "3rem" }}
+                  />
+                  <p style={{ marginLeft: "1rem", fontWeight: "bold" }}>Cash</p>
+                </div>
+              </a>
+            </div>
+
+            <div className="row" style={{ marginTop: "2rem" }}>
+              <button className="place-order-btn" onClick={placeOrder}>
+                Place Order
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

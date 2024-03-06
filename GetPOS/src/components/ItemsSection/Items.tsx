@@ -26,7 +26,7 @@ const AllItems = (props) => {
           <div className="row">
             <img
               src={
-                item.image ? item.image : "/assets/getpos/images/Group 796.png"
+                item.image ? item.image : "/assets/getpos/images/no_image.png"
               }
               style={{ height: "4rem", maxWidth: "4rem" }}
             />
@@ -180,7 +180,7 @@ const AllItems = (props) => {
                         src={
                           item.image
                             ? item.image
-                            : "/assets/getpos/images/Group 796.png"
+                            : "/assets/getpos/images/no_image.png"
                         }
                         alt="Order"
                       />
