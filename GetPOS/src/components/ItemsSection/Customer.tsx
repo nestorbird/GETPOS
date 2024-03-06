@@ -32,9 +32,10 @@ const GetCustomer = () => {
     console.log("Handle Create Customer Called");
     event.preventDefault();
     debugger;
+    console.log(newCustomerData, "New Customer data");
     const resp = await call({
       mobile_no: customerMobile,
-      customer_name: newCustomerData.customer_name,
+      customer_name: newCustomerData?.customer_name,
       email_id: newCustomerData.email_id,
     });
     if (resp?.message?.success_key === 1) {
