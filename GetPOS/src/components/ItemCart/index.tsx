@@ -269,7 +269,11 @@ const ItemCart = (props) => {
                 setTaxAccordion(taxAccordion === true ? false : true)
               }
             >
-              <h3>Total Tax ⬇️</h3>
+              <div className="row" style={{ alignItems: "center" }}>
+                <h3>Total Tax</h3>
+                <span className="material-symbols-outlined">expand_more</span>
+              </div>
+
               <h3>₹{totalTax(taxes)}</h3>
             </button>
             <div
