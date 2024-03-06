@@ -42,12 +42,13 @@ const OrderSuccess = ({ orderData, clearData }) => {
   const handleReceipt = (event) => {
     event.preventDefault();
     console.log(orderData, "Order Data");
+
     const url =
       "/printview?doctype=Sales%20Order&name=" +
-      orderData?.name +
+      orderData?.sales_order?.name +
       "&trigger_print=1" +
       "&format=POS%20Print" +
-      "&no_letterhead=";
+      "no_letterhead=0&letterhead=";
     const printWindow = window.open(url, "Print");
     printWindow.addEventListener(
       "load",
