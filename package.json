@@ -1,0 +1,14 @@
+{
+  "name": "getpos",
+  "version": "1.0.0",
+  "description": "<div align=\"center\"> <!-- TODO: add link to website once it is ready --> <h1>     GETPOS </h1> Simple, yet powerful POS solutions for businesses </div>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "cd GetPOS && yarn dev",
+    "build": "cd GetPOS && yarn build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

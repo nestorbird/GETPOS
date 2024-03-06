@@ -231,3 +231,5 @@ after_migrate = "getpos.getpos.after_migrate.main"
 # ]
 
 
+
+website_route_rules = [{'from_route': '/GetPOS/<path:app_path>', 'to_route': 'GetPOS'},]

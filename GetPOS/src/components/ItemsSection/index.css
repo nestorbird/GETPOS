@@ -1,0 +1,137 @@
+.items-category-section {
+  overflow-x: auto;
+}
+
+.item-category-card {
+  min-width: 5rem;
+  max-width: 6rem;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid black;
+  height: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px;
+  margin: 1rem 0 1rem 2rem;
+}
+.item-category-card .h4 {
+  font-size: 13px;
+}
+.items-section {
+  margin: 1rem 0 1rem 2rem;
+}
+.item-card {
+  min-width: 8rem;
+  max-width: 8rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px;
+  margin: 1rem 0 1rem 1rem;
+  background-color: lightgrey;
+}
+.item-price {
+  margin-top: auto;
+  margin-bottom: 10px;
+  color: #dc1e44;
+  font-weight: bold;
+}
+.item-stock {
+  margin-top: auto;
+  font-weight: bold;
+  color: green;
+}
+.qty-btn {
+  border: none;
+  width: 2.5rem;
+  background-color: white;
+  margin-left: 5px;
+  margin-right: 1px;
+}
+.qty-cart {
+  text-align: center;
+  margin-top: 10px;
+  background-color: #fef9fa;
+}
+.qty-cart-section {
+  border: 1px solid #dc1e44;
+  height: 2rem;
+  border-radius: 5px;
+  margin-top: 10px;
+  width: 6rem;
+  background-color: #fef9fa;
+}
+.add-to-cart {
+  margin-top: 4%;
+}
+.add-cart-total {
+  width: 100%;
+  height: 60px;
+  border-radius: 10px;
+}
+.search-customer-input {
+  margin-top: 1%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.search-customer-input {
+  width: 28rem;
+  height: 2rem;
+  border-radius: 10px;
+  margin-left: 6px;
+  font-size: 16px;
+}
+.select-customer {
+  width: 32rem;
+  height: 3rem;
+  border-radius: 10px;
+  background-color: #dc1e44;
+}
+.select-customer-section {
+  width: 31rem;
+  border-radius: 10px;
+  border: 1px solid #dc1e44;
+  background-color: #fef9fa;
+}
+.customer-dropdown {
+  width: 30rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border: none;
+  background-color: #fef9fa;
+}
+.item-card-image {
+  z-index: 99999999;
+  margin-top: -18px;
+  width: 4rem;
+  border-radius: 50%;
+  max-height: 2.5rem;
+}
+.item-content {
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.item-stock-card {
+  border-radius: 50%;
+  background-color: green;
+  width: 2rem;
+  align-self: center;
+  margin-top: -2rem;
+  margin-left: 5rem;
+  z-index: 999999999;
+  height: 2rem;
+  color: white;
+}
+.input-search-box {
+  width: 32rem;
+  margin-top: 1rem;
+}
