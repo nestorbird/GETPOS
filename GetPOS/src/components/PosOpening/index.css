@@ -1,0 +1,44 @@
+.pos-open-content {
+  justify-content: center;
+  align-items: center;
+}
+.pos-open-input {
+  margin: 1rem;
+  width: 38rem;
+  height: 2.5rem;
+  border-radius: 10px;
+  border: none;
+  font-size: 14px;
+}
+.pos-open-table {
+  width: 38rem;
+  text-align: center;
+  border: 1px solid #dc1e44;
+  border-radius: 10px;
+  min-height: 30vh;
+  background-color: #fef9fa;
+}
+.pos-open-table th,
+td {
+  border: 1px solid #dc1e44;
+}
+.pos-open-table th {
+  margin: 1rem;
+  height: 3rem;
+  background-color: #dc1e44;
+  text-align: center;
+  color: white;
+  font-size: 14px;
+}
+.pos-open-table tr {
+  height: 3rem;
+}
+.pos-open-table-input {
+  width: 17rem;
+  height: 2.5rem;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  text-align: center;
+  font-size: 14px;
+}

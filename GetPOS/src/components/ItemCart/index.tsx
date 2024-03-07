@@ -127,10 +127,10 @@ const ItemCart = (props) => {
 
   const { call, error: post_error } = useFrappePostCall(APIs.createOrder);
 
-  const placeOrder = (event) => {
+  const placeOrder = async (event) => {
     event.preventDefault();
 
-    call({
+    const result = await call({
       order_list: {
         hub_manager: "akshay@yopmail.com",
         customer: cartListItems.payloadData.customer.name,
@@ -153,15 +153,14 @@ const ItemCart = (props) => {
         mpesa_No: "",
         tax: taxes.length > 0 ? null : orderTaxes,
       },
-    }).then((result) => {
-      if (result?.message?.success_key === 1) {
-        console.log(result?.message?.sales_order?.name);
-        setOrderData({
-          success: true,
-          sales_order: result?.message?.sales_order,
-        });
-      }
     });
+    if (result?.message?.success_key === 1) {
+      console.log(result?.message?.sales_order?.name);
+      setOrderData({
+        success: true,
+        sales_order: result?.message?.sales_order,
+      });
+    }
   };
 
   const handleClearData = (e) => {
