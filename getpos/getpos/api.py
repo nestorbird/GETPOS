@@ -482,97 +482,6 @@ def get_combo_items(name):
      
         return combo_items
         
-'''@frappe.whitelist()
-def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_date = nowdate() , mobile_no = None):
-        res= frappe._dict()
-        base_url = frappe.db.get_single_value('nbpos Setting', 'base_url')
-        filters = {'hub_manager': hub_manager, 'base_url': base_url}
-        sales_history_count = frappe.db.get_single_value('nbpos Setting', 'sales_history_count')
-        limit = cint(sales_history_count)
-        conditions = ""
-        if mobile_no:
-                conditions += f" and s.contact_mobile like '%{str(mobile_no).strip()}%'"
-       
-        if from_date:
-                conditions += " and s.transaction_date between {} and {} order by s.creation desc".format(frappe.db.escape(from_date), frappe.db.escape(to_date))
-        else:
-                if page_no == 1:
-                        row_no = 0
-                        conditions += f" order by s.creation desc limit {row_no} , {limit}"
-                else:
-                        page_no = cint(page_no) - 1
-                        row_no = cint(page_no * cint(sales_history_count))
-                        conditions += f" order by s.creation desc limit {row_no} , {limit}"
-                        
-        order_list = frappe.db.sql("""SELECT 
-                        s.name, s.transaction_date, TIME_FORMAT(s.transaction_time, '%T') as transaction_time, s.ward, s.customer,s.customer_name, 
-                        s.ward, s.hub_manager, s.total , s.total_taxes_and_charges , s.grand_total, s.mode_of_payment, 
-                        s.mpesa_no, s.contact_display as contact_name,
-                        s.contact_phone, s.contact_mobile, s.contact_email,
-                        s.hub_manager, s.creation,
-                        u.full_name as hub_manager_name,
-                        if((c.image = null or c.image = ''), null, 
-                        if(c.image LIKE 'http%%', c.image, concat({base_url}, c.image))) as image
-                FROM `tabSales Order` s, `tabUser` u, `tabCustomer` c
-                WHERE s.hub_manager = u.name and s.customer = c.name 
-                        and s.hub_manager = {hub_manager}  and s.docstatus = 1 
-                         {conditions}
-        """.format(conditions=conditions, hub_manager= frappe.db.escape(hub_manager),
-        base_url= frappe.db.escape(base_url)), as_dict= True)
-        for item in order_list:
-                item_details = frappe.db.sql("""
-                        SELECT
-                                so.item_code, so.item_name, so.qty,
-                                so.uom, so.rate, so.amount,
-                                if((i.image = null or i.image = ''), null, 
-                                if(i.image LIKE 'http%%', i.image, concat(%s, i.image))) as image
-                        FROM 
-                                `tabSales Order` s, `tabItem` i, `tabSales Order Item` so
-                        WHERE 
-                                so.parent = s.name and so.item_code = i.item_code 
-                                and so.parent = %s and so.parenttype = 'Sales Order' 
-                                and so.associated_item is null
-                """, (base_url,item.name), as_dict = True)
-
-                
-                associate_items = get_sub_items(item.name)
-                new_item_details = []
-                if associate_items:
-                        for so_item in item_details :
-                                so_item['sub_items'] = list(filter( lambda x : x.get("associated_item")== so_item.get("item_code"), associate_items  ) )
-                                
-                                new_item_details.append(so_item)
-                                
-                combo_items = get_combo_items(item.name)
-
-                if combo_items:
-                        for item_detail in new_item_details :
-                                item_detail["combo_items"] = list(filter( lambda x: x.get("parent_item") == item_detail.item_code , combo_items )) 
-                                
-                item['items'] = new_item_details
-        if mobile_no:
-                conditions += f" and s.contact_mobile like '%{str(mobile_no).strip()}%'"
-
-                number_of_orders = frappe.db.sql(f"SELECT COUNT(*) FROM `tabSales Order` s WHERE s.hub_manager = {frappe.db.escape(hub_manager)} and s.docstatus = 1 and s.contact_mobile like '%{str(mobile_no).strip()}%'")[0][0]
-
-        else:
-                number_of_orders = get_sales_order_count(hub_manager)
-                
-        if from_date:
-                number_of_orders = len(order_list)
-
-        if len(order_list) == 0 and number_of_orders == 0:
-            frappe.clear_messages()
-            frappe.local.response["message"] = {
-                "success_key":1,
-                "message":"no values found for this hub manager "
-            }
-        else:
-            res["success_key"] = 1
-            res["message"] = "success"
-            res['order_list'] = order_list
-            res['number_of_orders'] = number_of_orders
-            return res'''
 @frappe.whitelist()
 def get_sales_order_list(hub_manager=None, page_no=1, from_date=None, to_date=nowdate(), mobile_no=None):
     res = frappe._dict()
@@ -734,7 +643,16 @@ def get_sales_order_list(hub_manager=None, page_no=1, from_date=None, to_date=no
     return res
 
 
-                        
+@frappe.whitelist()
+def check_opening_entry(user):
+    user_details = frappe.get_all("POS Opening List",
+                                   filters={'user': user,'docstatus':1,'status':'Open'},
+                                   fields=["name", "pos_profile", "user", "company"])  
+    if user_details:
+        return user_details
+    else:
+        return "No data found for the user."
+                
 
 @frappe.whitelist()
 def get_sales_order_count(hub_manager):

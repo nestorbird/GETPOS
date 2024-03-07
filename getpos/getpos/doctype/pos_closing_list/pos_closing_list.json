@@ -1,0 +1,258 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "POS-CLOSING-.YYYY.-.#####",
+ "creation": "2024-03-04 10:15:11.571003",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "period_details_section",
+  "period_start_date",
+  "period_end_date",
+  "column_break_sd3ao",
+  "posting_date",
+  "posting_time",
+  "pos_opening_entry",
+  "user_details_section",
+  "company",
+  "column_break_ph5sc",
+  "pos_profile",
+  "user",
+  "linked_invoices_section",
+  "pos_transactions",
+  "section_break_oqnue",
+  "payment_reconciliation_details",
+  "modes_of_payment_section",
+  "payment_reconciliation",
+  "totals_section",
+  "grand_total",
+  "net_total",
+  "total_quantity",
+  "column_break_esnyi",
+  "taxes_details",
+  "failure_description_section",
+  "error_message",
+  "section_break_mkvpl",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "period_details_section",
+   "fieldtype": "Section Break",
+   "label": "Period Details"
+  },
+  {
+   "fetch_from": "pos_opening_entry.period_start_date",
+   "fieldname": "period_start_date",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Period Start Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "period_end_date",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Period End Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_sd3ao",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date"
+  },
+  {
+   "fieldname": "posting_time",
+   "fieldtype": "Time",
+   "label": "Posting Time",
+   "no_copy": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "pos_opening_entry",
+   "fieldtype": "Link",
+   "label": "POS Opening Entry",
+   "options": "POS Opening List",
+   "reqd": 1
+  },
+  {
+   "fieldname": "user_details_section",
+   "fieldtype": "Section Break",
+   "label": "User Details"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "fieldname": "column_break_ph5sc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "pos_opening_entry.pos_profile",
+   "fieldname": "pos_profile",
+   "fieldtype": "Link",
+   "label": "POS Profile",
+   "options": "POS Profile"
+  },
+  {
+   "fieldname": "linked_invoices_section",
+   "fieldtype": "Section Break",
+   "label": "Linked Invoices"
+  },
+  {
+   "fieldname": "section_break_oqnue",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "payment_reconciliation_details",
+   "fieldtype": "HTML"
+  },
+  {
+   "fieldname": "modes_of_payment_section",
+   "fieldtype": "Section Break",
+   "label": "Modes of Payment"
+  },
+  {
+   "fieldname": "payment_reconciliation",
+   "fieldtype": "Table",
+   "label": "Payment Reconciliation",
+   "options": "POS Closing Entry Reference"
+  },
+  {
+   "collapsible": 1,
+   "collapsible_depends_on": "eval:doc.docstatus==0",
+   "fieldname": "totals_section",
+   "fieldtype": "Section Break",
+   "label": "Totals"
+  },
+  {
+   "fieldname": "grand_total",
+   "fieldtype": "Currency",
+   "label": "Grand Total",
+   "read_only": 1
+  },
+  {
+   "fieldname": "net_total",
+   "fieldtype": "Currency",
+   "label": "Net Total",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_quantity",
+   "fieldtype": "Float",
+   "label": "Total Quantity",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_esnyi",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "failure_description_section",
+   "fieldtype": "Section Break",
+   "label": "Failure Description"
+  },
+  {
+   "fieldname": "section_break_mkvpl",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "POS Closing List",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fetch_from": "pos_opening_entry.user",
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "label": "Cashier",
+   "options": "User"
+  },
+  {
+   "fieldname": "pos_transactions",
+   "fieldtype": "Table",
+   "label": "Sales Invoice Transactions",
+   "options": "Sales Invoice Reference"
+  },
+  {
+   "fieldname": "error_message",
+   "fieldtype": "Small Text",
+   "label": "Error",
+   "read_only": 1
+  },
+  {
+   "fieldname": "taxes_details",
+   "fieldtype": "Table",
+   "label": "Taxes",
+   "options": "POS Closing Entry Taxes Reference"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2024-03-06 18:30:04.160703",
+ "modified_by": "Administrator",
+ "module": "getpos",
+ "name": "POS Closing List",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Sales Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
+   "select": 1,
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
