@@ -62,13 +62,3 @@ def get_tax_data(pos_opening_entry):
     return tax_data
 
 
-@frappe.whitelist()
-def check_opening_entry(user):
-    user_details = frappe.get_all("POS Opening List",
-                                   filters={'user': user,'docstatus':1,'status':'Open'},
-                                   fields=["name", "pos_profile", "user", "company"])  
-    if user_details:
-        return user_details
-    else:
-        return "No data found for the user."
-

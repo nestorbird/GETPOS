@@ -135,10 +135,7 @@ doc_events = {
 		"on_submit": "getpos.getpos.hooks.sales_order.on_submit",
 		"validate": "getpos.getpos.hooks.sales_order.validate"
 	},
-	# "Sales Invoice":{
-	# 	"on_submit": "getpos.getpos.hooks.sales_invoice.on_submit"
-
-	# },
+	
 	"Item Price":{
 		"validate": "getpos.getpos.hooks.item_price.validate_item_price"
 	},
