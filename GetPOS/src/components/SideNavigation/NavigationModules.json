@@ -7,16 +7,10 @@
       "image": "/assets/getpos/images/Group 796.svg"
     },
     {
-      "name": "History",
+      "name": "Close Shift",
       "route": "",
       "isActive": 0,
       "image": "/assets/getpos/images/Group 786.png"
-    },
-    {
-      "name": "My Profile",
-      "route": "",
-      "isActive": 0,
-      "image": "/assets/getpos/images/User Circle.png"
     }
   ]
 }

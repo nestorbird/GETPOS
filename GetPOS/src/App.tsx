@@ -5,6 +5,7 @@ import ItemsSection from "./components/ItemsSection";
 import ItemCart from "./components/ItemCart";
 import { useState } from "react";
 import UserItemsContext from "./common/cartContext";
+import PosOpening from "./components/PosOpening";
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
@@ -16,6 +17,7 @@ function App() {
         <div className="row">
           <SideBar />
 
+          {/* Cart Items Provider */}
           <UserItemsContext.Provider
             value={{ cartItems, setCartItems, payloadData, setPayloadData }}
           >
@@ -44,14 +46,14 @@ function App() {
                     <input
                       className="search-product-category"
                       type="text"
-                      style={{
-                        
-                      }}
+                      style={{}}
                       placeholder="Search Product / Category"
                     ></input>
                   </div>
                 </div>
-                {/* Cart Items Provider */}
+
+                {/* POS Opening Shift Verification */}
+                <PosOpening />
 
                 {/* Items Section */}
                 <ItemsSection />

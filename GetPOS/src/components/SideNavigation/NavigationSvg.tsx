@@ -81,7 +81,7 @@ const ExportSvg = ({ item }) => {
         </svg>
       )}
 
-      {item.name === "History" && (
+      {item.name === "Close Shift" && (
         <svg
           width="45"
           height="44"
