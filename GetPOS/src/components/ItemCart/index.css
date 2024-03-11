@@ -5,7 +5,7 @@
   border-bottom: 1px solid grey;
 }
 .cart-tax-accordion {
-  background-color: #eee;
+  background-color: lightgrey;
   color: #444;
   cursor: pointer;
   padding: 18px;
@@ -36,9 +36,10 @@
 }
 .payment-card-active {
   background-color: #dc1e44;
+  color: white;
 }
 .customer-cart-section {
-  width: 33rem;
+  width: 31rem;
   margin: 1rem;
   height: 3rem;
   display: flex;
@@ -101,4 +102,12 @@ button.btn-order-success {
   border-radius: 10px;
   color: white;
   font-size: 14px;
+}
+
+@media screen and (max-width: 1024px) {
+  .cart-items-column {
+    width: 23rem;
+  }
+  .bill-section-column {
+  }
 }

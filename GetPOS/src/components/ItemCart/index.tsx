@@ -172,7 +172,7 @@ const ItemCart = (props) => {
       {orderData?.success === true && (
         <OrderSuccess orderData={orderData} clearData={handleClearData} />
       )}
-      <div className="column" style={{ position: "fixed" }}>
+      <div className="column cart-items-column" style={{ position: "fixed" }}>
         {cartListItems?.payloadData?.customer && (
           <div className="row">
             <div className="card customer-cart-section">
@@ -227,7 +227,7 @@ const ItemCart = (props) => {
           })}
         </div>
 
-        <div className="column">
+        <div className="column bill-section-column">
           <div
             className="row"
             style={{ justifyContent: "space-between", margin: "0 1rem 0 1rem" }}
