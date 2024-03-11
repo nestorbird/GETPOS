@@ -8,12 +8,12 @@ body {
   margin-left: 4rem;
 }
 .items-section {
-  width: 72rem;
+  width: 78rem;
   overflow-y: auto;
   overflow-x: hidden;
 }
 .cart-section {
-  width: 36rem;
+  width: 34.5rem;
   display: flex;
   justify-content: end;
 }
@@ -127,13 +127,83 @@ a {
   border: 1px #d3d3d3;
 }
 
-@media screen and (min-width: 1850px) {
+@media screen and (max-width: 1680px) {
   .items-section {
-    width: 76rem;
+    width: 68rem;
     overflow-y: auto;
     overflow-x: hidden;
   }
+  .cart-section {
+    width: 29.5rem;
+    display: flex;
+    justify-content: end;
+  }
 }
+
+@media screen and (max-width: 1620px) {
+  .items-section {
+    width: 63rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .cart-section {
+    width: 29rem;
+    display: flex;
+    justify-content: end;
+  }
+}
+@media screen and (max-width: 1440px) {
+  .items-section {
+    width: 52rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .cart-section {
+    width: 28rem;
+    display: flex;
+    justify-content: end;
+  }
+}
+@media screen and (max-width: 1368px) {
+  .items-section {
+    width: 51rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .cart-section {
+    width: 27rem;
+    display: flex;
+    justify-content: end;
+  }
+}
+@media screen and (max-width: 1280px) {
+  .items-section {
+    width: 46rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .cart-section {
+    width: 27rem;
+    display: flex;
+    justify-content: end;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .items-section {
+    width: 34rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .cart-section {
+    width: 22rem;
+    display: flex;
+    justify-content: end;
+  }
+}
+
+@media screen and (max-width: 600px) {
+}
+
 h4 {
   font-weight: 100;
 }
