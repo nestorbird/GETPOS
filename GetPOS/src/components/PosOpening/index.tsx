@@ -64,7 +64,7 @@ const PosOpening = () => {
               <th>Mode Of Payment</th>
               <th>Opening Balance</th>
             </tr>
-            {profileMethods?.length > 0 &&
+            {profileMethods?.length > 0 ? (
               profileMethods.map((pro) => {
                 return (
                   <tr>
@@ -80,9 +80,25 @@ const PosOpening = () => {
                     </td>
                   </tr>
                 );
-              })}
+              })
+            ) : (
+              <>
+                <tr>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </>
+            )}
           </tbody>
         </table>
+
+        <div className="submit-open-shift">
+          <button className="submit-open-shift-btn">Submit</button>
+        </div>
       </div>
     );
   };
