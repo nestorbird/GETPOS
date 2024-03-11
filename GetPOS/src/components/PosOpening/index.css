@@ -7,8 +7,8 @@
   width: 38rem;
   height: 2.5rem;
   border-radius: 10px;
-  border: none;
   font-size: 14px;
+  outline: none;
 }
 .pos-open-table {
   width: 38rem;
@@ -17,17 +17,14 @@
   border-radius: 10px;
   min-height: 30vh;
   background-color: #fef9fa;
+  border-collapse: collapse;
 }
-.pos-open-table th,
-td {
-  border: 1px solid #dc1e44;
-}
+
 .pos-open-table th {
   margin: 1rem;
-  height: 3rem;
-  background-color: #dc1e44;
+  border: 1px solid #dc1e44;
+  max-height: 3rem;
   text-align: center;
-  color: white;
   font-size: 14px;
 }
 .pos-open-table tr {
@@ -40,5 +37,17 @@ td {
   outline: none;
   border: none;
   text-align: center;
+  font-size: 14px;
+}
+.submit-open-shift {
+  margin-top: 1rem;
+}
+.submit-open-shift-btn {
+  width: 18rem;
+  height: 2rem;
+  border-radius: 10px;
+  border: 1px solid #dc1e44;
+  background-color: #dc1e44;
+  color: white;
   font-size: 14px;
 }
