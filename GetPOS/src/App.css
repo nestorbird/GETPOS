@@ -127,6 +127,32 @@ a {
   border: 1px #d3d3d3;
 }
 
+@media screen and (max-width: 2600px) {
+  .items-section {
+    width: 113rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .cart-section {
+    width: 40rem;
+    display: flex;
+    justify-content: end;
+  }
+}
+
+@media screen and (max-width: 1900px) {
+  .items-section {
+    width: 78rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .cart-section {
+    width: 30rem;
+    display: flex;
+    justify-content: end;
+  }
+}
+
 @media screen and (max-width: 1680px) {
   .items-section {
     width: 68rem;
