@@ -40,24 +40,27 @@ def get_sales_invoices(start, end, pos_profile,user,pos_opening_entry):
     sales_invoices = frappe.get_all(
         "Sales Invoice",
         filters={
-            "owner": user,
+            # "owner": user,
             "docstatus": 1,
-            "pos_opening_entry": pos_opening_entry,
+            "pos_profile":pos_profile,
+            "status":'paid',
+            'is_pos':1,
+            "custom_pos_opening_entry": pos_opening_entry,
             "posting_date": (">=", start),
             "posting_date": ("<=", end)  
         },
         fields=["name", "posting_date", "posting_time", "grand_total","net_total", "customer", "total_qty","customer_name", "is_return", "return_against"]
     )
-   
+    print(sales_invoices)
     return sales_invoices
 @frappe.whitelist()
 def get_tax_data(pos_opening_entry):
     tax_data = frappe.db.sql("""
-        SELECT si.pos_opening_entry, stc.account_head, stc.rate, stc.tax_amount 
+        SELECT si.custom_pos_opening_entry, stc.account_head, stc.rate, stc.tax_amount 
         FROM `tabSales Invoice` si 
         INNER JOIN `tabSales Taxes and Charges` stc 
         ON si.name = stc.parent  
-        WHERE si.pos_opening_entry = %s
+        WHERE si.custom_pos_opening_entry = %s
     """, pos_opening_entry, as_dict=True)
     return tax_data
 

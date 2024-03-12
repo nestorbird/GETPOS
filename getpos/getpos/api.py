@@ -895,3 +895,43 @@ def get_sales_taxes():
         for i in taxes_data:
                 i['tax'] = [j for j in tax if i['name'] == j['name']]
         return taxes_data
+
+@frappe.whitelist()
+def fetch_closing_entry_data(pos_opening_entry):
+    closing_data = frappe.db.sql("""
+        SELECT 
+            pol.name AS pos_opening_entry,
+            SUM(si.rounded_total) AS total_sales,
+            SUM(poed.opening_amount) AS total_opening_amount,
+            poed.mode_of_payment
+        FROM 
+            `tabPOS Opening List` pol
+            INNER JOIN `tabPOS Opening Entry Detail` poed ON pol.name = poed.parent
+            INNER JOIN `tabSales Invoice` si ON pol.name = si.custom_pos_opening_entry
+        WHERE 
+            si.custom_pos_opening_entry = %s AND si.is_pos = 1 AND pol.status = 'Open'
+        GROUP BY 
+            pol.name, poed.mode_of_payment
+    """, pos_opening_entry, as_dict=True)
+
+    res = []
+    for data in closing_data:
+        total_sales = float(data["total_sales"])
+        total_opening_amount = float(data.get("total_opening_amount", 0))
+        payment = data.get("mode_of_payment")
+        closing_amount = float(0) 
+        difference = total_sales - closing_amount
+
+        entry_data = {
+            "pos_opening_entry": data["pos_opening_entry"],
+            "opening_amount": total_opening_amount,
+            "closing_amount": closing_amount,
+            "expected_amount": total_sales,
+            "mode_of_payment": payment,
+            "difference": float(difference)
+        }
+        res.append(entry_data)
+
+    return res
+
+

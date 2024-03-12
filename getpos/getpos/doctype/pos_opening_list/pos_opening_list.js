@@ -7,7 +7,6 @@ frappe.ui.form.on('POS Opening List', {
 			frm.set_value('user', frappe.session.user);
 		}
 	},
-
 	refresh(frm) {
 		
 		if(frm.doc.docstatus == 0) {
