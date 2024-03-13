@@ -934,4 +934,38 @@ def fetch_closing_entry_data(pos_opening_entry):
 
     return res
 
+@frappe.whitelist()
+def create_opening_entry(company, pos_profile,opening_amount):
+    new_opening = frappe.new_doc("POS Opening List")
+    new_opening.period_start_date = frappe.utils.get_datetime()
+    new_opening.posting_date = frappe.utils.getdate()
+    new_opening.user = frappe.session.user
+    new_opening.pos_profile = pos_profile
+    new_opening.company = company
+    mode_of_payment = get_mode_of_payment(pos_profile)
+    new_opening.append("balance_details", {
+            "mode_of_payment": mode_of_payment,
+            "opening_amount": opening_amount
+          })
+    new_opening.insert()
+    new_opening.submit()
+    return new_opening.as_dict()
+
+def get_mode_of_payment(pos_profile):
+   
+    sql_query = """
+        SELECT pm.mode_of_payment
+        FROM `tabPOS Profile` AS p
+        INNER JOIN `tabPOS Payment Method` AS pm
+        ON p.name = pm.parent
+        WHERE p.name = %s
+    """
+    
+    mode_of_payment = frappe.db.sql(sql_query, pos_profile, as_dict=True)
+    
+    
+    if mode_of_payment:
+        return mode_of_payment[0]["mode_of_payment"]
+    else:
+        return None
 

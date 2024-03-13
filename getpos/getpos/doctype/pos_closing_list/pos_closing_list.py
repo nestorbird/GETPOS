@@ -40,7 +40,6 @@ def get_sales_invoices(start, end, pos_profile,user,pos_opening_entry):
     sales_invoices = frappe.get_all(
         "Sales Invoice",
         filters={
-            # "owner": user,
             "docstatus": 1,
             "pos_profile":pos_profile,
             "status":'paid',
@@ -51,7 +50,6 @@ def get_sales_invoices(start, end, pos_profile,user,pos_opening_entry):
         },
         fields=["name", "posting_date", "posting_time", "grand_total","net_total", "customer", "total_qty","customer_name", "is_return", "return_against"]
     )
-    print(sales_invoices)
     return sales_invoices
 @frappe.whitelist()
 def get_tax_data(pos_opening_entry):
