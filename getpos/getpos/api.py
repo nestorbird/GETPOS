@@ -901,8 +901,8 @@ def fetch_closing_entry_data(pos_opening_entry):
     closing_data = frappe.db.sql("""
         SELECT 
             pol.name AS pos_opening_entry,
-            SUM(si.rounded_total) AS total_sales,
-            SUM(poed.opening_amount) AS total_opening_amount,
+            (si.rounded_total) AS total_sales,
+            (poed.opening_amount) AS total_opening_amount,
             poed.mode_of_payment
         FROM 
             `tabPOS Opening List` pol
@@ -969,3 +969,112 @@ def get_mode_of_payment(pos_profile):
     else:
         return None
 
+
+@frappe.whitelist()
+def create_pos_closing_entry(pos_opening_entry):
+    opening_data = fetch_data_opening_entry(pos_opening_entry)
+    print(opening_data)
+    
+    if opening_data:
+        for opening_entry in opening_data:
+            closing_entry = frappe.new_doc("POS Closing List")
+            closing_entry.period_start_date = opening_entry.get('period_start_date')
+            closing_entry.period_end_date = frappe.utils.nowdate()
+            closing_entry.pos_profile = opening_entry.get("pos_profile")
+            closing_entry.pos_opening_entry = opening_entry.get('name')
+            closing_entry.company = opening_entry.get('company')
+            closing_entry.user = opening_entry.get('user')
+
+            sales_invoice_data = get_sales_invoices(closing_entry.period_start_date, closing_entry.period_end_date, closing_entry.pos_profile, closing_entry.pos_opening_entry)
+
+            total_amount = 0
+            net_total_amount = 0
+            total_quantity = 0
+            payment_reconciliation = []
+
+            for invoice in sales_invoice_data:
+                taxes_details = []
+                taxes = invoice.get("taxes_details", [])
+                for tax in taxes:
+                    taxes_details.append({
+                        "account_head": tax.get("account_head"),
+                        "rate": tax.get("rate"),
+                        "amount": tax.get("tax_amount")
+                    })
+
+                if taxes_details:
+                    closing_entry.extend("taxes_details", taxes_details)
+
+                closing_entry.append("pos_transactions", {
+                    "pos_invoice": invoice.get('name'), 
+                    "posting_date": invoice.get('posting_date'), 
+                    "grand_total": invoice.get('grand_total')
+                })
+
+               
+                total_amount += invoice.get("rounded_total", 0)
+                net_total_amount += invoice.get("net_total", 0)
+                total_quantity += invoice.get("total_qty", 0)
+
+            for opening_entry in opening_data:
+                opening_amount = float(opening_entry.get("opening_amount"))
+                expected_amount = float(opening_entry.get("opening_amount"))
+                difference = total_amount - expected_amount
+                payment_reconciliation.append({
+                    "mode_of_payment": opening_entry.get("mode_of_payment"),
+                    "opening_amount": opening_amount,
+                    "closing_amount": total_amount,
+                    "expected_amount": expected_amount,
+                    "difference": difference
+                })
+
+           
+            closing_entry.grand_total = total_amount
+            closing_entry.net_total = net_total_amount
+            closing_entry.total_quantity = total_quantity
+            closing_entry.extend("payment_reconciliation", payment_reconciliation)
+
+           
+            closing_entry.save()
+            closing_entry.submit()
+
+            return closing_entry.as_dict()
+    else:
+        return "Error: No data found"
+
+
+def fetch_data_opening_entry(pos_opening_entry):
+    opening_data = frappe.db.sql("""
+         SELECT pol.period_start_date, pol.name, pol.company,
+                pol.pos_profile, pol.user, poed.mode_of_payment, poed.opening_amount  
+         FROM `tabPOS Opening List` pol
+         INNER JOIN `tabPOS Opening Entry Detail` poed ON pol.name = poed.parent
+         WHERE pol.name = %s
+         """, pos_opening_entry, as_dict=True)
+    return opening_data
+
+def get_sales_invoices(start, end, pos_profile, pos_opening_entry):
+    sales_invoices = frappe.get_all(
+        "Sales Invoice",
+        filters={
+            "docstatus": 1,
+            "pos_profile": pos_profile,
+            "status": 'paid',
+            'is_pos': 1,
+            "custom_pos_opening_entry": pos_opening_entry,
+            "posting_date": ["between", [start, end]]  
+        },
+        fields=["name", "posting_date", "posting_time", "grand_total","net_total","rounded_total","customer", 
+                "total_qty","customer_name", "is_return", "return_against"],
+        as_list=False
+    )
+
+    for invoice in sales_invoices:
+        taxes = frappe.get_all(
+            "Sales Taxes and Charges",
+            filters={"parent": invoice["name"]},
+            fields=["account_head", "rate", "tax_amount"]
+        )
+        invoice["taxes_details"] = taxes
+
+    return sales_invoices
