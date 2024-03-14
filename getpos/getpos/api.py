@@ -483,99 +483,176 @@ def get_combo_items(name):
         return combo_items
         
 @frappe.whitelist()
-def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_date = nowdate() , mobile_no = None):
-        res= frappe._dict()
-        base_url = frappe.db.get_single_value('nbpos Setting', 'base_url')
-        filters = {'hub_manager': hub_manager, 'base_url': base_url}
-        sales_history_count = frappe.db.get_single_value('nbpos Setting', 'sales_history_count')
-        limit = cint(sales_history_count)
-        conditions = ""
-        if mobile_no:
-                conditions += f" and s.contact_mobile like '%{str(mobile_no).strip()}%'"
-       
-        if from_date:
-                conditions += " and s.transaction_date between {} and {} order by s.creation desc".format(frappe.db.escape(from_date), frappe.db.escape(to_date))
+def get_sales_order_list(hub_manager=None, page_no=1, from_date=None, to_date=nowdate(), mobile_no=None):
+    res = frappe._dict()
+    base_url = frappe.db.get_single_value('nbpos Setting', 'base_url')
+    filters = {'hub_manager': hub_manager, 'base_url': base_url}
+    sales_history_count = frappe.db.get_single_value('nbpos Setting', 'sales_history_count')
+    limit = cint(sales_history_count)       
+    conditions = ""
+    if mobile_no:
+        conditions += f" and s.contact_mobile like '%{str(mobile_no).strip()}%'"
+
+    if from_date:
+        conditions += f" and s.transaction_date between {frappe.db.escape(from_date)} and {frappe.db.escape(to_date)} order by s.creation desc"
+    else:
+        if page_no == 1:
+            row_no = 0
+            conditions += f" order by s.creation desc limit {row_no}, {limit}"
         else:
-                if page_no == 1:
-                        row_no = 0
-                        conditions += f" order by s.creation desc limit {row_no} , {limit}"
+            page_no = cint(page_no) - 1
+            row_no = cint(page_no * cint(sales_history_count))
+            conditions += f" order by s.creation desc limit {row_no}, {limit}"
+
+    order_list = frappe.db.sql(f"""SELECT 
+                    s.name, s.transaction_date, TIME_FORMAT(s.transaction_time, '%T') as transaction_time, s.ward, s.customer,s.customer_name, 
+                    s.ward, s.hub_manager, s.total , s.total_taxes_and_charges , s.delivery_date, s.grand_total, s.mode_of_payment,s.taxes_and_charges,
+                    s.mpesa_no, s.contact_display as contact_name,
+                    s.contact_phone, s.contact_mobile, s.contact_email,
+                    s.hub_manager, s.creation,
+                    u.full_name as hub_manager_name,
+                    if((c.image IS NULL or c.image = ''), NULL, 
+                    if(c.image LIKE 'http%%', c.image, CONCAT('{frappe.db.escape(base_url)}', c.image))) as image
+            FROM `tabSales Order` s, `tabUser` u, `tabCustomer` c
+            WHERE s.hub_manager = u.name and s.customer = c.name 
+                    and s.hub_manager = {frappe.db.escape(hub_manager)}  and s.docstatus = 1 
+                     {conditions}""", as_dict=True)
+    
+    order_details_list = []  # List to store details of all orders
+
+    for order in order_list:
+        order_details = {
+            "hub_manager": order.hub_manager,
+            "order_id": order.name,
+            "customer": order.customer,
+            "transaction_date": order.transaction_date,
+            "delivery_date": order.delivery_date,
+            "items": [],
+            "mode_of_payment": order.mode_of_payment,
+            "mpesa_no": order.mpesa_no,
+            "tax": []
+        }
+
+        items = frappe.get_all("Sales Order Item",
+                               filters={"parent": order.name},
+                               fields=["item_code", "item_name", "rate", "qty", "item_tax_template"])
+        
+        if len(items) == 1: 
+            items = frappe.get_all("Sales Order Item",
+                                   filters={"parent": order.name},
+                                   fields=["item_code", "item_name", "rate", "qty", "item_tax_template"])
+
+            taxes_outside_items = []  # Collect taxes outside of items
+
+            for item in items:
+                item_dict = {
+                    "item_code": item.item_code,
+                    "item_name": item.item_name,
+                    "rate": item.rate,
+                    "sub_items": [],
+                    "qty": item.qty,
+                    "ordered_price": item.rate * item.qty,
+                    "tax": []
+                }
+
+                taxes = frappe.get_all("Sales Taxes and Charges",
+                                       filters={"parent": order.name},
+                                       fields=["rate", "tax_amount", "account_head"],
+                                       as_list=True)
+
+                if item.item_tax_template:  # Check if item_tax_template has value
+                    for tax in taxes:
+                        tax_dict = {
+                            "item_tax_template": item.item_tax_template,
+                            "tax_id": "",
+                            "tax_type": tax[2],
+                            "tax_rate": tax[0],
+                            "tax_amount": tax[1],
+                        }
+                        item_dict["tax"].append(tax_dict)
                 else:
-                        page_no = cint(page_no) - 1
-                        row_no = cint(page_no * cint(sales_history_count))
-                        conditions += f" order by s.creation desc limit {row_no} , {limit}"
-                        
-        order_list = frappe.db.sql("""SELECT 
-                        s.name, s.transaction_date, TIME_FORMAT(s.transaction_time, '%T') as transaction_time, s.ward, s.customer,s.customer_name, 
-                        s.ward, s.hub_manager, s.total , s.total_taxes_and_charges , s.grand_total, s.mode_of_payment, 
-                        s.mpesa_no, s.contact_display as contact_name,
-                        s.contact_phone, s.contact_mobile, s.contact_email,
-                        s.hub_manager, s.creation,
-                        u.full_name as hub_manager_name,
-                        if((c.image = null or c.image = ''), null, 
-                        if(c.image LIKE 'http%%', c.image, concat({base_url}, c.image))) as image
-                FROM `tabSales Order` s, `tabUser` u, `tabCustomer` c
-                WHERE s.hub_manager = u.name and s.customer = c.name 
-                        and s.hub_manager = {hub_manager}  and s.docstatus = 1 
-                         {conditions}
-        """.format(conditions=conditions, hub_manager= frappe.db.escape(hub_manager),
-        base_url= frappe.db.escape(base_url)), as_dict= True)
-        for item in order_list:
-                item_details = frappe.db.sql("""
-                        SELECT
-                                so.item_code, so.item_name, so.qty,
-                                so.uom, so.rate, so.amount,
-                                if((i.image = null or i.image = ''), null, 
-                                if(i.image LIKE 'http%%', i.image, concat(%s, i.image))) as image
-                        FROM 
-                                `tabSales Order` s, `tabItem` i, `tabSales Order Item` so
-                        WHERE 
-                                so.parent = s.name and so.item_code = i.item_code 
-                                and so.parent = %s and so.parenttype = 'Sales Order' 
-                                and so.associated_item is null
-                """, (base_url,item.name), as_dict = True)
+                    taxes_outside_items.extend(taxes)  # Append taxes outside of items
 
+                order_details["items"].append(item_dict)
+
+            # Append taxes outside of items
+            for tax in taxes_outside_items:
+                tax_dict = {
+                    "item_tax_template": order.taxes_and_charges,
+                    "tax_id": "",
+                    "tax_type": tax[2],
+                    "tax_rate": tax[0],
+                    "tax_amount": tax[1],
+                }
+                order_details["tax"].append(tax_dict)
+
+            order_details_list.append(order_details)
+        
+        elif len(items) > 1:  # If multiple items
+            for item in items:
+                item_dict = {
+                    "item_code": item.item_code,
+                    "item_name": item.item_name,
+                    "rate": item.rate,
+                    "qty": item.qty,
+                    "ordered_price": item.rate * item.qty,
+                    "tax": []
+                }
+                if item.item_tax_template:  # If item_tax_template is not None
+                    taxes = frappe.get_all("Sales Taxes and Charges",
+                                           filters={"parent": order.name},
+                                           fields=["rate", "tax_amount", "account_head"],
+                                           as_list=True)
+                    for tax in taxes:
+                        tax_dict = {
+                            "tax_id": "",
+                            "item_tax_template": item.item_tax_template,
+                            "tax_type": tax[2],
+                            "tax_rate": tax[0],
+                            "tax_amount": tax[1]         
+                        }
+                        item_dict["tax"].append(tax_dict)              
+                order_details["items"].append(item_dict)                 
+
+            order_details_list.append(order_details)  # Append order details to the list
+
+    if mobile_no:
+        conditions += f" and s.contact_mobile like '%{str(mobile_no).strip()}%'"
+
+        number_of_orders = frappe.db.sql(
+            f"SELECT COUNT(*) FROM `tabSales Order` s WHERE s.hub_manager = {frappe.db.escape(hub_manager)} and s.docstatus = 1 and s.contact_mobile like '%{str(mobile_no).strip()}%'")[
+            0][0]
+                                             
+    else:
+        number_of_orders = get_sales_order_count(hub_manager)
+
+    if from_date:
+        number_of_orders = len(order_list)
+
+    if len(order_list) == 0 and number_of_orders == 0:
+        frappe.clear_messages()
+        frappe.local.response["message"] = {
+            "success_key": 1,
+            "message": "no values found for this hub manager "                   
+        }
+    else:
+        res['number_of_orders'] = number_of_orders
+
+    res['order_list'] = order_details_list  # Set the list of order details to the response
+
+    return res
+
+
+@frappe.whitelist()
+def check_opening_entry(user):
+    user_details = frappe.get_all("POS Opening List",
+                                   filters={'user': user,'docstatus':1,'status':'Open'},
+                                   fields=["name", "pos_profile", "user", "company"])  
+    if user_details:
+        return user_details
+    else:
+        return "No data found for the user."
                 
-                associate_items = get_sub_items(item.name)
-                new_item_details = []
-                if associate_items:
-                        for so_item in item_details :
-                                so_item['sub_items'] = list(filter( lambda x : x.get("associated_item")== so_item.get("item_code"), associate_items  ) )
-                                
-                                new_item_details.append(so_item)
-                                
-                combo_items = get_combo_items(item.name)
-
-                if combo_items:
-                        for item_detail in new_item_details :
-                                item_detail["combo_items"] = list(filter( lambda x: x.get("parent_item") == item_detail.item_code , combo_items )) 
-                                
-                item['items'] = new_item_details
-        if mobile_no:
-                conditions += f" and s.contact_mobile like '%{str(mobile_no).strip()}%'"
-
-                number_of_orders = frappe.db.sql(f"SELECT COUNT(*) FROM `tabSales Order` s WHERE s.hub_manager = {frappe.db.escape(hub_manager)} and s.docstatus = 1 and s.contact_mobile like '%{str(mobile_no).strip()}%'")[0][0]
-
-        else:
-                number_of_orders = get_sales_order_count(hub_manager)
-                
-        if from_date:
-                number_of_orders = len(order_list)
-
-        if len(order_list) == 0 and number_of_orders == 0:
-            frappe.clear_messages()
-            frappe.local.response["message"] = {
-                "success_key":1,
-                "message":"no values found for this hub manager "
-            }
-        else:
-            res["success_key"] = 1
-            res["message"] = "success"
-            res['order_list'] = order_list
-            res['number_of_orders'] = number_of_orders
-            return res
-       
-
-
 
 @frappe.whitelist()
 def get_sales_order_count(hub_manager):
@@ -818,3 +895,186 @@ def get_sales_taxes():
         for i in taxes_data:
                 i['tax'] = [j for j in tax if i['name'] == j['name']]
         return taxes_data
+
+@frappe.whitelist()
+def fetch_closing_entry_data(pos_opening_entry):
+    closing_data = frappe.db.sql("""
+        SELECT 
+            pol.name AS pos_opening_entry,
+            (si.rounded_total) AS total_sales,
+            (poed.opening_amount) AS total_opening_amount,
+            poed.mode_of_payment
+        FROM 
+            `tabPOS Opening List` pol
+            INNER JOIN `tabPOS Opening Entry Detail` poed ON pol.name = poed.parent
+            INNER JOIN `tabSales Invoice` si ON pol.name = si.custom_pos_opening_entry
+        WHERE 
+            si.custom_pos_opening_entry = %s AND si.is_pos = 1 AND pol.status = 'Open'
+        GROUP BY 
+            pol.name, poed.mode_of_payment
+    """, pos_opening_entry, as_dict=True)
+
+    res = []
+    for data in closing_data:
+        total_sales = float(data["total_sales"])
+        total_opening_amount = float(data.get("total_opening_amount", 0))
+        payment = data.get("mode_of_payment")
+        closing_amount = float(0) 
+        difference = total_sales - closing_amount
+
+        entry_data = {
+            "pos_opening_entry": data["pos_opening_entry"],
+            "opening_amount": total_opening_amount,
+            "closing_amount": closing_amount,
+            "expected_amount": total_sales,
+            "mode_of_payment": payment,
+            "difference": float(difference)
+        }
+        res.append(entry_data)
+
+    return res
+
+@frappe.whitelist()
+def create_opening_entry(company, pos_profile,opening_amount):
+    new_opening = frappe.new_doc("POS Opening List")
+    new_opening.period_start_date = frappe.utils.get_datetime()
+    new_opening.posting_date = frappe.utils.getdate()
+    new_opening.user = frappe.session.user
+    new_opening.pos_profile = pos_profile
+    new_opening.company = company
+    mode_of_payment = get_mode_of_payment(pos_profile)
+    new_opening.append("balance_details", {
+            "mode_of_payment": mode_of_payment,
+            "opening_amount": opening_amount
+          })
+    new_opening.insert()
+    new_opening.submit()
+    return new_opening.as_dict()
+
+def get_mode_of_payment(pos_profile):
+   
+    sql_query = """
+        SELECT pm.mode_of_payment
+        FROM `tabPOS Profile` AS p
+        INNER JOIN `tabPOS Payment Method` AS pm
+        ON p.name = pm.parent
+        WHERE p.name = %s
+    """
+    
+    mode_of_payment = frappe.db.sql(sql_query, pos_profile, as_dict=True)
+    
+    
+    if mode_of_payment:
+        return mode_of_payment[0]["mode_of_payment"]
+    else:
+        return None
+
+
+@frappe.whitelist()
+def create_pos_closing_entry(pos_opening_entry):
+    opening_data = fetch_data_opening_entry(pos_opening_entry)
+    print(opening_data)
+    
+    if opening_data:
+        for opening_entry in opening_data:
+            closing_entry = frappe.new_doc("POS Closing List")
+            closing_entry.period_start_date = opening_entry.get('period_start_date')
+            closing_entry.period_end_date = frappe.utils.nowdate()
+            closing_entry.pos_profile = opening_entry.get("pos_profile")
+            closing_entry.pos_opening_entry = opening_entry.get('name')
+            closing_entry.company = opening_entry.get('company')
+            closing_entry.user = opening_entry.get('user')
+
+            sales_invoice_data = get_sales_invoices(closing_entry.period_start_date, closing_entry.period_end_date, closing_entry.pos_profile, closing_entry.pos_opening_entry)
+
+            total_amount = 0
+            net_total_amount = 0
+            total_quantity = 0
+            payment_reconciliation = []
+
+            for invoice in sales_invoice_data:
+                taxes_details = []
+                taxes = invoice.get("taxes_details", [])
+                for tax in taxes:
+                    taxes_details.append({
+                        "account_head": tax.get("account_head"),
+                        "rate": tax.get("rate"),
+                        "amount": tax.get("tax_amount")
+                    })
+
+                if taxes_details:
+                    closing_entry.extend("taxes_details", taxes_details)
+
+                closing_entry.append("pos_transactions", {
+                    "pos_invoice": invoice.get('name'), 
+                    "posting_date": invoice.get('posting_date'), 
+                    "grand_total": invoice.get('grand_total')
+                })
+
+               
+                total_amount += invoice.get("rounded_total", 0)
+                net_total_amount += invoice.get("net_total", 0)
+                total_quantity += invoice.get("total_qty", 0)
+
+            for opening_entry in opening_data:
+                opening_amount = float(opening_entry.get("opening_amount"))
+                expected_amount = float(opening_entry.get("opening_amount"))
+                difference = total_amount - expected_amount
+                payment_reconciliation.append({
+                    "mode_of_payment": opening_entry.get("mode_of_payment"),
+                    "opening_amount": opening_amount,
+                    "closing_amount": total_amount,
+                    "expected_amount": expected_amount,
+                    "difference": difference
+                })
+
+           
+            closing_entry.grand_total = total_amount
+            closing_entry.net_total = net_total_amount
+            closing_entry.total_quantity = total_quantity
+            closing_entry.extend("payment_reconciliation", payment_reconciliation)
+
+           
+            closing_entry.save()
+            closing_entry.submit()
+
+            return closing_entry.as_dict()
+    else:
+        return "Error: No data found"
+
+
+def fetch_data_opening_entry(pos_opening_entry):
+    opening_data = frappe.db.sql("""
+         SELECT pol.period_start_date, pol.name, pol.company,
+                pol.pos_profile, pol.user, poed.mode_of_payment, poed.opening_amount  
+         FROM `tabPOS Opening List` pol
+         INNER JOIN `tabPOS Opening Entry Detail` poed ON pol.name = poed.parent
+         WHERE pol.name = %s
+         """, pos_opening_entry, as_dict=True)
+    return opening_data
+
+def get_sales_invoices(start, end, pos_profile, pos_opening_entry):
+    sales_invoices = frappe.get_all(
+        "Sales Invoice",
+        filters={
+            "docstatus": 1,
+            "pos_profile": pos_profile,
+            "status": 'paid',
+            'is_pos': 1,
+            "custom_pos_opening_entry": pos_opening_entry,
+            "posting_date": ["between", [start, end]]  
+        },
+        fields=["name", "posting_date", "posting_time", "grand_total","net_total","rounded_total","customer", 
+                "total_qty","customer_name", "is_return", "return_against"],
+        as_list=False
+    )
+
+    for invoice in sales_invoices:
+        taxes = frappe.get_all(
+            "Sales Taxes and Charges",
+            filters={"parent": invoice["name"]},
+            fields=["account_head", "rate", "tax_amount"]
+        )
+        invoice["taxes_details"] = taxes
+
+    return sales_invoices
