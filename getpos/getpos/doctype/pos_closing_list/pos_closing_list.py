@@ -15,6 +15,7 @@ class POSClosingList(Document):
         frappe.get_doc("POS Opening List", self.pos_opening_entry)
         frappe.db.set_value("POS Opening List", self.pos_opening_entry, "status", "Closed")
         frappe.db.set_value("POS Opening List",self.pos_opening_entry,"period_end_date",self.period_end_date)
+        frappe.db.set_value("POS Opening List",self.pos_opening_entry,"pos_closing_entry",self.name)
     
     def validate_duplicate_sales_invoices(self):
         pos_occurences = {}
