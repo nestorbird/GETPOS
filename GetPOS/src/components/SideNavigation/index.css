@@ -1,7 +1,7 @@
 .side-navbar {
   display: flex;
   flex-direction: column;
-  width: 6rem;
+  width: 5.5vw;
   background-color: white;
   /* height: 100vh; */
   position: fixed;
@@ -42,5 +42,4 @@
 }
 .item-image-active path,
 line {
-  
 }
