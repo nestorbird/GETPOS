@@ -22,7 +22,7 @@ function App() {
             value={{ cartItems, setCartItems, payloadData, setPayloadData }}
           >
             <div className="main-content">
-              <div className="items-section">
+              <div className="items-section" style={{ width: "65vw" }}>
                 {/* Category & Product Search */}
                 <div
                   className="row"

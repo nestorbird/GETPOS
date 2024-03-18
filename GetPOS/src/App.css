@@ -6,14 +6,14 @@ body {
   display: flex;
   flex-direction: row;
   margin-left: 4rem;
+  width: 100%;
 }
 .items-section {
-  width: 78rem;
   overflow-y: auto;
   overflow-x: hidden;
 }
 .cart-section {
-  width: 34.5rem;
+  width: 28.5vw;
   display: flex;
   justify-content: end;
 }
@@ -127,7 +127,7 @@ a {
   border: 1px #d3d3d3;
 }
 
-@media screen and (max-width: 2600px) {
+/* @media screen and (max-width: 2600px) {
   .items-section {
     width: 113rem;
     overflow-y: auto;
@@ -140,7 +140,7 @@ a {
   }
 }
 
-@media screen and (max-width: 1900px) {
+@media screen and (max-width: 1920px) {
   .items-section {
     width: 78rem;
     overflow-y: auto;
@@ -228,7 +228,7 @@ a {
 }
 
 @media screen and (max-width: 600px) {
-}
+} */
 
 h4 {
   font-weight: 100;
