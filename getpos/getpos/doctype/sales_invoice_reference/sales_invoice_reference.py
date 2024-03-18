@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (c) 2020, Youssef Restom and contributors
+# Copyright (c) 2020, NestorBird and contributors
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
