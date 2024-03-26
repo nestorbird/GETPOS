@@ -89,7 +89,8 @@ def update_opening_shift_data(data, pos_profile):
 
 @frappe.whitelist()
 def create_opening_voucher(pos_profile, company, balance_details):
-    balance_details = json.loads(balance_details)
+    if isinstance(balance_details, str):
+        balance_details = json.loads(balance_details)
 
     new_pos_opening = frappe.get_doc(
         {
