@@ -90,7 +90,8 @@ def get_pos_invoices(pos_opening_shift):
 
 @frappe.whitelist()
 def make_closing_shift_from_opening(opening_shift):
-    opening_shift = json.loads(opening_shift)
+    if isinstance(opening_shift, str):
+        opening_shift = json.loads(opening_shift)
     submit_printed_invoices(opening_shift.get("name"))
     closing_shift = frappe.new_doc("POS Closing Shift")
     closing_shift.pos_opening_shift = opening_shift.get("name")
@@ -167,7 +168,8 @@ def make_closing_shift_from_opening(opening_shift):
 
 @frappe.whitelist()
 def submit_closing_shift(closing_shift):
-    closing_shift = json.loads(closing_shift)
+    if isinstance(closing_shift, str):
+        closing_shift = json.loads(closing_shift)
     closing_shift_doc = frappe.get_doc(closing_shift)
     closing_shift_doc.flags.ignore_permissions = True
     closing_shift_doc.save()
