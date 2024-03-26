@@ -27,13 +27,6 @@
     {
       "color": "Grey",
       "doc_view": "List",
-      "label": "GetPOS App",
-      "type": "URL",
-      "url": "/https://getpos.in/GetPOS/#"
-    },
-    {
-      "color": "Grey",
-      "doc_view": "List",
       "label": "Pos Opening Shift",
       "link_to": "POS Opening Shift",
       "stats_filter": "[]",
