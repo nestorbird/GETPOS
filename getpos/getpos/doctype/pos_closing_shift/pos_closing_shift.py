@@ -80,7 +80,7 @@ def get_pos_invoices(pos_opening_shift):
 	from
 		`tabSales Invoice`
 	where
-		docstatus = 1 and custom_posa_pos_opening_shift = %s
+		docstatus = 1 and posa_pos_opening_shift = %s
 	""", (pos_opening_shift), as_dict=1)
 
     data = [frappe.get_doc("Sales Invoice", d.name).as_dict() for d in data]
@@ -179,7 +179,7 @@ def submit_closing_shift(closing_shift):
 
 def submit_printed_invoices(pos_opening_shift):
     invoices_list = frappe.get_all("Sales Invoice", filters={
-        "custom_posa_pos_opening_shift": pos_opening_shift,
+        "posa_pos_opening_shift": pos_opening_shift,
         "docstatus": 0,
         "posa_is_printed": 1
     })
