@@ -64,7 +64,7 @@ doctype_js = {
 	"Warehouse": "public/js/doctype_js/warehouse.js",
 	"Account": "public/js/doctype_js/account.js",
 	"Customer": "public/js/doctype_js/customer.js",
-	"Item": "public/js/doctype_js/item.js",
+	# "Item": "public/js/doctype_js/item.js",
 }
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}

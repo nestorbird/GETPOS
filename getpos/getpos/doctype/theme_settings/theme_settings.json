@@ -1,90 +1,108 @@
 {
-  "actions": [],
-  "allow_rename": 1,
-  "creation": "2023-09-13 11:03:06.243152",
-  "default_view": "List",
-  "doctype": "DocType",
-  "editable_grid": 1,
-  "engine": "InnoDB",
-  "field_order": [
-    "primary",
-    "secondary",
-    "asset",
-    "text_and_cancel_icon",
-    "shadow_border",
-    "hint_text",
-    "font_white_color",
-    "park_order_button",
-    "active"
-  ],
-  "fields": [
-    {
-      "fieldname": "primary",
-      "fieldtype": "Color",
-      "label": "Primary"
-    },
-    {
-      "fieldname": "secondary",
-      "fieldtype": "Color",
-      "label": "Secondary"
-    },
-    {
-      "fieldname": "asset",
-      "fieldtype": "Color",
-      "label": "Asset"
-    },
-    {
-      "fieldname": "text_and_cancel_icon",
-      "fieldtype": "Color",
-      "label": "Text and Cancel Icon"
-    },
-    {
-      "fieldname": "shadow_border",
-      "fieldtype": "Color",
-      "label": "Shadow Border"
-    },
-    {
-      "fieldname": "hint_text",
-      "fieldtype": "Color",
-      "label": "Hint Text"
-    },
-    {
-      "fieldname": "font_white_color",
-      "fieldtype": "Color",
-      "label": "Font White Color"
-    },
-    {
-      "fieldname": "park_order_button",
-      "fieldtype": "Color",
-      "label": "Park Order Button"
-    },
-    {
-      "fieldname": "active",
-      "fieldtype": "Color",
-      "label": "Active"
-    }
-  ],
-  "index_web_pages_for_search": 1,
-  "issingle": 1,
-  "links": [],
-  "modified": "2023-10-05 14:02:56.556877",
-  "modified_by": "Administrator",
-  "module": "getpos",
-  "name": "Theme Settings",
-  "owner": "Administrator",
-  "permissions": [
-    {
-      "create": 1,
-      "delete": 1,
-      "email": 1,
-      "print": 1,
-      "read": 1,
-      "role": "System Manager",
-      "share": 1,
-      "write": 1
-    }
-  ],
-  "sort_field": "modified",
-  "sort_order": "DESC",
-  "states": []
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-09-13 11:03:06.243152",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "primary",
+  "secondary",
+  "asset",
+  "text_and_cancel_icon",
+  "shadow_border",
+  "hint_text",
+  "font_white_color",
+  "park_order_button",
+  "app_background_image",
+  "merchant_background_image",
+  "api_token",
+  "active"
+ ],
+ "fields": [
+  {
+   "fieldname": "primary",
+   "fieldtype": "Color",
+   "label": "Primary"
+  },
+  {
+   "fieldname": "secondary",
+   "fieldtype": "Color",
+   "label": "Secondary"
+  },
+  {
+   "fieldname": "asset",
+   "fieldtype": "Color",
+   "label": "Asset"
+  },
+  {
+   "fieldname": "text_and_cancel_icon",
+   "fieldtype": "Color",
+   "label": "Text and Cancel Icon"
+  },
+  {
+   "fieldname": "shadow_border",
+   "fieldtype": "Color",
+   "label": "Shadow Border"
+  },
+  {
+   "fieldname": "hint_text",
+   "fieldtype": "Color",
+   "label": "Hint Text"
+  },
+  {
+   "fieldname": "font_white_color",
+   "fieldtype": "Color",
+   "label": "Font White Color"
+  },
+  {
+   "fieldname": "park_order_button",
+   "fieldtype": "Color",
+   "label": "Park Order Button"
+  },
+  {
+   "fieldname": "active",
+   "fieldtype": "Color",
+   "label": "Active"
+  },
+  {
+   "fieldname": "app_background_image",
+   "fieldtype": "Attach Image",
+   "label": "App BackGround Image"
+  },
+  {
+   "fieldname": "merchant_background_image",
+   "fieldtype": "Attach Image",
+   "label": "Merchant BackGround Image"
+  },
+  {
+   "fieldname": "api_token",
+   "fieldtype": "Data",
+   "label": "Api Token"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2024-04-24 10:46:59.613239",
+ "modified_by": "Administrator",
+ "module": "getpos",
+ "name": "Theme Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
 }
