@@ -164,6 +164,7 @@ def get_attributes_items(group=None):
     if attributes_dict:
         for x in attributes_dict.items():
             attributes.append(x[1])
+    return attributes
 
 
         
