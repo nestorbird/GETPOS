@@ -44,7 +44,7 @@ def get_combo_items(name):
     else:
         return []
     
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=None):
    
     data = []
@@ -72,25 +72,37 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
         filters = {'item_group':group.name,'disabled':0}
         
         if item_code and not extra_item_group :
-            filters.update({'name': item_code})
+            # filters.update({'name': item_code})
+            filters.update({ 'name': ['like', '%' + item_code +'%']})
 
         all_items = frappe.get_all('Item',filters = filters, fields=['*'])
-      
+
         if all_items:
             group_dict.update({'item_group':group.name,
             'item_group_image':item_group_image, 'items':[]}) 
             for item in all_items:
+               
                 image = f"{base_url}{item.image}" if item.get('image') else ''
                 item_taxes = get_item_taxes(item.name)
                 combo_items = get_combo_items(item.name)
+                related_items=[]
+                
 
                 item_dict = {'id':item.name,'name':item.item_name, 'combo_items': combo_items, 'attributes':attributes, 'image': image
-                ,"tax":item_taxes}
-                item_price = flt(get_price_list(item.name))
+                ,"tax":item_taxes,'descrption':item.description,'related_items':related_items}
+                item_price = flt(get_price_list(item.name))                
                 if item_price:
                     item_dict.update({'product_price':item_price})
-                  
-                
+               
+                 
+                get_related_items=frappe.get_all('Related Item',filters={"parent": item.name},fields=['item'])
+                if get_related_items:
+                    for related_item in get_related_items:
+                        item_detail=frappe.get_value('Item',related_item.get('item'),['name','description'])
+                        related_item_price = flt(get_price_list(related_item.get('item'))) 
+                        related_group_items={'id':item_detail[0],'name':item_detail[0],'description':item_detail[1],'product_price':related_item_price}
+                        related_items.append(related_group_items)
+                        
                 # Checking Stock
                 item_stock = {'warehouse':-1,'stock_qty':-1}
                 bundle_bin_qty = 1000000
