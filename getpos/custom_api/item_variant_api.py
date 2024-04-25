@@ -44,7 +44,7 @@ def get_combo_items(name):
     else:
         return []
     
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist()
 def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=None):
    
     data = []
@@ -85,23 +85,17 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
                 image = f"{base_url}{item.image}" if item.get('image') else ''
                 item_taxes = get_item_taxes(item.name)
                 combo_items = get_combo_items(item.name)
-                related_items=[]
                 
+                related_items=[]
 
                 item_dict = {'id':item.name,'name':item.item_name, 'combo_items': combo_items, 'attributes':attributes, 'image': image
                 ,"tax":item_taxes,'descrption':item.description,'related_items':related_items}
                 item_price = flt(get_price_list(item.name))                
                 if item_price:
                     item_dict.update({'product_price':item_price})
-               
+                related_items.append(get_related_items(item.name))
                  
-                get_related_items=frappe.get_all('Related Item',filters={"parent": item.name},fields=['item'])
-                if get_related_items:
-                    for related_item in get_related_items:
-                        item_detail=frappe.get_value('Item',related_item.get('item'),['name','description'])
-                        related_item_price = flt(get_price_list(related_item.get('item'))) 
-                        related_group_items={'id':item_detail[0],'name':item_detail[0],'description':item_detail[1],'product_price':related_item_price}
-                        related_items.append(related_group_items)
+                
                         
                 # Checking Stock
                 item_stock = {'warehouse':-1,'stock_qty':-1}
@@ -126,6 +120,23 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
                 group_dict.get('items').append(item_dict)
             data.append(group_dict)
     return data
+
+
+def get_related_items(item_name):
+    related_items=[]
+    get_related_items_=frappe.get_all('Related Item',filters={"parent": item_name},fields=['item'])
+    if get_related_items_:
+        for related_item in get_related_items_:
+            sub_related_items=[]
+            item_detail=frappe.get_value('Item',related_item.get('item'),['name','description'])
+            if item_detail:
+                related_item_price = flt(get_price_list(related_item.get('item'))) 
+                related_group_items={'id':item_detail[0],'name':item_detail[0],'description':item_detail[1],'product_price':related_item_price,'related_items':sub_related_items}
+                print("SSSS",item_detail)
+                sub_related_items.append(get_related_items(item_detail[0]))
+            related_items.append(related_group_items)
+
+    return related_items
 
 def get_related_item_groups(extra_item_group):
     item_groups = frappe.db.sql('''select distinct igm.item_group from `tabItem` i , `tabItem Group Multiselect`igm  
