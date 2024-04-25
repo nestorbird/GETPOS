@@ -818,3 +818,38 @@ def get_sales_taxes():
         for i in taxes_data:
                 i['tax'] = [j for j in tax if i['name'] == j['name']]
         return taxes_data
+
+
+@frappe.whitelist()
+def review_rating_order():
+        review_order = frappe.request.data
+        review_order = json.loads(review_order)
+        review_order = review_order["review_order"]
+        try:
+                res = frappe._dict()
+                sales_order = frappe.get_doc("Sales Order", review_order.get("name"))
+                sales_order.custom_rating = review_order.get("rating")
+                sales_order.custom_review = review_order.get("review")
+                sales_order.save(ignore_permissions=True)
+                sales_order.submit()
+                
+                res['success_key'] = 1
+                res['message'] = "success"
+                res["sales_order"] ={
+                "name" : sales_order.name,
+                "doc_status" : sales_order.docstatus
+                }
+                if frappe.local.response.get("exc_type"):
+                        del frappe.local.response["exc_type"]
+                return res
+
+        except Exception as e:
+                if frappe.local.response.get("exc_type"):
+                        del frappe.local.response["exc_type"]
+
+                frappe.clear_messages()
+                frappe.local.response["message"] ={
+                "success_key":0,
+                "message":e
+                        }
+
