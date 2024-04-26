@@ -8,6 +8,7 @@ from frappe.utils import (cint,get_formatted_email, nowdate, nowtime, flt)
 from erpnext.accounts.utils import get_balance_on
 from erpnext.stock.utils import get_stock_balance
 from erpnext.stock.stock_ledger import get_previous_sle, get_stock_ledger_entries
+from datetime import datetime, timedelta
 
 
 @frappe.whitelist( allow_guest=True )
@@ -370,10 +371,20 @@ def create_sales_order():
                 sales_order.mode_of_payment = order_list.get("mode_of_payment")
                 sales_order.mpesa_no = order_list.get("mpesa_no")
                 sales_order.coupon_code = order_list.get("coupon_code")
-                
                 sales_order.save()
                 sales_order.submit()
-                
+
+                latest_order = frappe.get_doc('Sales Order', sales_order.name)
+                max_time = max(item['estimated_time'] for item in order_list.get("items"))
+                frappe.get_doc({
+                        "doctype": "Kitchen-Kds",
+                        "order_id": latest_order.get('name'),
+                        "type": order_list.get("type"),
+                        "estimated_time": max_time,
+                        "status": "Open"
+                        }).insert(ignore_permissions=1)
+
+
                 res['success_key'] = 1
                 res['message'] = "success"
                 res["sales_order"] ={
@@ -410,7 +421,7 @@ def add_items_in_order(sales_order, items, order_list):
                 sales_order.append("items", {
                         "item_code": item.get("item_code"),
                         "qty": item.get("qty"),
-                        "rate": item.get("rate"),
+                        "rate": item.get("rate"),                        
                         "item_tax_template": item_tax_template if item_tax_template else ""                
                 })
 
@@ -852,4 +863,48 @@ def review_rating_order():
                 "success_key":0,
                 "message":e
                         }
+
+@frappe.whitelist()
+def update_status(order_status):
+        try:
+                frappe.db.set_value("Kitchen-Kds", {"order_id":order_status.get('name')}, {'status': order_status.get('status')
+                })
+
+                return {"success_key":1, "message": "success"}
+
+        except Exception as e:
+                return {"success_key":0, "message": e}
+
+
+@frappe.whitelist()
+def get_kitchen_kds(status):
+        try:
+
+                start_date = datetime.now() - timedelta(hours=24)
+                end_date = datetime.now()
+                all_order = frappe.db.get_list("Kitchen-Kds", filters={"creation": (">", start_date),"creation": ("<", end_date), "status":status.get('status')}, fields=['name', 'order_id', "status", "estimated_time"])
+                order_items_dict = []
+                for orders in all_order:
+                        try:
+                                items = frappe.db.get_list("Sales Order Item", filters={'parent':orders.get("order_id")}, fields=['item_name','qty'])
+                                order_wise_items = {}
+                                order_wise_items['order_id'] = orders.get("order_id")
+                                order_wise_items['estimated_time'] = orders.get('estimated_time')
+                                order_wise_items["status"] = orders.get('status')
+                                order_wise_items['items'] = items
+                                order_items_dict.append(order_wise_items)
+                        
+                        except Exception as e:
+                                return {"message": e}
+
+                return order_items_dict
+        except Exception as e:
+                return {"message": e}
+
+
+                
+
+
+
+
 
