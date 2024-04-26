@@ -89,7 +89,7 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
                 related_items=[]
 
                 item_dict = {'id':item.name,'name':item.item_name, 'combo_items': combo_items, 'attributes':attributes, 'image': image
-                ,"tax":item_taxes,'descrption':item.description,'related_items':related_items}
+                ,"tax":item_taxes,'descrption':item.description,'related_items':related_items, 'estimated_time': item.custom_estimated_time}
                 item_price = flt(get_price_list(item.name))                
                 if item_price:
                     item_dict.update({'product_price':item_price})
@@ -128,11 +128,10 @@ def get_related_items(item_name):
     if get_related_items_:
         for related_item in get_related_items_:
             sub_related_items=[]
-            item_detail=frappe.get_value('Item',related_item.get('item'),['name','description'])
+            item_detail=frappe.get_value('Item',related_item.get('item'),['name','description','image','custom_estimated_time'])
             if item_detail:
                 related_item_price = flt(get_price_list(related_item.get('item'))) 
-                related_group_items={'id':item_detail[0],'name':item_detail[0],'description':item_detail[1],'product_price':related_item_price,'related_items':sub_related_items}
-                print("SSSS",item_detail)
+                related_group_items={'id':item_detail[0],'name':item_detail[0],'description':item_detail[1],'image':f"{base_url}{item_detail[2]}",'estimated_time': item_detail[3],'product_price':related_item_price,'related_items':sub_related_items}
                 sub_related_items.append(get_related_items(item_detail[0]))
             related_items.append(related_group_items)
 

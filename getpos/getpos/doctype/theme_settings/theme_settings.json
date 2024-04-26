@@ -15,10 +15,23 @@
   "hint_text",
   "font_white_color",
   "park_order_button",
+  "lightgrey",
+  "lightestgreytextcolor",
+  "seagreenprimary",
+  "buttonbeforetap",
+  "ontapcardseagreen",
+  "ratingtextparrotcolor",
+  "whitecolor",
+  "productattributeontap",
+  "black",
+  "lightblackcolor",
+  "currencyamountorangecolor",
+  "productbackgroundcolorontap",
+  "productbordercolorontap",
+  "active",
   "app_background_image",
   "merchant_background_image",
-  "api_token",
-  "active"
+  "api_token"
  ],
  "fields": [
   {
@@ -80,12 +93,77 @@
    "fieldname": "api_token",
    "fieldtype": "Data",
    "label": "Api Token"
+  },
+  {
+   "fieldname": "lightgrey",
+   "fieldtype": "Color",
+   "label": "lightGrey"
+  },
+  {
+   "fieldname": "lightestgreytextcolor",
+   "fieldtype": "Color",
+   "label": "lightestGreyTextColor"
+  },
+  {
+   "fieldname": "seagreenprimary",
+   "fieldtype": "Color",
+   "label": "seaGreenPrimary"
+  },
+  {
+   "fieldname": "buttonbeforetap",
+   "fieldtype": "Color",
+   "label": "buttonBeforeTap"
+  },
+  {
+   "fieldname": "ontapcardseagreen",
+   "fieldtype": "Color",
+   "label": "onTapCardSeaGreen"
+  },
+  {
+   "fieldname": "ratingtextparrotcolor",
+   "fieldtype": "Color",
+   "label": "ratingTextParrotColor"
+  },
+  {
+   "fieldname": "whitecolor",
+   "fieldtype": "Color",
+   "label": "whiteColor"
+  },
+  {
+   "fieldname": "productattributeontap",
+   "fieldtype": "Color",
+   "label": "productAttributeOnTap"
+  },
+  {
+   "fieldname": "black",
+   "fieldtype": "Color",
+   "label": "black"
+  },
+  {
+   "fieldname": "lightblackcolor",
+   "fieldtype": "Color",
+   "label": "lightBlackColor"
+  },
+  {
+   "fieldname": "currencyamountorangecolor",
+   "fieldtype": "Color",
+   "label": "currencyAmountOrangeColor"
+  },
+  {
+   "fieldname": "productbackgroundcolorontap",
+   "fieldtype": "Color",
+   "label": "productBackgroundColorOnTap"
+  },
+  {
+   "fieldname": "productbordercolorontap",
+   "fieldtype": "Color",
+   "label": "productBorderColorOnTap"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-04-24 10:46:59.613239",
+ "modified": "2024-04-26 16:44:10.195526",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Theme Settings",
