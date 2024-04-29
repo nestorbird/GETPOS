@@ -374,17 +374,6 @@ def create_sales_order():
                 sales_order.save()
                 sales_order.submit()
 
-                latest_order = frappe.get_doc('Sales Order', sales_order.name)
-                max_time = max(item['estimated_time'] for item in order_list.get("items"))
-                frappe.get_doc({
-                        "doctype": "Kitchen-Kds",
-                        "order_id": latest_order.get('name'),
-                        "type": order_list.get("type"),
-                        "estimated_time": max_time,
-                        "status": "Open"
-                        }).insert(ignore_permissions=1)
-
-
                 res['success_key'] = 1
                 res['message'] = "success"
                 res["sales_order"] ={
@@ -905,6 +894,61 @@ def get_kitchen_kds(status):
                 return order_items_dict
         except Exception as e:
                 return {"message": e}
+
+@frappe.whitelist()
+def create_sales_order_kiosk():
+        order_list = frappe.request.data
+        order_list = json.loads(order_list)
+        order_list = order_list["order_list"]
+        try:
+                res= frappe._dict()
+                sales_order = frappe.new_doc("Sales Order")
+                sales_order.hub_manager = order_list.get("hub_manager")
+                sales_order.ward = order_list.get("ward")
+                sales_order.customer = order_list.get("customer")
+                arr = order_list.get("transaction_date").split(" ")
+                sales_order.transaction_date = arr[0]
+                sales_order.transaction_time = arr[1]
+                sales_order.delivery_date = order_list.get("delivery_date")
+                sales_order = add_items_in_order(sales_order, order_list.get("items"), order_list)
+                sales_order.status = order_list.get("status")
+                sales_order.mode_of_payment = order_list.get("mode_of_payment")
+                sales_order.mpesa_no = order_list.get("mpesa_no")
+                sales_order.coupon_code = order_list.get("coupon_code")
+                sales_order.save()
+                sales_order.submit()
+
+                latest_order = frappe.get_doc('Sales Order', sales_order.name)
+                max_time = max(item['estimated_time'] for item in order_list.get("items"))
+                frappe.get_doc({
+                        "doctype": "Kitchen-Kds",
+                        "order_id": latest_order.get('name'),
+                        "type": order_list.get("type"),
+                        "estimated_time": max_time,
+                        "status": "Open"
+                        }).insert(ignore_permissions=1)
+
+
+                res['success_key'] = 1
+                res['message'] = "success"
+                res["sales_order"] ={
+                       "name" : sales_order.name,
+                        "doc_status" : sales_order.docstatus
+                        }
+                if frappe.local.response.get("exc_type"):
+                        del frappe.local.response["exc_type"]
+                return res
+
+        except Exception as e:
+                if frappe.local.response.get("exc_type"):
+                        del frappe.local.response["exc_type"]
+
+                frappe.clear_messages()
+                
+                frappe.local.response["message"] ={
+                "success_key":0,
+                "message":e
+                        }
 
 
                 
