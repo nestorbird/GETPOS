@@ -882,7 +882,12 @@ def get_kitchen_kds(status):
 
                 start_date = datetime.now() - timedelta(hours=24)
                 end_date = datetime.now()
-                all_order = frappe.db.get_list("Kitchen-Kds", filters={"creation": (">", start_date),"creation": ("<", end_date), "status":status.get('status')}, fields=['name', 'order_id', "status", "estimated_time"])
+                all_order = frappe.db.get_list("Kitchen-Kds", 
+                                filters=[
+                                    ['creation', 'between', [start_date, end_date]],
+                                    ['status', '=', status.get('status')]
+                                ], 
+                                fields=['name', 'order_id', 'status', 'estimated_time'])
                 order_items_dict = []
                 for orders in all_order:
                         try:
