@@ -128,10 +128,10 @@ def get_related_items(item_name):
     if get_related_items_:
         for related_item in get_related_items_:
             sub_related_items=[]
-            item_detail=frappe.get_value('Item',related_item.get('item'),['name','description','image','custom_estimated_time'])
+            item_detail=frappe.get_value('Item',related_item.get('item'),['name','description','image','custom_estimated_time','item_name'])
             if item_detail:
                 related_item_price = flt(get_price_list(related_item.get('item'))) 
-                related_group_items={'id':item_detail[0],'name':item_detail[0],'description':item_detail[1],'image':f"{base_url}{item_detail[2]}",'estimated_time': item_detail[3],'product_price':related_item_price,'related_items':sub_related_items}
+                related_group_items={'id':item_detail[0],'name':item_detail[4],'description':item_detail[1],'image':f"{base_url}{item_detail[2]}",'estimated_time': item_detail[3],'product_price':related_item_price,'related_items':sub_related_items}
                 sub_related_items.append(get_related_items(item_detail[0]))
             related_items.append(related_group_items)
 
