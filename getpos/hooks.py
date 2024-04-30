@@ -230,7 +230,19 @@ after_migrate = "getpos.getpos.after_migrate.main"
 # 	"nbpos.auth.validate"
 # ]
 
-
+fixtures = [
+    {
+        "dt": "Web Page",
+        "filters": {
+            "name": [
+                "in",
+                [
+                    "payment-process" 
+                ]
+            ]
+        }
+    }
+]
 
 
 website_route_rules = [{'from_route': '/GetPOS/<path:app_path>', 'to_route': 'GetPOS'},]

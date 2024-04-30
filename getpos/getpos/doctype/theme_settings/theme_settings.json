@@ -31,7 +31,16 @@
   "active",
   "app_background_image",
   "merchant_background_image",
-  "api_token"
+  "api_token",
+  "base_payment_url",
+  "authtoken_url",
+  "merchant_id",
+  "client_id",
+  "client_secret",
+  "checkout_url",
+  "isv_merchant_id",
+  "isv_percentage",
+  "source_code"
  ],
  "fields": [
   {
@@ -158,12 +167,57 @@
    "fieldname": "productbordercolorontap",
    "fieldtype": "Color",
    "label": "productBorderColorOnTap"
+  },
+  {
+   "fieldname": "base_payment_url",
+   "fieldtype": "Data",
+   "label": "Base Payment Url"
+  },
+  {
+   "fieldname": "merchant_id",
+   "fieldtype": "Data",
+   "label": "Merchant Id"
+  },
+  {
+   "fieldname": "client_id",
+   "fieldtype": "Data",
+   "label": "Client Id"
+  },
+  {
+   "fieldname": "client_secret",
+   "fieldtype": "Data",
+   "label": "Client Secret"
+  },
+  {
+   "fieldname": "isv_merchant_id",
+   "fieldtype": "Data",
+   "label": "Isv Merchant Id"
+  },
+  {
+   "fieldname": "isv_percentage",
+   "fieldtype": "Float",
+   "label": "Isv Percentage"
+  },
+  {
+   "fieldname": "checkout_url",
+   "fieldtype": "Data",
+   "label": "Checkout Url"
+  },
+  {
+   "fieldname": "authtoken_url",
+   "fieldtype": "Data",
+   "label": "AuthToken Url"
+  },
+  {
+   "fieldname": "source_code",
+   "fieldtype": "Data",
+   "label": "Source Code"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-04-26 16:44:10.195526",
+ "modified": "2024-04-30 15:19:55.889882",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Theme Settings",
