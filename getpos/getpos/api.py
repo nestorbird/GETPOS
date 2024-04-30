@@ -953,7 +953,7 @@ def create_sales_order_kiosk():
 
 
                 
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist(methods="POST")
 def payment_request(payment_list={}):
         try:
                 auth_url = f'{payment_list.get("auth_token_url")}/connect/token'
@@ -972,7 +972,6 @@ def payment_request(payment_list={}):
                 "Accept": "application/json",
                 "Authorization": f"Bearer {o_auth_authentication_response['access_token']}"
                 })
-
 
 
                 customer = {
@@ -995,15 +994,15 @@ def payment_request(payment_list={}):
                         "DisableExactAmount": False,
                         "DisableWallet": True,
                         "SourceCode": payment_list.get("source_code")
-                        # "":,
-                        # "isvamount":payment_list.get("isv_amount")
                 }
                 post_request_data = json.dumps(request)
                 content_data = post_request_data.encode('utf-8')
                 headers = {'Content-Type': 'application/json'}
 
                 api_response = api_client.post(f"{base_address}{api}", data=content_data, headers=headers)
+
                 viva_wallet_order_response = api_response.json()
+                
                 if api_response.status_code == 200:
                         # post_process_payment_request['Order']['OrderCode'] = viva_wallet_order_response['OrderCode']
                         # await _order_service.update_order_async(post_process_payment_request['Order'])
