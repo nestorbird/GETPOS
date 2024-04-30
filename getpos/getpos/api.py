@@ -967,8 +967,7 @@ def payment_request(payment_list={}):
 
                 api_client = requests.Session()
                 base_address = payment_list.get("base_payment_url")
-                # api = "/checkout/v2/orders"
-                api = "/checkout/v2/isv/orders"
+                api = "/checkout/v2/orders"               
                 api_client.headers.update({
                 "Accept": "application/json",
                 "Authorization": f"Bearer {o_auth_authentication_response['access_token']}"
