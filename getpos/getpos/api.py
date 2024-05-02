@@ -877,15 +877,16 @@ def get_kitchen_kds(status):
                                     ['creation', 'between', [start_date, end_date]],
                                     ['status', '=', status]
                                 ], 
-                                fields=['name', 'order_id', 'status', 'estimated_time'])
+                                fields=['name', 'order_id', 'status', 'estimated_time', 'type'])
                 order_items_dict = []
                 for orders in all_order:
                         try:
-                                items = frappe.db.get_list("Sales Order Item", filters={'parent':orders.get("order_id")}, fields=['item_name','qty'])
+                                items = frappe.db.get_all("Sales Order Item", filters={'parent':orders.get("order_id")}, fields=['item_name','qty'])
                                 order_wise_items = {}
                                 order_wise_items['order_id'] = orders.get("order_id")
                                 order_wise_items['estimated_time'] = orders.get('estimated_time')
                                 order_wise_items["status"] = orders.get('status')
+                                order_wise_items["type"] = orders.get('type')
                                 order_wise_items['items'] = items
                                 order_items_dict.append(order_wise_items)
                         
@@ -896,7 +897,7 @@ def get_kitchen_kds(status):
         except Exception as e:
                 return {"message": e}
 
-@frappe.whitelist()
+@frappe.whitelist(methods="POST")
 def create_sales_order_kiosk():
         order_list = frappe.request.data
         order_list = json.loads(order_list)
