@@ -1,0 +1,682 @@
+[
+ {
+  "allowed_in_mentions": 1,
+  "api_key": null,
+  "api_secret": null,
+  "banner_image": null,
+  "bio": null,
+  "birth_date": null,
+  "block_modules": [],
+  "bypass_restrict_ip_check_if_2fa_enabled": 0,
+  "defaults": [],
+  "desk_theme": "Light",
+  "docstatus": 0,
+  "doctype": "User",
+  "document_follow_frequency": "Daily",
+  "document_follow_notify": 0,
+  "email": "dinein@yopmail.com",
+  "email_signature": null,
+  "enabled": 1,
+  "first_name": "Dine In",
+  "follow_assigned_documents": 0,
+  "follow_commented_documents": 0,
+  "follow_created_documents": 0,
+  "follow_liked_documents": 0,
+  "follow_shared_documents": 0,
+  "full_name": "Dine In",
+  "gender": null,
+  "home_settings": null,
+  "interest": null,
+  "language": "en",
+  "last_active": null,
+  "last_ip": null,
+  "last_known_versions": null,
+  "last_login": null,
+  "last_name": null,
+  "last_password_reset_date": null,
+  "last_reset_password_key_generated_on": "2024-05-02 18:09:03.595467",
+  "location": null,
+  "login_after": 0,
+  "login_before": 0,
+  "logout_all_sessions": 1,
+  "middle_name": null,
+  "mobile_no": null,
+  "modified": "2024-05-02 18:09:36.123851",
+  "module_profile": null,
+  "mute_sounds": 0,
+  "name": "dinein@yopmail.com",
+  "new_password": "",
+  "onboarding_status": "{}",
+  "phone": null,
+  "redirect_url": null,
+  "reset_password_key": "e6ab01472a1035be30f3c221d791374480e88dad184099bba08e9fd593ad47f9",
+  "restrict_ip": null,
+  "role_profile_name": null,
+  "roles": [
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Academics User"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Accounts Manager"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Accounts User"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Agriculture Manager"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Agriculture User"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Analytics"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Auditor"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Blogger"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Customer"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Dashboard Manager"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Fleet Manager"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Fulfillment User"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "HR Manager"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "HR User"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Inbox User"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Item Manager"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Knowledge Base Contributor"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Knowledge Base Editor"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Loan Manager"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Maintenance Manager"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Maintenance User"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Manufacturing Manager"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Newsletter Manager"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Prepared Report User"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Projects Manager"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Projects User"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Purchase Manager"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Purchase Master Manager"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Purchase User"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Quality Manager"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Report Manager"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Sales Manager"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Sales Master Manager"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Sales User"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Script Manager"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Stock Manager"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Stock User"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Supplier"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Support Team"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "System Manager"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Translator"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Website Manager"
+   },
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Workspace Manager"
+   }
+  ],
+  "send_me_a_copy": 0,
+  "send_welcome_email": 1,
+  "simultaneous_sessions": 2,
+  "social_logins": [
+   {
+    "parent": "dinein@yopmail.com",
+    "parentfield": "social_logins",
+    "parenttype": "User",
+    "provider": "frappe",
+    "userid": "e54f35347a4d2c85ea12f8b2069a659709d24a9",
+    "username": null
+   }
+  ],
+  "thread_notify": 1,
+  "time_zone": "Asia/Kolkata",
+  "unsubscribed": 0,
+  "user_emails": [],
+  "user_image": null,
+  "user_type": "System User",
+  "username": "dine_in"
+ },
+ {
+  "allowed_in_mentions": 1,
+  "api_key": null,
+  "api_secret": null,
+  "banner_image": null,
+  "bio": null,
+  "birth_date": null,
+  "block_modules": [],
+  "bypass_restrict_ip_check_if_2fa_enabled": 0,
+  "defaults": [],
+  "desk_theme": "Light",
+  "docstatus": 0,
+  "doctype": "User",
+  "document_follow_frequency": "Daily",
+  "document_follow_notify": 0,
+  "email": "takeaway@yopmail.com",
+  "email_signature": null,
+  "enabled": 1,
+  "first_name": "Take Away",
+  "follow_assigned_documents": 0,
+  "follow_commented_documents": 0,
+  "follow_created_documents": 0,
+  "follow_liked_documents": 0,
+  "follow_shared_documents": 0,
+  "full_name": "Take Away",
+  "gender": null,
+  "home_settings": null,
+  "interest": null,
+  "language": "en",
+  "last_active": null,
+  "last_ip": null,
+  "last_known_versions": null,
+  "last_login": null,
+  "last_name": null,
+  "last_password_reset_date": null,
+  "last_reset_password_key_generated_on": "2024-05-02 18:10:13.543193",
+  "location": null,
+  "login_after": 0,
+  "login_before": 0,
+  "logout_all_sessions": 1,
+  "middle_name": null,
+  "mobile_no": null,
+  "modified": "2024-05-02 18:10:27.908081",
+  "module_profile": null,
+  "mute_sounds": 0,
+  "name": "takeaway@yopmail.com",
+  "new_password": "",
+  "onboarding_status": "{}",
+  "phone": null,
+  "redirect_url": null,
+  "reset_password_key": "f7e68b0f59202696e94427985c918401a3d5cc689f9252d3440627a0bd242ffa",
+  "restrict_ip": null,
+  "role_profile_name": null,
+  "roles": [
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Academics User"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Accounts Manager"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Accounts User"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Agriculture Manager"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Agriculture User"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Analytics"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Auditor"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Blogger"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Customer"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Dashboard Manager"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Fleet Manager"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Fulfillment User"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "HR Manager"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "HR User"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Inbox User"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Item Manager"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Knowledge Base Contributor"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Knowledge Base Editor"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Loan Manager"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Maintenance Manager"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Maintenance User"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Manufacturing Manager"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Newsletter Manager"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Prepared Report User"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Projects Manager"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Projects User"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Purchase Manager"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Purchase Master Manager"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Purchase User"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Quality Manager"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Report Manager"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Sales Manager"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Sales Master Manager"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Sales User"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Script Manager"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Stock Manager"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Stock User"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Supplier"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Support Team"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "System Manager"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Translator"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Website Manager"
+   },
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "roles",
+    "parenttype": "User",
+    "role": "Workspace Manager"
+   }
+  ],
+  "send_me_a_copy": 0,
+  "send_welcome_email": 1,
+  "simultaneous_sessions": 2,
+  "social_logins": [
+   {
+    "parent": "takeaway@yopmail.com",
+    "parentfield": "social_logins",
+    "parenttype": "User",
+    "provider": "frappe",
+    "userid": "dc052d53b7d165c40253a62d7a6013155c4940b",
+    "username": null
+   }
+  ],
+  "thread_notify": 1,
+  "time_zone": "Asia/Kolkata",
+  "unsubscribed": 0,
+  "user_emails": [],
+  "user_image": null,
+  "user_type": "System User",
+  "username": "take_away"
+ }
+]
