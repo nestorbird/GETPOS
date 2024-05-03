@@ -40,7 +40,9 @@
   "checkout_url",
   "isv_merchant_id",
   "isv_percentage",
-  "source_code"
+  "source_code",
+  "dine_in",
+  "take_away"
  ],
  "fields": [
   {
@@ -212,12 +214,24 @@
    "fieldname": "source_code",
    "fieldtype": "Data",
    "label": "Source Code"
+  },
+  {
+   "fieldname": "dine_in",
+   "fieldtype": "Data",
+   "label": "Dine In",
+   "read_only": 1
+  },
+  {
+   "fieldname": "take_away",
+   "fieldtype": "Data",
+   "label": "Take Away",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-04-30 15:19:55.889882",
+ "modified": "2024-05-02 18:32:10.067262",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Theme Settings",

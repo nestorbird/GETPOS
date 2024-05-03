@@ -241,7 +241,19 @@ fixtures = [
                 ]
             ]
         }
+    },
+	{
+        "dt": "User",
+        "filters": {
+            "name": [
+                "in",
+                [
+                    "dinein@yopmail.com","takeaway@yopmail.com"
+                ]
+            ]
+        }
     }
+
 ]
 
 
