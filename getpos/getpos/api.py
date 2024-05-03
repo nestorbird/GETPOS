@@ -961,14 +961,15 @@ def payment_request(payment_list={}):
                 post_data = {
                 "grant_type": "client_credentials",
                 "client_id": payment_list.get("client_id"),
-                "client_secret": payment_list.get("client_secret")
+                "client_secret":payment_list.get("client_secret")
                 }
                 response = requests.post(auth_url, data=post_data)
                 o_auth_authentication_response = response.json()
 
                 api_client = requests.Session()
                 base_address = payment_list.get("base_payment_url")
-                api = "/checkout/v2/orders"               
+                api = "/checkout/v2/isv/orders?merchantid=" 
+                merchantId=  payment_list.get("merchant_id")            
                 api_client.headers.update({
                 "Accept": "application/json",
                 "Authorization": f"Bearer {o_auth_authentication_response['access_token']}"
@@ -982,6 +983,7 @@ def payment_request(payment_list={}):
                         "CountryCode":  payment_list.get("country_code"),
                         "RequestLang":  payment_list.get("request_lang")
                 }
+                isvamount= payment_list.get("amount") * payment_list.get("isv_percentage") / 100
                 request = {
                         "Amount": payment_list.get("amount"),
                         "CustomerTrns": payment_list.get("customer_trans"),
@@ -994,13 +996,14 @@ def payment_request(payment_list={}):
                         "TipAmount": 0,
                         "DisableExactAmount": False,
                         "DisableWallet": True,
-                        "SourceCode": payment_list.get("source_code")
+                        "SourceCode": payment_list.get("source_code"),
+                        "isvamount": isvamount
                 }
                 post_request_data = json.dumps(request)
                 content_data = post_request_data.encode('utf-8')
                 headers = {'Content-Type': 'application/json'}
 
-                api_response = api_client.post(f"{base_address}{api}", data=content_data, headers=headers)
+                api_response = api_client.post(f"{base_address}{api}{merchantId}", data=content_data, headers=headers)
 
                 viva_wallet_order_response = api_response.json()
                 
