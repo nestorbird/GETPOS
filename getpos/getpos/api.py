@@ -372,6 +372,7 @@ def create_sales_order():
                 sales_order.mode_of_payment = order_list.get("mode_of_payment")
                 sales_order.mpesa_no = order_list.get("mpesa_no")
                 sales_order.coupon_code = order_list.get("coupon_code")
+                
                 sales_order.save()
                 sales_order.submit()
 
@@ -877,13 +878,14 @@ def get_kitchen_kds(status):
                                     ['creation', 'between', [start_date, end_date]],
                                     ['status', '=', status]
                                 ], 
-                                fields=['name', 'order_id', 'status', 'estimated_time', 'type'])
+                                fields=['name', 'order_id', 'status', 'estimated_time', 'type', 'creation'])
                 order_items_dict = []
                 for orders in all_order:
                         try:
                                 items = frappe.db.get_all("Sales Order Item", filters={'parent':orders.get("order_id")}, fields=['item_name','qty'])
                                 order_wise_items = {}
                                 order_wise_items['order_id'] = orders.get("order_id")
+                                order_wise_items['creation'] = orders.get("creation")
                                 order_wise_items['estimated_time'] = orders.get('estimated_time')
                                 order_wise_items["status"] = orders.get('status')
                                 order_wise_items["type"] = orders.get('type')
@@ -917,6 +919,10 @@ def create_sales_order_kiosk():
                 sales_order.mode_of_payment = order_list.get("mode_of_payment")
                 sales_order.mpesa_no = order_list.get("mpesa_no")
                 sales_order.coupon_code = order_list.get("coupon_code")
+                if (order_list.get("mode_of_payment") == "Card"):
+                        sales_order.custom_payment_status = "Pending"
+                else:
+                       sales_order.custom_payment_status = "Paid" 
                 sales_order.save()
                 sales_order.submit()
 
@@ -1022,6 +1028,18 @@ def payment_request(payment_list={}):
                 "success_key":0,
                 "message":e
                         }
+
+@frappe.whitelist()
+def update_payment_status(update_paymentstatus):
+        try:
+                frappe.db.set_value("Sales Order", {"name":update_paymentstatus.get('order_id')}, {'custom_payment_status': update_paymentstatus.get('paymentstatus')
+                })
+
+                return {"success_key":1, "message": "success"}
+
+        except Exception as e:
+                return {"success_key":0, "message": e}
+
 
 
 
