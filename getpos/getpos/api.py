@@ -9,7 +9,7 @@ from frappe.utils import (cint,get_formatted_email, nowdate, nowtime, flt)
 from erpnext.accounts.utils import get_balance_on
 from erpnext.stock.utils import get_stock_balance
 from erpnext.stock.stock_ledger import get_previous_sle, get_stock_ledger_entries
-from datetime import datetime, timedelta
+from frappe.utils import add_to_date, now
 
 
 @frappe.whitelist( allow_guest=True )
@@ -870,9 +870,8 @@ def update_status(order_status):
 @frappe.whitelist()
 def get_kitchen_kds(status):
         try:
-
-                start_date = datetime.now() - timedelta(hours=24)
-                end_date = datetime.now()
+                start_date = add_to_date(now(), hours=-24)
+                end_date = now()
                 all_order = frappe.db.get_all("Kitchen-Kds", 
                                 filters=[
                                     ['creation', 'between', [start_date, end_date]],
