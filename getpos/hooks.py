@@ -252,6 +252,17 @@ fixtures = [
                 ]
             ]
         }
+    },
+	{
+        "dt": "Customer",
+        "filters": {
+            "name": [
+                "in",
+                [
+                    "CUST-2024-310","CUST-2024-311"
+                ]
+            ]
+        }
     }
 
 ]
