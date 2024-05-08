@@ -1038,6 +1038,17 @@ def update_payment_status(update_paymentstatus):
 
         except Exception as e:
                 return {"success_key":0, "message": e}
+        
+
+@frappe.whitelist(allow_guest=True)
+def get_filters():
+        filters = frappe.db.sql(''' Select 
+        it.item_type
+        from `tabItem Type` it
+        ''', as_dict = True)
+     
+        return filters
+
 
 
 
