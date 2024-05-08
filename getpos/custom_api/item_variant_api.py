@@ -44,7 +44,7 @@ def get_combo_items(name):
     else:
         return []
     
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist()
 def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=None,item_type=None,item_order_by=None):
    
     data = []
@@ -136,23 +136,26 @@ def get_related_items(item_name):
     if get_related_items_:
         for related_item in get_related_items_:
             sub_related_items=[]
+            allergens=[]
             item_detail=frappe.get_value('Item',related_item.get('item'),['name','description','image','custom_estimated_time','item_name','custom_item_type'])
             if item_detail:
                 related_item_price = flt(get_price_list(related_item.get('item'))) 
-                related_group_items={'id':item_detail[0],'name':item_detail[4],'description':item_detail[1],'image':f"{base_url}{item_detail[2]}",'estimated_time': item_detail[3],'item_type':item_detail[5],'product_price':related_item_price,'related_items':sub_related_items}
-                sub_related_items.append(get_related_items(item_detail[0]))
+                allergens.append(get_allergens(item_detail[4]))
+                related_group_items={'id':item_detail[0],'name':item_detail[4],'description':item_detail[1],'image':f"{base_url}{item_detail[2]}",'estimated_time': item_detail[3],'item_type':item_detail[5],'product_price':related_item_price,'allergens':allergens,'related_items':sub_related_items}
+                sub_related_items.append(get_related_items(item_detail[0]))       
+            
             related_items.append(related_group_items)
 
     return related_items
 
 def get_allergens(item_name):
     allergens=[]
-    get_allergens_=frappe.get_all('Item Allergens',filters={"parent": item_name},fields=['allergens'])    
+    get_allergens_=frappe.get_all('Item Allergens',filters={"parent": item_name},fields=['allergens']) 
     if get_allergens_:
         for allergens_item in get_allergens_:           
             allergens_item_detail=frappe.get_value('Allergens',allergens_item.get('allergens'),['allergens','icon'])
             if allergens_item_detail:
-                allergens_items={'allergens':allergens_item_detail[0],'icon':allergens_item_detail[1]}
+                allergens_items={'allergens':allergens_item_detail[0],'icon':f"{base_url}{allergens_item_detail[1]}"}
             allergens.append(allergens_items)
     return allergens
 
