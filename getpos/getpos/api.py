@@ -818,3 +818,232 @@ def get_sales_taxes():
         for i in taxes_data:
                 i['tax'] = [j for j in tax if i['name'] == j['name']]
         return taxes_data
+
+@frappe.whitelist()
+def review_rating_order():
+        review_order = frappe.request.data
+        review_order = json.loads(review_order)
+        review_order = review_order["review_order"]
+        try:
+                res = frappe._dict()
+                sales_order = frappe.get_doc("Sales Order", review_order.get("name"))
+                sales_order.custom_rating = review_order.get("rating")
+                sales_order.custom_review = review_order.get("review")
+                sales_order.save(ignore_permissions=True)
+                sales_order.submit()
+                
+                res['success_key'] = 1
+                res['message'] = "success"
+                res["sales_order"] ={
+                "name" : sales_order.name,
+                "doc_status" : sales_order.docstatus
+                }
+                if frappe.local.response.get("exc_type"):
+                        del frappe.local.response["exc_type"]
+                return res
+
+        except Exception as e:
+                if frappe.local.response.get("exc_type"):
+                        del frappe.local.response["exc_type"]
+
+                frappe.clear_messages()
+                frappe.local.response["message"] ={
+                "success_key":0,
+                "message":e
+                        }
+
+@frappe.whitelist()
+def update_status(order_status):
+        try:
+                frappe.db.set_value("Kitchen-Kds", {"order_id":order_status.get('name')}, {'status': order_status.get('status')
+                })
+
+                return {"success_key":1, "message": "success"}
+
+        except Exception as e:
+                return {"success_key":0, "message": e}
+
+
+@frappe.whitelist()
+def get_kitchen_kds(status):
+        try:
+                start_date = add_to_date(now(), hours=-24)
+                end_date = now()
+                all_order = frappe.db.get_all("Kitchen-Kds", 
+                                filters=[
+                                    ['creation', 'between', [start_date, end_date]],
+                                    ['status', '=', status]
+                                ], 
+                                fields=['name', 'order_id', 'status', 'estimated_time', 'type', 'creation'])
+                order_items_dict = []
+                for orders in all_order:
+                        try:
+                                items = frappe.db.get_all("Sales Order Item", filters={'parent':orders.get("order_id")}, fields=['item_name','qty'])
+                                order_wise_items = {}
+                                order_wise_items['order_id'] = orders.get("order_id")
+                                order_wise_items['creation'] = orders.get("creation")
+                                order_wise_items['estimated_time'] = orders.get('estimated_time')
+                                order_wise_items["status"] = orders.get('status')
+                                order_wise_items["type"] = orders.get('type')
+                                order_wise_items['items'] = items
+                                order_items_dict.append(order_wise_items)
+                        
+                        except Exception as e:
+                                return {"message": e}
+
+                return order_items_dict
+        except Exception as e:
+                return {"message": e}
+
+@frappe.whitelist(methods="POST")
+def create_sales_order_kiosk():
+        order_list = frappe.request.data
+        order_list = json.loads(order_list)
+        order_list = order_list["order_list"]
+        try:
+                res= frappe._dict()
+                sales_order = frappe.new_doc("Sales Order")
+                sales_order.hub_manager = order_list.get("hub_manager")
+                sales_order.ward = order_list.get("ward")
+                sales_order.customer = order_list.get("customer")
+                arr = order_list.get("transaction_date").split(" ")
+                sales_order.transaction_date = arr[0]
+                sales_order.transaction_time = arr[1]
+                sales_order.delivery_date = order_list.get("delivery_date")
+                sales_order = add_items_in_order(sales_order, order_list.get("items"), order_list)
+                sales_order.status = order_list.get("status")
+                sales_order.mode_of_payment = order_list.get("mode_of_payment")
+                sales_order.mpesa_no = order_list.get("mpesa_no")
+                sales_order.coupon_code = order_list.get("coupon_code")
+                if (order_list.get("mode_of_payment") == "Card"):
+                        sales_order.custom_payment_status = "Pending"
+                else:
+                       sales_order.custom_payment_status = "Paid" 
+                sales_order.save()
+                sales_order.submit()
+
+                latest_order = frappe.get_doc('Sales Order', sales_order.name)
+                max_time = max(item['estimated_time'] for item in order_list.get("items"))
+                frappe.get_doc({
+                        "doctype": "Kitchen-Kds",
+                        "order_id": latest_order.get('name'),
+                        "type": order_list.get("type"),
+                        "estimated_time": max_time,
+                        "status": "Open"
+                        }).insert(ignore_permissions=1)
+
+
+                res['success_key'] = 1
+                res['message'] = "success"
+                res["sales_order"] ={
+                       "name" : sales_order.name,
+                        "doc_status" : sales_order.docstatus
+                        }
+                if frappe.local.response.get("exc_type"):
+                        del frappe.local.response["exc_type"]
+                return res
+
+        except Exception as e:
+                if frappe.local.response.get("exc_type"):
+                        del frappe.local.response["exc_type"]
+
+                frappe.clear_messages()
+                
+                frappe.local.response["message"] ={
+                "success_key":0,
+                "message":e
+                        }
+
+
+                
+@frappe.whitelist(methods="POST")
+def payment_request(payment_list={}):
+        try:
+                auth_url = f'{payment_list.get("auth_token_url")}/connect/token'
+                post_data = {
+                "grant_type": "client_credentials",
+                "client_id": payment_list.get("client_id"),
+                "client_secret":payment_list.get("client_secret")
+                }
+                response = requests.post(auth_url, data=post_data)
+                o_auth_authentication_response = response.json()
+
+                api_client = requests.Session()
+                base_address = payment_list.get("base_payment_url")
+                api = "/checkout/v2/isv/orders?merchantid=" 
+                merchantId=  payment_list.get("merchant_id")            
+                api_client.headers.update({
+                "Accept": "application/json",
+                "Authorization": f"Bearer {o_auth_authentication_response['access_token']}"
+                })
+
+
+                customer = {
+                        "Email":  payment_list.get("customer_email"),
+                        "FullName": payment_list.get("customer_name"),
+                        "Phone": payment_list.get("customer_phone"),
+                        "CountryCode":  payment_list.get("country_code"),
+                        "RequestLang":  payment_list.get("request_lang")
+                }
+                isvamount= payment_list.get("amount") * payment_list.get("isv_percentage") / 100
+                request = {
+                        "Amount": payment_list.get("amount"),
+                        "CustomerTrns": payment_list.get("customer_trans"),
+                        "Customer": customer,
+                        "PaymentTimeout": 300,
+                        "Preauth": False,
+                        "AllowRecurring": False,
+                        "MaxInstallments": 12,
+                        "PaymentNotification": True,
+                        "TipAmount": 0,
+                        "DisableExactAmount": False,
+                        "DisableWallet": True,
+                        "SourceCode": payment_list.get("source_code"),
+                        "isvamount": isvamount
+                }
+                post_request_data = json.dumps(request)
+                content_data = post_request_data.encode('utf-8')
+                headers = {'Content-Type': 'application/json'}
+
+                api_response = api_client.post(f"{base_address}{api}{merchantId}", data=content_data, headers=headers)
+
+                viva_wallet_order_response = api_response.json()
+                
+                if api_response.status_code == 200:
+                        # post_process_payment_request['Order']['OrderCode'] = viva_wallet_order_response['OrderCode']
+                        # await _order_service.update_order_async(post_process_payment_request['Order'])
+                        redirect_url = f'{payment_list.get("checkout_url")}/web/checkout?ref={viva_wallet_order_response["orderCode"]}'
+                return redirect_url
+        except Exception as e:
+                if frappe.local.response.get("exc_type"):
+                        del frappe.local.response["exc_type"]
+
+                frappe.clear_messages()
+                
+                frappe.local.response["message"] ={
+                "success_key":0,
+                "message":e
+                        }
+
+@frappe.whitelist()
+def update_payment_status(update_paymentstatus):
+        try:
+                frappe.db.set_value("Sales Order", {"name":update_paymentstatus.get('order_id')}, {'custom_payment_status': update_paymentstatus.get('paymentstatus')
+                })
+
+                return {"success_key":1, "message": "success"}
+
+        except Exception as e:
+                return {"success_key":0, "message": e}
+        
+
+@frappe.whitelist(allow_guest=True)
+def get_filters():
+        filters = frappe.db.sql(''' Select 
+        it.item_type
+        from `tabItem Type` it
+        ''', as_dict = True)
+     
+        return filters
+
+

@@ -45,11 +45,16 @@ def get_combo_items(name):
         return []
     
 @frappe.whitelist()
-def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=None):
+def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=None,item_type=None,item_order_by=None):
    
     data = []
     filters = {'is_group':0,'name':['not in',('Extra')],
                                 'parent_item_group':['not in',('Extra')]}
+    if item_order_by=='desc':
+        item_order_by='item_name desc'
+    else:
+        item_order_by='item_name asc'
+
     if from_date:
         filters.update({'modified':['>=',from_date]})
 
@@ -72,9 +77,12 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
         filters = {'item_group':group.name,'disabled':0}
         
         if item_code and not extra_item_group :
-            filters.update({'name': item_code})
+            filters.update({ 'name': ['like', '%' + item_code +'%']})
+        
+        if item_type :
+            filters.update({ 'custom_item_type': item_type })
 
-        all_items = frappe.get_all('Item',filters = filters, fields=['*'])
+        all_items = frappe.get_all('Item',filters = filters, fields=['*'],order_by=item_order_by)
       
         if all_items:
             group_dict.update({'item_group':group.name,
@@ -84,11 +92,16 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
                 item_taxes = get_item_taxes(item.name)
                 combo_items = get_combo_items(item.name)
 
+                related_items=[]
+                allergens=[]
                 item_dict = {'id':item.name,'name':item.item_name, 'combo_items': combo_items, 'attributes':attributes, 'image': image
-                ,"tax":item_taxes}
-                item_price = flt(get_price_list(item.name))
+                ,"tax":item_taxes,'descrption':item.description,'related_items':related_items, 'estimated_time': item.custom_estimated_time,'item_type':item.custom_item_type,'allergens':allergens}
+                item_price = flt(get_price_list(item.name))                
                 if item_price:
                     item_dict.update({'product_price':item_price})
+                related_items.append(get_related_items(item.name))
+                allergens.append(get_allergens(item.name)) 
+
                   
                 
                 # Checking Stock
@@ -114,6 +127,36 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
                 group_dict.get('items').append(item_dict)
             data.append(group_dict)
     return data
+
+def get_related_items(item_name):
+    related_items=[]
+    get_related_items_=frappe.get_all('Related Item',filters={"parent": item_name},fields=['item'])
+    if get_related_items_:
+        for related_item in get_related_items_:
+            sub_related_items=[]
+            allergens=[]
+            item_detail=frappe.get_value('Item',related_item.get('item'),['name','description','image','custom_estimated_time','item_name','custom_item_type'])
+            if item_detail:
+                related_item_price = flt(get_price_list(related_item.get('item'))) 
+                allergens.append(get_allergens(item_detail[4]))
+                related_group_items={'id':item_detail[0],'name':item_detail[4],'description':item_detail[1],'image':f"{base_url}{item_detail[2]}",'estimated_time': item_detail[3],'item_type':item_detail[5],'product_price':related_item_price,'allergens':allergens,'related_items':sub_related_items}
+                sub_related_items.append(get_related_items(item_detail[0]))       
+            
+            related_items.append(related_group_items)
+
+    return related_items
+
+def get_allergens(item_name):
+    allergens=[]
+    get_allergens_=frappe.get_all('Item Allergens',filters={"parent": item_name},fields=['allergens']) 
+    if get_allergens_:
+        for allergens_item in get_allergens_:           
+            allergens_item_detail=frappe.get_value('Allergens',allergens_item.get('allergens'),['allergens','icon'])
+            if allergens_item_detail:
+                allergens_items={'allergens':allergens_item_detail[0],'icon':f"{base_url}{allergens_item_detail[1]}"}
+            allergens.append(allergens_items)
+    return allergens
+
 
 def get_related_item_groups(extra_item_group):
     item_groups = frappe.db.sql('''select distinct igm.item_group from `tabItem` i , `tabItem Group Multiselect`igm  
