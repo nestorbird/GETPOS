@@ -21,7 +21,10 @@ fixtures = [
 				(
 					"Sales Order Item-associated_item",
                     "Sales Invoice-hub_manager",
-                    "Sales Order-hub_manager"
+                    "Sales Order-hub_manager",
+                    "Cost Center-custom_attach_image",
+                    "Cost Center-custom_address",
+                    "Cost Center-custom_location"
 				)
 			)
 		}
@@ -38,6 +41,18 @@ fixtures = [
 			)
 		}
 	},
+  
+   {
+        "dt": "Web Page",
+        "filters": {
+            "name": [
+                "in",
+                [
+                    "payment-process" 
+                ]
+            ]
+        }
+    }
 ]
 # include js, css files in header of desk.html
 # app_include_css = "/assets/nbpos/css/nbpos.css"
@@ -230,42 +245,6 @@ after_migrate = "getpos.getpos.after_migrate.main"
 # 	"nbpos.auth.validate"
 # ]
 
-fixtures = [
-    {
-        "dt": "Web Page",
-        "filters": {
-            "name": [
-                "in",
-                [
-                    "payment-process" 
-                ]
-            ]
-        }
-    },
-	{
-        "dt": "User",
-        "filters": {
-            "name": [
-                "in",
-                [
-                    "dinein@yopmail.com","takeaway@yopmail.com"
-                ]
-            ]
-        }
-    },
-	{
-        "dt": "Customer",
-        "filters": {
-            "name": [
-                "in",
-                [
-                    "CUST-2024-310","CUST-2024-311"
-                ]
-            ]
-        }
-    }
-
-]
 
 
 website_route_rules = [{'from_route': '/GetPOS/<path:app_path>', 'to_route': 'GetPOS'},]

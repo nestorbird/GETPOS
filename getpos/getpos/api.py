@@ -1051,5 +1051,29 @@ def get_filters():
 
 
 
+@frappe.whitelist(allow_guest=True)
+def get_location():
+        body = frappe.local.form_dict
+        if not body.get("custom_location"):
+                location = frappe.db.get_all('Cost Center',
+                                                        filters={
+                                                                'disabled': 0,
+                                                                'custom_location': ('!=', '')
+                                                        },
+                                                        fields=['custom_location'],
+                                                        order_by='creation desc',
+                                                )
 
+                return location
+        else:
+                location = frappe.db.get_all('Cost Center',
+                                                        filters={
+                                                                'disabled': 0,
+                                                                'custom_location': body.get("custom_location")
+                                                        },
+                                                        fields=['custom_location','custom_address','custom_attach_image','cost_center_name'],
+                                                        order_by='creation desc',
+                                                )
 
+                return location
+                
