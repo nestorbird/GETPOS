@@ -1056,6 +1056,7 @@ def get_location():
         body = frappe.local.form_dict
         if not body.get("custom_location"):
                 location = frappe.db.get_all('Cost Center',
+                                                         distinct=True,
                                                         filters={
                                                                 'disabled': 0,
                                                                 'custom_location': ('!=', '')
