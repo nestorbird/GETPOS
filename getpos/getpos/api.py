@@ -1073,28 +1073,25 @@ def get_filters():
 
 @frappe.whitelist(allow_guest=True)
 def get_location():
-        body = frappe.local.form_dict
-        if not body.get("custom_location"):
-                location = frappe.db.get_all('Cost Center',
-                                                         distinct=True,
-                                                        filters={
-                                                                'disabled': 0,
-                                                                'custom_location': ('!=', '')
-                                                        },
-                                                        fields=['custom_location'],
-                                                        order_by='creation desc',
-                                                )
+    body = frappe.local.form_dict
+    if body.get("search_location"):
+        filter_condition = f'%{body.get("search_location")}%'
+        return frappe.db.sql("""
+            SELECT DISTINCT custom_location
+            FROM `tabCost Center` WHERE custom_location LIKE %s
+            ORDER BY custom_location ASC;
+            """, (filter_condition,))
 
-                return location
-        else:
-                location = frappe.db.get_all('Cost Center',
-                                                        filters={
-                                                                'disabled': 0,
-                                                                'custom_location': body.get("custom_location")
-                                                        },
-                                                        fields=['custom_location','custom_address','custom_attach_image','cost_center_name'],
-                                                        order_by='creation desc',
-                                                )
 
-                return location
+    elif (body.get("custom_location")):
+             location = frappe.db.get_all('Cost Center',
+                                                     filters={
+                                                             'disabled': 0,
+                                                             'custom_location': body.get("custom_location")
+                                                     },
+                                                     fields=['custom_location','custom_address','custom_attach_image','cost_center_name'],
+                                                     order_by='creation desc',
+                                             )
+             return location
                 
+        
