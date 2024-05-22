@@ -19,9 +19,6 @@ fixtures = [
 			"name": (
 				"in",
 				(
-					"Sales Order Item-associated_item",
-                    "Sales Invoice-hub_manager",
-                    "Sales Order-hub_manager",
                     "Cost Center-custom_attach_image",
                     "Cost Center-custom_address",
                     "Cost Center-custom_location"
@@ -158,7 +155,10 @@ doc_events = {
 	},
     "Version":{
         "after_insert": "getpos.getpos.hooks.version.after_insert"
-	}
+	},
+    "Cost Center" : {
+		"after_insert" : "getpos.getpos.hooks.cost_center.create_warehouse"
+	},
 	
 }
 # doc_events = {

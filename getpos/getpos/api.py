@@ -898,7 +898,7 @@ def get_kitchen_kds(status):
         except Exception as e:
                 return {"message": e}
 
-@frappe.whitelist(methods="POST")
+@frappe.whitelist(methods="POST",allow_guest=True)
 def create_sales_order_kiosk():
         order_list = frappe.request.data
         order_list = json.loads(order_list)
@@ -907,8 +907,28 @@ def create_sales_order_kiosk():
                 res= frappe._dict()
                 sales_order = frappe.new_doc("Sales Order")
                 sales_order.hub_manager = order_list.get("hub_manager")
+                sales_order.custom_source = order_list.get("source")
                 sales_order.ward = order_list.get("ward")
-                sales_order.customer = order_list.get("customer")
+                sales_order.custom_order_request = order_list.get("order_request")
+                if order_list.get("source") == "WEB":
+                        customer = frappe.db.sql(""" SELECT cu.name as customer
+                                                        FROM `tabCustomer` cu 
+                                                        LEFT JOIN `tabDynamic Link` d ON d.link_name = cu.name 
+                                                        LEFT JOIN `tabContact` c ON d.parent = c.name 
+                                                        WHERE c.email_id = "{0}" OR c.phone = "{1}"  """.format(order_list.get("email_id"),order_list.get("phone")))
+                        if customer:
+                                sales_order.customer = customer[0]['customer']
+                        else:
+                                new_customer = frappe.new_doc("Customer")
+                                new_customer.customer_name = order_list.get("name")
+                                new_customer.customer_group = "Individual"
+                                new_customer.territory = "India"
+                                new_customer.email_id = order_list.get("email")
+                                new_customer.mobile_no = order_list.get("mobile")
+                                new_customer.insert(ignore_permissions=True)
+                                sales_order.customer = new_customer.name
+                else:         
+                        sales_order.customer = order_list.get("customer")
                 arr = order_list.get("transaction_date").split(" ")
                 sales_order.transaction_date = arr[0]
                 sales_order.transaction_time = arr[1]
