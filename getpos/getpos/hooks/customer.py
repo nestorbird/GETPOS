@@ -17,7 +17,7 @@ def validate(doc,method):
 def validate(doc,method):
         doc.name = make_autoname("CUST"+"-.YYYY." +"-.###")
         existing_customer = frappe.db.get_value("Customer", {"mobile_no": doc.mobile_no})
-        if existing_customer:
+        if existing_customer and doc.mobile_no is not None:
             frappe.throw(_("Customer With Mobile Number {0} Already Exists").format(frappe.bold(doc.mobile_no)))
 
 
