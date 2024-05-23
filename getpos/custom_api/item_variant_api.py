@@ -43,6 +43,8 @@ def get_combo_items(name):
         return combo_items
     else:
         return []
+
+
     
 @frappe.whitelist()
 def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=None,item_type=None,item_order_by=None,cost_center=None):
@@ -64,7 +66,7 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
         item_groups = get_related_item_groups(extra_item_group)
         filters.update({'name':['in', item_groups]})
 
-    all_groups = frappe.get_all('Item Group',filters=filters,fields=['name','image'])
+    all_groups = frappe.get_all('Item Group',filters=filters,fields=['name','image'],order_by='name asc')
     for group in all_groups:
         group_dict = {}
         item_group_image = f"{base_url}{group.get('image')}" if group.get('image') else ''
