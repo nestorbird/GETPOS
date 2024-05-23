@@ -45,7 +45,7 @@ def get_combo_items(name):
         return []
     
 @frappe.whitelist()
-def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=None,item_type=None,item_order_by=None):
+def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=None,item_type=None,item_order_by=None,cost_center=None):
    
     data = []
     filters = {'is_group':0,'name':['not in',('Extra')],
@@ -89,7 +89,15 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
             group_dict.update({'item_group':group.name,
             'item_group_image':item_group_image, 'items':[]}) 
             for item in all_items:
-               
+                 # Check if the item is available in the specified cost center
+                if cost_center:
+                    cost_center_exists = frappe.db.exists('Item Cost Center', {
+                        'parent': item.name,
+                        'cost_center': cost_center,
+                        'is_available': 1  
+                    })
+                    if not cost_center_exists:
+                        continue
                 image = f"{base_url}{item.image}" if item.get('image') else ''
                 item_taxes = get_item_taxes(item.name)
                 combo_items = get_combo_items(item.name)
@@ -128,6 +136,7 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
                 group_dict.get('items').append(item_dict)
             data.append(group_dict)
     return data
+
 
 
 def get_related_items(item_name):
