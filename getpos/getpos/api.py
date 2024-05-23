@@ -1081,7 +1081,7 @@ def create_pos_terminal():
                 "message":e
                         }
 
-@frappe.whitelist(allow_guest=True)                
+@frappe.whitelist()                
 def get_sync_register(user=None):
         sync_date=frappe.db.sql(
 			"select last_sync from `tabPOS Terminal` where 	user = '{user}' order by last_sync desc limit 1".format(user=user),
