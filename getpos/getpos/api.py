@@ -1046,4 +1046,48 @@ def get_filters():
      
         return filters
 
+@frappe.whitelist(methods="POST")
+def create_pos_terminal():
+        pos_terminal_list = frappe.request.data
+        pos_terminal_list = json.loads(pos_terminal_list)
+        pos_terminal_list = pos_terminal_list["pos_terminal_list"]
+        try:
+                res= frappe._dict()
+                pos_terminal = frappe.new_doc("POS Terminal")
+                pos_terminal.user = pos_terminal_list.get("user")
+                pos_terminal.pos_profile = pos_terminal_list.get("pos_profile")
+                pos_terminal.pos_opening_entry = pos_terminal_list.get("pos_opening_entry")
+                pos_terminal.pos_closing_entry = pos_terminal_list.get("pos_closing_entry")
+                pos_terminal.last_sync = pos_terminal_list.get("last_sync")
+                
+                pos_terminal.save()
+                pos_terminal.submit()                
 
+
+                res['success_key'] = 1
+                res['message'] = "success"
+                if frappe.local.response.get("exc_type"):
+                        del frappe.local.response["exc_type"]
+                return res
+
+        except Exception as e:
+                if frappe.local.response.get("exc_type"):
+                        del frappe.local.response["exc_type"]
+
+                frappe.clear_messages()
+                
+                frappe.local.response["message"] ={
+                "success_key":0,
+                "message":e
+                        }
+
+@frappe.whitelist(allow_guest=True)                
+def get_sync_register(user=None):
+        sync_date=frappe.db.sql(
+			"select last_sync from `tabPOS Terminal` where 	user = '{user}' order by last_sync desc limit 1".format(user=user),
+		)   
+        if sync_date:
+                sync_register=frappe.db.sql(''' select * from `tabSync Register` where sync_datetime >= {sync_date} and sync_datetime >= {sync_date}
+                '''.format(sync_date=sync_date), as_dict = True)
+
+                return sync_register
