@@ -1080,7 +1080,7 @@ def get_location():
             SELECT DISTINCT custom_location
             FROM `tabCost Center` WHERE custom_location LIKE %s
             ORDER BY custom_location ASC;
-            """, (filter_condition,))
+            """, (filter_condition,) ,as_dict=1)
 
 
     elif (body.get("custom_location")):
