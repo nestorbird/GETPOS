@@ -77,6 +77,9 @@ doctype_js = {
 	"Account": "public/js/doctype_js/account.js",
 	"Customer": "public/js/doctype_js/customer.js",
 	"Item": "public/js/doctype_js/item.js",
+    "Pricing Rule" : "public/js/doctype_js/pricing_rule.js",
+    "Email Template" : "public/js/doctype_js/email_template.js",
+
 
 }
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
