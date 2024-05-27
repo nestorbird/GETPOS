@@ -1048,6 +1048,42 @@ def payment_request(payment_list={}):
                 "message":e
                         }
 
+
+
+@frappe.whitelist()
+def transaction_status(payment_list={}, transaction_id=None):
+    try:
+        auth_url = f'{payment_list.get("auth_token_url")}/connect/token'
+        post_data = {
+            "grant_type": "client_credentials",
+            "client_id": payment_list.get("client_id"),
+            "client_secret": payment_list.get("client_secret")
+        }
+        response = requests.post(auth_url, data=post_data)
+        response.raise_for_status()  
+        o_auth_authentication_response = response.json()
+
+        api_client = requests.Session()
+        base_address = payment_list.get("base_payment_url")
+        api_client.headers.update({
+            "Accept": "application/json",
+            "Authorization": f"Bearer {o_auth_authentication_response['access_token']}"
+        })
+
+        api_url = f"{base_address}/checkout/v2/transactions/{transaction_id}"
+        api_response = api_client.get(api_url)
+        api_response.raise_for_status() 
+
+        transaction_response = api_response.json()
+        return transaction_response
+
+    except Exception as e:
+        return {
+            "success_key": 0,
+            "message": str(e)
+        }
+
+
 @frappe.whitelist()
 def update_payment_status(update_paymentstatus):
         try:
