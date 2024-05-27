@@ -49,3 +49,25 @@ let show_include_multigroup = (frm) => {
     }
 
 }
+
+frappe.ui.form.on('Related Item', {
+    item: function(frm, cdt, cdn) {
+        var child = locals[cdt][cdn];
+        if (child.item) {
+            frappe.call({
+                method: 'getpos.getpos.hooks.item_price.get_item_price',
+                args: {
+                    item_code: child.item
+                },
+                callback: function(r) {
+                    if (r.message) {
+                        frappe.model.set_value(cdt, cdn, 'price', r.message.price_list_rate);
+                    } else {
+                        frappe.msgprint(__('No price found for item {0}', [child.item]));
+                    }
+                }
+            });
+        }
+    }
+});
+
