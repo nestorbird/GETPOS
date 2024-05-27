@@ -1060,7 +1060,7 @@ def transaction_status(payment_list={}, transaction_id=None):
             "client_secret": payment_list.get("client_secret")
         }
         response = requests.post(auth_url, data=post_data)
-        response.raise_for_status()  
+        response.raise_for_status() 
         o_auth_authentication_response = response.json()
 
         api_client = requests.Session()
@@ -1072,10 +1072,15 @@ def transaction_status(payment_list={}, transaction_id=None):
 
         api_url = f"{base_address}/checkout/v2/transactions/{transaction_id}"
         api_response = api_client.get(api_url)
-        api_response.raise_for_status() 
 
-        transaction_response = api_response.json()
-        return transaction_response
+        if api_response.status_code == 200:
+            transaction_response = api_response.json()
+            return transaction_response
+        else:
+            return {
+                "success_key": 0,
+                "message": f"Failed to retrieve transaction status. Status code: {api_response.status_code}, Response: {api_response.text}"
+            }
 
     except Exception as e:
         return {
