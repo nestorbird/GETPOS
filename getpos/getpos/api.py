@@ -930,7 +930,7 @@ def create_sales_order_kiosk():
                 new_customer = frappe.new_doc("Customer")
                 new_customer.customer_name = order_list.get("name")
                 new_customer.customer_group = "Individual"
-                new_customer.territory = "India"
+                new_customer.territory = "All Territories"
                 new_customer.email_id = order_list.get("email")
                 new_customer.mobile_no = order_list.get("mobile")
                 new_customer.insert(ignore_permissions=True)
