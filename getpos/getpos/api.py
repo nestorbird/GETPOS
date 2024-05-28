@@ -898,84 +898,103 @@ def get_kitchen_kds(status):
         except Exception as e:
                 return {"message": e}
 
-@frappe.whitelist(methods="POST",allow_guest=True)
+
+def get_warehouse_for_cost_center(cost_center):
+    warehouse = frappe.db.get_value('Warehouse', {'custom_cost_center': cost_center}, 'name')
+    return warehouse
+
+
+
+@frappe.whitelist(methods="POST", allow_guest=True)
 def create_sales_order_kiosk():
-        order_list = frappe.request.data
-        order_list = json.loads(order_list)
-        order_list = order_list["order_list"]
-        try:
-                res= frappe._dict()
-                sales_order = frappe.new_doc("Sales Order")
-                sales_order.hub_manager = order_list.get("hub_manager")
-                sales_order.custom_source = order_list.get("source")
-                sales_order.ward = order_list.get("ward")
-                sales_order.custom_order_request = order_list.get("order_request")
-                if order_list.get("source") == "WEB":
-                        customer = frappe.db.sql(""" SELECT cu.name as customer
-                                                        FROM `tabCustomer` cu 
-                                                        LEFT JOIN `tabDynamic Link` d ON d.link_name = cu.name 
-                                                        LEFT JOIN `tabContact` c ON d.parent = c.name 
-                                                        WHERE c.email_id = "{0}" OR c.phone = "{1}"  """.format(order_list.get("email_id"),order_list.get("phone")))
-                        if customer:
-                                sales_order.customer = customer[0]['customer']
-                        else:
-                                new_customer = frappe.new_doc("Customer")
-                                new_customer.customer_name = order_list.get("name")
-                                new_customer.customer_group = "Individual"
-                                new_customer.territory = "India"
-                                new_customer.email_id = order_list.get("email")
-                                new_customer.mobile_no = order_list.get("mobile")
-                                new_customer.insert(ignore_permissions=True)
-                                sales_order.customer = new_customer.name
-                else:         
-                        sales_order.customer = order_list.get("customer")
-                arr = order_list.get("transaction_date").split(" ")
-                sales_order.transaction_date = arr[0]
-                sales_order.transaction_time = arr[1]
-                sales_order.delivery_date = order_list.get("delivery_date")
-                sales_order = add_items_in_order(sales_order, order_list.get("items"), order_list)
-                sales_order.status = order_list.get("status")
-                sales_order.mode_of_payment = order_list.get("mode_of_payment")
-                sales_order.mpesa_no = order_list.get("mpesa_no")
-                sales_order.coupon_code = order_list.get("coupon_code")
-                if (order_list.get("mode_of_payment") == "Card"):
-                        sales_order.custom_payment_status = "Pending"
-                else:
-                       sales_order.custom_payment_status = "Paid" 
-                sales_order.save()
-                sales_order.submit()
+    import json
+    order_list = frappe.request.data
+    order_list = json.loads(order_list)
+    order_list = order_list["order_list"]
+    try:
+        res = frappe._dict()
+        sales_order = frappe.new_doc("Sales Order")
+        sales_order.hub_manager = order_list.get("hub_manager")
+        sales_order.custom_source = order_list.get("source")
+        sales_order.ward = order_list.get("ward")
+        sales_order.custom_order_request = order_list.get("order_request")
+        
+        if order_list.get("source") == "WEB":
+            customer = frappe.db.sql("""SELECT cu.name as customer
+                                        FROM `tabCustomer` cu 
+                                        LEFT JOIN `tabDynamic Link` d ON d.link_name = cu.name 
+                                        LEFT JOIN `tabContact` c ON d.parent = c.name 
+                                        WHERE c.email_id = %s OR c.phone = %s""", (order_list.get("email_id"), order_list.get("phone")), as_dict=True)
+            if customer:
+                sales_order.customer = customer[0]['customer']
+            else:
+                new_customer = frappe.new_doc("Customer")
+                new_customer.customer_name = order_list.get("name")
+                new_customer.customer_group = "Individual"
+                new_customer.territory = "India"
+                new_customer.email_id = order_list.get("email")
+                new_customer.mobile_no = order_list.get("mobile")
+                new_customer.insert(ignore_permissions=True)
+                sales_order.customer = new_customer.name
+        else:
+                sales_order.customer = order_list.get("customer")
+        
+        arr = order_list.get("transaction_date").split(" ")
+        sales_order.transaction_date = arr[0]
+        sales_order.transaction_time = arr[1]
+        sales_order.delivery_date = order_list.get("delivery_date")
+        sales_order = add_items_in_order(sales_order, order_list.get("items"), order_list)
+        sales_order.status = order_list.get("status")
+        sales_order.mode_of_payment = order_list.get("mode_of_payment")
+        sales_order.mpesa_no = order_list.get("mpesa_no")
+        sales_order.coupon_code = order_list.get("coupon_code")
+        
+        if order_list.get("mode_of_payment") == "Card":
+            sales_order.custom_payment_status = "Pending"
+        else:
+            sales_order.custom_payment_status = "Paid"
+        
+        # Set cost center and warehouse
+        sales_order.cost_center = order_list.get("cost_center")
+        warehouse = get_warehouse_for_cost_center(order_list.get("cost_center"))
+        if warehouse:
+            sales_order.set_warehouse = warehouse
+        
+        sales_order.save()
+        sales_order.submit()
 
-                latest_order = frappe.get_doc('Sales Order', sales_order.name)
-                max_time = max(item['estimated_time'] for item in order_list.get("items"))
-                frappe.get_doc({
-                        "doctype": "Kitchen-Kds",
-                        "order_id": latest_order.get('name'),
-                        "type": order_list.get("type"),
-                        "estimated_time": max_time,
-                        "status": "Open"
-                        }).insert(ignore_permissions=1)
+        latest_order = frappe.get_doc('Sales Order', sales_order.name)
+        max_time = max(item['estimated_time'] for item in order_list.get("items"))
+        frappe.get_doc({
+            "doctype": "Kitchen-Kds",
+            "order_id": latest_order.get('name'),
+            "type": order_list.get("type"),
+            "estimated_time": max_time,
+            "status": "Open"
+        }).insert(ignore_permissions=1)
 
+        res['success_key'] = 1
+        res['message'] = "success"
+        res["sales_order"] = {
+            "name": sales_order.name,
+            "doc_status": sales_order.docstatus
+        }
+        
+        if frappe.local.response.get("exc_type"):
+            del frappe.local.response["exc_type"]
+        
+        return res
 
-                res['success_key'] = 1
-                res['message'] = "success"
-                res["sales_order"] ={
-                       "name" : sales_order.name,
-                        "doc_status" : sales_order.docstatus
-                        }
-                if frappe.local.response.get("exc_type"):
-                        del frappe.local.response["exc_type"]
-                return res
+    except Exception as e:
+        if frappe.local.response.get("exc_type"):
+            del frappe.local.response["exc_type"]
 
-        except Exception as e:
-                if frappe.local.response.get("exc_type"):
-                        del frappe.local.response["exc_type"]
+        frappe.clear_messages()
+        frappe.local.response["message"] = {
+            "success_key": 0,
+            "message": str(e)
+        }
 
-                frappe.clear_messages()
-                
-                frappe.local.response["message"] ={
-                "success_key":0,
-                "message":e
-                        }
 
 
                 
