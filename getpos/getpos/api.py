@@ -469,7 +469,6 @@ def get_item_tax_template(name):
         return []
 
 def get_combo_items(name):
-        print(name)
         combo_items = frappe.db.sql(''' Select 
         pi.parent_item,
         pi.item_code , 
@@ -948,6 +947,7 @@ def create_sales_order_kiosk():
         sales_order.mode_of_payment = order_list.get("mode_of_payment")
         sales_order.mpesa_no = order_list.get("mpesa_no")
         sales_order.coupon_code = order_list.get("coupon_code")
+        sales_order.disable_rounded_total = 1
         
         if order_list.get("mode_of_payment") == "Card":
             sales_order.custom_payment_status = "Pending"
@@ -959,8 +959,7 @@ def create_sales_order_kiosk():
         warehouse = get_warehouse_for_cost_center(order_list.get("cost_center"))
         if warehouse:
             sales_order.set_warehouse = warehouse
-        
-        sales_order.save()
+        sales_order.save(ignore_permissions=True)
         sales_order.submit()
 
         latest_order = frappe.get_doc('Sales Order', sales_order.name)
