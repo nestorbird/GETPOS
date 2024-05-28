@@ -1149,7 +1149,7 @@ def get_location():
                                                              'disabled': 0,
                                                              'custom_location': body.get("custom_location")
                                                      },
-                                                     fields=['custom_location','custom_address','custom_attach_image','cost_center_name'],
+                                                     fields=['custom_location','custom_address','custom_attach_image','cost_center_name', 'name'],
                                                      order_by='creation desc',
                                              )
              return location
