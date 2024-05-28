@@ -1325,7 +1325,7 @@
    "name": "Sales Order-custom_source",
    "no_copy": 0,
    "non_negative": 0,
-   "options": "WEB \nPOS \nKIOSK",
+   "options": "WEB\nPOS\nKIOSK",
    "owner": "Administrator",
    "permlevel": 0,
    "precision": "",
