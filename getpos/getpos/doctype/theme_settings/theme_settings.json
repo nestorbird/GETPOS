@@ -7,6 +7,7 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "theme_color_settings_section",
   "primary",
   "secondary",
   "asset",
@@ -18,6 +19,7 @@
   "lightgrey",
   "lightestgreytextcolor",
   "seagreenprimary",
+  "column_break_pcle3",
   "buttonbeforetap",
   "ontapcardseagreen",
   "ratingtextparrotcolor",
@@ -29,20 +31,30 @@
   "productbackgroundcolorontap",
   "productbordercolorontap",
   "active",
+  "image_upload_section",
   "app_background_image",
   "merchant_background_image",
+  "kiosk_payment_settings_section",
   "api_token",
   "base_payment_url",
   "authtoken_url",
   "merchant_id",
   "client_id",
+  "take_away",
+  "column_break_1ydcr",
   "client_secret",
   "checkout_url",
   "isv_merchant_id",
   "isv_percentage",
   "source_code",
   "dine_in",
-  "take_away"
+  "kiosk_payment_config_section",
+  "username",
+  "password",
+  "column_break_pexfl",
+  "currency_code",
+  "merchent_id",
+  "terminal_id"
  ],
  "fields": [
   {
@@ -226,12 +238,69 @@
    "fieldtype": "Data",
    "label": "Take Away",
    "read_only": 1
+  },
+  {
+   "fieldname": "theme_color_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Theme Color Settings"
+  },
+  {
+   "fieldname": "image_upload_section",
+   "fieldtype": "Section Break",
+   "label": "Image Upload"
+  },
+  {
+   "fieldname": "kiosk_payment_settings_section",
+   "fieldtype": "Section Break",
+   "label": "KIOSK Payment Settings"
+  },
+  {
+   "fieldname": "column_break_pcle3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_1ydcr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "kiosk_payment_config_section",
+   "fieldtype": "Section Break",
+   "label": "KIOSK Payment Config"
+  },
+  {
+   "fieldname": "username",
+   "fieldtype": "Data",
+   "label": "Username"
+  },
+  {
+   "fieldname": "password",
+   "fieldtype": "Data",
+   "label": "Password"
+  },
+  {
+   "fieldname": "column_break_pexfl",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "currency_code",
+   "fieldtype": "Data",
+   "label": "Currency Code"
+  },
+  {
+   "fieldname": "merchent_id",
+   "fieldtype": "Data",
+   "label": "Merchent ID"
+  },
+  {
+   "fieldname": "terminal_id",
+   "fieldtype": "Data",
+   "label": "Terminal ID"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-05-02 18:32:10.067262",
+ "modified": "2024-05-28 15:32:57.660018",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Theme Settings",
