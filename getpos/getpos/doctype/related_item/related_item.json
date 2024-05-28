@@ -6,7 +6,8 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "item"
+  "item",
+  "price"
  ],
  "fields": [
   {
@@ -15,12 +16,18 @@
    "in_list_view": 1,
    "label": "Item",
    "options": "Item"
+  },
+  {
+   "fieldname": "price",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Price"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-04-24 17:19:48.712769",
+ "modified": "2024-05-27 12:56:59.882796",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Related Item",
