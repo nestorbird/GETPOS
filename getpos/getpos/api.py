@@ -867,7 +867,7 @@ def update_status(order_status):
         
 
 @frappe.whitelist(allow_guest=True)
-def get_all_cost_center_list():
+def get_all_location_list():
        return frappe.db.sql("""
         SELECT DISTINCT custom_location 
         FROM `tabCost Center` 
