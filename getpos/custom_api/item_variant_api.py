@@ -3,6 +3,9 @@ from frappe.utils import today,getdate,flt
 
 settings = frappe.get_cached_doc('nbpos Setting')
 base_url = settings.get('base_url')
+if base_url == None:
+    base_url = ""
+
 
 
 def get_price_list(item_code):
@@ -68,7 +71,10 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
     all_groups = frappe.get_all('Item Group',filters=filters,fields=['name','image'])
     for group in all_groups:
         group_dict = {}
-        item_group_image = f"{base_url}{group.get('image')}" if group.get('image') else ''
+        if  group.get('image') is not None and "https" not in group.get('image'):
+            item_group_image = f"{base_url}{group.get('image')}" if group.get('image') else ''
+        else:
+            item_group_image = f"{group.get('image')}" if group.get('image') else ''            
 
 
         attributes = get_attributes_items(group)
@@ -88,7 +94,10 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
             group_dict.update({'item_group':group.name,
             'item_group_image':item_group_image, 'items':[]}) 
             for item in all_items:
-                image = f"{base_url}{item.image}" if item.get('image') else ''
+                if item.image is not None and "http" not in item.image:
+                    image = f"{base_url}{item.image}" if item.get('image') else ''
+                else:
+                    image = f"{item.image}" if item.get('image') else ''
                 item_taxes = get_item_taxes(item.name)
                 combo_items = get_combo_items(item.name)
 
