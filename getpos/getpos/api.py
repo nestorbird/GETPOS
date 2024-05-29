@@ -884,17 +884,17 @@ def get_kitchen_kds(status):
                 end_date = now()
                 all_order = frappe.db.get_all("Kitchen-Kds", 
                                 filters=[
-                                    ['creation', 'between', [start_date, end_date]],
+                                    ['creation1', 'between', [start_date, end_date]],
                                     ['status', '=', status]
                                 ], 
-                                fields=['name', 'order_id', 'status', 'estimated_time', 'type', 'creation'])
+                                fields=['name', 'order_id', 'status', 'estimated_time', 'type', 'creation1'])
                 order_items_dict = []
                 for orders in all_order:
                         try:
                                 items = frappe.db.get_all("Sales Order Item", filters={'parent':orders.get("order_id")}, fields=['item_name','qty'])
                                 order_wise_items = {}
                                 order_wise_items['order_id'] = orders.get("order_id")
-                                order_wise_items['creation'] = orders.get("creation")
+                                order_wise_items['creation'] = orders.get("creation1")
                                 order_wise_items['estimated_time'] = orders.get('estimated_time')
                                 order_wise_items["status"] = orders.get('status')
                                 order_wise_items["type"] = orders.get('type')
@@ -981,7 +981,8 @@ def create_sales_order_kiosk():
             "order_id": latest_order.get('name'),
             "type": order_list.get("type"),
             "estimated_time": max_time,
-            "status": "Open"
+            "status": "Open",
+            "creation1" : order_list.get('transaction_date')
         }).insert(ignore_permissions=1)
 
         res['success_key'] = 1
