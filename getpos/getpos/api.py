@@ -911,6 +911,7 @@ def create_sales_order_kiosk():
     order_list = json.loads(order_list)
     order_list = order_list["order_list"]
     try:
+        frappe.set_user("Administrator")
         res = frappe._dict()
         sales_order = frappe.new_doc("Sales Order")
         sales_order.hub_manager = order_list.get("hub_manager")
