@@ -9,6 +9,7 @@
  "field_order": [
   "order_id",
   "type",
+  "custom_order_request",
   "column_break_izzg9",
   "estimated_time",
   "status",
@@ -45,11 +46,16 @@
    "fieldname": "creation1",
    "fieldtype": "Datetime",
    "label": "Creation"
+  },
+  {
+   "fieldname": "custom_order_request",
+   "fieldtype": "Small Text",
+   "label": "Order Request"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-05-28 13:59:52.829101",
+ "modified": "2024-05-29 12:06:09.964338",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Kitchen-Kds",
