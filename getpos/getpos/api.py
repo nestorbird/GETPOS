@@ -887,7 +887,7 @@ def get_kitchen_kds(status):
                                     ['creation1', 'between', [start_date, end_date]],
                                     ['status', '=', status]
                                 ], 
-                                fields=['name', 'order_id', 'status', 'estimated_time', 'type', 'creation1'])
+                                fields=['name', 'order_id', 'custom_order_request', 'status', 'estimated_time', 'type', 'creation1'])
                 order_items_dict = []
                 for orders in all_order:
                         try:
@@ -899,6 +899,7 @@ def get_kitchen_kds(status):
                                 order_wise_items["status"] = orders.get('status')
                                 order_wise_items["type"] = orders.get('type')
                                 order_wise_items['items'] = items
+                                order_wise_items['order_request'] = orders.get('custom_order_request')
                                 order_items_dict.append(order_wise_items)
                         
                         except Exception as e:
@@ -982,7 +983,8 @@ def create_sales_order_kiosk():
             "type": order_list.get("type"),
             "estimated_time": max_time,
             "status": "Open",
-            "creation1" : order_list.get('transaction_date')
+            "creation1" : order_list.get('transaction_date'),
+            "custom_order_request": order_list.get('order_request')
         }).insert(ignore_permissions=1)
 
         res['success_key'] = 1

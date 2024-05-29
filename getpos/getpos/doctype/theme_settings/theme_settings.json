@@ -252,7 +252,7 @@
   {
    "fieldname": "kiosk_payment_settings_section",
    "fieldtype": "Section Break",
-   "label": "KIOSK Payment Settings"
+   "label": "WEB Payment Settings"
   },
   {
    "fieldname": "column_break_pcle3",
@@ -300,7 +300,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-05-28 15:32:57.660018",
+ "modified": "2024-05-29 12:13:21.309383",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Theme Settings",
