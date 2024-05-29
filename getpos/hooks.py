@@ -163,9 +163,9 @@ doc_events = {
     "Cost Center" : {
 		"after_insert" : "getpos.getpos.hooks.cost_center.create_warehouse"
 	},
-    "Item" : {
-		"validate" : "getpos.getpos.hooks.item.validate_item_description"
-	},
+    # "Item" : {
+	# 	"validate" : "getpos.getpos.hooks.item.validate_item_description"
+	# },
 	
 }
 # doc_events = {
