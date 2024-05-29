@@ -11,7 +11,8 @@
   "type",
   "column_break_izzg9",
   "estimated_time",
-  "status"
+  "status",
+  "creation1"
  ],
  "fields": [
   {
@@ -39,11 +40,16 @@
   {
    "fieldname": "column_break_izzg9",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "creation1",
+   "fieldtype": "Datetime",
+   "label": "Creation"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-04-25 18:49:39.277140",
+ "modified": "2024-05-28 13:59:52.829101",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Kitchen-Kds",
