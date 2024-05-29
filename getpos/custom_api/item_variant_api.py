@@ -174,11 +174,11 @@ def get_attributes_items(group=None):
     attributes_dict = {}
     product_price_addition = 0
     if all_extra_items:
-        for extra_item in all_extra_items:
+        for extra_item in all_extra_items:           
             extra_item_doc = frappe.get_cached_doc('Item',extra_item.parent)
             extra_item_price = get_price_list(extra_item.parent)
             item_tax = get_item_taxes(extra_item.parent)
-
+           
             #Checking Stock
             extra_item_stock = ''
             if extra_item_doc.is_stock_item:
@@ -205,8 +205,9 @@ def get_attributes_items(group=None):
                                     })
             
     if attributes_dict:
-        for x in attributes_dict.items():
+        for x in attributes_dict.items():           
             attributes.append(x[1])
+    return attributes
 
 
         
