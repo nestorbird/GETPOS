@@ -864,6 +864,17 @@ def update_status(order_status):
 
         except Exception as e:
                 return {"success_key":0, "message": e}
+        
+
+@frappe.whitelist(allow_guest=True)
+def get_all_cost_center_list():
+       return frappe.db.sql("""
+        SELECT DISTINCT custom_location 
+        FROM `tabCost Center` 
+        WHERE custom_location IS NOT NULL
+        ORDER BY custom_location ASC;
+                """,as_dict=True)
+
 
 
 @frappe.whitelist()
