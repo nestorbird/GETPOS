@@ -13,7 +13,8 @@
   "column_break_izzg9",
   "estimated_time",
   "status",
-  "creation1"
+  "creation1",
+  "source"
  ],
  "fields": [
   {
@@ -51,11 +52,16 @@
    "fieldname": "custom_order_request",
    "fieldtype": "Small Text",
    "label": "Order Request"
+  },
+  {
+   "fieldname": "source",
+   "fieldtype": "Data",
+   "label": "Source"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-05-29 12:06:09.964338",
+ "modified": "2024-05-30 07:22:09.696844",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Kitchen-Kds",
