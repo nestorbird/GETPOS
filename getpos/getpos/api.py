@@ -1083,8 +1083,9 @@ def payment_request(payment_list={}):
 
 
 
+
 @frappe.whitelist()
-def transaction_status(payment_list={}, transaction_id=None):
+def transaction_status(payment_list={}, transaction_id=None, merchant_id=None):
     try:
         auth_url = f'{payment_list.get("auth_token_url")}/connect/token'
         post_data = {
@@ -1092,10 +1093,10 @@ def transaction_status(payment_list={}, transaction_id=None):
             "client_id": payment_list.get("client_id"),
             "client_secret": payment_list.get("client_secret")
         }
+        
         response = requests.post(auth_url, data=post_data)
         response.raise_for_status() 
         o_auth_authentication_response = response.json()
-
         api_client = requests.Session()
         base_address = payment_list.get("base_payment_url")
         api_client.headers.update({
@@ -1103,7 +1104,8 @@ def transaction_status(payment_list={}, transaction_id=None):
             "Authorization": f"Bearer {o_auth_authentication_response['access_token']}"
         })
 
-        api_url = f"{base_address}/checkout/v2/transactions/{transaction_id}"
+        api_url = f"{base_address}/checkout/v2/isv/transactions/{transaction_id}?merchantId={merchant_id}"
+        
         api_response = api_client.get(api_url)
 
         if api_response.status_code == 200:
