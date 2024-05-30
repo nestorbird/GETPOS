@@ -51,6 +51,7 @@
   "kiosk_payment_config_section",
   "username",
   "password",
+  "isv_amount",
   "column_break_pexfl",
   "currency_code",
   "merchent_id",
@@ -210,7 +211,7 @@
   {
    "fieldname": "isv_percentage",
    "fieldtype": "Float",
-   "label": "Isv Percentage"
+   "label": "Isv Percentage WEB"
   },
   {
    "fieldname": "checkout_url",
@@ -295,12 +296,17 @@
    "fieldname": "terminal_id",
    "fieldtype": "Data",
    "label": "Terminal ID"
+  },
+  {
+   "fieldname": "isv_amount",
+   "fieldtype": "Float",
+   "label": "Isv percentage KIOSK"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-05-29 12:13:21.309383",
+ "modified": "2024-05-30 15:03:27.649455",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Theme Settings",
