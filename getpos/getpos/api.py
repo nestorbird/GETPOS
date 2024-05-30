@@ -9,6 +9,7 @@ from frappe.utils import (cint,get_formatted_email, nowdate, nowtime, flt)
 from erpnext.accounts.utils import get_balance_on
 from erpnext.stock.utils import get_stock_balance
 from erpnext.stock.stock_ledger import get_previous_sle, get_stock_ledger_entries
+from erpnext.selling.doctype.sales_order.sales_order import make_sales_invoice
 from frappe.utils import add_to_date, now
 
 
@@ -887,7 +888,7 @@ def get_kitchen_kds(status):
                                     ['creation1', 'between', [start_date, end_date]],
                                     ['status', '=', status]
                                 ], 
-                                fields=['name', 'order_id', 'custom_order_request', 'status', 'estimated_time', 'type', 'creation1'])
+                                fields=['name', 'order_id', 'custom_order_request', 'status', 'estimated_time', 'type', 'creation1', 'source'])
                 order_items_dict = []
                 for orders in all_order:
                         try:
@@ -900,6 +901,7 @@ def get_kitchen_kds(status):
                                 order_wise_items["type"] = orders.get('type')
                                 order_wise_items['items'] = items
                                 order_wise_items['order_request'] = orders.get('custom_order_request')
+                                order_wise_items['source'] = orders.get('source')
                                 order_items_dict.append(order_wise_items)
                         
                         except Exception as e:
@@ -977,15 +979,18 @@ def create_sales_order_kiosk():
 
         latest_order = frappe.get_doc('Sales Order', sales_order.name)
         max_time = max(item['estimated_time'] for item in order_list.get("items"))
-        frappe.get_doc({
-            "doctype": "Kitchen-Kds",
-            "order_id": latest_order.get('name'),
-            "type": order_list.get("type"),
-            "estimated_time": max_time,
-            "status": "Open",
-            "creation1" : order_list.get('transaction_date'),
-            "custom_order_request": order_list.get('order_request')
-        }).insert(ignore_permissions=1)
+
+        if not order_list.get('source') == "WEB":
+                frappe.get_doc({
+                    "doctype": "Kitchen-Kds",
+                    "order_id": latest_order.get('name'),
+                    "type": order_list.get("type"),
+                    "estimated_time": max_time,
+                    "status": "Open",
+                    "creation1" : order_list.get('transaction_date'),
+                    "custom_order_request": order_list.get('order_request'),
+                    "source": order_list.get('source')
+                }).insert(ignore_permissions=1)
 
         res['success_key'] = 1
         res['message'] = "success"
