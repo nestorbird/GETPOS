@@ -1015,6 +1015,88 @@ def create_sales_order_kiosk():
         }
 
 
+@frappe.whitelist(methods="POST")
+def create_web_sales_invoice():
+    import json
+    data = frappe.request.data
+    data = json.loads(data)
+    data = data["message"]
+    try:
+        frappe.set_user("Administrator")
+        res = frappe._dict()
+        if data.get('status') == "F":
+                doc = frappe.get_doc("Sales Order", data.get('order_id'))
+                total_time=[]
+                sales_order_items = frappe.db.get_all('Sales Order Item', filters={'parent': doc.name}, fields=['item_name'])
+                for item in sales_order_items:
+                        time = frappe.get_value("Item", {"name": item.get('item_name')}, 'custom_estimated_time')
+                        total_time.append(time)
+                max_time = max(total_time)
+
+                frappe.get_doc({
+                    "doctype": "Kitchen-Kds",
+                    "order_id": doc.name,
+                    "type": "Takeaway",   
+                    "estimated_time": max_time, 
+                    "status": "Open",
+                    "creation1": data.get('transaction_date'),
+                    "custom_order_request": doc.custom_order_request,
+                    "source": "WEB"
+                }).insert(ignore_permissions=1)
+
+                sales_invoice = make_sales_invoice(doc.name)
+                sales_invoice.posting_date = doc.transaction_date
+                sales_invoice.posting_time = doc.transaction_time
+                sales_invoice.due_date = doc.transaction_date
+                sales_invoice.update_stock = 1
+                sales_invoice.save(ignore_permissions=1)
+                sales_invoice.submit()
+
+                res['success_key'] = 1
+                res['message'] = "success"
+                res["sales_order"] = {
+                    "name": sales_invoice.name,
+                    "doc_status": sales_invoice.docstatus
+                }
+        
+                if frappe.local.response.get("exc_type"):
+                    del frappe.local.response["exc_type"]
+
+                return res
+ 
+    except Exception as e:
+        if frappe.local.response.get("exc_type"):
+            del frappe.local.response["exc_type"]
+
+        frappe.clear_messages()
+        frappe.local.response["message"] = {
+            "success_key": 0,
+            "message": str(e)
+        }
+
+
+@frappe.whitelist()
+def get_sales_order_item_details(order_id=None):
+    try:
+        if order_id:
+                doc = frappe.get_doc("Sales Order", order_id)
+                data = []
+                for item in doc.items:
+                    data.append(item.as_dict()) 
+                return data
+
+    except Exception as e:
+        if frappe.local.response.get("exc_type"):
+            del frappe.local.response["exc_type"]
+
+        frappe.clear_messages()
+        frappe.local.response["message"] = {
+            "success_key": 0,
+            "message": str(e)
+        }
+
+
+
 
                 
 @frappe.whitelist(methods="POST")
