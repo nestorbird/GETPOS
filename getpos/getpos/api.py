@@ -934,13 +934,12 @@ def create_sales_order_kiosk():
         sales_order.custom_order_request = order_list.get("order_request")
         
         if order_list.get("source") == "WEB":
-            customer = frappe.db.sql("""SELECT cu.name as customer
-                                        FROM `tabCustomer` cu 
-                                        LEFT JOIN `tabDynamic Link` d ON d.link_name = cu.name 
-                                        LEFT JOIN `tabContact` c ON d.parent = c.name 
-                                        WHERE c.email_id = %s OR c.phone = %s""", (order_list.get("email_id"), order_list.get("phone")), as_dict=True)
-            if customer:
-                sales_order.customer = customer[0]['customer']
+            phone_no = frappe.db.sql("""SELECT phone FROM `tabContact Phone` WHERE phone = %s """,(order_list.get('mobile')))
+            if phone_no:
+                 parent = frappe.db.get_value('Contact Phone', {'phone': order_list.get('mobile')}, 'parent')
+                 customer = frappe.db.get_value('Dynamic Link', {'parent': parent, 'link_doctype': 'Customer'}, 'link_name')
+                 if customer:
+                     sales_order.customer = customer
             else:
                 new_customer = frappe.new_doc("Customer")
                 new_customer.customer_name = order_list.get("name")
