@@ -1033,6 +1033,14 @@ def create_web_sales_invoice():
                         total_time.append(time)
                 max_time = max(total_time)
 
+                sales_invoice = make_sales_invoice(doc.name)
+                sales_invoice.posting_date = doc.transaction_date
+                sales_invoice.posting_time = doc.transaction_time
+                sales_invoice.due_date = data.get('transaction_date')
+                sales_invoice.update_stock = 1
+                sales_invoice.save(ignore_permissions=1)
+                sales_invoice.submit()
+
                 frappe.get_doc({
                     "doctype": "Kitchen-Kds",
                     "order_id": doc.name,
@@ -1043,14 +1051,6 @@ def create_web_sales_invoice():
                     "custom_order_request": doc.custom_order_request,
                     "source": "WEB"
                 }).insert(ignore_permissions=1)
-
-                sales_invoice = make_sales_invoice(doc.name)
-                sales_invoice.posting_date = doc.transaction_date
-                sales_invoice.posting_time = doc.transaction_time
-                sales_invoice.due_date = doc.transaction_date
-                sales_invoice.update_stock = 1
-                sales_invoice.save(ignore_permissions=1)
-                sales_invoice.submit()
 
                 res['success_key'] = 1
                 res['message'] = "success"
