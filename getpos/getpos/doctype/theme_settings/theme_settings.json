@@ -300,13 +300,13 @@
   {
    "fieldname": "isv_amount",
    "fieldtype": "Float",
-   "label": "Isv percentage KIOSK"
+   "label": "Isv Amount"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-05-30 15:03:27.649455",
+ "modified": "2024-05-31 08:14:51.107533",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Theme Settings",
