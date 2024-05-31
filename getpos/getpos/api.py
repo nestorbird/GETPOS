@@ -1079,9 +1079,23 @@ def get_sales_order_item_details(order_id=None):
     try:
         if order_id:
                 doc = frappe.get_doc("Sales Order", order_id)
-                data = []
+                address = frappe.db.sql("""
+                        SELECT CONCAT(cost_center_name,",",custom_address,",",custom_location) as address from `tabCost Center`
+                         WHERE name = %s
+                """, (  doc.cost_center ),as_dict=True)
+                item_list = []
+                data = {}
+                max_time = []
                 for item in doc.items:
-                    data.append(item.as_dict()) 
+                    item_list.append(item.as_dict())
+                    estimated_time =frappe.db.get_value("Item", {"name" : item.item_code}, 'custom_estimated_time')
+                    max_time.append(estimated_time)
+
+
+                data["order_request"] = doc.custom_order_request
+                data["item_details"] = item_list
+                data['address'] = address[0]['address']
+                data["estimated_time"] = max(max_time)
                 return data
 
     except Exception as e:
@@ -1254,6 +1268,14 @@ def get_location():
                                                      fields=['custom_location','custom_address','custom_attach_image','cost_center_name', 'name'],
                                                      order_by='creation desc',
                                              )
+             
              return location
+    
+    else:
+        return frappe.db.sql("""
+            SELECT Distinct(custom_location)
+            FROM `tabCost Center` WHERE custom_location is NOT NULL
+            ORDER BY custom_location ASC;
+            """,as_dict=1)
                 
         
