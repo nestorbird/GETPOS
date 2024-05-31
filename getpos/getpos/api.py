@@ -1079,9 +1079,13 @@ def get_sales_order_item_details(order_id=None):
     try:
         if order_id:
                 doc = frappe.get_doc("Sales Order", order_id)
-                data = []
+                order_request = frappe.db.get_value("Sales Order", {'name': order_id}, 'custom_order_request')
+                item_list = []
+                data = {}
                 for item in doc.items:
-                    data.append(item.as_dict()) 
+                    item_list.append(item.as_dict())
+                data["order_request"] = order_request
+                data["item_details"] = item_list
                 return data
 
     except Exception as e:
