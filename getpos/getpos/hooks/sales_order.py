@@ -15,17 +15,19 @@ def validate(doc, method):
 
 
 def create_sales_invoice_from_sales_order(doc):
-    sales_invoice = make_sales_invoice(doc.name)
-    sales_invoice.posting_date = doc.transaction_date
-    sales_invoice.posting_time = doc.transaction_time
-    sales_invoice.due_date = doc.transaction_date
-    sales_invoice.update_stock = 1
-    sales_invoice.save()
-    sales_invoice.submit()
+    if (doc.custom_source == "WEB"):
+        pass
+    else:
+        sales_invoice = make_sales_invoice(doc.name)
+        sales_invoice.posting_date = doc.transaction_date
+        sales_invoice.posting_time = doc.transaction_time
+        sales_invoice.due_date = doc.transaction_date
+        sales_invoice.update_stock = 1
+        sales_invoice.save(ignore_permissions=1)
+        sales_invoice.submit()
 
 def set_warehouse(doc):
     if not doc.set_warehouse:
         doc.set_warehouse = frappe.db.get_value('Warehouse', {'warehouse_name': 'Stores'}, 'name')
         for item in doc.items:
             item.warehouse = doc.set_warehouse
-
