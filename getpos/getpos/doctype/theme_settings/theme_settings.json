@@ -55,7 +55,12 @@
   "column_break_pexfl",
   "currency_code",
   "merchent_id",
-  "terminal_id"
+  "terminal_id",
+  "web_images_section",
+  "web_logo_image",
+  "web_banner_image",
+  "column_break_caufo",
+  "web_outlet_details_banner"
  ],
  "fields": [
   {
@@ -301,12 +306,36 @@
    "fieldname": "isv_amount",
    "fieldtype": "Float",
    "label": "Isv Amount"
+  },
+  {
+   "fieldname": "web_images_section",
+   "fieldtype": "Section Break",
+   "label": "WEB Images"
+  },
+  {
+   "fieldname": "column_break_caufo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "web_logo_image",
+   "fieldtype": "Attach Image",
+   "label": "WEB Logo Image"
+  },
+  {
+   "fieldname": "web_banner_image",
+   "fieldtype": "Attach Image",
+   "label": "WEB Banner Image"
+  },
+  {
+   "fieldname": "web_outlet_details_banner",
+   "fieldtype": "Attach Image",
+   "label": "WEB Outlet Details Banner Image"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-05-31 08:14:51.107533",
+ "modified": "2024-06-03 12:54:30.144487",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Theme Settings",
