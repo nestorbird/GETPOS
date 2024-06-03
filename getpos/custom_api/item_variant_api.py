@@ -3,6 +3,9 @@ from frappe.utils import today,getdate,flt
 
 settings = frappe.get_cached_doc('nbpos Setting')
 base_url = settings.get('base_url')
+if base_url == None:
+    base_url = ""
+
 
 
 def get_price_list(item_code):
@@ -62,7 +65,13 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
         item_groups = get_related_item_groups(extra_item_group)
         filters.update({'name': ['in', item_groups]})
 
-    all_groups = frappe.get_all('Item Group', filters=filters, fields=['name', 'image'], order_by='name asc')
+    all_groups = frappe.get_all('Item Group',filters=filters,fields=['name','image'])
+    for group in all_groups:
+        group_dict = {}
+        if  group.get('image') is not None and "https" not in group.get('image'):
+            item_group_image = f"{base_url}{group.get('image')}" if group.get('image') else ''
+        else:
+            item_group_image = f"{group.get('image')}" if group.get('image') else ''            
 
     all_items_data = {'items': []} if item_order_by else None
 
@@ -180,28 +189,33 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
 #             # filters.update({'name': item_code})
 #             filters.update({ 'name': ['like', '%' + item_code +'%']})
         
-#         if item_type :
-#             filters.update({ 'custom_item_type': item_type })
-            
+        if item_type :
+            filters.update({ 'custom_item_type': item_type })
 
-#         all_items = frappe.get_all('Item',filters = filters, fields=['*'],order_by=item_order_by)
+        all_items = frappe.get_all('Item',filters = filters, fields=['*'],order_by=item_order_by)
+      
+        if all_items:
+            group_dict.update({'item_group':group.name,
+            'item_group_image':item_group_image, 'items':[]}) 
+            for item in all_items:
+                if item.image is not None and "http" not in item.image:
+                    image = f"{base_url}{item.image}" if item.get('image') else ''
+                else:
+                    image = f"{item.image}" if item.get('image') else ''
+                item_taxes = get_item_taxes(item.name)
+                combo_items = get_combo_items(item.name)
 
-#         if all_items:
-#             group_dict.update({'item_group':group.name,
-#             'item_group_image':item_group_image, 'items':[]}) 
-#             for item in all_items:
-#                  # Check if the item is available in the specified cost center
-#                 if cost_center:
-#                     cost_center_exists = frappe.db.exists('Item Cost Center', {
-#                         'parent': item.name,
-#                         'cost_center': cost_center,
-#                         'is_available': 1  
-#                     })
-#                     if not cost_center_exists:
-#                         continue
-#                 image = f"{base_url}{item.image}" if item.get('image') else ''
-#                 item_taxes = get_item_taxes(item.name)
-#                 combo_items = get_combo_items(item.name)
+                related_items=[]
+                allergens=[]
+                item_dict = {'id':item.name,'name':item.item_name, 'combo_items': combo_items, 'attributes':attributes, 'image': image
+                ,"tax":item_taxes,'descrption':item.description,'related_items':related_items, 'estimated_time': item.custom_estimated_time,'item_type':item.custom_item_type,'allergens':allergens}
+                item_price = flt(get_price_list(item.name))                
+                if item_price:
+                    item_dict.update({'product_price':item_price})
+                related_items.append(get_related_items(item.name))
+                allergens.append(get_allergens(item.name)) 
+
+                  
                 
 #                 related_items=[]
 #                 allergens=[]
