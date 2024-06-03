@@ -65,6 +65,8 @@ doctype_js = {
 	"Account": "public/js/doctype_js/account.js",
 	"Customer": "public/js/doctype_js/customer.js",
 	"Item": "public/js/doctype_js/item.js",
+    "Pricing Rule" : "public/js/doctype_js/pricing_rule.js",
+    "Email Template" : "public/js/doctype_js/email_template.js",
 }
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
@@ -143,7 +145,11 @@ doc_events = {
 	},
     "Version":{
         "after_insert": "getpos.getpos.hooks.version.after_insert"
-	}
+	}, 
+    "Cost Center" : {
+		"after_insert" : "getpos.getpos.hooks.cost_center.create_warehouse"
+	},
+
 	
 }
 # doc_events = {

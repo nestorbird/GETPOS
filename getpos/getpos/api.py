@@ -1,3 +1,4 @@
+import requests
 import frappe
 import json
 from frappe import _
@@ -8,6 +9,8 @@ from frappe.utils import (cint,get_formatted_email, nowdate, nowtime, flt)
 from erpnext.accounts.utils import get_balance_on
 from erpnext.stock.utils import get_stock_balance
 from erpnext.stock.stock_ledger import get_previous_sle, get_stock_ledger_entries
+from erpnext.selling.doctype.sales_order.sales_order import make_sales_invoice
+from frappe.utils import add_to_date, now
 
 
 @frappe.whitelist( allow_guest=True )
@@ -373,7 +376,7 @@ def create_sales_order():
                 
                 sales_order.save()
                 sales_order.submit()
-                
+
                 res['success_key'] = 1
                 res['message'] = "success"
                 res["sales_order"] ={
@@ -410,7 +413,7 @@ def add_items_in_order(sales_order, items, order_list):
                 sales_order.append("items", {
                         "item_code": item.get("item_code"),
                         "qty": item.get("qty"),
-                        "rate": item.get("rate"),
+                        "rate": item.get("rate"),                        
                         "item_tax_template": item_tax_template if item_tax_template else ""                
                 })
 
@@ -467,7 +470,6 @@ def get_item_tax_template(name):
         return []
 
 def get_combo_items(name):
-        print(name)
         combo_items = frappe.db.sql(''' Select 
         pi.parent_item,
         pi.item_code , 
@@ -790,8 +792,8 @@ def get_theme_settings():
     theme_settings_dict = {}
     theme = frappe.get_meta("Theme Settings")
     for field in theme.fields:
-        if field.fieldtype == "Color":
-            theme_settings_dict[field.fieldname] = theme_settings.get(field.fieldname)
+        # if field.fieldtype == "Color":
+        theme_settings_dict[field.fieldname] = theme_settings.get(field.fieldname)
 
     res = {
         "data": theme_settings_dict
@@ -818,6 +820,7 @@ def get_sales_taxes():
         for i in taxes_data:
                 i['tax'] = [j for j in tax if i['name'] == j['name']]
         return taxes_data
+
 
 @frappe.whitelist()
 def review_rating_order():
@@ -862,6 +865,17 @@ def update_status(order_status):
 
         except Exception as e:
                 return {"success_key":0, "message": e}
+        
+
+@frappe.whitelist(allow_guest=True)
+def get_all_location_list():
+       return frappe.db.sql("""
+        SELECT DISTINCT custom_location 
+        FROM `tabCost Center` 
+        WHERE custom_location IS NOT NULL
+        ORDER BY custom_location ASC;
+                """,as_dict=True)
+
 
 
 @frappe.whitelist()
@@ -871,21 +885,23 @@ def get_kitchen_kds(status):
                 end_date = now()
                 all_order = frappe.db.get_all("Kitchen-Kds", 
                                 filters=[
-                                    ['creation', 'between', [start_date, end_date]],
+                                    ['creation1', 'between', [start_date, end_date]],
                                     ['status', '=', status]
                                 ], 
-                                fields=['name', 'order_id', 'status', 'estimated_time', 'type', 'creation'])
+                                fields=['name', 'order_id', 'custom_order_request', 'status', 'estimated_time', 'type', 'creation1', 'source'])
                 order_items_dict = []
                 for orders in all_order:
                         try:
                                 items = frappe.db.get_all("Sales Order Item", filters={'parent':orders.get("order_id")}, fields=['item_name','qty'])
                                 order_wise_items = {}
                                 order_wise_items['order_id'] = orders.get("order_id")
-                                order_wise_items['creation'] = orders.get("creation")
+                                order_wise_items['creation'] = orders.get("creation1")
                                 order_wise_items['estimated_time'] = orders.get('estimated_time')
                                 order_wise_items["status"] = orders.get('status')
                                 order_wise_items["type"] = orders.get('type')
                                 order_wise_items['items'] = items
+                                order_wise_items['order_request'] = orders.get('custom_order_request')
+                                order_wise_items['source'] = orders.get('source')
                                 order_items_dict.append(order_wise_items)
                         
                         except Exception as e:
@@ -895,64 +911,205 @@ def get_kitchen_kds(status):
         except Exception as e:
                 return {"message": e}
 
-@frappe.whitelist(methods="POST")
+
+def get_warehouse_for_cost_center(cost_center):
+    warehouse = frappe.db.get_value('Warehouse', {'custom_cost_center': cost_center}, 'name')
+    return warehouse
+
+
+
+@frappe.whitelist(methods="POST", allow_guest=True)
 def create_sales_order_kiosk():
-        order_list = frappe.request.data
-        order_list = json.loads(order_list)
-        order_list = order_list["order_list"]
-        try:
-                res= frappe._dict()
-                sales_order = frappe.new_doc("Sales Order")
-                sales_order.hub_manager = order_list.get("hub_manager")
-                sales_order.ward = order_list.get("ward")
+    import json
+    order_list = frappe.request.data
+    order_list = json.loads(order_list)
+    order_list = order_list["order_list"]
+    try:
+        frappe.set_user("Administrator")
+        res = frappe._dict()
+        sales_order = frappe.new_doc("Sales Order")
+        sales_order.hub_manager = order_list.get("hub_manager")
+        sales_order.custom_source = order_list.get("source")
+        sales_order.ward = order_list.get("ward")
+        sales_order.custom_order_request = order_list.get("order_request")
+        
+        if order_list.get("source") == "WEB":
+            phone_no = frappe.db.sql("""SELECT phone FROM `tabContact Phone` WHERE phone = %s """,(order_list.get('mobile')))
+            if phone_no:
+                 parent = frappe.db.get_value('Contact Phone', {'phone': order_list.get('mobile')}, 'parent')
+                 customer = frappe.db.get_value('Dynamic Link', {'parent': parent, 'link_doctype': 'Customer'}, 'link_name')
+                 if customer:
+                     sales_order.customer = customer
+            else:
+                new_customer = frappe.new_doc("Customer")
+                new_customer.customer_name = order_list.get("name")
+                new_customer.customer_group = "Individual"
+                new_customer.territory = "All Territories"
+                new_customer.email_id = order_list.get("email")
+                new_customer.mobile_no = order_list.get("mobile")
+                new_customer.insert(ignore_permissions=True)
+                sales_order.customer = new_customer.name
+        else:
                 sales_order.customer = order_list.get("customer")
-                arr = order_list.get("transaction_date").split(" ")
-                sales_order.transaction_date = arr[0]
-                sales_order.transaction_time = arr[1]
-                sales_order.delivery_date = order_list.get("delivery_date")
-                sales_order = add_items_in_order(sales_order, order_list.get("items"), order_list)
-                sales_order.status = order_list.get("status")
-                sales_order.mode_of_payment = order_list.get("mode_of_payment")
-                sales_order.mpesa_no = order_list.get("mpesa_no")
-                sales_order.coupon_code = order_list.get("coupon_code")
-                if (order_list.get("mode_of_payment") == "Card"):
-                        sales_order.custom_payment_status = "Pending"
-                else:
-                       sales_order.custom_payment_status = "Paid" 
-                sales_order.save()
-                sales_order.submit()
+        
+        arr = order_list.get("transaction_date").split(" ")
+        sales_order.transaction_date = arr[0]
+        sales_order.transaction_time = arr[1]
+        sales_order.delivery_date = order_list.get("delivery_date")
+        sales_order = add_items_in_order(sales_order, order_list.get("items"), order_list)
+        sales_order.status = order_list.get("status")
+        sales_order.mode_of_payment = order_list.get("mode_of_payment")
+        sales_order.mpesa_no = order_list.get("mpesa_no")
+        sales_order.coupon_code = order_list.get("coupon_code")
+        sales_order.disable_rounded_total = 1
+        
+        if order_list.get("mode_of_payment") == "Card":
+            sales_order.custom_payment_status = "Pending"
+        else:
+            sales_order.custom_payment_status = "Paid"
+        
+        # Set cost center and warehouse
+        sales_order.cost_center = order_list.get("cost_center")
+        warehouse = get_warehouse_for_cost_center(order_list.get("cost_center"))
+        if warehouse:
+            sales_order.set_warehouse = warehouse
+        sales_order.save(ignore_permissions=True)
+        sales_order.submit()
 
-                latest_order = frappe.get_doc('Sales Order', sales_order.name)
-                max_time = max(item['estimated_time'] for item in order_list.get("items"))
+        latest_order = frappe.get_doc('Sales Order', sales_order.name)
+        max_time = max(item['estimated_time'] for item in order_list.get("items"))
+
+        if not order_list.get('source') == "WEB":
                 frappe.get_doc({
-                        "doctype": "Kitchen-Kds",
-                        "order_id": latest_order.get('name'),
-                        "type": order_list.get("type"),
-                        "estimated_time": max_time,
-                        "status": "Open"
-                        }).insert(ignore_permissions=1)
+                    "doctype": "Kitchen-Kds",
+                    "order_id": latest_order.get('name'),
+                    "type": order_list.get("type"),
+                    "estimated_time": max_time,
+                    "status": "Open",
+                    "creation1" : order_list.get('transaction_date'),
+                    "custom_order_request": order_list.get('order_request'),
+                    "source": order_list.get('source')
+                }).insert(ignore_permissions=1)
 
+        res['success_key'] = 1
+        res['message'] = "success"
+        res["sales_order"] = {
+            "name": sales_order.name,
+            "doc_status": sales_order.docstatus
+        }
+        
+        if frappe.local.response.get("exc_type"):
+            del frappe.local.response["exc_type"]
+        
+        return res
+
+    except Exception as e:
+        if frappe.local.response.get("exc_type"):
+            del frappe.local.response["exc_type"]
+
+        frappe.clear_messages()
+        frappe.local.response["message"] = {
+            "success_key": 0,
+            "message": str(e)
+        }
+
+
+@frappe.whitelist(methods="POST")
+def create_web_sales_invoice():
+    import json
+    data = frappe.request.data
+    data = json.loads(data)
+    data = data["message"]
+    try:
+        frappe.set_user("Administrator")
+        res = frappe._dict()
+        if data.get('status') == "F":
+                doc = frappe.get_doc("Sales Order", data.get('order_id'))
+                total_time=[]
+                sales_order_items = frappe.db.get_all('Sales Order Item', filters={'parent': doc.name}, fields=['item_name'])
+                for item in sales_order_items:
+                        time = frappe.get_value("Item", {"name": item.get('item_name')}, 'custom_estimated_time')
+                        total_time.append(time)
+                max_time = max(total_time)
+
+                sales_invoice = make_sales_invoice(doc.name)
+                sales_invoice.posting_date = doc.transaction_date
+                sales_invoice.posting_time = doc.transaction_time
+                sales_invoice.due_date = data.get('transaction_date')
+                sales_invoice.update_stock = 1
+                sales_invoice.save(ignore_permissions=1)
+                sales_invoice.submit()
+
+                frappe.get_doc({
+                    "doctype": "Kitchen-Kds",
+                    "order_id": doc.name,
+                    "type": "Takeaway",   
+                    "estimated_time": max_time, 
+                    "status": "Open",
+                    "creation1": data.get('transaction_date'),
+                    "custom_order_request": doc.custom_order_request,
+                    "source": "WEB"
+                }).insert(ignore_permissions=1)
 
                 res['success_key'] = 1
                 res['message'] = "success"
-                res["sales_order"] ={
-                       "name" : sales_order.name,
-                        "doc_status" : sales_order.docstatus
-                        }
+                res["sales_order"] = {
+                    "name": sales_invoice.name,
+                    "doc_status": sales_invoice.docstatus
+                }
+        
                 if frappe.local.response.get("exc_type"):
-                        del frappe.local.response["exc_type"]
+                    del frappe.local.response["exc_type"]
+
                 return res
+ 
+    except Exception as e:
+        if frappe.local.response.get("exc_type"):
+            del frappe.local.response["exc_type"]
 
-        except Exception as e:
-                if frappe.local.response.get("exc_type"):
-                        del frappe.local.response["exc_type"]
+        frappe.clear_messages()
+        frappe.local.response["message"] = {
+            "success_key": 0,
+            "message": str(e)
+        }
 
-                frappe.clear_messages()
-                
-                frappe.local.response["message"] ={
-                "success_key":0,
-                "message":e
-                        }
+
+@frappe.whitelist()
+def get_sales_order_item_details(order_id=None):
+    try:
+        if order_id:
+                doc = frappe.get_doc("Sales Order", order_id)
+                address = frappe.db.sql("""
+                        SELECT CONCAT(cost_center_name,",",custom_address,",",custom_location) as address from `tabCost Center`
+                         WHERE name = %s
+                """, (  doc.cost_center ),as_dict=True)
+                item_list = []
+                data = {}
+                max_time = []
+                for item in doc.items:
+                    item_list.append(item.as_dict())
+                    estimated_time =frappe.db.get_value("Item", {"name" : item.item_code}, 'custom_estimated_time')
+                    max_time.append(estimated_time)
+
+
+                data["order_request"] = doc.custom_order_request
+                data["item_details"] = item_list
+                if address:
+                        data['address'] = address[0]['address']
+                data["estimated_time"] = max(max_time)
+                return data
+
+    except Exception as e:
+        if frappe.local.response.get("exc_type"):
+            del frappe.local.response["exc_type"]
+
+        frappe.clear_messages()
+        frappe.local.response["message"] = {
+            "success_key": 0,
+            "message": str(e)
+        }
+
+
 
 
                 
@@ -1025,6 +1182,49 @@ def payment_request(payment_list={}):
                 "message":e
                         }
 
+
+
+
+@frappe.whitelist()
+def transaction_status(payment_list={}, transaction_id=None, merchant_id=None):
+    try:
+        auth_url = f'{payment_list.get("auth_token_url")}/connect/token'
+        post_data = {
+            "grant_type": "client_credentials",
+            "client_id": payment_list.get("client_id"),
+            "client_secret": payment_list.get("client_secret")
+        }
+        
+        response = requests.post(auth_url, data=post_data)
+        response.raise_for_status() 
+        o_auth_authentication_response = response.json()
+        api_client = requests.Session()
+        base_address = payment_list.get("base_payment_url")
+        api_client.headers.update({
+            "Accept": "application/json",
+            "Authorization": f"Bearer {o_auth_authentication_response['access_token']}"
+        })
+
+        api_url = f"{base_address}/checkout/v2/isv/transactions/{transaction_id}?merchantId={merchant_id}"
+        
+        api_response = api_client.get(api_url)
+
+        if api_response.status_code == 200:
+            transaction_response = api_response.json()
+            return transaction_response
+        else:
+            return {
+                "success_key": 0,
+                "message": f"Failed to retrieve transaction status. Status code: {api_response.status_code}, Response: {api_response.text}"
+            }
+
+    except Exception as e:
+        return {
+            "success_key": 0,
+            "message": str(e)
+        }
+
+
 @frappe.whitelist()
 def update_payment_status(update_paymentstatus):
         try:
@@ -1046,48 +1246,39 @@ def get_filters():
      
         return filters
 
-@frappe.whitelist(methods="POST")
-def create_pos_terminal():
-        pos_terminal_list = frappe.request.data
-        pos_terminal_list = json.loads(pos_terminal_list)
-        pos_terminal_list = pos_terminal_list["pos_terminal_list"]
-        try:
-                res= frappe._dict()
-                pos_terminal = frappe.new_doc("POS Terminal")
-                pos_terminal.user = pos_terminal_list.get("user")
-                pos_terminal.pos_profile = pos_terminal_list.get("pos_profile")
-                pos_terminal.pos_opening_entry = pos_terminal_list.get("pos_opening_entry")
-                pos_terminal.pos_closing_entry = pos_terminal_list.get("pos_closing_entry")
-                pos_terminal.last_sync = pos_terminal_list.get("last_sync")
+
+
+@frappe.whitelist(allow_guest=True)
+def get_location():
+    body = frappe.local.form_dict
+    if body.get("search_location"):
+        filter_condition = f'%{body.get("search_location")}%'
+        return frappe.db.sql("""
+            SELECT DISTINCT custom_location
+            FROM `tabCost Center` WHERE custom_location LIKE %s
+            ORDER BY custom_location ASC;
+            """, (filter_condition,) ,as_dict=1)
+
+
+    elif (body.get("custom_location")):
+        base_url = frappe.db.get_single_value('nbpos Setting', 'base_url')
+        return frappe.db.sql("""
+                SELECT custom_location, custom_address, cost_center_name, name,
+                CONCAT(%(base_url)s, custom_attach_image) AS custom_attach_image
+                FROM `tabCost Center`
+                WHERE disabled = 0 AND custom_location = %(custom_location)s
+                ORDER BY creation DESC
+                """, {
+                    'base_url': base_url,
+                    'custom_location': body.get("custom_location")
+                }, as_dict=1)
+
+
+    else:
+        return frappe.db.sql("""
+            SELECT Distinct(custom_location)
+            FROM `tabCost Center` WHERE custom_location is NOT NULL
+            ORDER BY custom_location ASC;
+            """,as_dict=1)
                 
-                pos_terminal.save()
-                pos_terminal.submit()                
-
-
-                res['success_key'] = 1
-                res['message'] = "success"
-                if frappe.local.response.get("exc_type"):
-                        del frappe.local.response["exc_type"]
-                return res
-
-        except Exception as e:
-                if frappe.local.response.get("exc_type"):
-                        del frappe.local.response["exc_type"]
-
-                frappe.clear_messages()
-                
-                frappe.local.response["message"] ={
-                "success_key":0,
-                "message":e
-                        }
-
-@frappe.whitelist()                
-def get_sync_register(user=None):
-        sync_date=frappe.db.sql(
-			"select last_sync from `tabPOS Terminal` where 	user = '{user}' order by last_sync desc limit 1".format(user=user),
-		)   
-        if sync_date:
-                sync_register=frappe.db.sql(''' select * from `tabSync Register` where sync_datetime >= {sync_date} and sync_datetime >= {sync_date}
-                '''.format(sync_date=sync_date), as_dict = True)
-
-                return sync_register
+        

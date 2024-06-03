@@ -43,90 +43,203 @@ def get_combo_items(name):
         return combo_items
     else:
         return []
-    
-@frappe.whitelist()
-def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=None,item_type=None,item_order_by=None):
-   
-    data = []
-    filters = {'is_group':0,'name':['not in',('Extra')],
-                                'parent_item_group':['not in',('Extra')]}
-    if item_order_by=='desc':
-        item_order_by='item_name desc'
-    else:
-        item_order_by='item_name asc'
 
+
+
+@frappe.whitelist(allow_guest=True)
+def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=None, item_type=None, item_order_by=None, cost_center=None):
+    data = []
+    filters = {'is_group': 0, 'name': ['not in', ('Extra')],
+               'parent_item_group': ['not in', ('Extra')]}
+    
     if from_date:
-        filters.update({'modified':['>=',from_date]})
+        filters.update({'modified': ['>=', from_date]})
 
     if item_group:
         filters.update({'name': item_group})
-    
+
     if extra_item_group:
         item_groups = get_related_item_groups(extra_item_group)
-        filters.update({'name':['in', item_groups]})
+        filters.update({'name': ['in', item_groups]})
 
-    all_groups = frappe.get_all('Item Group',filters=filters,fields=['name','image'])
+    all_groups = frappe.get_all('Item Group', filters=filters, fields=['name', 'image'], order_by='name asc')
+
+    all_items_data = {'items': []} if item_order_by else None
+
     for group in all_groups:
-        group_dict = {}
-        item_group_image = f"{base_url}{group.get('image')}" if group.get('image') else ''
-
+        group_dict = {'item_group': group.name, 'item_group_image': f"{base_url}{group.get('image')}" if group.get('image') else '', 'items': []}
 
         attributes = get_attributes_items(group)
-                    
+
         #### Getting Items ####
-        filters = {'item_group':group.name,'disabled':0}
-        
-        if item_code and not extra_item_group :
-            filters.update({ 'name': ['like', '%' + item_code +'%']})
-        
-        if item_type :
-            filters.update({ 'custom_item_type': item_type })
+        item_filters = {'item_group': group.name, 'disabled': 0}
 
-        all_items = frappe.get_all('Item',filters = filters, fields=['*'],order_by=item_order_by)
-      
-        if all_items:
-            group_dict.update({'item_group':group.name,
-            'item_group_image':item_group_image, 'items':[]}) 
-            for item in all_items:
-                image = f"{base_url}{item.image}" if item.get('image') else ''
-                item_taxes = get_item_taxes(item.name)
-                combo_items = get_combo_items(item.name)
+        if item_code and not extra_item_group:
+            item_filters.update({'name': ['like', '%' + item_code + '%']})
 
-                related_items=[]
-                allergens=[]
-                item_dict = {'id':item.name,'name':item.item_name, 'combo_items': combo_items, 'attributes':attributes, 'image': image
-                ,"tax":item_taxes,'descrption':item.description,'related_items':related_items, 'estimated_time': item.custom_estimated_time,'item_type':item.custom_item_type,'allergens':allergens}
-                item_price = flt(get_price_list(item.name))                
-                if item_price:
-                    item_dict.update({'product_price':item_price})
-                related_items.append(get_related_items(item.name))
-                allergens.append(get_allergens(item.name)) 
+        if item_type:
+            item_filters.update({'custom_item_type': item_type})
 
-                  
-                
-                # Checking Stock
-                item_stock = {'warehouse':-1,'stock_qty':-1}
-                bundle_bin_qty = 1000000
-                if item.is_stock_item:
-                    item_stock = get_stock_qty(item)
-                    item_dict.update(item_stock)
-                # getting the reserve qty of child items in bundle so that end product can be calcuate as per the ready to use qty
-                elif len(item_dict.get("combo_items")) > 0:
-                    for item in item_dict.get("combo_items"):
-                        item_bin_qty = get_stock_qty(item)
-                        item.update(item_bin_qty)
-                        available_qty = item_bin_qty.get("stock_qty") / item.get("qty")
-                        if bundle_bin_qty > available_qty and frappe.get_value("Item", item.item_code, "is_stock_item"):
-                            bundle_bin_qty = available_qty
-                    item_stock["warehouse"] = item_dict.get("combo_items")[0].get("warehouse")
-                    item_stock["stock_qty"] = bundle_bin_qty
-                    item_dict.update(item_stock)
-                
-                # item_dict.update(item_stock)
-                    
-                group_dict.get('items').append(item_dict)
+        all_items = frappe.get_all('Item', filters=item_filters, fields=['*'])
+
+        for item in all_items:
+            # Check if the item is available in the specified cost center
+            if cost_center:
+                cost_center_exists = frappe.db.exists('Item Cost Center', {
+                    'parent': item.name,
+                    'cost_center': cost_center,
+                    'is_available': 1
+                })
+                if not cost_center_exists:
+                    continue
+            image = f"{base_url}{item.image}" if item.get('image') else ''
+            item_taxes = get_item_taxes(item.name)
+            combo_items = get_combo_items(item.name)
+
+            related_items = []
+            allergens = []
+            item_dict = {'id': item.name, 'name': item.item_name, 'combo_items': combo_items, 'attributes': attributes, 'image': image,
+                         "tax": item_taxes, 'description': item.description, 'related_items': related_items, 'estimated_time': item.custom_estimated_time, 'item_type': item.custom_item_type, 'allergens': allergens}
+            item_price = flt(get_price_list(item.name))
+            if item_price:
+                item_dict.update({'product_price': item_price})
+            related_items.append(get_related_items(item.name))
+            allergens.append(get_allergens(item.name))
+
+            # Checking Stock
+            item_stock = {'warehouse': -1, 'stock_qty': -1}
+            bundle_bin_qty = 1000000
+            if item.is_stock_item:
+                item_stock = get_stock_qty(item)
+                item_dict.update(item_stock)
+            # getting the reserve qty of child items in bundle so that end product can be calculated as per the ready-to-use qty
+            elif len(item_dict.get("combo_items")) > 0:
+                for combo_item in item_dict.get("combo_items"):
+                    item_bin_qty = get_stock_qty(combo_item)
+                    combo_item.update(item_bin_qty)
+                    available_qty = item_bin_qty.get("stock_qty") / combo_item.get("qty")
+                    if bundle_bin_qty > available_qty and frappe.get_value("Item", combo_item.item_code, "is_stock_item"):
+                        bundle_bin_qty = available_qty
+                item_stock["warehouse"] = item_dict.get("combo_items")[0].get("warehouse")
+                item_stock["stock_qty"] = bundle_bin_qty
+                item_dict.update(item_stock)
+
+            if item_order_by:
+                all_items_data['items'].append(item_dict)
+            else:
+                group_dict['items'].append(item_dict)
+
+        # Exclude empty item groups when item_code or item_type filter is applied individually
+        if not item_order_by and (item_code or item_type):
+            if group_dict['items']:
+                data.append(group_dict)
+        elif not item_order_by:
             data.append(group_dict)
+
+    if item_order_by:
+        all_items_data['items'] = sorted(all_items_data['items'], key=lambda x: x['name'], reverse=(item_order_by == 'desc'))
+        data.append(all_items_data)
+
     return data
+
+
+
+    
+# @frappe.whitelist()
+# def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=None,item_type=None,item_order_by=None,cost_center=None):
+   
+#     data = []
+#     filters = {'is_group':0,'name':['not in',('Extra')],
+#                                 'parent_item_group':['not in',('Extra')]}
+#     if item_order_by=='desc':
+#         item_order_by='item_name desc'
+#     else:
+#         item_order_by='item_name asc'
+#     if from_date:
+#         filters.update({'modified':['>=',from_date]})
+
+#     if item_group:
+#         filters.update({'name': item_group})
+    
+#     if extra_item_group:
+#         item_groups = get_related_item_groups(extra_item_group)
+#         filters.update({'name':['in', item_groups]})
+
+#     all_groups = frappe.get_all('Item Group',filters=filters,fields=['name','image'],order_by='name asc')
+#     for group in all_groups:
+#         group_dict = {}
+#         item_group_image = f"{base_url}{group.get('image')}" if group.get('image') else ''
+
+
+#         attributes = get_attributes_items(group)
+                    
+#         #### Getting Items ####
+#         filters = {'item_group':group.name,'disabled':0}
+        
+#         if item_code and not extra_item_group :
+#             # filters.update({'name': item_code})
+#             filters.update({ 'name': ['like', '%' + item_code +'%']})
+        
+#         if item_type :
+#             filters.update({ 'custom_item_type': item_type })
+            
+
+#         all_items = frappe.get_all('Item',filters = filters, fields=['*'],order_by=item_order_by)
+
+#         if all_items:
+#             group_dict.update({'item_group':group.name,
+#             'item_group_image':item_group_image, 'items':[]}) 
+#             for item in all_items:
+#                  # Check if the item is available in the specified cost center
+#                 if cost_center:
+#                     cost_center_exists = frappe.db.exists('Item Cost Center', {
+#                         'parent': item.name,
+#                         'cost_center': cost_center,
+#                         'is_available': 1  
+#                     })
+#                     if not cost_center_exists:
+#                         continue
+#                 image = f"{base_url}{item.image}" if item.get('image') else ''
+#                 item_taxes = get_item_taxes(item.name)
+#                 combo_items = get_combo_items(item.name)
+                
+#                 related_items=[]
+#                 allergens=[]
+#                 item_dict = {'id':item.name,'name':item.item_name, 'combo_items': combo_items, 'attributes':attributes, 'image': image
+#                 ,"tax":item_taxes,'descrption':item.description,'related_items':related_items, 'estimated_time': item.custom_estimated_time,'item_type':item.custom_item_type,'allergens':allergens}
+#                 item_price = flt(get_price_list(item.name))                
+#                 if item_price:
+#                     item_dict.update({'product_price':item_price})
+#                 related_items.append(get_related_items(item.name))
+#                 allergens.append(get_allergens(item.name)) 
+                
+                        
+#                 # Checking Stock
+#                 item_stock = {'warehouse':-1,'stock_qty':-1}
+#                 bundle_bin_qty = 1000000
+#                 if item.is_stock_item:
+#                     item_stock = get_stock_qty(item)
+#                     item_dict.update(item_stock)
+#                 # getting the reserve qty of child items in bundle so that end product can be calcuate as per the ready to use qty
+#                 elif len(item_dict.get("combo_items")) > 0:
+#                     for item in item_dict.get("combo_items"):
+#                         item_bin_qty = get_stock_qty(item)
+#                         item.update(item_bin_qty)
+#                         available_qty = item_bin_qty.get("stock_qty") / item.get("qty")
+#                         if bundle_bin_qty > available_qty and frappe.get_value("Item", item.item_code, "is_stock_item"):
+#                             bundle_bin_qty = available_qty
+#                     item_stock["warehouse"] = item_dict.get("combo_items")[0].get("warehouse")
+#                     item_stock["stock_qty"] = bundle_bin_qty
+#                     item_dict.update(item_stock)
+                
+#                 # item_dict.update(item_stock)
+                    
+#                 group_dict.get('items').append(item_dict)
+#             data.append(group_dict)
+#     return data
+
+
+
 
 def get_related_items(item_name):
     related_items=[]
@@ -157,7 +270,6 @@ def get_allergens(item_name):
             allergens.append(allergens_items)
     return allergens
 
-
 def get_related_item_groups(extra_item_group):
     item_groups = frappe.db.sql('''select distinct igm.item_group from `tabItem` i , `tabItem Group Multiselect`igm  
                                 where igm.parent = i.name and i.item_group = %(item_group)s''',{'item_group':extra_item_group}, as_dict=1)
@@ -174,11 +286,11 @@ def get_attributes_items(group=None):
     attributes_dict = {}
     product_price_addition = 0
     if all_extra_items:
-        for extra_item in all_extra_items:           
+        for extra_item in all_extra_items:
             extra_item_doc = frappe.get_cached_doc('Item',extra_item.parent)
             extra_item_price = get_price_list(extra_item.parent)
             item_tax = get_item_taxes(extra_item.parent)
-           
+
             #Checking Stock
             extra_item_stock = ''
             if extra_item_doc.is_stock_item:
@@ -205,7 +317,7 @@ def get_attributes_items(group=None):
                                     })
             
     if attributes_dict:
-        for x in attributes_dict.items():           
+        for x in attributes_dict.items():
             attributes.append(x[1])
     return attributes
 
@@ -225,13 +337,3 @@ def get_item_taxes(name):
     """,values=filters ,  as_dict = True)
     
     return tax
-    
-        
-        
-        
-        
-        
-        
-        
-        
-        
