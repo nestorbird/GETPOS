@@ -1094,7 +1094,8 @@ def get_sales_order_item_details(order_id=None):
 
                 data["order_request"] = doc.custom_order_request
                 data["item_details"] = item_list
-                data['address'] = address[0]['address']
+                if address:
+                        data['address'] = address[0]['address']
                 data["estimated_time"] = max(max_time)
                 return data
 
@@ -1260,17 +1261,19 @@ def get_location():
 
 
     elif (body.get("custom_location")):
-             location = frappe.db.get_all('Cost Center',
-                                                     filters={
-                                                             'disabled': 0,
-                                                             'custom_location': body.get("custom_location")
-                                                     },
-                                                     fields=['custom_location','custom_address','custom_attach_image','cost_center_name', 'name'],
-                                                     order_by='creation desc',
-                                             )
-             
-             return location
-    
+        base_url = frappe.db.get_single_value('nbpos Setting', 'base_url')
+        return frappe.db.sql("""
+                SELECT custom_location, custom_address, cost_center_name, name,
+                CONCAT(%(base_url)s, custom_attach_image) AS custom_attach_image
+                FROM `tabCost Center`
+                WHERE disabled = 0 AND custom_location = %(custom_location)s
+                ORDER BY creation DESC
+                """, {
+                    'base_url': base_url,
+                    'custom_location': body.get("custom_location")
+                }, as_dict=1)
+
+
     else:
         return frappe.db.sql("""
             SELECT Distinct(custom_location)
