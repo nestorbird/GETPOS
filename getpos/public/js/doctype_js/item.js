@@ -9,7 +9,25 @@ frappe.ui.form.on('Item', {
     },
     item_group: frm => {
         show_include_multigroup(frm)
+    },
+
+    custom_fetch_cost_center: function(frm) {
+        frappe.call({
+            method: "getpos.getpos.hooks.cost_center.fetch_all_cost_centers",
+            callback: function(r) {
+                if (r.message) {
+                    frm.clear_table("custom_cost_center_details");
+                    $.each(r.message, function(_i, d) {
+                        let row = frm.add_child("custom_cost_center_details");
+                        row.cost_center = d.name;
+                    });
+                    frm.refresh_field("custom_cost_center_details");
+                    frappe.msgprint(__("Cost Centers fetched successfully"));
+                }
+            }
+        });
     }
+
 
 })
 
@@ -30,3 +48,24 @@ let show_include_multigroup = (frm) => {
     }
 
 }
+
+frappe.ui.form.on('Related Item', {
+    item: function(frm, cdt, cdn) {
+        var child = locals[cdt][cdn];
+        if (child.item) {
+            frappe.call({
+                method: 'getpos.getpos.hooks.item_price.get_item_price',
+                args: {
+                    item_code: child.item
+                },
+                callback: function(r) {
+                    if (r.message) {
+                        frappe.model.set_value(cdt, cdn, 'price', r.message.price_list_rate);
+                    } else {
+                        frappe.msgprint(__('No price found for item {0}', [child.item]));
+                    }
+                }
+            });
+        }
+    }
+});
