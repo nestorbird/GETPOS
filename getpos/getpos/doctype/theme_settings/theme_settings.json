@@ -60,7 +60,8 @@
   "web_logo_image",
   "web_banner_image",
   "column_break_caufo",
-  "web_outlet_details_banner"
+  "web_outlet_details_banner",
+  "web_footer_logo"
  ],
  "fields": [
   {
@@ -330,12 +331,17 @@
    "fieldname": "web_outlet_details_banner",
    "fieldtype": "Attach Image",
    "label": "WEB Outlet Details Banner Image"
+  },
+  {
+   "fieldname": "web_footer_logo",
+   "fieldtype": "Attach Image",
+   "label": "WEB Footer Logo"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-06-03 12:54:30.144487",
+ "modified": "2024-06-04 13:39:06.726472",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Theme Settings",
