@@ -1026,9 +1026,9 @@ def create_web_sales_invoice():
         if data.get('status') == "F":
                 doc = frappe.get_doc("Sales Order", data.get('order_id'))
                 total_time=[]
-                sales_order_items = frappe.db.get_all('Sales Order Item', filters={'parent': doc.name}, fields=['item_name'])
+                sales_order_items = frappe.db.get_all('Sales Order Item', filters={'parent': doc.name}, fields=['item_code'])
                 for item in sales_order_items:
-                        time = frappe.get_value("Item", {"name": item.get('item_name')}, 'custom_estimated_time')
+                        time = frappe.get_value("Item", {"item_code": item.get('item_code')}, 'custom_estimated_time')
                         total_time.append(time)
                 max_time = max(total_time)
 
@@ -1088,7 +1088,7 @@ def get_sales_order_item_details(order_id=None):
                 max_time = []
                 for item in doc.items:
                     item_list.append(item.as_dict())
-                    estimated_time =frappe.db.get_value("Item", {"name" : item.item_code}, 'custom_estimated_time')
+                    estimated_time =frappe.db.get_value("Item", {"item_code" : item.item_code}, 'custom_estimated_time')
                     max_time.append(estimated_time)
 
 
