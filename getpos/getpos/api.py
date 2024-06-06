@@ -885,7 +885,7 @@ def get_kitchen_kds(status):
                 end_date = now()
                 all_order = frappe.db.get_all("Kitchen-Kds", 
                                 filters=[
-                                    ['creation1', 'between', [start_date, end_date]],
+                                    ['creation', 'between', [start_date, end_date]],
                                     ['status', '=', status]
                                 ], 
                                 fields=['name', 'order_id', 'custom_order_request', 'status', 'estimated_time', 'type', 'creation1', 'source'])
