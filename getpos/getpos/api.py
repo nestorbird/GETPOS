@@ -876,8 +876,6 @@ def get_all_location_list():
         ORDER BY custom_location ASC;
                 """,as_dict=True)
 
-
-
 @frappe.whitelist()
 def get_kitchen_kds(status):
         try:
@@ -906,6 +904,10 @@ def get_kitchen_kds(status):
                         
                         except Exception as e:
                                 return {"message": e}
+                        
+                        
+                frappe.publish_realtime('realtime_update', message=json.dumps(order_items_dict))
+
 
                 return order_items_dict
         except Exception as e:
