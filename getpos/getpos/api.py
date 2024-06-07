@@ -906,7 +906,7 @@ def get_kitchen_kds(status):
                                 return {"message": e}
                         
                         
-                frappe.publish_realtime('realtime_update', message=json.dumps(order_items_dict))
+                frappe.publish_realtime('realtime_update', message=order_items_dict)
 
 
                 return order_items_dict
