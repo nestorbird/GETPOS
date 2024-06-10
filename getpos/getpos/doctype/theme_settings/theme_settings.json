@@ -42,7 +42,8 @@
   "isv_percentage",
   "source_code",
   "dine_in",
-  "take_away"
+  "take_away",
+  "guest_customer"
  ],
  "fields": [
   {
@@ -226,12 +227,18 @@
    "fieldtype": "Data",
    "label": "Take Away",
    "read_only": 1
+  },
+  {
+   "fieldname": "guest_customer",
+   "fieldtype": "Data",
+   "label": "Guest Customer",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-05-02 18:32:10.067262",
+ "modified": "2024-06-10 17:52:01.274906",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Theme Settings",

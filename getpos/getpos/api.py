@@ -1280,5 +1280,44 @@ def get_location():
             FROM `tabCost Center` WHERE custom_location is NOT NULL
             ORDER BY custom_location ASC;
             """,as_dict=1)
+    
+
+@frappe.whitelist(methods="POST")       
+def return_sales_order(sales_invoice):
+        frappe.set_user("Administrator")
+        res = frappe._dict()
+        sales_invoice_number = frappe.db.sql("""
+                        SELECT parent from `tabSales Invoice Item`
+                         WHERE sales_order = %s limit 1
+                """, (  sales_invoice.get("sales_order_number") ),as_dict=True)
+        if sales_invoice_number:
+                invoice = frappe.get_doc("Sales Invoice", sales_invoice_number[0].parent)
+                return_order_items=sales_invoice.get("return_items")
+                invoice.is_return=1
+                invoice.update_outstanding_for_self=1
+                invoice.return_against=sales_invoice.get("sales_invoice_number")
+                invoice.update_billed_amount_in_delivery_note=1
+                invoice.total_qty=-sales_invoice.get("total_qty")
+                returned_items=[]     
+                for item in invoice.items:
+                        if return_order_items[item.item_code] > 0:
+                                item.qty=-return_order_items[item.item_code]
+                                item.stock_qty=-return_order_items[item.item_code]
+                                returned_items.append(item)
+                invoice.items=returned_items        
+                invoice.insert(ignore_permissions=1)
+                frappe.db.sql("update `tabSales Order` set `custom_return_order_status` =%s  where name=%s",(sales_invoice.get("return_type"), sales_invoice.get("sales_order_number")))
+                res["success_key"] = 1
+                res["message"] = "success"
+                res['invoice']= invoice.name
+                res['amount']= invoice.grand_total
+                return res
+        else:
+                res["success_key"] = 0
+                res["message"] = "Sales invoice not for this order"
+                res['invoice']= ""
+                res['amount']= 0
+                return res
+
                 
         
