@@ -34,6 +34,8 @@
   "image_upload_section",
   "app_background_image",
   "merchant_background_image",
+  "splash_text",
+  "banner_image",
   "kiosk_payment_settings_section",
   "api_token",
   "base_payment_url",
@@ -336,12 +338,22 @@
    "fieldname": "web_footer_logo",
    "fieldtype": "Attach Image",
    "label": "WEB Footer Logo"
+  },
+  {
+   "fieldname": "splash_text",
+   "fieldtype": "Data",
+   "label": "Splash Text"
+  },
+  {
+   "fieldname": "banner_image",
+   "fieldtype": "Attach Image",
+   "label": "Banner Image"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-06-04 13:39:06.726472",
+ "modified": "2024-06-10 07:05:33.729178",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Theme Settings",
