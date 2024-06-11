@@ -166,6 +166,9 @@ doc_events = {
 	"Item Group" : {
 		"before_insert" : "getpos.getpos.hooks.item_group.item_group_length"
 	},
+	"Global Defaults" : {
+		"on_update" : "getpos.getpos.hooks.global_defaults.update_theme_settings"
+	},
     # "Item" : {
 	# 	"validate" : "getpos.getpos.hooks.item.validate_item_description"
 	# },
