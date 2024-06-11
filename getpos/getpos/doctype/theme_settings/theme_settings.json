@@ -19,6 +19,7 @@
   "lightgrey",
   "lightestgreytextcolor",
   "seagreenprimary",
+  "default_currency",
   "column_break_pcle3",
   "buttonbeforetap",
   "ontapcardseagreen",
@@ -348,12 +349,18 @@
    "fieldname": "banner_image",
    "fieldtype": "Attach Image",
    "label": "Banner Image"
+  },
+  {
+   "fieldname": "default_currency",
+   "fieldtype": "Data",
+   "label": "Default Currency",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-06-10 07:05:33.729178",
+ "modified": "2024-06-11 07:16:25.390483",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Theme Settings",
