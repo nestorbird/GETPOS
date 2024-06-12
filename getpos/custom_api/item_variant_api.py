@@ -142,7 +142,6 @@ def get_combo_items(name):
 
 
 
-
 @frappe.whitelist(allow_guest=True)
 def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=None, item_type=None, item_order_by=None, cost_center=None):
     data = []
@@ -193,7 +192,6 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
             item_taxes = get_item_taxes(item.name)
             combo_items = get_combo_items(item.name)
 
-            # Initialize related_items as a list
             related_items = []
             allergens = []
             item_dict = {
@@ -204,7 +202,7 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
                 'image': image,
                 "tax": item_taxes, 
                 'description': item.description, 
-                'related_items': related_items, 
+                'related_items': [related_items], 
                 'estimated_time': item.custom_estimated_time, 
                 'item_type': item.custom_item_type, 
                 'allergens': [allergens]
@@ -215,6 +213,8 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
 
             # Get related items and their taxes
             related_items_data = get_related_items(item.name)
+            nested_related_items_list = []
+
             for related_item in related_items_data:
                 related_item_taxes = get_item_taxes(related_item['name'])
                 related_item['tax'] = related_item_taxes
@@ -222,6 +222,7 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
                 # Get nested related items and their taxes
                 nested_related_items_data = get_related_items(related_item['name'])
                 nested_related_items = []
+
                 for nested_related_item in nested_related_items_data:
                     nested_related_item_taxes = get_item_taxes(nested_related_item['name'])
                     nested_related_item['tax'] = nested_related_item_taxes
@@ -230,15 +231,14 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
                 if not nested_related_items:
                     related_item['related_items'] = [[]]
                 else:
-                    related_item['related_items'] = nested_related_items
+                    related_item['related_items'] = [nested_related_items]
 
-                related_items.append(related_item)
+                nested_related_items_list.append(related_item)
 
-            # If related_items is still empty, set it to [[]]
-            if not related_items:
+            if not nested_related_items_list:
                 item_dict['related_items'] = [[]]
             else:
-                item_dict['related_items'] = related_items
+                item_dict['related_items'] = [nested_related_items_list]
 
             allergens.extend(get_allergens(item.name))
 
