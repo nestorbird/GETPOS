@@ -142,6 +142,7 @@ def get_combo_items(name):
 
 
 
+
 @frappe.whitelist(allow_guest=True)
 def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=None, item_type=None, item_order_by=None, cost_center=None):
     data = []
@@ -192,26 +193,54 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
             item_taxes = get_item_taxes(item.name)
             combo_items = get_combo_items(item.name)
 
-            related_items = get_related_items_with_tax(item.name)
-            allergens = get_allergens(item.name)
-
+            # Initialize related_items as a list
+            related_items = []
+            allergens = []
             item_dict = {
-                'id': item.name,
-                'name': item.item_name,
-                'combo_items': combo_items,
-                'attributes': attributes,
+                'id': item.name, 
+                'name': item.item_name, 
+                'combo_items': combo_items, 
+                'attributes': attributes, 
                 'image': image,
-                'tax': item_taxes,
-                'description': item.description,
-                'related_items': related_items,
-                'estimated_time': item.custom_estimated_time,
-                'item_type': item.custom_item_type,
-                'allergens': allergens
+                "tax": item_taxes, 
+                'description': item.description, 
+                'related_items': related_items, 
+                'estimated_time': item.custom_estimated_time, 
+                'item_type': item.custom_item_type, 
+                'allergens': [allergens]
             }
-            
             item_price = flt(get_price_list(item.name))
             if item_price:
                 item_dict.update({'product_price': item_price})
+
+            # Get related items and their taxes
+            related_items_data = get_related_items(item.name)
+            for related_item in related_items_data:
+                related_item_taxes = get_item_taxes(related_item['name'])
+                related_item['tax'] = related_item_taxes
+
+                # Get nested related items and their taxes
+                nested_related_items_data = get_related_items(related_item['name'])
+                nested_related_items = []
+                for nested_related_item in nested_related_items_data:
+                    nested_related_item_taxes = get_item_taxes(nested_related_item['name'])
+                    nested_related_item['tax'] = nested_related_item_taxes
+                    nested_related_items.append(nested_related_item)
+
+                if not nested_related_items:
+                    related_item['related_items'] = [[]]
+                else:
+                    related_item['related_items'] = nested_related_items
+
+                related_items.append(related_item)
+
+            # If related_items is still empty, set it to [[]]
+            if not related_items:
+                item_dict['related_items'] = [[]]
+            else:
+                item_dict['related_items'] = related_items
+
+            allergens.extend(get_allergens(item.name))
 
             # Checking Stock
             item_stock = {'warehouse': -1, 'stock_qty': -1}
@@ -248,6 +277,8 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
         data.append(all_items_data)
 
     return data
+
+
 
 def get_related_items_with_tax(item_name):
     related_items_data = get_related_items(item_name)
