@@ -64,7 +64,15 @@
   "web_banner_image",
   "column_break_caufo",
   "web_outlet_details_banner",
-  "web_footer_logo"
+  "web_footer_logo",
+  "web_footer_section",
+  "mobile_number",
+  "email",
+  "facebook",
+  "column_break_xkckz",
+  "instagram",
+  "youtube",
+  "linkedin"
  ],
  "fields": [
   {
@@ -257,7 +265,7 @@
   {
    "fieldname": "image_upload_section",
    "fieldtype": "Section Break",
-   "label": "Image Upload"
+   "label": " KIOSK Image Upload"
   },
   {
    "fieldname": "kiosk_payment_settings_section",
@@ -355,12 +363,51 @@
    "fieldtype": "Data",
    "label": "Default Currency",
    "read_only": 1
+  },
+  {
+   "fieldname": "web_footer_section",
+   "fieldtype": "Section Break",
+   "label": "WEB Footer"
+  },
+  {
+   "fieldname": "mobile_number",
+   "fieldtype": "Data",
+   "label": "Mobile Number"
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email"
+  },
+  {
+   "fieldname": "facebook",
+   "fieldtype": "Data",
+   "label": "Facebook"
+  },
+  {
+   "fieldname": "column_break_xkckz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "instagram",
+   "fieldtype": "Data",
+   "label": "Instagram"
+  },
+  {
+   "fieldname": "youtube",
+   "fieldtype": "Data",
+   "label": "Youtube"
+  },
+  {
+   "fieldname": "linkedin",
+   "fieldtype": "Data",
+   "label": "LInkedIn"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-06-11 07:16:25.390483",
+ "modified": "2024-06-12 11:21:56.109737",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Theme Settings",
