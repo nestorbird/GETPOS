@@ -514,7 +514,8 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
                         s.hub_manager, s.creation,
                         u.full_name as hub_manager_name,
                         if((c.image = null or c.image = ''), null, 
-                        if(c.image LIKE 'http%%', c.image, concat({base_url}, c.image))) as image
+                        if(c.image LIKE 'http%%', c.image, concat({base_url}, c.image))) as image,
+                        s.custom_return_order_status as return_order_status
                 FROM `tabSales Order` s, `tabUser` u, `tabCustomer` c
                 WHERE s.hub_manager = u.name and s.customer = c.name 
                         and s.hub_manager = {hub_manager}  and s.docstatus = 1 
@@ -669,12 +670,12 @@ def get_all_customer(search=None, from_date=None):
     res=frappe._dict()
     customer = frappe.qb.DocType('Customer')
     if search:
-        query = """SELECT name, customer_name, mobile_no, email_id
+        query = """SELECT name, customer_name, mobile_no, email_id ,loyalty_program
         FROM `tabCustomer`
         WHERE disabled = 0 AND mobile_no LIKE %s"""
         params = ("%"+search+"%",)
     else:
-        query = """SELECT name, customer_name, mobile_no, email_id
+        query = """SELECT name, customer_name, mobile_no, email_id ,loyalty_program
         FROM `tabCustomer`
         WHERE disabled = 0 """
         params = ()
@@ -1298,6 +1299,7 @@ def return_sales_order(sales_invoice):
                 invoice.return_against=sales_invoice.get("sales_invoice_number")
                 invoice.update_billed_amount_in_delivery_note=1
                 invoice.total_qty=-sales_invoice.get("total_qty")
+                invoice.mode_of_payment=''
                 returned_items=[]     
                 for item in invoice.items:
                         if return_order_items[item.item_code] > 0:
@@ -1314,10 +1316,34 @@ def return_sales_order(sales_invoice):
                 return res
         else:
                 res["success_key"] = 0
-                res["message"] = "Sales invoice not for this order"
+                res["message"] = "Sales invoice not found for this order."
                 res['invoice']= ""
                 res['amount']= 0
                 return res
 
                 
-        
+@frappe.whitelist()
+def edit_customer():
+        customer_detail = frappe.request.data
+        customer_detail = json.loads(customer_detail)
+        frappe.set_user("Administrator")
+        res = frappe._dict()
+        existing_customer = frappe.db.get_value("Customer", {"mobile_no": customer_detail.get("mobile_no")}, ["name", "customer_name", "mobile_no", "email_id"], as_dict=True)
+        if existing_customer and existing_customer.name !=customer_detail.get("name") :                
+                res["success_key"] = 0
+                res["message"] = "Customer already present with this mobile no."
+                res["customer"] = existing_customer
+                return res 
+        else:
+                update_customer = frappe.get_doc("Customer",customer_detail.get("name"))
+                frappe.db.sql("update `tabContact` set `mobile_no` =%s  where name=%s",(customer_detail.get("mobile_no"), update_customer.customer_primary_contact))
+                update_customer.customer_name = customer_detail.get("customer_name")  
+                update_customer.mobile_no = customer_detail.get("mobile_no")           
+                update_customer.save(ignore_permissions=True)                
+                res['success_key'] = 1
+                res['message'] = "Customer updated successfully"
+                res["customer"] ={"name" : customer_detail.get("name") ,
+                                "customer_name": customer_detail.get("customer_name") ,
+                                "mobile_no" : customer_detail.get("mobile_no") 
+                                }
+                return res
