@@ -47,7 +47,7 @@ def check_price(doc):
     else:
         data = get_items(extra_item_group = doc.get('item_group'), item_code=doc.item_code)
 
-    create_sync_reg_log(data)
+    # create_sync_reg_log(data)
 
         
 
@@ -59,7 +59,7 @@ def check_item(doc):
     else:
         data = get_items(extra_item_group = doc.get('item_group'), item_code=doc.name)
 
-    create_sync_reg_log(data)          
+    # create_sync_reg_log(data)          
 
 
 def check_item_group(doc):
@@ -70,7 +70,7 @@ def check_item_group(doc):
     else:
         data = get_items(extra_item_group = doc.get('name'))
 
-    create_sync_reg_log(data)
+    # create_sync_reg_log(data)
 
 
 def create_sync_reg_log(data):
