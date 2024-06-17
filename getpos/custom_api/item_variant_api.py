@@ -385,6 +385,7 @@ def get_item_taxes(name):
         it.item_tax_template , 
         ittd.tax_type, 
         ittd.tax_rate,
+        it.valid_from,
         ittd.custom_tax_percentage
     FROM `tabItem` i , `tabItem Tax` it , `tabItem Tax Template` itt , `tabItem Tax Template Detail` ittd
     WHERE i.name = it.parent and i.name = %(name)s and
