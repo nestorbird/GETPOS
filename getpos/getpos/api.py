@@ -880,42 +880,39 @@ def get_all_location_list():
 
 
 @frappe.whitelist()
-def get_kitchen_kds(status,withCredentials):
+def get_kitchen_kds(status):
         try:
-                if withCredentials =='false':
-                        return "Unauthorized"
-                if withCredentials =='true':
-                        start_date = add_to_date(now(), hours=-24)
-                        end_date = now()
-                        all_order = frappe.db.get_all("Kitchen-Kds", 
-                                        filters=[
-                                        ['creation', 'between', [start_date, end_date]],
-                                        ['status', '=', status]
-                                        ], 
-                                        fields=['name', 'order_id', 'custom_order_request', 'status', 'estimated_time', 'type', 'creation1', 'source'])
-                        order_items_dict = []
-                        for orders in all_order:
-                                try:
-                                        items = frappe.db.get_all("Sales Order Item", filters={'parent':orders.get("order_id")}, fields=['item_name','qty'])
-                                        order_wise_items = {}
-                                        order_wise_items['order_id'] = orders.get("order_id")
-                                        order_wise_items['creation'] = orders.get("creation1")
-                                        order_wise_items['estimated_time'] = orders.get('estimated_time')
-                                        order_wise_items["status"] = orders.get('status')
-                                        order_wise_items["type"] = orders.get('type')
-                                        order_wise_items['items'] = items
-                                        order_wise_items['order_request'] = orders.get('custom_order_request')
-                                        order_wise_items['source'] = orders.get('source')
-                                        order_items_dict.append(order_wise_items)
-                                
-                                except Exception as e:
-                                        return {"message": e}
-                                
-                                
-                        frappe.publish_realtime('realtime_update', message=order_items_dict)
+                start_date = add_to_date(now(), hours=-24)
+                end_date = now()
+                all_order = frappe.db.get_all("Kitchen-Kds", 
+                                filters=[
+                                    ['creation', 'between', [start_date, end_date]],
+                                    ['status', '=', status]
+                                ], 
+                                fields=['name', 'order_id', 'custom_order_request', 'status', 'estimated_time', 'type', 'creation1', 'source'])
+                order_items_dict = []
+                for orders in all_order:
+                        try:
+                                items = frappe.db.get_all("Sales Order Item", filters={'parent':orders.get("order_id")}, fields=['item_name','qty'])
+                                order_wise_items = {}
+                                order_wise_items['order_id'] = orders.get("order_id")
+                                order_wise_items['creation'] = orders.get("creation1")
+                                order_wise_items['estimated_time'] = orders.get('estimated_time')
+                                order_wise_items["status"] = orders.get('status')
+                                order_wise_items["type"] = orders.get('type')
+                                order_wise_items['items'] = items
+                                order_wise_items['order_request'] = orders.get('custom_order_request')
+                                order_wise_items['source'] = orders.get('source')
+                                order_items_dict.append(order_wise_items)
+                        
+                        except Exception as e:
+                                return {"message": e}
+                        
+                        
+                frappe.publish_realtime('realtime_update', message=order_items_dict)
 
 
-                        return order_items_dict
+                return order_items_dict
         except Exception as e:
                 return {"message": e}
 
