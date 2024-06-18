@@ -376,26 +376,36 @@ def get_attributes_items(group=None):
     return attributes
 
 
-        
 
+    
+        
 def get_item_taxes(name):
-    filters={'name': name}
+    from datetime import datetime
+    
+    filters = {'name': name, 'today': datetime.today().strftime('%Y-%m-%d')}
+    
     tax = frappe.db.sql("""
     SELECT
-        it.item_tax_template , 
-        ittd.tax_type, 
+        it.item_tax_template,
+        ittd.tax_type,
         ittd.tax_rate,
         it.valid_from,
         ittd.custom_tax_percentage
-    FROM `tabItem` i , `tabItem Tax` it , `tabItem Tax Template` itt , `tabItem Tax Template Detail` ittd
-    WHERE i.name = it.parent and i.name = %(name)s and
-    it.item_tax_template = itt.name and itt.name = ittd.parent
-    """,values=filters ,  as_dict = True)
+    FROM
+        `tabItem` i,
+        `tabItem Tax` it,
+        `tabItem Tax Template` itt,
+        `tabItem Tax Template Detail` ittd
+    WHERE
+        i.name = it.parent AND
+        i.name = %(name)s AND
+        it.item_tax_template = itt.name AND
+        itt.name = ittd.parent AND
+        it.valid_from <= %(today)s
+    """, values=filters, as_dict=True)
     
     return tax
-    
-        
-        
+
         
         
         
