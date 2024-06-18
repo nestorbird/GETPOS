@@ -43,7 +43,9 @@
   "source_code",
   "dine_in",
   "take_away",
-  "guest_customer"
+  "guest_customer",
+  "max_loyalty_discount_available",
+  "loyalty_redemption_account"
  ],
  "fields": [
   {
@@ -233,12 +235,23 @@
    "fieldtype": "Data",
    "label": "Guest Customer",
    "read_only": 1
+  },
+  {
+   "fieldname": "max_loyalty_discount_available",
+   "fieldtype": "Float",
+   "label": "Max Loyalty Discount Available"
+  },
+  {
+   "fieldname": "loyalty_redemption_account",
+   "fieldtype": "Link",
+   "label": "Loyalty Redemption Account",
+   "options": "Account"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-06-10 17:52:01.274906",
+ "modified": "2024-06-17 15:17:46.625124",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Theme Settings",

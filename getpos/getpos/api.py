@@ -5,13 +5,13 @@ from frappe import _
 STANDARD_USERS = ("Guest", "Administrator")
 from frappe.rate_limiter import rate_limit
 from frappe.utils.password import get_password_reset_limit
-from frappe.utils import (cint,get_formatted_email, nowdate, nowtime, flt)
+from frappe.utils import (cint,get_formatted_email, nowdate, nowtime, flt,getdate)
 from erpnext.accounts.utils import get_balance_on
 from erpnext.stock.utils import get_stock_balance
 from erpnext.stock.stock_ledger import get_previous_sle, get_stock_ledger_entries
 from erpnext.selling.doctype.sales_order.sales_order import make_sales_invoice
 from frappe.utils import add_to_date, now
-
+from datetime import datetime
 
 @frappe.whitelist( allow_guest=True )
 def login(usr, pwd):
@@ -116,22 +116,28 @@ def password_reset_mail(user, link):
                         "password_reset", {"link": link}, now=True)
 
 @frappe.whitelist()
-def change_password(usr, pwd):
-        username = frappe.db.get_value("User", usr, 'name')
-        if username:
-                user_doc = frappe.get_doc("User", usr)
-                user_doc.new_password = pwd
-                user_doc.save()
-                frappe.db.commit()
-                frappe.local.response["message"] = {
-                "success_key":1,
-                "message":"success"
-                }
+def change_password(usr, old_pwd, new_pwd):
+    username = frappe.db.get_value("User", usr, 'name')
+    if username:
+        user_doc = frappe.get_doc("User", usr)
+        if frappe.local.login_manager.check_password(user_doc.name, old_pwd):
+            user_doc.new_password = new_pwd
+            user_doc.save()
+            frappe.db.commit()
+            frappe.local.response["message"] = {
+                "success_key": 1,
+                "message": "Password changed successfully"
+            }
         else:
-                frappe.local.response["message"] = {
-                "success_key":1,
-                "message":"User not found"
-                }
+            frappe.local.response["message"] = {
+                "success_key": 0,
+                "message": "Old password is incorrect"
+            }
+    else:
+        frappe.local.response["message"] = {
+            "success_key": 0,
+            "message": "User not found"
+        }
 
 @frappe.whitelist( allow_guest=True )                
 def send_login_mail(user, subject, template, add_args, now=None):
@@ -206,7 +212,7 @@ def get_customer_list_by_hubmanager(hub_manager, last_sync = None):
                         ward, ward_name, name, creation,
                         modified,disabled,
                         if((image = null or image = ''), null, 
-                        if(image LIKE 'http%%', image, concat(%(base_url)s, image))) as image
+                        if(image LIKE 'http%%', image, concat(%(base_url)s, image))) as image ,loyalty_program
                 FROM `tabCustomer`
                 WHERE {conditions}
                 """.format(conditions=conditions), values=filters, as_dict=1)
@@ -647,22 +653,48 @@ def get_item_stock_balance(hub_manager, item_code, last_sync_date=None, last_syn
         return res
 
 @frappe.whitelist()
-def get_customer(mobile_no):
+def get_customer(mobile_no=None,name=None):
         res=frappe._dict()
-        sql = frappe.db.sql(""" SELECT EXISTS(SELECT * FROM `tabCustomer` where mobile_no = '{0}')""".format(mobile_no))
+        sql = frappe.db.sql(""" SELECT EXISTS(SELECT * FROM `tabCustomer` where mobile_no = '{0}'  or name='{1}')""".format(mobile_no,name))
         result = sql[0][0]
         if result == 1:
                 customer_detail = frappe.db.sql("""SELECT name,customer_name,customer_primary_contact,
-                        mobile_no,email_id,primary_address,hub_manager FROM `tabCustomer` WHERE 
-                        mobile_no = '{0}'""".format(mobile_no),as_dict=True)
+                        mobile_no,email_id,primary_address,hub_manager,loyalty_program FROM `tabCustomer` WHERE 
+                        mobile_no = '{0}' or name='{1}'""".format(mobile_no,name),as_dict=True)
+                
+                loyalty_point_details = []
+                loyalty_point_details = frappe._dict(
+			frappe.get_all(
+				"Loyalty Point Entry",
+				filters={
+					"customer": name,
+					"expiry_date": (">=", getdate()),
+				},
+				group_by="company",
+				fields=["company", "sum(loyalty_points) as loyalty_points"],
+				as_list=1,
+			)
+		)
+                companies = frappe.get_all(
+		"Sales Invoice", filters={"docstatus": 1, "customer": name}, distinct=1, fields=["company"]
+	        )
+                loyalty_points=0
+                for d in companies:
+                        if loyalty_point_details:
+                                loyalty_points = loyalty_point_details.get(d.company)
+                if customer_detail:
+                       conversion_factor=frappe.db.get_value("Loyalty Program", {"name": customer_detail[0].loyalty_program}, ["conversion_factor"], as_dict=True)
                 res['success_key'] = 1
                 res['message'] = "success"
                 res['customer'] = customer_detail
+                res['loyalty_points']=loyalty_points
+                res['conversion_factor']= conversion_factor.conversion_factor if conversion_factor else 0
+                res['loyalty_amount']=loyalty_points * conversion_factor.conversion_factor if conversion_factor else 0
                 return res        
         else:
                 res["success_key"] = 0
                 res['mobile_no'] = mobile_no
-                res["message"] = "Mobile Number Does Not Exist"
+                res["message"] = "Mobile Number/Customer Does Not Exist"
                 return res
 
 @frappe.whitelist()
@@ -919,7 +951,7 @@ def get_warehouse_for_cost_center(cost_center):
 
 
 
-@frappe.whitelist(methods="POST", allow_guest=True)
+@frappe.whitelist(methods="POST")
 def create_sales_order_kiosk():
     import json
     order_list = frappe.request.data
@@ -974,9 +1006,17 @@ def create_sales_order_kiosk():
         warehouse = get_warehouse_for_cost_center(order_list.get("cost_center"))
         if warehouse:
             sales_order.set_warehouse = warehouse
+        
+        if order_list.get("redeem_loyalty_points") :
+               sales_order.custom_redeem_loyalty_points = order_list.get("redeem_loyalty_points")
+               sales_order.loyalty_points = order_list.get("loyalty_points")
+               sales_order.loyalty_amount = order_list.get("loyalty_amount")
+               sales_order.custom_loyalty_program = order_list.get("loyalty_program")
+               sales_order.custom_redemption_account = order_list.get("loyalty_redemption_account")        
         sales_order.save(ignore_permissions=True)
+        sales_order.rounded_total=sales_order.grand_total
         sales_order.submit()
-
+        
         latest_order = frappe.get_doc('Sales Order', sales_order.name)
         max_time = max(item['estimated_time'] for item in order_list.get("items"))
 
@@ -1347,3 +1387,23 @@ def edit_customer():
                                 "mobile_no" : customer_detail.get("mobile_no") 
                                 }
                 return res
+        
+@frappe.whitelist()
+def validate_coupon_code(coupon_code):
+    coupon = frappe.db.get_value("Coupon Code", {"coupon_code": coupon_code}, ["name", "used", "maximum_use", "valid_from", "valid_upto"], as_dict=True)
+    if not coupon:
+        return {"status": "error", "message": _("Coupon code does not exist.")}
+    current_date = datetime.now().date()
+    valid_from = coupon.get("valid_from")
+    valid_upto = coupon.get("valid_upto")
+    if isinstance(valid_from, str):
+        valid_from = datetime.strptime(valid_from, "%Y-%m-%d").date()
+    if isinstance(valid_upto, str):
+        valid_upto = datetime.strptime(valid_upto, "%Y-%m-%d").date()
+    if coupon.get("used") >= coupon.get("maximum_use"):
+        return {"status": "invalid", "message": _("Coupon code has been used the maximum number of times.")}
+    if valid_from and current_date < valid_from:
+        return {"status": "invalid", "message": _("Coupon code is not valid yet.")}
+    if valid_upto and current_date > valid_upto:
+        return {"status": "invalid", "message": _("Coupon code has expired.")}
+    return {"status": "valid", "message": _("Coupon code is valid."), "coupon": coupon}
