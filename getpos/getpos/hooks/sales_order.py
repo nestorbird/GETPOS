@@ -21,8 +21,14 @@ def create_sales_invoice_from_sales_order(doc):
         sales_invoice = make_sales_invoice(doc.name)
         sales_invoice.posting_date = doc.transaction_date
         sales_invoice.posting_time = doc.transaction_time
-        sales_invoice.due_date = doc.transaction_date
+        sales_invoice.due_date = doc.transaction_date        
         sales_invoice.update_stock = 1
+        if doc.custom_redeem_loyalty_points:
+            sales_invoice.redeem_loyalty_points = doc.custom_redeem_loyalty_points
+            sales_invoice.loyalty_points = doc.loyalty_points
+            sales_invoice.loyalty_amount = doc.loyalty_amount
+            sales_invoice.loyalty_program = doc.custom_loyalty_program
+            sales_invoice.loyalty_redemption_account = doc.custom_redemption_account
         sales_invoice.save(ignore_permissions=1)
         sales_invoice.submit()
 

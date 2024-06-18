@@ -118,9 +118,9 @@ doctype_js = {
 # ---------------
 # Override standard doctype classes
 
-# override_doctype_class = {
-# 	"ToDo": "custom_app.overrides.CustomToDo"
-# }
+override_doctype_class = {
+	"Sales Invoice": "getpos.overrides.sales_invoice.Custom"
+}
 
 # Document Events
 # ---------------
@@ -149,7 +149,6 @@ doc_events = {
     "Cost Center" : {
 		"after_insert" : "getpos.getpos.hooks.cost_center.create_warehouse"
 	},
-
 	
 }
 # doc_events = {
