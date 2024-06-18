@@ -652,7 +652,7 @@ def get_item_stock_balance(hub_manager, item_code, last_sync_date=None, last_syn
         
         return res
 
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist()
 def get_customer(mobile_no=None,name=None):
         res=frappe._dict()
         sql = frappe.db.sql(""" SELECT EXISTS(SELECT * FROM `tabCustomer` where mobile_no = '{0}'  or name='{1}')""".format(mobile_no,name))
@@ -786,7 +786,7 @@ def get_sub_items(name):
                 
         
 
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist()
 def get_promo_code():
         res = frappe._dict() 
         coupon_code = frappe.qb.DocType('Coupon Code') 
@@ -951,7 +951,7 @@ def get_warehouse_for_cost_center(cost_center):
 
 
 
-@frappe.whitelist(methods="POST", allow_guest=True)
+@frappe.whitelist(methods="POST")
 def create_sales_order_kiosk():
     import json
     order_list = frappe.request.data
@@ -1388,7 +1388,7 @@ def edit_customer():
                                 }
                 return res
         
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist()
 def validate_coupon_code(coupon_code):
     coupon = frappe.db.get_value("Coupon Code", {"coupon_code": coupon_code}, ["name", "used", "maximum_use", "valid_from", "valid_upto"], as_dict=True)
     if not coupon:
