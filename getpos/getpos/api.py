@@ -1085,9 +1085,11 @@ def get_sales_order_item_details(order_id=None):
         if order_id:
                 doc = frappe.get_doc("Sales Order", order_id)
                 address = frappe.db.sql("""
-                        SELECT CONCAT(cost_center_name,",",custom_address,",",custom_location) as address from `tabCost Center`
-                         WHERE name = %s
-                """, (  doc.cost_center ),as_dict=True)
+                SELECT CONCAT(cost_center_name, ", ", custom_address, ", ", custom_location) as address 
+                FROM `tabCost Center`
+                WHERE name = %s
+                """, (doc.cost_center,), as_dict=True)
+
                 item_list = []
                 data = {}
                 max_time = []
