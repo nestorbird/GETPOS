@@ -800,6 +800,22 @@ def get_theme_settings():
     }
     return res
 
+
+
+@frappe.whitelist(allow_guest=True)
+def get_web_theme_settings():
+    theme_settings = frappe.get_doc("Web Theme Settings")
+    theme_settings_dict = {}
+    theme = frappe.get_meta("Web Theme Settings")
+    for field in theme.fields:
+        # if field.fieldtype == "Color":
+        theme_settings_dict[field.fieldname] = theme_settings.get(field.fieldname)
+
+    res = {
+        "data": theme_settings_dict
+    }
+    return res
+
 @frappe.whitelist()
 def get_sales_taxes():
         taxes_data = frappe.db.sql("""
