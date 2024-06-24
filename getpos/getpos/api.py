@@ -895,7 +895,7 @@ def get_all_location_list():
 
 
 
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def get_kitchen_kds(status):
         try:
                 start_date = add_to_date(now(), hours=-24)
