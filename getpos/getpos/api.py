@@ -993,7 +993,9 @@ def create_sales_order_kiosk():
         sales_order.status = order_list.get("status")
         sales_order.mode_of_payment = order_list.get("mode_of_payment")
         sales_order.mpesa_no = order_list.get("mpesa_no")
-        sales_order.coupon_code = order_list.get("coupon_code")
+        if order_list.get("coupon_code"):
+                coupon = frappe.db.get_value("Coupon Code", {"coupon_code": order_list.get("coupon_code")},"name")
+                sales_order.coupon_code = coupon
         sales_order.disable_rounded_total = 1
         
         if order_list.get("mode_of_payment") == "Card":
@@ -1012,7 +1014,7 @@ def create_sales_order_kiosk():
                sales_order.loyalty_points = order_list.get("loyalty_points")
                sales_order.loyalty_amount = order_list.get("loyalty_amount")
                sales_order.custom_loyalty_program = order_list.get("loyalty_program")
-               sales_order.custom_redemption_account = order_list.get("loyalty_redemption_account")        
+               sales_order.custom_redemption_account = order_list.get("loyalty_redemption_account")   
         sales_order.save(ignore_permissions=True)
         sales_order.rounded_total=sales_order.grand_total
         sales_order.submit()
@@ -1389,21 +1391,96 @@ def edit_customer():
                 return res
         
 @frappe.whitelist()
-def validate_coupon_code(coupon_code):
-    coupon = frappe.db.get_value("Coupon Code", {"coupon_code": coupon_code}, ["name", "used", "maximum_use", "valid_from", "valid_upto"], as_dict=True)
-    if not coupon:
-        return {"status": "error", "message": _("Coupon code does not exist.")}
+def coupon_code_details():
     current_date = datetime.now().date()
-    valid_from = coupon.get("valid_from")
-    valid_upto = coupon.get("valid_upto")
-    if isinstance(valid_from, str):
-        valid_from = datetime.strptime(valid_from, "%Y-%m-%d").date()
-    if isinstance(valid_upto, str):
-        valid_upto = datetime.strptime(valid_upto, "%Y-%m-%d").date()
-    if coupon.get("used") >= coupon.get("maximum_use"):
-        return {"status": "invalid", "message": _("Coupon code has been used the maximum number of times.")}
-    if valid_from and current_date < valid_from:
-        return {"status": "invalid", "message": _("Coupon code is not valid yet.")}
-    if valid_upto and current_date > valid_upto:
-        return {"status": "invalid", "message": _("Coupon code has expired.")}
-    return {"status": "valid", "message": _("Coupon code is valid."), "coupon": coupon}
+    def get_details(entity, fields):
+        return {field:entity.get(field) for field in fields}
+    def fetch_coupon_and_pricing_rule(coupon_code):
+        # Fetch details related to the coupon and its associated pricing rule
+        coupon = frappe.db.get_value("Coupon Code", {"coupon_code": coupon_code},
+                                     ["name", "used", "maximum_use", "valid_from", "valid_upto", "pricing_rule","description"], as_dict=True)
+        if not coupon:
+            return None, {"status": "error", "message": _("Coupon code does not exist.")}
+        pricing_rule = frappe.get_doc("Pricing Rule", coupon.get("pricing_rule"))
+        if not pricing_rule:
+            return None, {"status": "error", "message": _("Pricing rule associated with coupon not found.")}
+        return coupon, pricing_rule
+    pricing_rule_fields = [
+        # List of fields to fetch from Pricing Rule document
+        "name", "title", "apply_on", "price_or_product_discount", "coupon_code_based", "selling", "buying",
+        "applicable_for", "customer", "min_qty", "max_qty", "min_amt", "max_amt", "valid_from", "company",
+        "currency", "rate_or_discount", "apply_discount_on", "rate", "discount_amount", "discount_percentage",
+        "for_price_list", "doctype", "items", "item_groups", "customers", "customer_groups", "territories"
+    ]   
+    # Fetch all valid coupons based on current date and their respective pricing rules
+    coupons = frappe.db.get_all("Coupon Code", filters={"valid_upto": (">=", current_date),"coupon_type": "Promotional"},
+                                fields=["name", "coupon_code", "used", "maximum_use", "valid_from", "valid_upto", "pricing_rule","description"])
+    valid_coupons = []
+    for coupon in coupons:
+        pricing_rule = frappe.get_doc("Pricing Rule", coupon.get("pricing_rule"))
+        coupon["description"]=frappe.utils.strip_html_tags(coupon["description"])
+        # Check if the pricing rule is valid, coupon usage is within limit
+        if pricing_rule and is_valid_pricing_rule(pricing_rule, current_date) and coupon["used"] < coupon["maximum_use"]:
+            valid_coupons.append({
+                **get_details(coupon, ["name", "used", "maximum_use", "valid_from", "valid_upto","description"]),
+                "pricing_rule": get_details(pricing_rule, pricing_rule_fields)
+            })
+           
+    # Return success status with valid coupons list
+    return {"status": "success", "valid_coupons": valid_coupons}
+
+@frappe.whitelist(methods=["POST"])
+def validate_coupon_code(coupon_code=None):
+    from datetime import datetime
+    import frappe
+    from frappe import _
+    current_date = datetime.now().date()
+    def get_details(entity, fields):
+        return {field: entity.get(field) for field in fields}
+    def fetch_coupon_and_pricing_rule(coupon_code):
+        # Fetch details related to the coupon and its associated pricing rule
+        coupon = frappe.db.get_value("Coupon Code", {"coupon_code": coupon_code},
+                                     ["name", "used", "maximum_use", "valid_from", "valid_upto", "pricing_rule"], as_dict=True)
+        if not coupon:
+            return None, {"status": "error", "message": _("Coupon code does not exist.")}
+        pricing_rule = frappe.get_doc("Pricing Rule", coupon.get("pricing_rule"))
+        if not pricing_rule:
+            return None, {"status": "error", "message": _("Pricing rule associated with coupon not found.")}
+        return coupon, pricing_rule
+    pricing_rule_fields = [
+        # List of fields to fetch from Pricing Rule document
+        "name", "title", "apply_on", "price_or_product_discount", "coupon_code_based", "selling", "buying",
+        "applicable_for", "customer", "min_qty", "max_qty", "min_amt", "max_amt", "valid_from", "company",
+        "currency", "rate_or_discount", "apply_discount_on", "rate", "discount_amount", "discount_percentage",
+        "for_price_list", "doctype", "items", "item_groups", "customers", "customer_groups", "territories"
+    ]
+    if coupon_code:
+        coupon, pricing_rule = fetch_coupon_and_pricing_rule(coupon_code)
+        if not coupon:
+            return pricing_rule
+        # Validate if the pricing rule associated with the coupon is valid
+        if not is_valid_pricing_rule(pricing_rule, current_date):
+            return {"status": "invalid", "message": _("Associated pricing rule is invalid.")}
+        # Check if the coupon has exceeded its maximum usage limit
+        if coupon["used"] >= coupon["maximum_use"]:
+            return {"status": "invalid", "message": _("Coupon code has reached its maximum use limit.")}
+        # Return valid status with coupon and pricing rule details
+        return {
+            "status": "valid",
+            "message": _("Coupon code and associated pricing rule are valid."),
+            "coupon": {
+                **get_details(coupon, ["name", "used", "maximum_use", "valid_from", "valid_upto"]),
+                "pricing_rule": get_details(pricing_rule, pricing_rule_fields)
+            }
+        }
+    # If no coupon code provided, return an error message
+    return {"status": "error", "message": _("Coupon code is required.")}
+
+def is_valid_pricing_rule(pricing_rule, current_date):
+    def parse_date(date_str):
+        return datetime.strptime(date_str, "%Y-%m-%d").date() if isinstance(date_str, str) else date_str
+    # Parse valid_from and valid_upto dates from the pricing rule
+    rule_valid_from = parse_date(pricing_rule.get("valid_from"))
+    rule_valid_upto = parse_date(pricing_rule.get("valid_upto"))
+    # Check if the current date falls within the valid range of the pricing rule
+    return (not rule_valid_from or current_date >= rule_valid_from) and (not rule_valid_upto or current_date <= rule_valid_upto)
