@@ -1008,13 +1008,13 @@ def create_sales_order_kiosk():
         warehouse = get_warehouse_for_cost_center(order_list.get("cost_center"))
         if warehouse:
             sales_order.set_warehouse = warehouse
-        
-        if order_list.get("redeem_loyalty_points") :
-               sales_order.custom_redeem_loyalty_points = order_list.get("redeem_loyalty_points")
+        if order_list.get("redeem_loyalty_points") == 1 :
+               sales_order.custom_redeem_loyalty_points = 1
                sales_order.loyalty_points = order_list.get("loyalty_points")
-               sales_order.loyalty_amount = order_list.get("loyalty_amount")
-               sales_order.custom_loyalty_program = order_list.get("loyalty_program")
+               sales_order.loyalty_amount = order_list.get("loyalty_amount")               
                sales_order.custom_redemption_account = order_list.get("loyalty_redemption_account")   
+        if order_list.get("loyalty_program") :
+               sales_order.custom_loyalty_program = order_list.get("loyalty_program")
         sales_order.save(ignore_permissions=True)
         sales_order.rounded_total=sales_order.grand_total
         sales_order.submit()
@@ -1390,7 +1390,7 @@ def edit_customer():
                                 }
                 return res
         
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def coupon_code_details():
     current_date = datetime.now().date()
     def get_details(entity, fields):
@@ -1418,7 +1418,8 @@ def coupon_code_details():
     valid_coupons = []
     for coupon in coupons:
         pricing_rule = frappe.get_doc("Pricing Rule", coupon.get("pricing_rule"))
-        coupon["description"]=frappe.utils.strip_html_tags(coupon["description"])
+        if coupon["description"] :
+                coupon["description"]=frappe.utils.strip_html_tags(coupon["description"])
         # Check if the pricing rule is valid, coupon usage is within limit
         if pricing_rule and is_valid_pricing_rule(pricing_rule, current_date) and coupon["used"] < coupon["maximum_use"]:
             valid_coupons.append({
