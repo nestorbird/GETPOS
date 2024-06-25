@@ -174,6 +174,9 @@ doc_events = {
 	# },
 	
 }
+
+
+after_request = "getpos.getpos.api.after_request"
 # doc_events = {
 # 	"*": {
 # 		"on_update": "method",

@@ -22,6 +22,7 @@
   "authtoken_url",
   "merchant_id",
   "client_id",
+  "kdsurl",
   "column_break_zt0fz",
   "client_secret",
   "checkout_url",
@@ -214,12 +215,17 @@
    "fieldname": "linkedin",
    "fieldtype": "Data",
    "label": "LInkedIn"
+  },
+  {
+   "fieldname": "kdsurl",
+   "fieldtype": "Data",
+   "label": "KdsUrl"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-06-21 08:21:58.265287",
+ "modified": "2024-06-25 11:38:46.596914",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Web Theme Settings",
