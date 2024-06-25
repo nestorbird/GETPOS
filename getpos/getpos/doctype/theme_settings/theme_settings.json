@@ -38,18 +38,8 @@
   "splash_text",
   "banner_image",
   "kiosk_payment_settings_section",
-  "api_token",
-  "base_payment_url",
-  "authtoken_url",
-  "merchant_id",
-  "client_id",
   "take_away",
   "column_break_1ydcr",
-  "client_secret",
-  "checkout_url",
-  "isv_merchant_id",
-  "isv_percentage",
-  "source_code",
   "dine_in",
   "kiosk_payment_config_section",
   "username",
@@ -58,21 +48,7 @@
   "column_break_pexfl",
   "currency_code",
   "merchent_id",
-  "terminal_id",
-  "web_images_section",
-  "web_logo_image",
-  "web_banner_image",
-  "column_break_caufo",
-  "web_outlet_details_banner",
-  "web_footer_logo",
-  "web_footer_section",
-  "mobile_number",
-  "email",
-  "facebook",
-  "column_break_xkckz",
-  "instagram",
-  "youtube",
-  "linkedin"
+  "terminal_id"
  ],
  "fields": [
   {
@@ -129,11 +105,6 @@
    "fieldname": "merchant_background_image",
    "fieldtype": "Attach Image",
    "label": "Merchant BackGround Image"
-  },
-  {
-   "fieldname": "api_token",
-   "fieldtype": "Data",
-   "label": "Api Token"
   },
   {
    "fieldname": "lightgrey",
@@ -199,51 +170,6 @@
    "fieldname": "productbordercolorontap",
    "fieldtype": "Color",
    "label": "productBorderColorOnTap"
-  },
-  {
-   "fieldname": "base_payment_url",
-   "fieldtype": "Data",
-   "label": "Base Payment Url"
-  },
-  {
-   "fieldname": "merchant_id",
-   "fieldtype": "Data",
-   "label": "Merchant Id"
-  },
-  {
-   "fieldname": "client_id",
-   "fieldtype": "Data",
-   "label": "Client Id"
-  },
-  {
-   "fieldname": "client_secret",
-   "fieldtype": "Data",
-   "label": "Client Secret"
-  },
-  {
-   "fieldname": "isv_merchant_id",
-   "fieldtype": "Data",
-   "label": "Isv Merchant Id"
-  },
-  {
-   "fieldname": "isv_percentage",
-   "fieldtype": "Float",
-   "label": "Isv Percentage WEB"
-  },
-  {
-   "fieldname": "checkout_url",
-   "fieldtype": "Data",
-   "label": "Checkout Url"
-  },
-  {
-   "fieldname": "authtoken_url",
-   "fieldtype": "Data",
-   "label": "AuthToken Url"
-  },
-  {
-   "fieldname": "source_code",
-   "fieldtype": "Data",
-   "label": "Source Code"
   },
   {
    "fieldname": "dine_in",
@@ -320,35 +246,6 @@
    "label": "Isv Amount"
   },
   {
-   "fieldname": "web_images_section",
-   "fieldtype": "Section Break",
-   "label": "WEB Images"
-  },
-  {
-   "fieldname": "column_break_caufo",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "web_logo_image",
-   "fieldtype": "Attach Image",
-   "label": "WEB Logo Image"
-  },
-  {
-   "fieldname": "web_banner_image",
-   "fieldtype": "Attach Image",
-   "label": "WEB Banner Image"
-  },
-  {
-   "fieldname": "web_outlet_details_banner",
-   "fieldtype": "Attach Image",
-   "label": "WEB Outlet Details Banner Image"
-  },
-  {
-   "fieldname": "web_footer_logo",
-   "fieldtype": "Attach Image",
-   "label": "WEB Footer Logo"
-  },
-  {
    "fieldname": "splash_text",
    "fieldtype": "Data",
    "label": "Splash Text"
@@ -363,51 +260,12 @@
    "fieldtype": "Data",
    "label": "Default Currency",
    "read_only": 1
-  },
-  {
-   "fieldname": "web_footer_section",
-   "fieldtype": "Section Break",
-   "label": "WEB Footer"
-  },
-  {
-   "fieldname": "mobile_number",
-   "fieldtype": "Data",
-   "label": "Mobile Number"
-  },
-  {
-   "fieldname": "email",
-   "fieldtype": "Data",
-   "label": "Email"
-  },
-  {
-   "fieldname": "facebook",
-   "fieldtype": "Data",
-   "label": "Facebook"
-  },
-  {
-   "fieldname": "column_break_xkckz",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "instagram",
-   "fieldtype": "Data",
-   "label": "Instagram"
-  },
-  {
-   "fieldname": "youtube",
-   "fieldtype": "Data",
-   "label": "Youtube"
-  },
-  {
-   "fieldname": "linkedin",
-   "fieldtype": "Data",
-   "label": "LInkedIn"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-06-12 11:21:56.109737",
+ "modified": "2024-06-25 11:44:24.648218",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Theme Settings",

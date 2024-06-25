@@ -933,6 +933,22 @@ def get_kitchen_kds(status):
                 return {"message": e}
 
 
+def after_request(whitelisted, response):
+    try:
+        kdsurl = frappe.db.get_single_value("Web Theme Settings", "kdsurl")
+        if kdsurl:
+            response.headers['Access-Control-Allow-Origin'] = kdsurl
+        else:
+                pass
+        response.headers['Access-Control-Allow-Credentials'] = 'true'
+        response.headers['Access-Control-Allow-Methods'] = 'GET,POST,OPTIONS,DELETE,PUT'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
+    except Exception as e:
+        frappe.log_error(frappe.get_traceback(), "CORS Middleware Error")
+    
+    return response               
+
+
 def get_warehouse_for_cost_center(cost_center):
     warehouse = frappe.db.get_value('Warehouse', {'custom_cost_center': cost_center}, 'name')
     return warehouse
