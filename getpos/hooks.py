@@ -52,7 +52,7 @@ fixtures = [
     }
 ]
 # include js, css files in header of desk.html
-# app_include_css = "/assets/nbpos/css/nbpos.css"
+# app_include_css = "/assets/getpos/css/nbpos.css"
 app_include_js = "/assets/getpos/js/nbpos.js"
 
 # include js, css files in header of web template
@@ -143,9 +143,6 @@ doc_events = {
 	# "Warehouse": {
 	# 	"validate": "getpos.getpos.hooks.warehouse.validate_hub_manager"
 	# },
-	"Customer" : {
-		"validate" : "getpos.getpos.hooks.customer.validate"
-	},
 	"Sales Order":{
 		"on_submit": "getpos.getpos.hooks.sales_order.on_submit",
 		"validate": "getpos.getpos.hooks.sales_order.validate"
