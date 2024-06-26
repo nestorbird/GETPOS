@@ -1394,7 +1394,7 @@ def edit_customer():
                                 }
                 return res
         
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist()
 def coupon_code_details():
     current_date = datetime.now().date()
     def get_details(entity, fields):
@@ -1427,7 +1427,7 @@ def coupon_code_details():
         # Check if the pricing rule is valid, coupon usage is within limit
         if pricing_rule and is_valid_pricing_rule(pricing_rule, current_date) and coupon["used"] < coupon["maximum_use"]:
             valid_coupons.append({
-                **get_details(coupon, ["name", "used", "maximum_use", "valid_from", "valid_upto","description"]),
+                **get_details(coupon, ["name","coupon_code", "used", "maximum_use", "valid_from", "valid_upto","description"]),
                 "pricing_rule": get_details(pricing_rule, pricing_rule_fields)
             })
            
