@@ -101,7 +101,10 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
                 })
                 if not cost_center_exists:
                     continue
-            image = f"{base_url}{item.image}" if item.get('image') else ''
+            if  item.get('image') is not None and "https" not in item.get('image'):
+                image = f"{base_url}{item.get('image')}" if item.get('image') else ''
+            else:
+                image = f"{item.get('image')}" if item.get('image') else ''      
             item_taxes = get_item_taxes(item.name)
             combo_items = get_combo_items(item.name)
 
