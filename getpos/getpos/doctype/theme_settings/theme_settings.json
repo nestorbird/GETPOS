@@ -265,14 +265,13 @@
   {
    "fieldname": "isv_percentage",
    "fieldtype": "Float",
-   "is_virtual": 1,
    "label": "Isv Percentage"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-06-26 05:57:35.801460",
+ "modified": "2024-06-26 06:57:50.592115",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Theme Settings",
