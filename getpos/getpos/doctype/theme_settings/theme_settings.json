@@ -43,6 +43,7 @@
   "dine_in",
   "kiosk_payment_config_section",
   "username",
+  "api_token",
   "password",
   "isv_amount",
   "isv_percentage",
@@ -266,12 +267,17 @@
    "fieldname": "isv_percentage",
    "fieldtype": "Float",
    "label": "Isv Percentage"
+  },
+  {
+   "fieldname": "api_token",
+   "fieldtype": "Data",
+   "label": "Api Token"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-06-26 06:57:50.592115",
+ "modified": "2024-06-26 09:01:04.371373",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Theme Settings",
