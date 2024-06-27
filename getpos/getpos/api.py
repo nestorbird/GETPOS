@@ -786,30 +786,59 @@ def get_promo_code():
                 return res
 
 
-@frappe.whitelist(allow_guest=True)
-def get_theme_settings():
-    theme_settings = frappe.get_doc("Theme Settings")
-    theme_settings_dict = {}
-    theme = frappe.get_meta("Theme Settings")
-    for field in theme.fields:
-        # if field.fieldtype == "Color":
-        theme_settings_dict[field.fieldname] = theme_settings.get(field.fieldname)
-
-    res = {
-        "data": theme_settings_dict
-    }
-    return res
-
-
 
 @frappe.whitelist(allow_guest=True)
 def get_web_theme_settings():
     theme_settings = frappe.get_doc("Web Theme Settings")
     theme_settings_dict = {}
     theme = frappe.get_meta("Web Theme Settings")
+    
+    nbpos_setting = frappe.get_doc("nbpos Setting")
+    instance_url = nbpos_setting.base_url
+
+    image_fields = [
+        "web_logo_image", 
+        "web_banner_image", 
+        "web_outlet_details_banner_image", 
+        "web_footer_logo"
+    ]
+    
     for field in theme.fields:
-        # if field.fieldtype == "Color":
-        theme_settings_dict[field.fieldname] = theme_settings.get(field.fieldname)
+        value = theme_settings.get(field.fieldname)
+        
+        if field.fieldname in image_fields and value:
+            if not value.startswith(instance_url):
+                value = f"{instance_url.rstrip('/')}/{value.lstrip('/')}"
+        
+        theme_settings_dict[field.fieldname] = value
+
+    res = {
+        "data": theme_settings_dict
+    }
+    return res
+@frappe.whitelist(allow_guest=True)
+def get_theme_settings():
+    theme_settings = frappe.get_doc("Theme Settings")
+    theme_settings_dict = {}
+    theme = frappe.get_meta("Theme Settings")
+    
+    nbpos_setting = frappe.get_doc("nbpos Setting")
+    instance_url = nbpos_setting.base_url
+
+    image_fields = [
+        "app_background_image", 
+        "merchant_background_image", 
+        "banner_image"
+    ]
+    
+    for field in theme.fields:
+        value = theme_settings.get(field.fieldname)
+        
+        if field.fieldname in image_fields and value:
+            if not value.startswith(instance_url):
+                value = f"{instance_url.rstrip('/')}/{value.lstrip('/')}"
+        
+        theme_settings_dict[field.fieldname] = value
 
     res = {
         "data": theme_settings_dict
