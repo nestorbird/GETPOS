@@ -33,7 +33,6 @@
   "web_logo_image",
   "web_banner_image",
   "column_break_p2wlo",
-  "web_outlet_details_banner_image",
   "web_footer_logo",
   "web_footer_section",
   "mobile_number",
@@ -168,11 +167,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "web_outlet_details_banner_image",
-   "fieldtype": "Attach Image",
-   "label": "WEB Outlet Details Banner Image"
-  },
-  {
    "fieldname": "web_footer_logo",
    "fieldtype": "Attach Image",
    "label": "WEB Footer Logo"
@@ -225,7 +219,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-06-25 11:38:46.596914",
+ "modified": "2024-06-28 12:12:14.377891",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Web Theme Settings",
