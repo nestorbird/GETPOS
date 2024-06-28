@@ -1016,7 +1016,7 @@ def create_sales_order_kiosk():
                 new_customer.insert(ignore_permissions=True)
                 sales_order.customer = new_customer.name
         else:
-                sales_order.customer = order_list.get("customer")
+                sales_order.customer = order_list.get("customer") 
         
         arr = order_list.get("transaction_date").split(" ")
         sales_order.transaction_date = arr[0]
@@ -1332,7 +1332,8 @@ def get_location():
         base_url = frappe.db.get_single_value('nbpos Setting', 'base_url')
         return frappe.db.sql("""
                 SELECT custom_location, custom_address, cost_center_name, name,
-                CONCAT(%(base_url)s, custom_attach_image) AS custom_attach_image
+                CONCAT(%(base_url)s, custom_attach_image) AS custom_attach_image,
+                CONCAT(%(base_url)s, custom_web_outlet_details_banner_image) AS web_outlet_details_banner_image
                 FROM `tabCost Center`
                 WHERE disabled = 0 AND custom_location = %(custom_location)s
                 ORDER BY creation DESC
