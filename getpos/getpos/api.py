@@ -953,7 +953,7 @@ def get_warehouse_for_cost_center(cost_center):
 
 
 
-@frappe.whitelist(methods="POST",allow_guest=True)
+@frappe.whitelist(methods="POST")
 def create_sales_order_kiosk():
     import json
     order_list = frappe.request.data
