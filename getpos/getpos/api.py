@@ -1020,7 +1020,7 @@ def create_sales_order_kiosk():
         
         arr = order_list.get("transaction_date").split(" ")
         sales_order.transaction_date = arr[0]
-        sales_order.transaction_time = arr[1]
+        # sales_order.transaction_time = arr[1]
         sales_order.delivery_date = order_list.get("delivery_date")
         sales_order = add_items_in_order(sales_order, order_list.get("items"), order_list)
         sales_order.status = order_list.get("status")
