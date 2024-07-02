@@ -3,6 +3,8 @@ import frappe
 import json
 from frappe import _
 STANDARD_USERS = ("Guest", "Administrator")
+from frappe.utils.pdf import get_pdf
+from frappe.core.doctype.communication.email import make
 from frappe.rate_limiter import rate_limit
 from frappe.utils.password import get_password_reset_limit
 from frappe.utils import (cint,get_formatted_email, nowdate, nowtime, flt,getdate)
@@ -951,7 +953,7 @@ def get_warehouse_for_cost_center(cost_center):
 
 
 
-@frappe.whitelist(methods="POST")
+@frappe.whitelist(methods="POST",allow_guest=True)
 def create_sales_order_kiosk():
     import json
     order_list = frappe.request.data
@@ -1014,7 +1016,9 @@ def create_sales_order_kiosk():
                sales_order.loyalty_amount = order_list.get("loyalty_amount")               
                sales_order.custom_redemption_account = order_list.get("loyalty_redemption_account")   
         if order_list.get("loyalty_program") :
-               sales_order.custom_loyalty_program = order_list.get("loyalty_program")
+               sales_order.custom_loyalty_program = order_list.get("loyalty_program")        
+        if order_list.get("pos_opening_shift") :              
+               sales_order.custom_pos_shift=order_list.get("pos_opening_shift")
         sales_order.save(ignore_permissions=True)
         sales_order.rounded_total=sales_order.grand_total
         sales_order.submit()
@@ -1324,44 +1328,56 @@ def get_location():
             ORDER BY custom_location ASC;
             """,as_dict=1)
     
-
-@frappe.whitelist(methods="POST")       
+@frappe.whitelist(methods="POST", allow_guest=True)
 def return_sales_order(sales_invoice):
+    try:
         frappe.set_user("Administrator")
         res = frappe._dict()
-        sales_invoice_number = frappe.db.sql("""
-                        SELECT parent from `tabSales Invoice Item`
-                         WHERE sales_order = %s limit 1
-                """, (  sales_invoice.get("sales_order_number") ),as_dict=True)
-        if sales_invoice_number:
-                invoice = frappe.get_doc("Sales Invoice", sales_invoice_number[0].parent)
-                return_order_items=sales_invoice.get("return_items")
-                invoice.is_return=1
-                invoice.update_outstanding_for_self=1
-                invoice.return_against=sales_invoice.get("sales_invoice_number")
-                invoice.update_billed_amount_in_delivery_note=1
-                invoice.total_qty=-sales_invoice.get("total_qty")
-                invoice.mode_of_payment=''
-                returned_items=[]     
-                for item in invoice.items:
-                        if return_order_items[item.item_code] > 0:
-                                item.qty=-return_order_items[item.item_code]
-                                item.stock_qty=-return_order_items[item.item_code]
-                                returned_items.append(item)
-                invoice.items=returned_items        
-                invoice.insert(ignore_permissions=1)
-                frappe.db.sql("update `tabSales Order` set `custom_return_order_status` =%s  where name=%s",(sales_invoice.get("return_type"), sales_invoice.get("sales_order_number")))
-                res["success_key"] = 1
-                res["message"] = "success"
-                res['invoice']= invoice.name
-                res['amount']= invoice.grand_total
-                return res
+        # Fetch the sales invoice number
+        sales_order_number = sales_invoice.get("sales_order_number")
+        sales_invoice_doc = frappe.db.get_value("Sales Invoice Item",
+                                                filters={"sales_order": sales_order_number},
+                                                fieldname=["parent"])
+        if sales_invoice_doc:
+            invoice = frappe.get_doc("Sales Invoice", sales_invoice_doc)
+            return_order_items = sales_invoice.get("return_items")
+            # Update invoice fields for return
+            invoice.is_return = 1
+            invoice.update_outstanding_for_self = 1
+            invoice.return_against = sales_invoice.get("sales_invoice_number")
+            invoice.update_billed_amount_in_delivery_note = 1
+            invoice.total_qty = -sales_invoice.get("total_qty")
+            invoice.mode_of_payment = ''
+            returned_items = []
+            # Adjust quantities for returned items
+            for item in invoice.items:
+                if return_order_items.get(item.item_code, 0) > 0:
+                    item.qty = -return_order_items[item.item_code]
+                    item.stock_qty = -return_order_items[item.item_code]
+                    returned_items.append(item)
+            invoice.items = returned_items
+            invoice.insert(ignore_permissions=1)
+            # Update sales order custom status
+            frappe.db.sql("""
+                UPDATE `tabSales Order`
+                SET `custom_return_order_status` = %s
+                WHERE name = %s
+            """, (sales_invoice.get("return_type"), sales_order_number))
+            res["success_key"] = 1
+            res["message"] = "Success"
+            res['invoice'] = invoice.name
+            res['amount'] = invoice.grand_total
+            # Send email to customer with the sales invoice return attached           
+            return res
         else:
-                res["success_key"] = 0
-                res["message"] = "Sales invoice not found for this order."
-                res['invoice']= ""
-                res['amount']= 0
-                return res
+            res["success_key"] = 0
+            res["message"] = "Sales invoice not found for this order."
+            res['invoice'] = ""
+            res['amount'] = 0
+            return res
+    except Exception as e:
+        frappe.log_error(frappe.get_traceback(), "return_sales_order Error")
+        return {"success_key": 0, "message": "An unexpected error occurred. Please try again later.", "invoice": "", "amount": 0}
 
                 
 @frappe.whitelist()
@@ -1489,3 +1505,6 @@ def is_valid_pricing_rule(pricing_rule, current_date):
     rule_valid_upto = parse_date(pricing_rule.get("valid_upto"))
     # Check if the current date falls within the valid range of the pricing rule
     return (not rule_valid_from or current_date >= rule_valid_from) and (not rule_valid_upto or current_date <= rule_valid_upto)
+
+
+
