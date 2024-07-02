@@ -52,7 +52,7 @@ def get_combo_items(name):
 
     
 @frappe.whitelist()
-def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=None,item_type=None,item_order_by=None,cost_center=None):
+def get_updated_items(from_date=None, item_group=None, extra_item_group=None, item_code=None,item_type=None,item_order_by=None,cost_center=None,source=None):
    
     data = []
     filters = {'is_group':0,'name':['not in',('Extra')],
@@ -74,17 +74,25 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
         item_group_image = f"{base_url}{group.get('image')}" if group.get('image') else ''
                     
 
-        filters = {'item_group':group.name,'disabled':0,'custom_item':['not in',('Extra')]}
+        item_filters = {'item_group':group.name,'disabled':0,'custom_item':['not in',('Attribute/Modifier')]}
         
         if item_code and not extra_item_group :
 
-            filters.update({ 'name': ['like', '%' + item_code +'%']})
+            item_filters.update({ 'name': ['like', '%' + item_code +'%']})
         
         if item_type :
-            filters.update({ 'custom_item_type': item_type })
+            item_filters.update({ 'custom_item_type': item_type })
             
+        if source:
+            if source=="WEB":
+                item_filters.update({ 'custom_web': 1 })
+            elif source=="KIOSK":
+                item_filters.update({ 'custom_kiosk': 1 })
+            elif source=="POS":
+                item_filters.update({ 'custom_pos': 1 })
+        
 
-        all_items = frappe.get_all('Item',filters = filters, fields=['*'],order_by=item_order_by)
+        all_items = frappe.get_all('Item',filters = item_filters, fields=['*'],order_by=item_order_by)
 
         if all_items:
             group_dict.update({'item_group':group.name,
@@ -124,8 +132,8 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
 
 
 
-# @frappe.whitelist(allow_guest=True)
-# def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=None, item_type=None, item_order_by=None, cost_center=None):
+@frappe.whitelist(allow_guest=True)
+def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=None, item_type=None, item_order_by=None, cost_center=None,source=None):
     data = []
     filters = {'is_group': 0, 'name': ['not in', ('Extra')],
                'parent_item_group': ['not in', ('Extra')]}
@@ -147,20 +155,27 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
     for group in all_groups:
         group_dict = {'item_group': group.name, 'item_group_image': f"{base_url}{group.get('image')}" if group.get('image') else '', 'items': []}
 
-        # attributes = get_attributes_items(group)
-
         #### Getting Items ####
-        item_filters = {'item_group': group.name, 'disabled': 0}
+        item_filters = {'item_group':group.name,'disabled':0,'custom_item':['not in',('Attribute/Modifier')]}
 
         if item_code and not extra_item_group:
             item_filters.update({'name': ['like', '%' + item_code + '%']})
 
         if item_type:
             item_filters.update({'custom_item_type': item_type})
+            
+        if source:
+            if source=="WEB":
+                item_filters.update({ 'custom_web': 1 })
+            elif source=="KIOSK":
+                item_filters.update({ 'custom_kiosk': 1 })
+            elif source=="POS":
+                item_filters.update({ 'custom_pos': 1 })
 
         all_items = frappe.get_all('Item', filters=item_filters, fields=['*'])
 
         for item in all_items:
+            attributes = get_attributes_items(item.name,cost_center)
             # Check if the item is available in the specified cost center
             if cost_center:
                 cost_center_exists = frappe.db.exists('Item Cost Center', {
@@ -180,7 +195,7 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
                 'id': item.name, 
                 'name': item.item_name, 
                 'combo_items': combo_items, 
-                # 'attributes': attributes, 
+                'attributes': attributes, 
                 'image': image,
                 "tax": item_taxes, 
                 'description': item.description, 
@@ -193,38 +208,38 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
             if item_price:
                 item_dict.update({'product_price': item_price})
 
-            # # Get related items and their taxes
-            # related_items_data = get_related_items(item.name)
-            # nested_related_items_list = []
+            # Get related items and their taxes
+            related_items_data = get_related_items(item.name)
+            nested_related_items_list = []
 
-            # for related_item in related_items_data:
-            #     related_item_taxes = get_item_taxes(related_item['name'])
-            #     related_item['tax'] = related_item_taxes
+            for related_item in related_items_data:
+                related_item_taxes = get_item_taxes(related_item['name'])
+                related_item['tax'] = related_item_taxes
 
-            #     # Get nested related items and their taxes
-            #     nested_related_items_data = get_related_items(related_item['name'])
-            #     nested_related_items = []
+                # Get nested related items and their taxes
+                nested_related_items_data = get_related_items(related_item['name'])
+                nested_related_items = []
 
-            #     for nested_related_item in nested_related_items_data:
-            #         nested_related_item_taxes = get_item_taxes(nested_related_item['name'])
-            #         nested_related_item['tax'] = nested_related_item_taxes
-            #         nested_related_items.append(nested_related_item)
+                for nested_related_item in nested_related_items_data:
+                    nested_related_item_taxes = get_item_taxes(nested_related_item['name'])
+                    nested_related_item['tax'] = nested_related_item_taxes
+                    nested_related_items.append(nested_related_item)
 
-            #     if not nested_related_items:
-            #         related_item['related_items'] = [[]]
-            #     else:
-            #         related_item['related_items'] = [nested_related_items]
+                if not nested_related_items:
+                    related_item['related_items'] = [[]]
+                else:
+                    related_item['related_items'] = [nested_related_items]
 
-            #     nested_related_items_list.append(related_item)
+                nested_related_items_list.append(related_item)
 
-            # if not nested_related_items_list:
-            #     item_dict['related_items'] = [[]]
-            # else:
-            #     item_dict['related_items'] = [nested_related_items_list]
+            if not nested_related_items_list:
+                item_dict['related_items'] = [[]]
+            else:
+                item_dict['related_items'] = [nested_related_items_list]
 
             allergens.extend(get_allergens(item.name))
 
-            # Checking Stock
+            # # Checking Stock
             item_stock = {'warehouse': -1, 'stock_qty': -1}
             bundle_bin_qty = 1000000
             if item.is_stock_item:
@@ -262,38 +277,38 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
 
 
 
-# def get_related_items_with_tax(item_name):
-#     related_items_data = get_related_items(item_name)
-#     related_items = []
+def get_related_items_with_tax(item_name):
+    related_items_data = get_related_items(item_name)
+    related_items = []
 
-#     for related_item in related_items_data:
-#         related_item_taxes = get_item_taxes(related_item['name'])
-#         related_item['tax'] = related_item_taxes
+    for related_item in related_items_data:
+        related_item_taxes = get_item_taxes(related_item['name'])
+        related_item['tax'] = related_item_taxes
 
-#         # Fetch related items for the related item recursively
-#         related_item['related_items'] = get_related_items_with_tax(related_item['name'])
+        # Fetch related items for the related item recursively
+        related_item['related_items'] = get_related_items_with_tax(related_item['name'])
 
-#         related_items.append(related_item)
+        related_items.append(related_item)
 
-#     return related_items
+    return related_items
 
 
-# def get_related_items(item_name):
-#     related_items=[]
-#     get_related_items_=frappe.get_all('Related Item',filters={"parent": item_name},fields=['item'])
-#     if get_related_items_:
-#         for related_item in get_related_items_:
-#             sub_related_items=[]
-#             allergens=[]
-#             item_detail=frappe.get_value('Item',related_item.get('item'),['name','description','image','custom_estimated_time','item_name','custom_item_type'])
-#             if item_detail:
-#                 related_item_price = flt(get_price_list(related_item.get('item'))) 
-#                 allergens.append(get_allergens(item_detail[4]))
-#                 related_group_items={'id':item_detail[0],'name':item_detail[4],'description':item_detail[1],'image':f"{base_url}{item_detail[2]}",'estimated_time': item_detail[3],'item_type':item_detail[5],'product_price':related_item_price,'allergens':allergens,'related_items':sub_related_items}
-#                 sub_related_items.append(get_related_items(item_detail[0]))       
-#             related_items.append(related_group_items)
+def get_related_items(item_name):
+    related_items=[]
+    get_related_items_=frappe.get_all('Related Item',filters={"parent": item_name},fields=['item'])
+    if get_related_items_:
+        for related_item in get_related_items_:
+            sub_related_items=[]
+            allergens=[]
+            item_detail=frappe.get_value('Item',related_item.get('item'),['name','description','image','custom_estimated_time','item_name','custom_item_type'])
+            if item_detail:
+                related_item_price = flt(get_price_list(related_item.get('item'))) 
+                allergens.append(get_allergens(item_detail[4]))
+                related_group_items={'id':item_detail[0],'name':item_detail[4],'description':item_detail[1],'image':f"{base_url}{item_detail[2]}",'estimated_time': item_detail[3],'item_type':item_detail[5],'product_price':related_item_price,'allergens':allergens,'related_items':sub_related_items}
+                sub_related_items.append(get_related_items(item_detail[0]))       
+            related_items.append(related_group_items)
 
-#     return related_items
+    return related_items
 
 def get_allergens(item_name):
     allergens=[]

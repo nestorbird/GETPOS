@@ -8,7 +8,8 @@
  "engine": "InnoDB",
  "field_order": [
   "parent_item",
-  "attribute_items"
+  "attribute_items",
+  "attribute_heading"
  ],
  "fields": [
   {
@@ -22,11 +23,16 @@
    "fieldtype": "Table",
    "label": "Attribute Items",
    "options": "Attribute Items"
+  },
+  {
+   "fieldname": "attribute_heading",
+   "fieldtype": "Data",
+   "label": "Attribute Heading"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-06-24 11:50:10.094775",
+ "modified": "2024-07-01 14:11:49.119674",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Attributes",
