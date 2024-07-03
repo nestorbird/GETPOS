@@ -148,7 +148,7 @@ doc_events = {
 		"validate": "getpos.getpos.hooks.sales_order.validate"
 	},
 	"Sales Invoice":{
-		"on_submit": "getpos.getpos.hooks.sales_invoice.on_submit"
+		"on_submit": ["getpos.getpos.hooks.sales_invoice.on_submit","getpos.getpos.hooks.sales_invoice.send_email_on_invoice"]
 
 	},
 	"Item Price":{
@@ -166,6 +166,9 @@ doc_events = {
 	"Global Defaults" : {
 		"on_update" : "getpos.getpos.hooks.global_defaults.update_theme_settings"
 	},
+	"Kitchen-Kds":{
+		"on_update":"getpos.getpos.hooks.kitchen_kds.send_order_ready_email"
+	}
     # "Item" : {
 	# 	"validate" : "getpos.getpos.hooks.item.validate_item_description"
 	# },

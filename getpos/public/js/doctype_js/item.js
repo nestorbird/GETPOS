@@ -1,11 +1,29 @@
 frappe.ui.form.on('Item', {
+
     refresh: frm => {
-        if (!frm.doc.__islocal) {
-            show_include_multigroup(frm)
+        if (frm.doc.custom_item == "Standard Item") {
+            frm.add_custom_button(__("Create Attribute"), function() {
+                frappe.new_doc("Attributes",{
+                    "parent_item":frm.doc.name
+
+                })
+            }).css({"color":"white", "background-color": "#2490EF", "font-weight": "800"});
         }
-        else {
-            frm.set_df_property('incldues_item_group', 'hidden', 1)
+
+        if (frm.doc.custom_item == "Combo Item") {
+            frm.add_custom_button(__("Create Combo"), function() {
+                frappe.new_doc("Attributes",{
+                    "parent_item":frm.doc.name
+
+                })
+            }).css({"color":"white", "background-color": "#2490EF", "font-weight": "800"});
         }
+        // if (!frm.doc.__islocal) {
+        //     show_include_multigroup(frm)
+        // }
+        // else {
+        //     frm.set_df_property('incldues_item_group', 'hidden', 1)
+        // }
 
     },
     item_group: frm => {
@@ -70,4 +88,3 @@ frappe.ui.form.on('Related Item', {
         }
     }
 });
-
