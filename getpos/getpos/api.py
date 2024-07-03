@@ -1020,6 +1020,8 @@ def get_warehouse_for_cost_center(cost_center):
 
 
 
+
+
 @frappe.whitelist(methods="POST", allow_guest=True)
 def create_sales_order_kiosk():
     import json
@@ -1064,11 +1066,36 @@ def create_sales_order_kiosk():
         sales_order.mpesa_no = order_list.get("mpesa_no")
         sales_order.coupon_code = order_list.get("coupon_code")
         sales_order.disable_rounded_total = 1
+        cost_center = order_list.get("cost_center")
+        if cost_center:
+            custom_times = frappe.db.get_value("Cost Center", cost_center, ["custom_opening_time", "custom_closing_time"], as_dict=True)
+            if custom_times:
+                sales_order.custom_opening_time = custom_times.get("custom_opening_time")
+                sales_order.custom_closing_time = custom_times.get("custom_closing_time")
+        
+        # Set custom payment status
+        if order_list.get("mode_of_payment") == "Card":
+            sales_order.custom_payment_status = "Pending"
+        else:
+            sales_order.custom_payment_status = "Paid"
+        
+        # Insert sales order and commit changes
+        sales_order.insert(ignore_permissions=True)
+        frappe.db.commit()
+        res.name = sales_order.name
+        return res
+    
+    except Exception as e:
+        frappe.log_error(frappe.get_traceback(), "create_sales_order_kiosk")
+        frappe.throw("An error occurred while creating the sales order.")
         
         if order_list.get("mode_of_payment") == "Card":
             sales_order.custom_payment_status = "Pending"
         else:
             sales_order.custom_payment_status = "Paid"
+
+
+
         
         # Set cost center and warehouse
         sales_order.cost_center = order_list.get("cost_center")
@@ -1393,5 +1420,55 @@ def get_location():
             FROM `tabCost Center` WHERE custom_location is NOT NULL
             ORDER BY custom_location ASC;
             """,as_dict=1)
-                
+
+
+x``
+import frappe
+from frappe import _
+from datetime import datetime
+
+@frappe.whitelist()
+def get_cost_centers():
+    cost_centers = frappe.get_all('Cost Center', fields=['name', 'cost_center_name', 'parent_cost_center', 'is_group', 'company', 'custom_opening_time', 'custom_closing_time','custom_pin'])
+    return cost_centers
+
+def validate_sales_order(doc, method):
+    # Get the cost center details
+    cost_center = frappe.get_doc('Cost Center', doc.cost_center)
+    
+    # Get the current time in HH:MM:SS format
+    transaction_time = datetime.now().time()
+
+    # Parse the opening and closing times from the cost center
+    custom_opening_time = datetime.strptime(cost_center.custom_opening_time, "%H:%M:%S").time()
+    custom_closing_time = datetime.strptime(cost_center.custom_closing_time, "%H:%M:%S").time()
+
+    # Check if the transaction time is within the opening and closing times
+    if not (custom_opening_time <= transaction_time <= custom_closing_time):
+        frappe.throw(_("The shop is currently closed. Please place the order between {0} and {1}.").format(custom_closing_time, custom_closing_time))
+
+
+
+@frappe.whitelist(allow_guest=True)
+def get_cost_center_by_pin(custom_pin=None):
+    # Get the custom_pin from the function argument or form_dict
+    if not custom_pin:
+        custom_pin = frappe.form_dict.get('custom_pin')
+
+    # Validate the provided PIN
+    cost_center = validate_pin(custom_pin)
+    
+    # Fetch cost center details
+    if cost_center:
+        cost_center_details = frappe.get_doc('Cost Center', cost_center[0].name)
+        return cost_center_details.as_dict()
+    else:
+        frappe.throw(_("No cost center found with the provided PIN."))
+
+def validate_pin(custom_pin):
+    # Check if the provided PIN exists in any cost center
+    cost_center = frappe.get_all('Cost Center', filters={'custom_pin': custom_pin}, fields=['name'])
+    
+    return cost_center
+
 
