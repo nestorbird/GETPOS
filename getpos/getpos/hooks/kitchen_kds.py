@@ -26,5 +26,7 @@ def send_order_ready_email(doc, method):
         frappe.sendmail(
             recipients=[customer.email_id],
             subject=subject,
-            message=message
+            message=message,
+            delay=False,
+            now=True
         )
