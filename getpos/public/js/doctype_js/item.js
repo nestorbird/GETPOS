@@ -1,23 +1,28 @@
 frappe.ui.form.on('Item', {
 
     refresh: frm => {
-        if (frm.doc.custom_item == "Standard Item") {
-            frm.add_custom_button(__("Create Attribute"), function() {
-                frappe.new_doc("Attributes",{
-                    "parent_item":frm.doc.name
+        if (!frm.doc.__islocal) {
 
-                })
-            }).css({"color":"white", "background-color": "#2490EF", "font-weight": "800"});
+            if (frm.doc.custom_item == "Standard Item") {
+                frm.add_custom_button(__("Create Attribute"), function() {
+                    frappe.new_doc("Attributes",{
+                        "parent_item":frm.doc.name
+    
+                    })
+                }).css({"color":"white", "background-color": "#2490EF", "font-weight": "800"});
+            }
+    
+            if (frm.doc.custom_item == "Combo Item") {
+                frm.add_custom_button(__("Create Combo"), function() {
+                    frappe.new_doc("Attributes",{
+                        "parent_item":frm.doc.name
+    
+                    })
+                }).css({"color":"white", "background-color": "#2490EF", "font-weight": "800"});
+            }
+
         }
-
-        if (frm.doc.custom_item == "Combo Item") {
-            frm.add_custom_button(__("Create Combo"), function() {
-                frappe.new_doc("Attributes",{
-                    "parent_item":frm.doc.name
-
-                })
-            }).css({"color":"white", "background-color": "#2490EF", "font-weight": "800"});
-        }
+       
         // if (!frm.doc.__islocal) {
         //     show_include_multigroup(frm)
         // }

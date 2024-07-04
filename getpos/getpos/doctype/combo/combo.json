@@ -1,53 +1,53 @@
 {
  "actions": [],
- "autoname": "format:{attribute_heading}-{parent_item}",
- "creation": "2024-06-21 09:31:33.608461",
+ "autoname": "format:{combo_heading}-{parent_combo_item}",
+ "creation": "2024-07-04 19:42:46.789434",
  "default_view": "List",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "attribute_heading",
-  "parent_item",
-  "attribute_items",
+  "combo_heading",
+  "parent_combo_item",
+  "combo_item",
   "count"
  ],
  "fields": [
   {
-   "fieldname": "parent_item",
+   "fieldname": "combo_heading",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Combo Heading",
+   "reqd": 1
+  },
+  {
+   "fieldname": "parent_combo_item",
    "fieldtype": "Link",
-   "label": "Parent Item",
+   "in_list_view": 1,
+   "label": "Parent Combo Item",
    "options": "Item",
    "reqd": 1
   },
   {
-   "fieldname": "attribute_items",
-   "fieldtype": "Table",
-   "label": "Attribute Items",
-   "options": "Attribute Items",
-   "reqd": 1
-  },
-  {
-   "fieldname": "attribute_heading",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Attribute Heading",
-   "reqd": 1
-  },
-  {
    "fieldname": "count",
-   "fieldtype": "Data",
+   "fieldtype": "Float",
    "hidden": 1,
    "label": "Count",
    "read_only": 1
+  },
+  {
+   "fieldname": "combo_item",
+   "fieldtype": "Table",
+   "label": "Combo Item",
+   "options": "Combo Item"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-07-04 20:00:47.286047",
+ "modified": "2024-07-04 20:10:20.989415",
  "modified_by": "Administrator",
  "module": "getpos",
- "name": "Attributes",
+ "name": "Combo",
  "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
