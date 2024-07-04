@@ -1076,7 +1076,12 @@ def create_sales_order_kiosk():
         sales_order.submit()
 
         latest_order = frappe.get_doc('Sales Order', sales_order.name)
-        max_time = max(item['estimated_time'] for item in order_list.get("items"))
+
+        times = [item.get("estimated_time") for item in order_list.get("items")]
+
+        times = [time if time is not None else 0 for time in times]
+
+        max_time = max(times)
 
         if not order_list.get('source') == "WEB":
                 frappe.get_doc({

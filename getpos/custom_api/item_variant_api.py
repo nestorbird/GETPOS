@@ -50,7 +50,7 @@ def get_stock_qty(item,cost_center=None):
     
 def get_combo_items(item_code,cost_center=None):
     # For Adding Extra Items in Item
-    all_combo_items=frappe.db.sql(""" SELECT c.combo_heading as name,c.count,ci.item,ci.item_price from `tabCombo Item` ci LEFT JOIN `tabCombo` c ON ci.parent=c.name WHERE c.parent_combo_item = '{}'  GROUP BY c.name,ci.name
+    all_combo_items=frappe.db.sql(""" SELECT c.combo_heading as name,c.count,ci.item,ci.item_name,ci.item_price from `tabCombo Item` ci LEFT JOIN `tabCombo` c ON ci.parent=c.name WHERE c.parent_combo_item = '{}'  GROUP BY c.name,ci.name
 """.format(item_code),as_dict=1)
     
     # Initialize an empty list for the output
@@ -66,7 +66,7 @@ def get_combo_items(item_code,cost_center=None):
             grouped_data[name] = {'name': name, 'description':heading,'options': []}
         grouped_data[name]['options'].append(
             {
-                'item': item,'price':entry.price if entry.price else get_price_list(item),
+                'item': item,'item_name':entry['item_name'],'price':entry.price if entry.price else get_price_list(item),
                 'stock_qty':get_stock_qty({'item_code':item},cost_center) if get_stock_qty({'item_code':item},cost_center) else 0,
                 'item_tax':get_item_taxes(item)})
 
@@ -365,7 +365,7 @@ def get_related_item_groups(extra_item_group):
 
 def get_attributes_items(item_code,cost_center=None):
     # For Adding Extra Items in Item
-    all_extra_items=frappe.db.sql(""" SELECT a.attribute_heading as name,a.count,ai.item,ai.price from `tabAttribute Items` ai LEFT JOIN `tabAttributes` a ON ai.parent=a.name WHERE a.parent_item = '{}'  GROUP BY a.name,ai.name
+    all_extra_items=frappe.db.sql(""" SELECT a.attribute_heading as name,a.count,ai.item,ai.item_name,ai.price from `tabAttribute Items` ai LEFT JOIN `tabAttributes` a ON ai.parent=a.name WHERE a.parent_item = '{}'  GROUP BY a.name,ai.name
 """.format(item_code),as_dict=1)
     
     # Initialize an empty list for the output
@@ -378,10 +378,10 @@ def get_attributes_items(item_code,cost_center=None):
         item = entry['item']
         heading="Select {}".format(entry['count'] if entry['count'] else 0)
         if name not in grouped_data:
-            grouped_data[name] = {'name': name, 'description':heading,'options': []}
+            grouped_data[name] = {'name': name,'description':heading,'options': []}
         grouped_data[name]['options'].append(
             {
-                'item': item,'price':entry.price if entry.price else get_price_list(item),
+                'item': item, 'item_name':entry['item_name'],'price':entry.price if entry.price else get_price_list(item),
                 'stock_qty':get_stock_qty({'item_code':item},cost_center) if get_stock_qty({'item_code':item},cost_center) else 0,
                 'item_tax':get_item_taxes(item)})
 
