@@ -22,6 +22,7 @@
   "authtoken_url",
   "merchant_id",
   "client_id",
+  "url",
   "kdsurl",
   "column_break_zt0fz",
   "client_secret",
@@ -214,12 +215,17 @@
    "fieldname": "kdsurl",
    "fieldtype": "Data",
    "label": "KdsUrl"
+  },
+  {
+   "fieldname": "url",
+   "fieldtype": "Data",
+   "label": "URL"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-06-28 12:12:14.377891",
+ "modified": "2024-07-04 07:12:02.167613",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Web Theme Settings",
