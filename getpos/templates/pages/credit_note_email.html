@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sales Invoice</title>
+    <title>Credit Note</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -70,15 +70,14 @@
             <p>Address: 123 Main St, City, Country</p>
         </div>
         <div class="content">
-            <p>Check#: {{ doc.name }}</p>
+            <p>Credit Note#: {{ doc.name }}</p>
             <p>Date: {{ doc.posting_date }} - {{ doc.posting_time }}</p>
-            <p>Cashier: {{ doc.owner }}</p>
+            <p>Customer: {{ doc.customer }}</p>
             <div class="items">
                 {% for item in doc.items %}
                 <span>
                     <p>{{ loop.index }}</p>
                     <p>{{ item.item_name }} - {{ item.description }}</p>
-                    <p>Qty: {{ item.qty }}</p>
                     <p>Rate: {{ item.rate }}</p>
                 </span>
                 {% endfor %}
@@ -87,10 +86,6 @@
                 <tr>
                     <td class="label">Sub-total</td>
                     <td class="value">{{ doc.total }}</td>
-                </tr>
-                <tr>
-                    <td class="label">Discount {{ doc.additional_discount_percentage }}%</td>
-                    <td class="value">-{{ doc.discount_amount }}</td>
                 </tr>
                 <tr>
                     <td class="label"><strong>Total</strong></td>

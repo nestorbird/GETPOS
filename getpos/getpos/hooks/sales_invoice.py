@@ -2,7 +2,8 @@ import frappe
 from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_entry
 
 def on_submit(doc, method):
-    create_payment_entry(doc)
+    if doc.mode_of_payment != 'Credit':
+        create_payment_entry(doc)
 
 def create_payment_entry(doc):
     payment_entry = get_payment_entry("Sales Invoice", doc.name)
