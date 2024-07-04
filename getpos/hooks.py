@@ -166,9 +166,9 @@ doc_events = {
 	"Global Defaults" : {
 		"on_update" : "getpos.getpos.hooks.global_defaults.update_theme_settings"
 	},
-	"Kitchen-Kds":{
-		"on_update":"getpos.getpos.hooks.kitchen_kds.send_order_ready_email"
-	}
+	# "Kitchen-Kds":{
+	# 	"on_update":"getpos.getpos.hooks.kitchen_kds.send_order_ready_email"
+	# }
     # "Item" : {
 	# 	"validate" : "getpos.getpos.hooks.item.validate_item_description"
 	# },
