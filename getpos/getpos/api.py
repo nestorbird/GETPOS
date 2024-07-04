@@ -660,7 +660,7 @@ def get_item_stock_balance(hub_manager, item_code, last_sync_date=None, last_syn
         
         return res
 
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist()
 def get_customer(mobile_no=None,name=None):
         res=frappe._dict()
         sql = frappe.db.sql(""" SELECT EXISTS(SELECT * FROM `tabCustomer` where mobile_no = '{0}'  or name='{1}')""".format(mobile_no,name))
@@ -691,7 +691,7 @@ def get_customer(mobile_no=None,name=None):
                 for d in companies:
                         if loyalty_point_details:
                                 loyalty_points = loyalty_point_details.get(d.company)
-                        credit_limit = get_credit_limit(customer_detail.name, d.company)
+                        # credit_limit = get_credit_limit(customer_detail[0].name, d.company)
                 if customer_detail:
                        conversion_factor=frappe.db.get_value("Loyalty Program", {"name": customer_detail[0].loyalty_program}, ["conversion_factor"], as_dict=True)
                 res['success_key'] = 1
