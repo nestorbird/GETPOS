@@ -1382,14 +1382,3 @@ def get_location():
             """,as_dict=1)
                 
 
-
-def send_mail():
-        user_email = frappe.get_value("User", {"full_name":task.int},"email")
-        subject =  _("Your document has been unapproved - {0}").format(task.document)
-        message=_("Dear ")
-        frappe.sendmail(
-                recipients= user_email,
-                subject=subject,
-                message=message,
-                now=True,
-                )
