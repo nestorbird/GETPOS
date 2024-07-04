@@ -1,0 +1,300 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-09-13 11:03:06.243152",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "theme_color_settings_section",
+  "primary",
+  "secondary",
+  "asset",
+  "text_and_cancel_icon",
+  "shadow_border",
+  "hint_text",
+  "font_white_color",
+  "park_order_button",
+  "lightgrey",
+  "lightestgreytextcolor",
+  "seagreenprimary",
+  "default_currency",
+  "column_break_pcle3",
+  "buttonbeforetap",
+  "ontapcardseagreen",
+  "ratingtextparrotcolor",
+  "whitecolor",
+  "productattributeontap",
+  "black",
+  "lightblackcolor",
+  "currencyamountorangecolor",
+  "productbackgroundcolorontap",
+  "productbordercolorontap",
+  "active",
+  "image_upload_section",
+  "app_background_image",
+  "merchant_background_image",
+  "splash_text",
+  "banner_image",
+  "kiosk_payment_settings_section",
+  "take_away",
+  "column_break_1ydcr",
+  "dine_in",
+  "kiosk_payment_config_section",
+  "username",
+  "api_token",
+  "password",
+  "isv_amount",
+  "isv_percentage",
+  "column_break_pexfl",
+  "currency_code",
+  "merchent_id",
+  "terminal_id"
+ ],
+ "fields": [
+  {
+   "fieldname": "primary",
+   "fieldtype": "Color",
+   "label": "Primary"
+  },
+  {
+   "fieldname": "secondary",
+   "fieldtype": "Color",
+   "label": "Secondary"
+  },
+  {
+   "fieldname": "asset",
+   "fieldtype": "Color",
+   "label": "Asset"
+  },
+  {
+   "fieldname": "text_and_cancel_icon",
+   "fieldtype": "Color",
+   "label": "Text and Cancel Icon"
+  },
+  {
+   "fieldname": "shadow_border",
+   "fieldtype": "Color",
+   "label": "Shadow Border"
+  },
+  {
+   "fieldname": "hint_text",
+   "fieldtype": "Color",
+   "label": "Hint Text"
+  },
+  {
+   "fieldname": "font_white_color",
+   "fieldtype": "Color",
+   "label": "Font White Color"
+  },
+  {
+   "fieldname": "park_order_button",
+   "fieldtype": "Color",
+   "label": "Park Order Button"
+  },
+  {
+   "fieldname": "active",
+   "fieldtype": "Color",
+   "label": "Active"
+  },
+  {
+   "fieldname": "app_background_image",
+   "fieldtype": "Attach Image",
+   "label": "App BackGround Image"
+  },
+  {
+   "fieldname": "merchant_background_image",
+   "fieldtype": "Attach Image",
+   "label": "Merchant BackGround Image"
+  },
+  {
+   "fieldname": "lightgrey",
+   "fieldtype": "Color",
+   "label": "lightGrey"
+  },
+  {
+   "fieldname": "lightestgreytextcolor",
+   "fieldtype": "Color",
+   "label": "lightestGreyTextColor"
+  },
+  {
+   "fieldname": "seagreenprimary",
+   "fieldtype": "Color",
+   "label": "seaGreenPrimary"
+  },
+  {
+   "fieldname": "buttonbeforetap",
+   "fieldtype": "Color",
+   "label": "buttonBeforeTap"
+  },
+  {
+   "fieldname": "ontapcardseagreen",
+   "fieldtype": "Color",
+   "label": "onTapCardSeaGreen"
+  },
+  {
+   "fieldname": "ratingtextparrotcolor",
+   "fieldtype": "Color",
+   "label": "ratingTextParrotColor"
+  },
+  {
+   "fieldname": "whitecolor",
+   "fieldtype": "Color",
+   "label": "whiteColor"
+  },
+  {
+   "fieldname": "productattributeontap",
+   "fieldtype": "Color",
+   "label": "productAttributeOnTap"
+  },
+  {
+   "fieldname": "black",
+   "fieldtype": "Color",
+   "label": "black"
+  },
+  {
+   "fieldname": "lightblackcolor",
+   "fieldtype": "Color",
+   "label": "lightBlackColor"
+  },
+  {
+   "fieldname": "currencyamountorangecolor",
+   "fieldtype": "Color",
+   "label": "currencyAmountOrangeColor"
+  },
+  {
+   "fieldname": "productbackgroundcolorontap",
+   "fieldtype": "Color",
+   "label": "productBackgroundColorOnTap"
+  },
+  {
+   "fieldname": "productbordercolorontap",
+   "fieldtype": "Color",
+   "label": "productBorderColorOnTap"
+  },
+  {
+   "fieldname": "dine_in",
+   "fieldtype": "Data",
+   "label": "Dine In",
+   "read_only": 1
+  },
+  {
+   "fieldname": "take_away",
+   "fieldtype": "Data",
+   "label": "Take Away",
+   "read_only": 1
+  },
+  {
+   "fieldname": "theme_color_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Theme Color Settings"
+  },
+  {
+   "fieldname": "image_upload_section",
+   "fieldtype": "Section Break",
+   "label": " KIOSK Image Upload"
+  },
+  {
+   "fieldname": "kiosk_payment_settings_section",
+   "fieldtype": "Section Break",
+   "label": "WEB Payment Settings"
+  },
+  {
+   "fieldname": "column_break_pcle3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_1ydcr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "kiosk_payment_config_section",
+   "fieldtype": "Section Break",
+   "label": "KIOSK Payment Config"
+  },
+  {
+   "fieldname": "username",
+   "fieldtype": "Data",
+   "label": "Username"
+  },
+  {
+   "fieldname": "password",
+   "fieldtype": "Data",
+   "label": "Password"
+  },
+  {
+   "fieldname": "column_break_pexfl",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "currency_code",
+   "fieldtype": "Data",
+   "label": "Currency Code"
+  },
+  {
+   "fieldname": "merchent_id",
+   "fieldtype": "Data",
+   "label": "Merchent ID"
+  },
+  {
+   "fieldname": "terminal_id",
+   "fieldtype": "Data",
+   "label": "Terminal ID"
+  },
+  {
+   "fieldname": "isv_amount",
+   "fieldtype": "Float",
+   "label": "Isv Amount"
+  },
+  {
+   "fieldname": "splash_text",
+   "fieldtype": "Data",
+   "label": "Splash Text"
+  },
+  {
+   "fieldname": "banner_image",
+   "fieldtype": "Attach Image",
+   "label": "Banner Image"
+  },
+  {
+   "fieldname": "default_currency",
+   "fieldtype": "Data",
+   "label": "Default Currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "isv_percentage",
+   "fieldtype": "Float",
+   "label": "Isv Percentage"
+  },
+  {
+   "fieldname": "api_token",
+   "fieldtype": "Data",
+   "label": "Api Token"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2024-06-26 09:01:04.371373",
+ "modified_by": "Administrator",
+ "module": "getpos",
+ "name": "Theme Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -1,0 +1,66 @@
+{
+  "actions": [],
+  "allow_rename": 1,
+  "autoname": "field:hub_manager",
+  "creation": "2021-10-13 13:26:27.297648",
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": ["hub_manager", "wards", "column_break_3", "series"],
+  "fields": [
+    {
+      "fieldname": "hub_manager",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "Hub Manager",
+      "options": "User",
+      "reqd": 1,
+      "unique": 1
+    },
+    {
+      "fieldname": "wards",
+      "fieldtype": "Table",
+      "label": "wards",
+      "options": "Ward Detail"
+    },
+    {
+      "fieldname": "column_break_3",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "series",
+      "fieldtype": "Data",
+      "label": "series"
+    }
+  ],
+  "index_web_pages_for_search": 1,
+  "links": [
+    {
+      "group": "Warehouse",
+      "link_doctype": "Warehouse",
+      "link_fieldname": "hub_manager"
+    }
+  ],
+  "modified": "2022-01-27 15:13:19.642083",
+  "modified_by": "Administrator",
+  "module": "getpos",
+  "name": "Hub Manager",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "System Manager",
+      "share": 1,
+      "write": 1
+    }
+  ],
+  "sort_field": "modified",
+  "sort_order": "DESC",
+  "track_changes": 1
+}

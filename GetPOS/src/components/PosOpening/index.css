@@ -1,0 +1,53 @@
+.pos-open-content {
+  justify-content: center;
+  align-items: center;
+}
+.pos-open-input {
+  margin: 1rem;
+  width: 38rem;
+  height: 2.5rem;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+}
+.pos-open-table {
+  width: 38rem;
+  text-align: center;
+  border: 1px solid #dc1e44;
+  border-radius: 10px;
+  min-height: 30vh;
+  background-color: #fef9fa;
+  border-collapse: collapse;
+}
+
+.pos-open-table th {
+  margin: 1rem;
+  border: 1px solid #dc1e44;
+  max-height: 3rem;
+  text-align: center;
+  font-size: 14px;
+}
+.pos-open-table tr {
+  height: 3rem;
+}
+.pos-open-table-input {
+  width: 17rem;
+  height: 2.5rem;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  text-align: center;
+  font-size: 14px;
+}
+.submit-open-shift {
+  margin-top: 1rem;
+}
+.submit-open-shift-btn {
+  width: 18rem;
+  height: 2rem;
+  border-radius: 10px;
+  border: 1px solid #dc1e44;
+  background-color: #dc1e44;
+  color: white;
+  font-size: 14px;
+}

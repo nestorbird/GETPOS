@@ -1,0 +1,16 @@
+{
+  "modules": [
+    {
+      "name": "Order",
+      "route": "",
+      "isActive": 1,
+      "image": "/assets/getpos/images/Group 796.svg"
+    },
+    {
+      "name": "Close Shift",
+      "route": "",
+      "isActive": 0,
+      "image": "/assets/getpos/images/Group 786.png"
+    }
+  ]
+}

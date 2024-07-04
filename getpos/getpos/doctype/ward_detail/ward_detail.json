@@ -1,0 +1,40 @@
+{
+  "actions": [],
+  "allow_rename": 1,
+  "creation": "2021-10-13 13:23:32.764659",
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": ["ward", "is_assigned"],
+  "fields": [
+    {
+      "columns": 2,
+      "fieldname": "ward",
+      "fieldtype": "Link",
+      "in_list_view": 1,
+      "label": "Ward",
+      "options": "Ward",
+      "reqd": 1
+    },
+    {
+      "columns": 2,
+      "default": "0",
+      "fieldname": "is_assigned",
+      "fieldtype": "Check",
+      "in_list_view": 1,
+      "label": "Is assigned"
+    }
+  ],
+  "index_web_pages_for_search": 1,
+  "istable": 1,
+  "links": [],
+  "modified": "2022-01-27 15:12:53.658737",
+  "modified_by": "Administrator",
+  "module": "getpos",
+  "name": "Ward Detail",
+  "owner": "Administrator",
+  "permissions": [],
+  "sort_field": "modified",
+  "sort_order": "DESC",
+  "track_changes": 1
+}
