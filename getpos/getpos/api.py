@@ -905,12 +905,40 @@ def update_status(order_status):
         try:
                 frappe.db.set_value("Kitchen-Kds", {"order_id":order_status.get('name')}, {'status': order_status.get('status')
                 })
-
+                send_order_ready_email(order_status)
                 return {"success_key":1, "message": "success"}
 
         except Exception as e:
                 return {"success_key":0, "message": e}
-        
+
+def send_order_ready_email(order_status):
+        order = frappe.get_doc("Sales Order", order_status.get('name'))
+        customer = frappe.get_doc("Customer", order.customer)
+        cost_center =order.cost_center
+        restaurant_name = frappe.db.get_value("Cost Center", cost_center, "cost_center_name")
+
+        subject = "Your Order is Ready for Pickup"
+        message = f"""
+        Dear {customer.customer_name}, <br><br>
+
+        Good news! Your order from {restaurant_name} is now cooked and ready for pickup. <br><br>
+
+        <b>Order ID</b>: {order.name} <br> <br>
+
+        We look forward to serving you. <br> <br>
+
+        Thank you for choosing {restaurant_name}! <br><br><br>
+
+        Best regards, <br> <br>
+        The {restaurant_name} Team
+        """
+        frappe.sendmail(
+                recipients=customer.email_id,
+                subject=subject,
+                message=message,
+                now=True
+        )
+
 
 @frappe.whitelist(allow_guest=True)
 def get_all_location_list():
@@ -1011,7 +1039,7 @@ def create_sales_order_kiosk():
                 new_customer.customer_name = order_list.get("name")
                 new_customer.customer_group = "Individual"
                 new_customer.territory = "All Territories"
-                new_customer.email_id = order_list.get("email")
+                new_customer.email = order_list.get("email")
                 new_customer.mobile_no = order_list.get("mobile")
                 new_customer.insert(ignore_permissions=True)
                 sales_order.customer = new_customer.name
@@ -1046,7 +1074,6 @@ def create_sales_order_kiosk():
         max_time = max(item['estimated_time'] for item in order_list.get("items"))
 
         if not order_list.get('source') == "WEB":
-                print("_____________________________")
                 frappe.get_doc({
                     "doctype": "Kitchen-Kds",
                     "order_id": latest_order.get('name'),
@@ -1064,7 +1091,7 @@ def create_sales_order_kiosk():
             "name": sales_order.name,
             "doc_status": sales_order.docstatus
         }
-        
+  
         if frappe.local.response.get("exc_type"):
             del frappe.local.response["exc_type"]
         
@@ -1079,6 +1106,11 @@ def create_sales_order_kiosk():
             "success_key": 0,
             "message": str(e)
         }
+
+
+
+
+
 
 @frappe.whitelist(methods="POST")
 def create_web_sales_invoice():
@@ -1123,7 +1155,7 @@ def create_web_sales_invoice():
                     "name": sales_invoice.name,
                     "doc_status": sales_invoice.docstatus
                 }
-        
+
                 if frappe.local.response.get("exc_type"):
                     del frappe.local.response["exc_type"]
 
@@ -1138,7 +1170,6 @@ def create_web_sales_invoice():
             "success_key": 0,
             "message": str(e)
         }
-
 
 @frappe.whitelist()
 def get_sales_order_item_details(order_id=None):
@@ -1350,4 +1381,4 @@ def get_location():
             ORDER BY custom_location ASC;
             """,as_dict=1)
                 
-        
+
