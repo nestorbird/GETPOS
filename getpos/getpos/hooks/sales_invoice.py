@@ -87,5 +87,7 @@ def send_email(email_id, email_template, restaurant_name):
     frappe.sendmail(
         recipients=email_id,
         subject=subject,
-        message=email_template
+        message=email_template,
+        delay=False,
+        now=True
     )
