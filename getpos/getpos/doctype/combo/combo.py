@@ -4,7 +4,7 @@
 # import frappe
 from frappe.model.document import Document
 
-class Attributes(Document):
+class Combo(Document):
 	def validate(doc, method=None):
 		"""
 		Validate the document to count the number of selected attribute items.
@@ -17,8 +17,7 @@ class Attributes(Document):
 		doc.count (int): The count of attribute items where 'select' is 1.
 		"""
 		# Count the number of selected attribute items
-		selected_count = sum(1 for item in doc.attribute_items if item.select == 1)
+		selected_count = sum(1 for item in doc.combo_item if item.select == 1)
 		
 		# Assign the count to the document's 'count' field
 		doc.count = selected_count
-
