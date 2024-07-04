@@ -493,7 +493,7 @@ def get_combo_items(name):
         return combo_items
         
 @frappe.whitelist()
-def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_date = nowdate() , mobile_no = None):
+def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_date = nowdate() , mobile_no = None,name=None):
         res= frappe._dict()
         base_url = frappe.db.get_single_value('nbpos Setting', 'base_url')
         filters = {'hub_manager': hub_manager, 'base_url': base_url}
@@ -502,6 +502,9 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
         conditions = ""
         if mobile_no:
                 conditions += f" and s.contact_mobile like '%{str(mobile_no).strip()}%'"
+                
+        if name:
+                conditions += f" and s.name = '{name}'"
        
         if from_date:
                 conditions += " and s.transaction_date between {} and {} order by s.creation desc".format(frappe.db.escape(from_date), frappe.db.escape(to_date))
@@ -519,11 +522,13 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
                         s.ward, s.hub_manager, s.total , s.total_taxes_and_charges , s.grand_total, s.mode_of_payment, 
                         s.mpesa_no, s.contact_display as contact_name,
                         s.contact_phone, s.contact_mobile, s.contact_email,
-                        s.hub_manager, s.creation,
+                        s.hub_manager, s.creation, s.loyalty_points,s.loyalty_amount,s.discount_amount,
+                        s.additional_discount_percentage as discount_percentage,
                         u.full_name as hub_manager_name,
                         if((c.image = null or c.image = ''), null, 
                         if(c.image LIKE 'http%%', c.image, concat({base_url}, c.image))) as image,
-                        s.custom_return_order_status as return_order_status
+                        s.custom_return_order_status as return_order_status,
+                        CASE WHEN s.coupon_code = null THEN '' ELSE (select coupon_code from `tabCoupon Code` co where co.name=s.coupon_code) END  as coupon_code
                 FROM `tabSales Order` s, `tabUser` u, `tabCustomer` c
                 WHERE s.hub_manager = u.name and s.customer = c.name 
                         and s.hub_manager = {hub_manager}  and s.docstatus = 1 
@@ -561,6 +566,7 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
                                 item_detail["combo_items"] = list(filter( lambda x: x.get("parent_item") == item_detail.item_code , combo_items )) 
                                 
                 item['items'] = new_item_details
+        
         if mobile_no:
                 conditions += f" and s.contact_mobile like '%{str(mobile_no).strip()}%'"
 
@@ -681,9 +687,11 @@ def get_customer(mobile_no=None,name=None):
 		"Sales Invoice", filters={"docstatus": 1, "customer": name}, distinct=1, fields=["company"]
 	        )
                 loyalty_points=0
+                credit_limit=0
                 for d in companies:
                         if loyalty_point_details:
                                 loyalty_points = loyalty_point_details.get(d.company)
+                        # credit_limit = get_credit_limit(customer_detail[0].name, d.company)
                 if customer_detail:
                        conversion_factor=frappe.db.get_value("Loyalty Program", {"name": customer_detail[0].loyalty_program}, ["conversion_factor"], as_dict=True)
                 res['success_key'] = 1
@@ -692,12 +700,35 @@ def get_customer(mobile_no=None,name=None):
                 res['loyalty_points']=loyalty_points
                 res['conversion_factor']= conversion_factor.conversion_factor if conversion_factor else 0
                 res['loyalty_amount']=loyalty_points * conversion_factor.conversion_factor if conversion_factor else 0
+                res['credit_limit']=credit_limit
                 return res        
         else:
                 res["success_key"] = 0
                 res['mobile_no'] = mobile_no
                 res["message"] = "Mobile Number/Customer Does Not Exist"
                 return res
+
+
+def get_credit_limit(customer, company):
+        credit_limit = None
+
+        if customer:
+                getCustomer=frappe.get_doc("Customer",customer)
+                credit_limit = frappe.db.get_value("Customer Credit Limit", {"parent": getCustomer, "parenttype": "Customer", "company": company},"credit_limit",)
+        if not credit_limit:
+                customer_group = frappe.get_cached_value("Customer", getCustomer, "customer_group")
+                result = frappe.db.get_values(
+                                "Customer Credit Limit",
+                                {"parent": customer_group, "parenttype": "Customer Group", "company": company},
+                                fieldname=["credit_limit", "bypass_credit_limit_check"],
+                                as_dict=True,
+                        )
+                if result and not result[0].bypass_credit_limit_check:
+                       credit_limit = result[0].credit_limit
+        if not credit_limit:
+               credit_limit = frappe.get_cached_value("Company", company, "credit_limit")
+        
+        return flt(credit_limit) 
 
 @frappe.whitelist()
 def get_all_customer(search=None, from_date=None):
@@ -953,9 +984,8 @@ def get_warehouse_for_cost_center(cost_center):
 
 
 
-@frappe.whitelist(methods="POST")
-def create_sales_order_kiosk():
-    import json
+@frappe.whitelist(methods="POST",allow_guest=True)
+def create_sales_order_kiosk():    
     order_list = frappe.request.data
     order_list = json.loads(order_list)
     order_list = order_list["order_list"]
@@ -996,11 +1026,11 @@ def create_sales_order_kiosk():
         sales_order.mode_of_payment = order_list.get("mode_of_payment")
         sales_order.mpesa_no = order_list.get("mpesa_no")
         if order_list.get("coupon_code"):
-                coupon = frappe.db.get_value("Coupon Code", {"coupon_code": order_list.get("coupon_code")},"name")
-                sales_order.coupon_code = coupon
+                coupon_name = frappe.db.get_value("Coupon Code", {"coupon_code": order_list.get("coupon_code")},"name")
+                sales_order.coupon_code = coupon_name
         sales_order.disable_rounded_total = 1
         
-        if order_list.get("mode_of_payment") == "Card":
+        if order_list.get("mode_of_payment") == "Card" or order_list.get("mode_of_payment") == "Credit":
             sales_order.custom_payment_status = "Pending"
         else:
             sales_order.custom_payment_status = "Paid"
@@ -1328,7 +1358,7 @@ def get_location():
             ORDER BY custom_location ASC;
             """,as_dict=1)
     
-@frappe.whitelist(methods="POST", allow_guest=True)
+@frappe.whitelist(methods="POST")
 def return_sales_order(sales_invoice):
     try:
         frappe.set_user("Administrator")
@@ -1344,7 +1374,7 @@ def return_sales_order(sales_invoice):
             # Update invoice fields for return
             invoice.is_return = 1
             invoice.update_outstanding_for_self = 1
-            invoice.return_against = sales_invoice.get("sales_invoice_number")
+            invoice.return_against = sales_invoice_doc
             invoice.update_billed_amount_in_delivery_note = 1
             invoice.total_qty = -sales_invoice.get("total_qty")
             invoice.mode_of_payment = ''
@@ -1367,7 +1397,8 @@ def return_sales_order(sales_invoice):
             res["message"] = "Success"
             res['invoice'] = invoice.name
             res['amount'] = invoice.grand_total
-            # Send email to customer with the sales invoice return attached           
+           # Send email to customer with the sales invoice return attached
+            send_credit_note_email(invoice)          
             return res
         else:
             res["success_key"] = 0
@@ -1506,5 +1537,25 @@ def is_valid_pricing_rule(pricing_rule, current_date):
     # Check if the current date falls within the valid range of the pricing rule
     return (not rule_valid_from or current_date >= rule_valid_from) and (not rule_valid_upto or current_date <= rule_valid_upto)
 
-
+def send_credit_note_email(invoice):
+        customer = frappe.get_doc("Customer", invoice.customer)
+        contact_doc = frappe.get_doc("Contact", customer.customer_primary_contact)
+        email = contact_doc.email_id
+        subject = "Credit Note: {}".format(invoice.name)
+        message = "Please find attached the Credit Note {}.".format(invoice.name)
+        # Use Frappe's PDF generation tool to create the PDF
+        pdf_content = frappe.utils.pdf.get_pdf(frappe.render_template(
+            'getpos/templates/pages/credit_note_email.html', {"doc": invoice}
+        ))
+        attachments = [{
+            "fname": "Credit_Note_{}.pdf".format(invoice.name.replace(" ", "_")),
+            "fcontent": pdf_content
+        }]
+        frappe.sendmail(
+            recipients=email,
+            subject=subject,
+            message=message,
+            attachments=attachments,
+            now=True
+        )
 

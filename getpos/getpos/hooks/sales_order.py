@@ -44,7 +44,6 @@ def set_warehouse(doc):
 @frappe.whitelist()
 def send_sales_invoice_email(sales_invoice_name):
     sales_invoice = frappe.get_doc("Sales Invoice", sales_invoice_name)    
-    print("DDDDDDDDDD",sales_invoice_name)
     recipient = sales_invoice.contact_email
     # Check if the recipient email is present
     if recipient:        
@@ -60,8 +59,7 @@ def send_sales_invoice_email(sales_invoice_name):
         }
         try:
             # Send the email
-            print("AAAAAAAAA",recipient)
-            make(
+              make(
                     recipients=[recipient],
                     subject=email_subject,
                     content=email_message,
