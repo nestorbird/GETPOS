@@ -27,6 +27,5 @@ def send_order_ready_email(doc, method):
             recipients=[customer.email_id],
             subject=subject,
             message=message,
-            delay=False,
             now=True
         )

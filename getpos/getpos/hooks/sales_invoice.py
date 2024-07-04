@@ -88,6 +88,5 @@ def send_email(email_id, email_template, restaurant_name):
         recipients=email_id,
         subject=subject,
         message=email_template,
-        delay=False,
         now=True
     )
