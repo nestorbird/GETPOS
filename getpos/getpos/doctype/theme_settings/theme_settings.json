@@ -42,15 +42,8 @@
   "column_break_1ydcr",
   "dine_in",
   "kiosk_payment_config_section",
-  "username",
   "api_token",
-  "password",
-  "isv_amount",
-  "isv_percentage",
-  "column_break_pexfl",
-  "currency_code",
-  "merchent_id",
-  "terminal_id"
+  "column_break_pexfl"
  ],
  "fields": [
   {
@@ -214,38 +207,8 @@
    "label": "KIOSK Payment Config"
   },
   {
-   "fieldname": "username",
-   "fieldtype": "Data",
-   "label": "Username"
-  },
-  {
-   "fieldname": "password",
-   "fieldtype": "Data",
-   "label": "Password"
-  },
-  {
    "fieldname": "column_break_pexfl",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "currency_code",
-   "fieldtype": "Data",
-   "label": "Currency Code"
-  },
-  {
-   "fieldname": "merchent_id",
-   "fieldtype": "Data",
-   "label": "Merchent ID"
-  },
-  {
-   "fieldname": "terminal_id",
-   "fieldtype": "Data",
-   "label": "Terminal ID"
-  },
-  {
-   "fieldname": "isv_amount",
-   "fieldtype": "Float",
-   "label": "Isv Amount"
   },
   {
    "fieldname": "splash_text",
@@ -264,11 +227,6 @@
    "read_only": 1
   },
   {
-   "fieldname": "isv_percentage",
-   "fieldtype": "Float",
-   "label": "Isv Percentage"
-  },
-  {
    "fieldname": "api_token",
    "fieldtype": "Data",
    "label": "Api Token"
@@ -277,7 +235,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-06-26 09:01:04.371373",
+ "modified": "2024-07-05 08:50:50.575549",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Theme Settings",
