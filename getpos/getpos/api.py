@@ -413,7 +413,12 @@ def add_items_in_order(sales_order, items, order_list):
                 sales_order.append("items", {
                         "item_code": item.get("item_code"),
                         "qty": item.get("qty"),
-                        "rate": item.get("rate"),                        
+                        "rate": item.get("rate"), 
+                        "discount_percentage":100 if item.get("rate")==0 else 0,  
+                        "custom_parent_item":item.get("custom_parent_item"),
+                        "custom_is_attribute_item":item.get("custom_is_attribute_item"),
+                        "custom_is_combo_item":item.get("custom_is_combo_item"),
+                        "allow_zero_evaluation_rate":item.get("allow_zero_evaluation_rate"),                    
                         "item_tax_template": item_tax_template if item_tax_template else ""                
                 })
 
@@ -1074,7 +1079,12 @@ def create_sales_order_kiosk():
         sales_order.submit()
 
         latest_order = frappe.get_doc('Sales Order', sales_order.name)
-        max_time = max(item['estimated_time'] for item in order_list.get("items"))
+
+        times = [item.get("estimated_time") for item in order_list.get("items")]
+
+        times = [time if time is not None else 0 for time in times]
+
+        max_time = max(times)
 
         if not order_list.get('source') == "WEB":
                 frappe.get_doc({

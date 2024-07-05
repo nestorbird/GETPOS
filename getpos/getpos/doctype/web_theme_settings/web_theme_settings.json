@@ -18,18 +18,9 @@
   "kdstext_color",
   "web_payment_settings_section",
   "api_token",
-  "base_payment_url",
-  "authtoken_url",
-  "merchant_id",
-  "client_id",
   "url",
   "kdsurl",
   "column_break_zt0fz",
-  "client_secret",
-  "checkout_url",
-  "isv_merchant_id",
-  "isv_percentage_web",
-  "source_code",
   "web_images_section",
   "web_logo_image",
   "web_banner_image",
@@ -100,53 +91,8 @@
    "label": "Api Token"
   },
   {
-   "fieldname": "base_payment_url",
-   "fieldtype": "Data",
-   "label": "Base Payment Url"
-  },
-  {
-   "fieldname": "authtoken_url",
-   "fieldtype": "Data",
-   "label": "AuthToken Url"
-  },
-  {
-   "fieldname": "merchant_id",
-   "fieldtype": "Data",
-   "label": "Merchant Id"
-  },
-  {
-   "fieldname": "client_id",
-   "fieldtype": "Data",
-   "label": "Client Id"
-  },
-  {
    "fieldname": "column_break_zt0fz",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "client_secret",
-   "fieldtype": "Data",
-   "label": "Client Secret"
-  },
-  {
-   "fieldname": "checkout_url",
-   "fieldtype": "Data",
-   "label": "Checkout Url"
-  },
-  {
-   "fieldname": "isv_merchant_id",
-   "fieldtype": "Data",
-   "label": "Isv Merchant Id"
-  },
-  {
-   "fieldname": "isv_percentage_web",
-   "fieldtype": "Float",
-   "label": "Isv Percentage WEB"
-  },
-  {
-   "fieldname": "source_code",
-   "fieldtype": "Data",
-   "label": "Source Code"
   },
   {
    "fieldname": "web_images_section",
@@ -225,7 +171,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-07-04 07:12:02.167613",
+ "modified": "2024-07-05 08:43:15.810374",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Web Theme Settings",

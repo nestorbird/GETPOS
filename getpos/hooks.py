@@ -169,9 +169,9 @@ doc_events = {
 	# "Kitchen-Kds":{
 	# 	"on_update":"getpos.getpos.hooks.kitchen_kds.send_order_ready_email"
 	# }
-    # "Item" : {
-	# 	"validate" : "getpos.getpos.hooks.item.validate_item_description"
-	# },
+    "Item" : {
+		"validate" : "getpos.getpos.hooks.item.validate_item"
+	},
 	
 }
 
