@@ -30,6 +30,8 @@ def create_sales_invoice_from_sales_order(doc):
             sales_invoice.loyalty_amount = doc.loyalty_amount
             sales_invoice.loyalty_program = doc.custom_loyalty_program
             sales_invoice.loyalty_redemption_account = doc.custom_redemption_account
+        if doc.coupon_code:
+            sales_invoice.coupon_code=doc.coupon_code
         sales_invoice.save(ignore_permissions=1)
         sales_invoice.submit()
         send_sales_invoice_email(sales_invoice.name)
