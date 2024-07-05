@@ -528,6 +528,7 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
                         if((c.image = null or c.image = ''), null, 
                         if(c.image LIKE 'http%%', c.image, concat({base_url}, c.image))) as image,
                         s.custom_return_order_status as return_order_status,
+                        CASE WHEN s.coupon_code = null THEN '' ELSE (select coupon_type from `tabCoupon Code` co where co.name=s.coupon_code) END  as coupon_type,
                         CASE WHEN s.coupon_code = null THEN '' ELSE (select coupon_code from `tabCoupon Code` co where co.name=s.coupon_code) END  as coupon_code
                 FROM `tabSales Order` s, `tabUser` u, `tabCustomer` c
                 WHERE s.hub_manager = u.name and s.customer = c.name 
@@ -660,7 +661,7 @@ def get_item_stock_balance(hub_manager, item_code, last_sync_date=None, last_syn
         
         return res
 
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def get_customer(mobile_no=None,name=None):
         res=frappe._dict()
         sql = frappe.db.sql(""" SELECT EXISTS(SELECT * FROM `tabCustomer` where mobile_no = '{0}'  or name='{1}')""".format(mobile_no,name))
@@ -1051,6 +1052,8 @@ def create_sales_order_kiosk():
                sales_order.custom_pos_shift=order_list.get("pos_opening_shift")
         sales_order.save(ignore_permissions=True)
         sales_order.rounded_total=sales_order.grand_total
+        if order_list.get("redeem_loyalty_points") == 1 :
+               sales_order.outstanding_amount=sales_order.grand_total-sales_order.loyalty_amount
         sales_order.submit()
         
         latest_order = frappe.get_doc('Sales Order', sales_order.name)
@@ -1378,6 +1381,13 @@ def return_sales_order(sales_invoice):
             invoice.update_billed_amount_in_delivery_note = 1
             invoice.total_qty = -sales_invoice.get("total_qty")
             invoice.mode_of_payment = ''
+            invoice.redeem_loyalty_points = 0
+            invoice.loyalty_points = 0
+            invoice.loyalty_amount = 0
+            invoice.loyalty_program = ''
+            invoice.loyalty_redemption_account = ''            
+            invoice.coupon_code=''
+            invoice.discount_amount=-invoice.discount_amount
             returned_items = []
             # Adjust quantities for returned items
             for item in invoice.items:
@@ -1397,8 +1407,11 @@ def return_sales_order(sales_invoice):
             res["message"] = "Success"
             res['invoice'] = invoice.name
             res['amount'] = invoice.grand_total
-           # Send email to customer with the sales invoice return attached
-            send_credit_note_email(invoice)          
+            try:
+                # Send email to customer with the sales invoice return attached
+                send_credit_note_email(invoice)  
+            except Exception as e:
+                   pass            
             return res
         else:
             res["success_key"] = 0
