@@ -49,7 +49,7 @@ def get_combo_items(name):
 
 
 
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist()
 def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=None, item_type=None, item_order_by=None, cost_center=None):
     data = []
     filters = {'is_group': 0, 'name': ['not in', ('Extra')],
@@ -90,17 +90,19 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
             item_filters.update({'custom_item_type': item_type})
 
         all_items = frappe.get_all('Item', filters=item_filters, fields=['*'])
-
+        
         for item in all_items:
             # Check if the item is available in the specified cost center
-            if cost_center:
+            item_cost_center_detail=frappe.get_value('Item Cost Center',{'parent':item.name,'cost_center':cost_center},['cost_center'])
+            if cost_center and item_cost_center_detail !=None:
                 cost_center_exists = frappe.db.exists('Item Cost Center', {
                     'parent': item.name,
                     'cost_center': cost_center,
-                    'is_available': 1
+                    'is': 1
                 })
                 if not cost_center_exists:
                     continue
+                
             if  item.get('image') is not None and "https" not in item.get('image'):
                 image = f"{base_url}{item.get('image')}" if item.get('image') else ''
             else:
@@ -146,7 +148,8 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
             if group_dict['items']:
                 data.append(group_dict)
         elif not item_order_by:
-            data.append(group_dict)
+           if group_dict['items']:
+                data.append(group_dict)
 
     if item_order_by:
         all_items_data['items'] = sorted(all_items_data['items'], key=lambda x: x['name'], reverse=(item_order_by == 'desc'))
