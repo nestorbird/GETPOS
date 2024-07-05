@@ -170,9 +170,9 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
     if item_group:
         filters.update({'name': item_group})
 
-    if extra_item_group:
-        item_groups = get_related_item_groups(extra_item_group)
-        filters.update({'name': ['in', item_groups]})
+    # if extra_item_group:
+    #     item_groups = get_related_item_groups(extra_item_group)
+    #     filters.update({'name': ['in', item_groups]})
 
     all_groups = frappe.get_all('Item Group', filters=filters, fields=['name', 'image'], order_by='name asc')
 
@@ -269,7 +269,7 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
                     item_dict.update({'stock':item_stock})
                     
             group_dict.get('items').append(item_dict)
-            data.append(group_dict)
+        data.append(group_dict)
     return data
 
     #         # # Checking Stock
