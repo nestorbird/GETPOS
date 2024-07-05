@@ -930,7 +930,10 @@ def send_order_ready_email(order_status):
         Thank you for choosing {restaurant_name}! <br><br><br>
 
         Best regards, <br> <br>
-        The {restaurant_name} Team
+        The {restaurant_name} Team<br><br>
+
+        <b>Disclaimer</b>:
+        Please note that email is auto generated and the inbox is unmonitored. For any cancellation requests or inquiries regarding your order, kindly contact the business directly.
         """
         frappe.sendmail(
                 recipients=customer.email_id,
@@ -1039,7 +1042,7 @@ def create_sales_order_kiosk():
                 new_customer.customer_name = order_list.get("name")
                 new_customer.customer_group = "Individual"
                 new_customer.territory = "All Territories"
-                new_customer.email = order_list.get("email")
+                new_customer.email_id = order_list.get("email")
                 new_customer.mobile_no = order_list.get("mobile")
                 new_customer.insert(ignore_permissions=True)
                 sales_order.customer = new_customer.name
