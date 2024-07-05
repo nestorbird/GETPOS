@@ -93,8 +93,8 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
         
         for item in all_items:
             # Check if the item is available in the specified cost center
-            item_cost_center_detail=frappe.get_value('Item Cost Center',{'parent':item.name,'cost_center':cost_center},['cost_center'])
-            if cost_center and item_cost_center_detail !=None:
+            # item_cost_center_detail=frappe.get_value('Item Cost Center',{'parent':item.name,'cost_center':cost_center},['cost_center'])
+            if cost_center:
                 cost_center_exists = frappe.db.exists('Item Cost Center', {
                     'parent': item.name,
                     'cost_center': cost_center,
