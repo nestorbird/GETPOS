@@ -48,10 +48,53 @@ def get_stock_qty(item,cost_center=None):
 #     else:
 #         return []
     
-def get_combo_items(item_code,cost_center=None):
+# def get_combo_items(item_code,cost_center=None):
+#     # For Adding Extra Items in Item
+#     all_combo_items=frappe.db.sql(""" SELECT c.combo_heading as name,c.count,ci.item,ci.item_name,ci.item_price from `tabCombo Item` ci LEFT JOIN `tabCombo` c ON ci.parent=c.name WHERE c.parent_combo_item = '{}'  GROUP BY c.name,ci.name
+# """.format(item_code),as_dict=1)
+    
+#     # Initialize an empty list for the output
+#     output_data = []
+
+#     # Create a dictionary to group items by 'name'
+#     grouped_data = {}
+#     for entry in all_combo_items:
+#         name = entry['name']
+#         item = entry['item']
+#         heading="Select {}".format(entry['count'] if entry['count'] else 0)
+#         if name not in grouped_data:
+#             grouped_data[name] = {'name': name, 'description':heading,'options': []}
+#         grouped_data[name]['options'].append(
+#             {
+#                 'item': item,'item_name':entry['item_name'],'price':entry.price if entry.price else get_price_list(item),
+#                 'stock_qty':get_stock_qty({'item_code':item},cost_center) if get_stock_qty({'item_code':item},cost_center) else 0,
+#                 'item_tax':get_item_taxes(item)})
+
+#     output_data = list(grouped_data.values())
+    
+#     return output_data
+
+def get_combo_items(item_code, cost_center=None):
     # For Adding Extra Items in Item
-    all_combo_items=frappe.db.sql(""" SELECT c.combo_heading as name,c.count,ci.item,ci.item_name,ci.item_price from `tabCombo Item` ci LEFT JOIN `tabCombo` c ON ci.parent=c.name WHERE c.parent_combo_item = '{}'  GROUP BY c.name,ci.name
-""".format(item_code),as_dict=1)
+    all_combo_items = frappe.db.sql("""
+        SELECT 
+            c.combo_heading as name,
+            c.count,
+            ci.item,
+            ci.item_name,
+            ci.item_price,
+            i.image as item_image
+        FROM 
+            `tabCombo Item` ci 
+        LEFT JOIN 
+            `tabCombo` c ON ci.parent = c.name 
+        LEFT JOIN 
+            `tabItem` i ON ci.item = i.name 
+        WHERE 
+            c.parent_combo_item = '{}'  
+        GROUP BY 
+            c.name, ci.name
+    """.format(item_code), as_dict=1)
     
     # Initialize an empty list for the output
     output_data = []
@@ -61,19 +104,23 @@ def get_combo_items(item_code,cost_center=None):
     for entry in all_combo_items:
         name = entry['name']
         item = entry['item']
-        heading="Select {}".format(entry['count'] if entry['count'] else 0)
+        heading = "Select {}".format(entry['count'] if entry['count'] else 0)
         if name not in grouped_data:
-            grouped_data[name] = {'name': name, 'description':heading,'options': []}
+            grouped_data[name] = {'name': name, 'description': heading, 'options': []}
         grouped_data[name]['options'].append(
             {
-                'item': item,'item_name':entry['item_name'],'price':entry.price if entry.price else get_price_list(item),
-                'stock_qty':get_stock_qty({'item_code':item},cost_center) if get_stock_qty({'item_code':item},cost_center) else 0,
-                'item_tax':get_item_taxes(item)})
+                'item': item,
+                'item_name': entry['item_name'],
+                'price': entry['item_price'] if entry['item_price'] else get_price_list(item),
+                'stock_qty': get_stock_qty({'item_code': item}, cost_center) if get_stock_qty({'item_code': item}, cost_center) else 0,
+                'item_tax': get_item_taxes(item),
+                'item_image': entry['item_image']
+            }
+        )
 
     output_data = list(grouped_data.values())
     
     return output_data
-
 
 
     
