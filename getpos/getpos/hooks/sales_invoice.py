@@ -47,7 +47,7 @@ def send_email_on_invoice(doc, method):
 def format_email_content(sales_order, customer_name, restaurant_name, restaurant_address):
     items_detail = ""
     for item in sales_order.items:
-        items_detail += "<br>"+f"{item.item_name} - Quantity: {item.qty} - Price: {item.rate}\n"
+        items_detail += "<br>"+f"{item.item_name} - Quantity: {item.qty} - Price: £{item.rate}\n"
 
     subtotal = sales_order.total
     vat = sales_order.total_taxes_and_charges
@@ -67,9 +67,9 @@ def format_email_content(sales_order, customer_name, restaurant_name, restaurant
     <b>Your Order</b>:
     {items_detail} <br> <br>
     
-    <b>Subtotal</b>: {subtotal} <br>
-    <b>VAT </b>: {vat} <br>
-    <b>Total Amount </b>: {total} <br>
+    <b>Subtotal</b>: £{subtotal} <br>
+    <b>VAT </b>: £{vat} <br>
+    <b>Total Amount </b>: £{total} <br>
     
     <b>Restaurant Address</b>: {restaurant_address} <br>
     
