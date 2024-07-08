@@ -75,6 +75,7 @@ def get_stock_qty(item,cost_center=None):
 #     return output_data
 
 def get_combo_items(item_code, cost_center=None):
+    base_url = frappe.db.get_single_value('nbpos Setting', 'base_url')
     # For Adding Extra Items in Item
     all_combo_items = frappe.db.sql("""
         SELECT 
@@ -114,7 +115,7 @@ def get_combo_items(item_code, cost_center=None):
                 'price': entry['item_price'] if entry['item_price'] else get_price_list(item),
                 'stock_qty': get_stock_qty({'item_code': item}, cost_center) if get_stock_qty({'item_code': item}, cost_center) else 0,
                 'item_tax': get_item_taxes(item),
-                'item_image': entry['item_image']
+                'item_image': "{}/{}".format(base_url, entry['item_image']) if entry['item_image'] else None
             }
         )
 
