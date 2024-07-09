@@ -14,7 +14,7 @@ frappe.ui.form.on('Item', {
     
             if (frm.doc.custom_item == "Combo Item") {
                 frm.add_custom_button(__("Create Combo"), function() {
-                    frappe.new_doc("Attributes",{
+                    frappe.new_doc("Combo",{
                         "parent_item":frm.doc.name
     
                     })
