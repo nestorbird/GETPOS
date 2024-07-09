@@ -67,6 +67,7 @@ def format_email_content(sales_order, customer_name, restaurant_name, restaurant
     <b>Your Order</b>:
     {items_detail} <br> <br>
     
+    <b>Order Request</b>:{sales_order.custom_order_request}<br>
     <b>Subtotal</b>: £{subtotal} <br>
     <b>VAT </b>: £{vat} <br>
     <b>Total Amount </b>: £{total} <br>
