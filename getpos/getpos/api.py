@@ -1,7 +1,11 @@
+
 import requests
 import frappe
 import json
 from frappe import _
+import json
+from datetime import datetime
+from frappe.utils import cint
 STANDARD_USERS = ("Guest", "Administrator")
 from frappe.rate_limiter import rate_limit
 from frappe.utils.password import get_password_reset_limit
@@ -11,6 +15,9 @@ from erpnext.stock.utils import get_stock_balance
 from erpnext.stock.stock_ledger import get_previous_sle, get_stock_ledger_entries
 from erpnext.selling.doctype.sales_order.sales_order import make_sales_invoice
 from frappe.utils import add_to_date, now
+from datetime import datetime, timedelta, time
+
+
 
 
 @frappe.whitelist( allow_guest=True )
@@ -1021,10 +1028,9 @@ def get_warehouse_for_cost_center(cost_center):
 
 
 
-
-@frappe.whitelist(methods="POST", allow_guest=True)
+@frappe.whitelist( allow_guest=True)
 def create_sales_order_kiosk():
-    import json
+    
     order_list = frappe.request.data
     order_list = json.loads(order_list)
     order_list = order_list["order_list"]
@@ -1038,12 +1044,12 @@ def create_sales_order_kiosk():
         sales_order.custom_order_request = order_list.get("order_request")
         
         if order_list.get("source") == "WEB":
-            phone_no = frappe.db.sql("""SELECT phone FROM `tabContact Phone` WHERE phone = %s """,(order_list.get('mobile')))
+            phone_no = frappe.db.sql("""SELECT phone FROM `tabContact Phone` WHERE phone = %s """, (order_list.get('mobile')))
             if phone_no:
-                 parent = frappe.db.get_value('Contact Phone', {'phone': order_list.get('mobile')}, 'parent')
-                 customer = frappe.db.get_value('Dynamic Link', {'parent': parent, 'link_doctype': 'Customer'}, 'link_name')
-                 if customer:
-                     sales_order.customer = customer
+                parent = frappe.db.get_value('Contact Phone', {'phone': order_list.get('mobile')}, 'parent')
+                customer = frappe.db.get_value('Dynamic Link', {'parent': parent, 'link_doctype': 'Customer'}, 'link_name')
+                if customer:
+                    sales_order.customer = customer
             else:
                 new_customer = frappe.new_doc("Customer")
                 new_customer.customer_name = order_list.get("name")
@@ -1072,32 +1078,24 @@ def create_sales_order_kiosk():
             if custom_times:
                 sales_order.custom_opening_time = custom_times.get("custom_opening_time")
                 sales_order.custom_closing_time = custom_times.get("custom_closing_time")
+
+                # Validate transaction time
+                opening_time = (datetime.min + custom_times.get("custom_opening_time")).time()
+                closing_time = (datetime.min + custom_times.get("custom_closing_time")).time()
+                transaction_time = datetime.strptime(arr[1], "%H:%M:%S").time()
+
+                if not (opening_time <= transaction_time <= closing_time):
+                    frappe.throw("Transaction time is outside the allowed operating hours.")
         
         # Set custom payment status
         if order_list.get("mode_of_payment") == "Card":
             sales_order.custom_payment_status = "Pending"
         else:
             sales_order.custom_payment_status = "Paid"
-        
-        # Insert sales order and commit changes
-        sales_order.insert(ignore_permissions=True)
-        frappe.db.commit()
-        res.name = sales_order.name
-        return res
-    
-    except Exception as e:
-        frappe.log_error(frappe.get_traceback(), "create_sales_order_kiosk")
-        frappe.throw("An error occurred while creating the sales order.")
-        
-        if order_list.get("mode_of_payment") == "Card":
-            sales_order.custom_payment_status = "Pending"
-        else:
-            sales_order.custom_payment_status = "Paid"
-
 
 
         
-        # Set cost center and warehouse
+       # Set cost center and warehouse
         sales_order.cost_center = order_list.get("cost_center")
         warehouse = get_warehouse_for_cost_center(order_list.get("cost_center"))
         if warehouse:
@@ -1139,7 +1137,7 @@ def create_sales_order_kiosk():
 
     except Exception as e:
         if frappe.local.response.get("exc_type"):
-            del frappe.local.response["exc_type"]
+               del frappe.local.response["exc_type"]
 
         frappe.clear_messages()
         frappe.local.response["message"] = {
@@ -1148,9 +1146,7 @@ def create_sales_order_kiosk():
         }
 
 
-
-
-
+git rebase --continue
 
 @frappe.whitelist(methods="POST")
 def create_web_sales_invoice():
@@ -1422,7 +1418,6 @@ def get_location():
             """,as_dict=1)
 
 
-x``
 import frappe
 from frappe import _
 from datetime import datetime
@@ -1470,5 +1465,4 @@ def validate_pin(custom_pin):
     cost_center = frappe.get_all('Cost Center', filters={'custom_pin': custom_pin}, fields=['name'])
     
     return cost_center
-
 
