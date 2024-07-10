@@ -21,13 +21,17 @@ def get_price_list(item_code):
     return 
     
 
-def get_stock_qty(item):
-    bin_list = frappe.get_all('Bin',filters={'item_code':item.item_code,'warehouse':['like','Stores%']},
-                            fields=['actual_qty','warehouse'],order_by='actual_qty desc',limit_start=0,
-                            limit_page_length=21)
+def get_stock_qty(item,cost_center=None):
+    if not cost_center:
+        bin_list = frappe.get_all('Bin',filters={'item_code':item.item_code},
+                            fields=['actual_qty','warehouse'],order_by='actual_qty desc')
+    else:
+        bin_list = frappe.get_all('Bin', filters={'item_code': item.get('item_code'),'warehouse':cost_center},
+                                fields=['actual_qty', 'warehouse'], order_by='actual_qty desc')
+
     if bin_list:
-        return {"warehouse":bin_list[0].warehouse,'stock_qty':bin_list[0].actual_qty}
-            
+        # return [{"warehouse": bin.warehouse, 'stock_qty': bin.actual_qty} for bin in bin_list]
+        return {"warehouse":bin_list[0].warehouse,'stock_qty':bin_list[0].actual_qty}    
     else:
         return {'warehouse': '','stock_qty':0}
     
@@ -121,10 +125,10 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
             allergens.append(get_allergens(item.name))
 
             # Checking Stock
-            item_stock = {'warehouse': -1, 'stock_qty': -1}
+            # item_stock = {'warehouse': -1, 'stock_qty': -1}
             bundle_bin_qty = 1000000
             if item.is_stock_item:
-                item_stock = get_stock_qty(item)
+                item_stock = get_stock_qty(item,cost_center)
                 item_dict.update(item_stock)
             # getting the reserve qty of child items in bundle so that end product can be calculated as per the ready-to-use qty
             elif len(item_dict.get("combo_items")) > 0:

@@ -661,75 +661,93 @@ def get_item_stock_balance(hub_manager, item_code, last_sync_date=None, last_syn
         
         return res
 
-@frappe.whitelist(allow_guest=True)
-def get_customer(mobile_no=None,name=None):
-        res=frappe._dict()
-        sql = frappe.db.sql(""" SELECT EXISTS(SELECT * FROM `tabCustomer` where mobile_no = '{0}'  or name='{1}')""".format(mobile_no,name))
-        result = sql[0][0]
-        if result == 1:
-                customer_detail = frappe.db.sql("""SELECT name,customer_name,customer_primary_contact,
-                        mobile_no,email_id,primary_address,hub_manager,loyalty_program FROM `tabCustomer` WHERE 
-                        mobile_no = '{0}' or name='{1}'""".format(mobile_no,name),as_dict=True)
-                
-                loyalty_point_details = []
-                loyalty_point_details = frappe._dict(
-			frappe.get_all(
-				"Loyalty Point Entry",
-				filters={
-					"customer": name,
-					"expiry_date": (">=", getdate()),
-				},
-				group_by="company",
-				fields=["company", "sum(loyalty_points) as loyalty_points"],
-				as_list=1,
-			)
-		)
-                companies = frappe.get_all(
-		"Sales Invoice", filters={"docstatus": 1, "customer": name}, distinct=1, fields=["company"]
-	        )
-                loyalty_points=0
-                credit_limit=0
-                for d in companies:
-                        if loyalty_point_details:
-                                loyalty_points = loyalty_point_details.get(d.company)
-                        # credit_limit = get_credit_limit(customer_detail[0].name, d.company)
-                if customer_detail:
-                       conversion_factor=frappe.db.get_value("Loyalty Program", {"name": customer_detail[0].loyalty_program}, ["conversion_factor"], as_dict=True)
-                res['success_key'] = 1
-                res['message'] = "success"
-                res['customer'] = customer_detail
-                res['loyalty_points']=loyalty_points
-                res['conversion_factor']= conversion_factor.conversion_factor if conversion_factor else 0
-                res['loyalty_amount']=loyalty_points * conversion_factor.conversion_factor if conversion_factor else 0
-                res['credit_limit']=credit_limit
-                return res        
-        else:
-                res["success_key"] = 0
-                res['mobile_no'] = mobile_no
-                res["message"] = "Mobile Number/Customer Does Not Exist"
-                return res
+@frappe.whitelist()
+def get_customer(mobile_no=None, name=None):
+    res = frappe._dict()
+    sql = frappe.db.sql(
+        """SELECT EXISTS(SELECT * FROM `tabCustomer` WHERE mobile_no = %s OR name = %s)""",
+        (mobile_no, name)
+    )
+    result = sql[0][0]
 
+    if result == 1:
+        customer_detail = frappe.db.sql(
+            """SELECT name, customer_name, customer_primary_contact, mobile_no, email_id,
+            primary_address, hub_manager, loyalty_program FROM `tabCustomer`
+            WHERE mobile_no = %s OR name = %s""",
+            (mobile_no, name), as_dict=True
+        )
 
-def get_credit_limit(customer, company):
-        credit_limit = None
+        loyalty_point_details = frappe._dict(
+            frappe.get_all(
+                "Loyalty Point Entry",
+                filters={
+                    "customer": name,
+                    "expiry_date": (">=", frappe.utils.getdate()),
+                },
+                group_by="company",
+                fields=["company", "sum(loyalty_points) as loyalty_points"],
+                as_list=1,
+            )
+        )
+        companies = frappe.get_all(
+            "Sales Invoice", filters={"docstatus": 1, "customer": name}, distinct=1, fields=["company"]
+        )
+        loyalty_points = 0
+        for d in companies:
+            if loyalty_point_details:
+                loyalty_points = loyalty_point_details.get(d.company)
 
-        if customer:
-                getCustomer=frappe.get_doc("Customer",customer)
-                credit_limit = frappe.db.get_value("Customer Credit Limit", {"parent": getCustomer, "parenttype": "Customer", "company": company},"credit_limit",)
-        if not credit_limit:
-                customer_group = frappe.get_cached_value("Customer", getCustomer, "customer_group")
-                result = frappe.db.get_values(
-                                "Customer Credit Limit",
-                                {"parent": customer_group, "parenttype": "Customer Group", "company": company},
-                                fieldname=["credit_limit", "bypass_credit_limit_check"],
-                                as_dict=True,
-                        )
-                if result and not result[0].bypass_credit_limit_check:
-                       credit_limit = result[0].credit_limit
-        if not credit_limit:
-               credit_limit = frappe.get_cached_value("Company", company, "credit_limit")
-        
-        return flt(credit_limit) 
+        conversion_factor = None
+        if customer_detail:
+            conversion_factor = frappe.db.get_value(
+                "Loyalty Program", {"name": customer_detail[0].loyalty_program}, ["conversion_factor"], as_dict=True
+            )
+
+        # Credit limit and outstanding amount logic
+        credit_limit = 0
+        outstanding_amount = 0
+
+        try:
+            # Fetch the customer document
+            customer = frappe.get_doc('Customer', name)
+
+            # Check if there are credit limits set for the customer
+            if customer.credit_limits:
+                # Iterate through the credit limits to find the relevant one
+                for cr_limit in customer.credit_limits:
+                    credit_limit = cr_limit.credit_limit
+                    break
+
+            # Fetch the total outstanding amount (total unpaid invoices)
+            outstanding_invoices = frappe.db.sql("""
+                SELECT SUM(outstanding_amount)
+                FROM `tabSales Invoice`
+                WHERE customer = %s
+                    AND docstatus = 1
+            """, (name,))
+            outstanding_amount = outstanding_invoices[0][0] if outstanding_invoices and outstanding_invoices[0][0] else 0
+
+        except frappe.DoesNotExistError:
+            message = _("Customer not found.")
+        except Exception as e:
+            frappe.log_error(frappe.get_traceback(), _("Error fetching credit limit"))
+            message = _("An error occurred while fetching the credit limit.")
+
+        res['success_key'] = 1
+        res['message'] = "success"
+        res['customer'] = customer_detail
+        res['loyalty_points'] = loyalty_points
+        res['conversion_factor'] = conversion_factor.conversion_factor if conversion_factor else 0
+        res['loyalty_amount'] = loyalty_points * conversion_factor.conversion_factor if conversion_factor else 0
+        res['credit_limit'] = credit_limit
+        res['outstanding_amount'] = outstanding_amount
+        return res
+    else:
+        res["success_key"] = 0
+        res['mobile_no'] = mobile_no
+        res["message"] = "Mobile Number/Customer Does Not Exist"
+        return res
 
 @frappe.whitelist()
 def get_all_customer(search=None, from_date=None):
@@ -1572,3 +1590,104 @@ def send_credit_note_email(invoice):
             now=True
         )
 
+@frappe.whitelist()
+def get_shift_transaction(pos_opening_shift):
+    data = {}
+
+    pos_opening_shift_doc = frappe.get_doc("POS Opening Shift", pos_opening_shift)
+    amt = sum(i.get('amount') for i in pos_opening_shift_doc.balance_details)
+
+    sales_orders = frappe.get_all(
+        "Sales Order",
+        filters={
+            "custom_pos_shift": pos_opening_shift,
+            "docstatus": 1
+        },
+        fields=["name", "customer", "grand_total", "status"]
+    )
+
+    customers = {order.customer for order in sales_orders}
+    customer_first_order_dates = frappe.get_all(
+        "Sales Order",
+        filters={
+            "customer": ["in", list(customers)],
+            "docstatus": 1
+        },
+        fields=["customer", "min(creation) as first_order_date"],
+        group_by="customer"
+    )
+    
+    customer_first_order_dates = {entry.customer: entry.first_order_date for entry in customer_first_order_dates}
+
+    old_customers = set()
+    new_customers = set()
+    sales_order_amount = 0
+    return_order_amount = 0
+    num_transactions = 0
+    cash_collected = 0
+
+    for order in sales_orders:
+        amount = order.grand_total
+
+        if order.status == "Return":
+            return_order_amount += amount
+        else:
+            sales_order_amount += amount
+
+        num_transactions += 1
+        cash_collected += amount
+
+        # Check if the customer is new or old
+        if customer_first_order_dates[order.customer] == order.creation:
+            new_customers.add(order.customer)
+        else:
+            old_customers.add(order.customer)
+
+    data["opening_amount"] = amt
+    data["old_customers"] = list(old_customers)
+    data["new_customers"] = list(new_customers)
+    data["sales_order_amount"] = sales_order_amount
+    data["return_order_amount"] = return_order_amount
+    data["num_transactions"] = num_transactions
+    data["cash_collected"] = cash_collected
+
+    return data
+
+@frappe.whitelist()
+def resend_sales_invoice_email(sales_order):
+    sales_invoice_doc = frappe.db.get_value("Sales Invoice Item",
+                                                filters={"sales_order": sales_order},
+                                                fieldname=["parent"])
+    sales_invoice = frappe.get_doc("Sales Invoice", sales_invoice_doc)
+    recipient = sales_invoice.contact_email
+    # Check if the recipient email is present
+    if recipient:
+        # Generate PDF content
+        pdf_content = get_sales_invoice_pdf(sales_invoice)
+        # Prepare the email content
+        email_subject = f"Sales Invoice {sales_invoice}"
+        email_message = f"Dear {sales_invoice.customer_name},\n\nPlease find attached your sales invoice.\n\nBest regards,\nYour Company Name"
+        # Create an attachment
+        attachment = {
+                'fname': f"{sales_order}.pdf",
+                'fcontent': pdf_content
+        }
+        try:
+            # Send the email
+              make(
+                    recipients=[recipient],
+                    subject=email_subject,
+                    content=email_message,
+                    attachments=[attachment],
+                    send_email=True
+            )
+        except Exception as e:
+             frappe.local.response["message"] = {
+            "success_key": 0,
+            "message": str(e)
+        }
+def get_sales_invoice_pdf(sales_invoice_name):
+    sales_invoice = frappe.get_doc("Sales Invoice", sales_invoice_name)
+    html = frappe.render_template('getpos/templates/pages/sales_invoice_email.html', context={'doc': sales_invoice})
+    pdf_content = get_pdf(html)
+    return pdf_content
