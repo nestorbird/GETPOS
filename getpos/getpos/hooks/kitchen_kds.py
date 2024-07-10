@@ -11,7 +11,7 @@ def send_order_ready_email(doc, method):
         message = f"""
         Dear {customer.customer_name}, <br><br>
         
-        Good news! Your order from {restaurant_name} is now cooked and ready for pickup. <br><br>
+        Good news! Your order from {restaurant_name} is prepared and ready for pickup. <br><br>
         
         <b>Order ID</b>: {order.name} <br> <br>
         
