@@ -1146,8 +1146,6 @@ def create_sales_order_kiosk():
         }
 
 
-git rebase --continue
-
 @frappe.whitelist(methods="POST")
 def create_web_sales_invoice():
     import json
@@ -1417,30 +1415,6 @@ def get_location():
             ORDER BY custom_location ASC;
             """,as_dict=1)
 
-
-import frappe
-from frappe import _
-from datetime import datetime
-
-@frappe.whitelist()
-def get_cost_centers():
-    cost_centers = frappe.get_all('Cost Center', fields=['name', 'cost_center_name', 'parent_cost_center', 'is_group', 'company', 'custom_opening_time', 'custom_closing_time','custom_pin'])
-    return cost_centers
-
-def validate_sales_order(doc, method):
-    # Get the cost center details
-    cost_center = frappe.get_doc('Cost Center', doc.cost_center)
-    
-    # Get the current time in HH:MM:SS format
-    transaction_time = datetime.now().time()
-
-    # Parse the opening and closing times from the cost center
-    custom_opening_time = datetime.strptime(cost_center.custom_opening_time, "%H:%M:%S").time()
-    custom_closing_time = datetime.strptime(cost_center.custom_closing_time, "%H:%M:%S").time()
-
-    # Check if the transaction time is within the opening and closing times
-    if not (custom_opening_time <= transaction_time <= custom_closing_time):
-        frappe.throw(_("The shop is currently closed. Please place the order between {0} and {1}.").format(custom_closing_time, custom_closing_time))
 
 
 
