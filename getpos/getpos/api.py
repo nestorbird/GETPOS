@@ -1026,14 +1026,12 @@ def get_warehouse_for_cost_center(cost_center):
     return warehouse
 
 
-
-
-@frappe.whitelist( allow_guest=True)
+@frappe.whitelist(allow_guest=True)
 def create_sales_order_kiosk():
-    
     order_list = frappe.request.data
     order_list = json.loads(order_list)
     order_list = order_list["order_list"]
+    
     try:
         frappe.set_user("Administrator")
         res = frappe._dict()
@@ -1060,11 +1058,10 @@ def create_sales_order_kiosk():
                 new_customer.insert(ignore_permissions=True)
                 sales_order.customer = new_customer.name
         else:
-                sales_order.customer = order_list.get("customer") 
+            sales_order.customer = order_list.get("customer")
         
         arr = order_list.get("transaction_date").split(" ")
         sales_order.transaction_date = arr[0]
-        # sales_order.transaction_time = arr[1]
         sales_order.delivery_date = order_list.get("delivery_date")
         sales_order = add_items_in_order(sales_order, order_list.get("items"), order_list)
         sales_order.status = order_list.get("status")
@@ -1073,29 +1070,32 @@ def create_sales_order_kiosk():
         sales_order.coupon_code = order_list.get("coupon_code")
         sales_order.disable_rounded_total = 1
         cost_center = order_list.get("cost_center")
+        
         if cost_center:
             custom_times = frappe.db.get_value("Cost Center", cost_center, ["custom_opening_time", "custom_closing_time"], as_dict=True)
             if custom_times:
+                if not custom_times.get("custom_opening_time") or not custom_times.get("custom_closing_time"):
+                    frappe.throw("Please fill in the custom opening time and custom closing time for the selected cost center.")
+                
                 sales_order.custom_opening_time = custom_times.get("custom_opening_time")
                 sales_order.custom_closing_time = custom_times.get("custom_closing_time")
 
-                # Validate transaction time
+                # Validate transaction time against current time
+                now_time = datetime.now().time()
                 opening_time = (datetime.min + custom_times.get("custom_opening_time")).time()
                 closing_time = (datetime.min + custom_times.get("custom_closing_time")).time()
-                transaction_time = datetime.strptime(arr[1], "%H:%M:%S").time()
 
-                if not (opening_time <= transaction_time <= closing_time):
+                if not (opening_time <= now_time <= closing_time):
                     frappe.throw("Transaction time is outside the allowed operating hours.")
+        
         
         # Set custom payment status
         if order_list.get("mode_of_payment") == "Card":
             sales_order.custom_payment_status = "Pending"
         else:
             sales_order.custom_payment_status = "Paid"
-
-
         
-       # Set cost center and warehouse
+        # Set cost center and warehouse
         sales_order.cost_center = order_list.get("cost_center")
         warehouse = get_warehouse_for_cost_center(order_list.get("cost_center"))
         if warehouse:
@@ -1106,22 +1106,20 @@ def create_sales_order_kiosk():
         latest_order = frappe.get_doc('Sales Order', sales_order.name)
 
         times = [item.get("estimated_time") for item in order_list.get("items")]
-
         times = [time if time is not None else 0 for time in times]
-
         max_time = max(times)
 
-        if not order_list.get('source') == "WEB":
-                frappe.get_doc({
-                    "doctype": "Kitchen-Kds",
-                    "order_id": latest_order.get('name'),
-                    "type": order_list.get("type"),
-                    "estimated_time": max_time,
-                    "status": "Open",
-                    "creation1" : order_list.get('transaction_date'),
-                    "custom_order_request": order_list.get('order_request'),
-                    "source": order_list.get('source')
-                }).insert(ignore_permissions=1)
+        if order_list.get("source") != "WEB":
+            frappe.get_doc({
+                "doctype": "Kitchen-Kds",
+                "order_id": latest_order.get('name'),
+                "type": order_list.get("type"),
+                "estimated_time": max_time,
+                "status": "Open",
+                "creation1": order_list.get('transaction_date'),
+                "custom_order_request": order_list.get('order_request'),
+                "source": order_list.get('source')
+            }).insert(ignore_permissions=1)
 
         res['success_key'] = 1
         res['message'] = "success"
@@ -1129,7 +1127,7 @@ def create_sales_order_kiosk():
             "name": sales_order.name,
             "doc_status": sales_order.docstatus
         }
-  
+
         if frappe.local.response.get("exc_type"):
             del frappe.local.response["exc_type"]
         
@@ -1137,14 +1135,13 @@ def create_sales_order_kiosk():
 
     except Exception as e:
         if frappe.local.response.get("exc_type"):
-               del frappe.local.response["exc_type"]
+            del frappe.local.response["exc_type"]
 
         frappe.clear_messages()
         frappe.local.response["message"] = {
             "success_key": 0,
             "message": str(e)
         }
-
 
 @frappe.whitelist(methods="POST")
 def create_web_sales_invoice():
@@ -1417,7 +1414,6 @@ def get_location():
 
 
 
-
 @frappe.whitelist(allow_guest=True)
 def get_cost_center_by_pin(custom_pin=None):
     # Get the custom_pin from the function argument or form_dict
@@ -1427,16 +1423,17 @@ def get_cost_center_by_pin(custom_pin=None):
     # Validate the provided PIN
     cost_center = validate_pin(custom_pin)
     
-    # Fetch cost center details
+    # Prepare the response with only the is_verified key
     if cost_center:
-        cost_center_details = frappe.get_doc('Cost Center', cost_center[0].name)
-        return cost_center_details.as_dict()
+        return {
+            "is_verified": True
+        }
     else:
-        frappe.throw(_("No cost center found with the provided PIN."))
+        return {
+            "is_verified": False
+        }
 
 def validate_pin(custom_pin):
     # Check if the provided PIN exists in any cost center
-    cost_center = frappe.get_all('Cost Center', filters={'custom_pin': custom_pin}, fields=['name'])
-    
+    cost_center = frappe.get_all('Cost Center', filters={'custom_pin': custom_pin})
     return cost_center
-
