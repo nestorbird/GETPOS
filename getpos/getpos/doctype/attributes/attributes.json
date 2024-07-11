@@ -9,8 +9,11 @@
  "field_order": [
   "attribute_heading",
   "parent_item",
-  "attribute_items",
-  "count"
+  "column_break_zhyr0",
+  "mandatory",
+  "count",
+  "section_break_naza7",
+  "attribute_items"
  ],
  "fields": [
   {
@@ -37,14 +40,26 @@
   {
    "fieldname": "count",
    "fieldtype": "Data",
-   "hidden": 1,
-   "label": "Count",
-   "read_only": 1
+   "label": "SELECT COUNT"
+  },
+  {
+   "default": "0",
+   "fieldname": "mandatory",
+   "fieldtype": "Check",
+   "label": "Mandatory"
+  },
+  {
+   "fieldname": "column_break_zhyr0",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_naza7",
+   "fieldtype": "Section Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-07-04 20:00:47.286047",
+ "modified": "2024-07-10 11:46:40.712189",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Attributes",

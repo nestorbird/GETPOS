@@ -1,23 +1,16 @@
 # Copyright (c) 2024, Nestorbird and contributors
 # For license information, please see license.txt
 
-# import frappe
+import frappe
 from frappe.model.document import Document
 
 class Combo(Document):
-	def validate(doc, method=None):
-		"""
-		Validate the document to count the number of selected attribute items.
-
-		Args:
-		doc (Document): The document containing attribute items.
-		method (str, optional): The method being validated. Defaults to None.
-
-		Sets:
-		doc.count (int): The count of attribute items where 'select' is 1.
-		"""
-		# Count the number of selected attribute items
-		selected_count = sum(1 for item in doc.combo_item if item.select == 1)
-		
-		# Assign the count to the document's 'count' field
+	def after_insert(doc, method=None):
+		selected_count = sum(1 for item in doc.combo_item)
 		doc.count = selected_count
+	def validate(doc, method=None):
+		if doc.count is None:
+			doc.count = 0
+		selected_count = sum(1 for item in doc.combo_item)
+		if int(doc.count)>int(selected_count):
+				frappe.throw("Count can't be greater than combo items in the child table")
