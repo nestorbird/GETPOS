@@ -15,7 +15,7 @@ frappe.ui.form.on('Item', {
             if (frm.doc.custom_item == "Combo Item") {
                 frm.add_custom_button(__("Create Combo"), function() {
                     frappe.new_doc("Combo",{
-                        "parent_item":frm.doc.name
+                        "parent_combo_item":frm.doc.name
     
                     })
                 }).css({"color":"white", "background-color": "#2490EF", "font-weight": "800"});
@@ -35,23 +35,6 @@ frappe.ui.form.on('Item', {
         show_include_multigroup(frm)
     },
     
-
-    custom_fetch_cost_center: function(frm) {
-        frappe.call({
-            method: "getpos.getpos.hooks.cost_center.fetch_all_cost_centers",
-            callback: function(r) {
-                if (r.message) {
-                    frm.clear_table("custom_cost_center_details");
-                    $.each(r.message, function(_i, d) {
-                        let row = frm.add_child("custom_cost_center_details");
-                        row.cost_center = d.name;
-                    });
-                    frm.refresh_field("custom_cost_center_details");
-                    frappe.msgprint(__("Cost Centers fetched successfully"));
-                }
-            }
-        });
-    }
 
 })
 
