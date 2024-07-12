@@ -1074,8 +1074,8 @@ def create_sales_order_kiosk():
         if cost_center:
             custom_times = frappe.db.get_value("Cost Center", cost_center, ["custom_opening_time", "custom_closing_time"], as_dict=True)
             if custom_times:
-                if not custom_times.get("custom_opening_time") or not custom_times.get("custom_closing_time"):
-                    frappe.throw("Please fill in the custom opening time and custom closing time for the selected cost center.")
+                # if not custom_times.get("custom_opening_time") or not custom_times.get("custom_closing_time"):
+                #     frappe.throw("Please fill in the custom opening time and custom closing time for the selected cost center.")
                 
                 sales_order.custom_opening_time = custom_times.get("custom_opening_time")
                 sales_order.custom_closing_time = custom_times.get("custom_closing_time")
@@ -1085,8 +1085,8 @@ def create_sales_order_kiosk():
                 opening_time = (datetime.min + custom_times.get("custom_opening_time")).time()
                 closing_time = (datetime.min + custom_times.get("custom_closing_time")).time()
 
-                if not (opening_time <= now_time <= closing_time):
-                    frappe.throw("Transaction time is outside the allowed operating hours.")
+                # if not (opening_time <= now_time <= closing_time):
+                #     frappe.throw("Transaction time is outside the allowed operating hours.")
         
         
         # Set custom payment status
