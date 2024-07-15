@@ -1003,7 +1003,7 @@ def get_warehouse_for_cost_center(cost_center):
 
 
 
-@frappe.whitelist(methods="POST",allow_guest=True)
+@frappe.whitelist(methods="POST")
 def create_sales_order_kiosk():    
     order_list = frappe.request.data
     order_list = json.loads(order_list)
@@ -1514,9 +1514,6 @@ def coupon_code_details():
 
 @frappe.whitelist(methods=["POST"])
 def validate_coupon_code(coupon_code=None):
-    from datetime import datetime
-    import frappe
-    from frappe import _
     current_date = datetime.now().date()
     def get_details(entity, fields):
         return {field: entity.get(field) for field in fields}
@@ -1655,6 +1652,7 @@ def get_shift_transaction(pos_opening_shift):
 
 @frappe.whitelist()
 def resend_sales_invoice_email(sales_order):
+    res={}
     sales_invoice_doc = frappe.db.get_value("Sales Invoice Item",
                                                 filters={"sales_order": sales_order},
                                                 fieldname=["parent"])
@@ -1681,6 +1679,8 @@ def resend_sales_invoice_email(sales_order):
                     attachments=[attachment],
                     send_email=True
             )
+              res["success_key"]=1
+              return res
         except Exception as e:
              frappe.local.response["message"] = {
             "success_key": 0,
@@ -1691,3 +1691,23 @@ def get_sales_invoice_pdf(sales_invoice_name):
     html = frappe.render_template('getpos/templates/pages/sales_invoice_email.html', context={'doc': sales_invoice})
     pdf_content = get_pdf(html)
     return pdf_content
+
+@frappe.whitelist(methods=["POST"])
+def validate_gift_card(gift_card):   
+        frappe.set_user("Administrator")
+        res = frappe._dict()
+        current_date = datetime.now().date()
+        gift_card_details = frappe.db.get_all("Gift Card", filters={"valid_upto": (">=", current_date),"code": gift_card.get("code"),"customer":gift_card.get("customer")},
+                                        fields=["gift_card_name", "discount_amount", "amount_balance", "valid_from", "valid_upto", "description"])
+        if gift_card_details:
+                res['success_key'] = 1
+                res['message'] = "success"
+                res['gift_card']=gift_card_details
+        else:
+                res['success_key'] = 1
+                res['message'] = "Code is invalid"    
+        return res
+
+
+           
+   
