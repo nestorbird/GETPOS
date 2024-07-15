@@ -17,6 +17,7 @@
   "discount_amount",
   "amount_used",
   "amount_balance",
+  "is_journal_entry",
   "column_break_vxje",
   "description",
   "amended_from"
@@ -120,12 +121,19 @@
    "fieldname": "description",
    "fieldtype": "Text Editor",
    "label": "Description"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_journal_entry",
+   "fieldtype": "Check",
+   "label": "Is Journal Entry",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-07-12 16:59:36.235889",
+ "modified": "2024-07-15 17:53:53.688457",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Gift Card",
