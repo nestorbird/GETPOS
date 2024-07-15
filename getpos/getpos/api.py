@@ -12,6 +12,7 @@ from erpnext.accounts.utils import get_balance_on
 from erpnext.stock.utils import get_stock_balance
 from erpnext.stock.stock_ledger import get_previous_sle, get_stock_ledger_entries
 from erpnext.selling.doctype.sales_order.sales_order import make_sales_invoice
+from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_entry
 from frappe.utils import add_to_date, now
 from datetime import datetime
 
@@ -1003,7 +1004,7 @@ def get_warehouse_for_cost_center(cost_center):
 
 
 
-@frappe.whitelist(methods="POST")
+@frappe.whitelist(methods="POST",allow_guest=True)
 def create_sales_order_kiosk():    
     order_list = frappe.request.data
     order_list = json.loads(order_list)
@@ -1047,6 +1048,10 @@ def create_sales_order_kiosk():
         if order_list.get("coupon_code"):
                 coupon_name = frappe.db.get_value("Coupon Code", {"coupon_code": order_list.get("coupon_code")},"name")
                 sales_order.coupon_code = coupon_name
+        if order_list.get("gift_card_code"):
+                sales_order.custom_gift_card_code = order_list.get("gift_card_code")
+                sales_order.apply_discount_on="Grand Total"
+                sales_order.discount_amount=order_list.get("discount_amount")
         sales_order.disable_rounded_total = 1
         
         if order_list.get("mode_of_payment") == "Card" or order_list.get("mode_of_payment") == "Credit":
@@ -1072,8 +1077,45 @@ def create_sales_order_kiosk():
         sales_order.rounded_total=sales_order.grand_total
         if order_list.get("redeem_loyalty_points") == 1 :
                sales_order.outstanding_amount=sales_order.grand_total-sales_order.loyalty_amount
-        sales_order.submit()
         
+        sales_order.submit()
+        if order_list.get("gift_card_code"):
+                frappe.db.sql("""
+                        UPDATE `tabSales Order`
+                        SET `grand_total` = %s,
+                        `discount_amount`=%s,
+                        `net_total`=%s
+                        WHERE name = %s
+                """, (sales_order.grand_total -float(order_list.get("discount_amount")) ,float(order_list.get("discount_amount")),sales_order.net_total -float(order_list.get("discount_amount")), sales_order.name))           
+  
+        create_sales_invoice_from_sales_order(sales_order,order_list.get("gift_card_code"),order_list.get("discount_amount"))
+        if order_list.get("gift_card_code"):
+                company_name = frappe.get_doc("Global Defaults").default_company
+                company=frappe.get_doc("Company",company_name)              
+                gift_card_doc = frappe.db.get_value("Gift Card", {"code": order_list.get("gift_card_code")}, ["name", "amount_balance", "amount_used"], as_dict=True)
+                journal_entry = frappe.new_doc("Journal Entry")
+                journal_entry.voucher_type="Journal Entry"
+                journal_entry.company=company.name
+                journal_entry.posting_date=frappe.utils.getdate()	
+                journal_entry.user_remark="customer redeemed the gift card in partial amount that is for $" + str(order_list.get("discount_amount")) + " for the purchase of the good"		
+                journal_entry.append(
+                        "accounts",
+                        {
+                        'account': "Gift card Revenue - " + company.abbr,
+                        'debit_in_account_currency': float(order_list.get("discount_amount")),
+                        'credit_in_account_currency': float(0)
+                        })
+                journal_entry.append(
+                        "accounts",
+                        {
+                        'account': "Sales - " + company.abbr,
+                        'debit_in_account_currency': float(0),
+                        'credit_in_account_currency':float(order_list.get("discount_amount"))
+                })	
+                journal_entry.save(ignore_permissions=True)
+                journal_entry.submit()   
+                frappe.set_value('Gift Card', gift_card_doc.name, 'amount_balance', gift_card_doc.amount_balance - float(order_list.get("discount_amount")))            
+                frappe.set_value('Gift Card', gift_card_doc.name, 'amount_used', gift_card_doc.amount_used + float(order_list.get("discount_amount")))            
         latest_order = frappe.get_doc('Sales Order', sales_order.name)
         max_time = max(item['estimated_time'] for item in order_list.get("items"))
 
@@ -1692,7 +1734,7 @@ def get_sales_invoice_pdf(sales_invoice_name):
     pdf_content = get_pdf(html)
     return pdf_content
 
-@frappe.whitelist(methods=["POST"])
+@frappe.whitelist(methods=["POST"],allow_guest=True)
 def validate_gift_card(gift_card):   
         frappe.set_user("Administrator")
         res = frappe._dict()
@@ -1700,13 +1742,70 @@ def validate_gift_card(gift_card):
         gift_card_details = frappe.db.get_all("Gift Card", filters={"valid_upto": (">=", current_date),"code": gift_card.get("code"),"customer":gift_card.get("customer")},
                                         fields=["gift_card_name", "discount_amount", "amount_balance", "valid_from", "valid_upto", "description"])
         if gift_card_details:
-                res['success_key'] = 1
-                res['message'] = "success"
-                res['gift_card']=gift_card_details
+                if gift_card_details[0].amount_balance > 0:
+                        res['success_key'] = 1
+                        res['message'] = "success"
+                        res['gift_card']=gift_card_details
+                else:
+                        res['success_key'] = 1
+                        res['message'] = "Code is invalid"    
         else:
                 res['success_key'] = 1
                 res['message'] = "Code is invalid"    
         return res
+
+def create_sales_invoice_from_sales_order(doc,gift_card_code,discount_amount):
+    if (doc.custom_source == "WEB"):
+        pass
+    else:
+        sales_invoice = make_sales_invoice(doc.name)
+        sales_invoice.posting_date = doc.transaction_date
+        sales_invoice.posting_time = doc.transaction_time
+        sales_invoice.due_date = doc.transaction_date        
+        sales_invoice.update_stock = 1
+        if doc.custom_redeem_loyalty_points:
+            sales_invoice.redeem_loyalty_points = doc.custom_redeem_loyalty_points
+            sales_invoice.loyalty_points = doc.loyalty_points
+            sales_invoice.loyalty_amount = doc.loyalty_amount
+            sales_invoice.loyalty_program = doc.custom_loyalty_program
+            sales_invoice.loyalty_redemption_account = doc.custom_redemption_account
+        if doc.coupon_code:
+            sales_invoice.coupon_code=doc.coupon_code
+        if doc.custom_gift_card_code:
+            sales_invoice.discount_amount=doc.discount_amount
+            sales_invoice.apply_discount_on="Grand Total"
+        sales_invoice.save(ignore_permissions=1)
+        sales_invoice.submit()
+        if gift_card_code:
+                frappe.db.sql("""
+                        UPDATE `tabSales Invoice`
+                        SET `grand_total` = %s,
+                        `discount_amount`=%s,
+                        `net_total`=%s,
+                        `outstanding_amount`=%s
+                        WHERE name = %s
+                """, (sales_invoice.grand_total -float(discount_amount),discount_amount,sales_invoice.net_total -float(discount_amount),sales_invoice.outstanding_amount -float(discount_amount), sales_invoice.name))           
+        create_payment_entry(sales_invoice)
+        resend_sales_invoice_email(doc.name)
+
+def create_payment_entry(doc):
+    payment_entry = get_payment_entry("Sales Invoice", doc.name)
+    payment_entry.posting_date = doc.posting_date
+    payment_entry.mode_of_payment = doc.mode_of_payment
+    if doc.mode_of_payment == 'Cash':
+        account = frappe.db.get_value('Account', 
+                    {
+                        'disabled': 0,
+                        'account_type': 'Cash',
+                        'account_name': 'Cash'
+                    },
+                    'name')
+        payment_entry.paid_to = account
+    if doc.mode_of_payment == 'M-Pesa':
+        payment_entry.reference_no = doc.mpesa_no
+        payment_entry.reference_date = doc.posting_date
+    payment_entry.save()
+    payment_entry.submit()
 
 
            

@@ -17,8 +17,8 @@ class GiftCard(Document):
 			self.code = frappe.generate_hash()[:10].upper()
 
 	def on_submit(doc,method=None):     
-		companies = frappe.get_all('Company')
-		company=frappe.get_doc("Company",companies[0].name)		
+		company_name = frappe.get_doc("Global Defaults").default_company
+		company=frappe.get_doc("Company",company_name)		
 		journal_entry = frappe.new_doc("Journal Entry")
 		journal_entry.voucher_type="Journal Entry"
 		journal_entry.company=company.name

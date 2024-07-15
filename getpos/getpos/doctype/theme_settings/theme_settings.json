@@ -23,6 +23,7 @@
   "take_away",
   "guest_customer",
   "print_receipt_promotion",
+  "edit_price_discount",
   "column_break_ebsl",
   "text_and_cancel_icon",
   "hint_text",
@@ -269,12 +270,18 @@
    "fieldname": "getpos_settings_section",
    "fieldtype": "Section Break",
    "label": "GetPos Settings"
+  },
+  {
+   "fieldname": "edit_price_discount",
+   "fieldtype": "Float",
+   "label": "Edit Price Discount (In Percentage)",
+   "non_negative": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-06-25 15:03:44.137921",
+ "modified": "2024-07-15 14:52:27.032817",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Theme Settings",
