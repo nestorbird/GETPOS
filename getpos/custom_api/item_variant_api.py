@@ -53,8 +53,8 @@ def get_combo_items(name):
 
 
 
-@frappe.whitelist()
-def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=None, item_type=None, item_order_by=None, cost_center=None):
+@frappe.whitelist(allow_guest=True)
+def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=None, item_type=None, item_order_by=None, cost_center=None,barcode=None):
     data = []
     filters = {'is_group': 0, 'name': ['not in', ('Extra')],
                'parent_item_group': ['not in', ('Extra')]}
@@ -90,13 +90,22 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
         if item_code and not extra_item_group:
             item_filters.update({'name': ['like', '%' + item_code + '%']})
 
+        
+
         if item_type:
             item_filters.update({'custom_item_type': item_type})
 
         all_items = frappe.get_all('Item', filters=item_filters, fields=['*'])
         
         for item in all_items:
-            # Check if the item is available in the specified cost center
+            # Check if the item is available from barcode
+            if barcode:
+                barcode_exists=frappe.db.exists('Item Barcode', {
+                    'barcode': barcode,
+                    'parent':item.item_code
+                })
+                if not barcode_exists:
+                    continue
             # item_cost_center_detail=frappe.get_value('Item Cost Center',{'parent':item.name,'cost_center':cost_center},['cost_center'])
             if cost_center:
                 cost_center_exists = frappe.db.exists('Item Cost Center', {

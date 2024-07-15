@@ -32,6 +32,9 @@ def create_sales_invoice_from_sales_order(doc):
             sales_invoice.loyalty_redemption_account = doc.custom_redemption_account
         if doc.coupon_code:
             sales_invoice.coupon_code=doc.coupon_code
+        if doc.custom_gift_card_code:
+            sales_invoice.discount_amount=doc.discount_amount
+            sales_invoice.apply_discount_on="Grand Total"
         sales_invoice.save(ignore_permissions=1)
         sales_invoice.submit()
         send_sales_invoice_email(sales_invoice.name)
