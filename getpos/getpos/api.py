@@ -14,6 +14,7 @@ from erpnext.stock.stock_ledger import get_previous_sle, get_stock_ledger_entrie
 from erpnext.selling.doctype.sales_order.sales_order import make_sales_invoice
 from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_entry
 from frappe.utils import add_to_date, now
+from erpnext.selling.doctype.customer.customer import get_customer_outstanding
 from datetime import datetime
 
 @frappe.whitelist( allow_guest=True )
@@ -721,13 +722,10 @@ def get_customer(mobile_no=None, name=None):
                     break
 
             # Fetch the total outstanding amount (total unpaid invoices)
-            outstanding_invoices = frappe.db.sql("""
-                SELECT SUM(outstanding_amount)
-                FROM `tabSales Invoice`
-                WHERE customer = %s
-                    AND docstatus = 1
-            """, (name,))
-            outstanding_amount = outstanding_invoices[0][0] if outstanding_invoices and outstanding_invoices[0][0] else 0
+           
+            outstanding_amount =  get_customer_outstanding(
+			name, frappe.get_doc("Global Defaults").default_company, ignore_outstanding_sales_order=False
+		)
 
         except frappe.DoesNotExistError:
             message = _("Customer not found.")
