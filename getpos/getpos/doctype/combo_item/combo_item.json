@@ -8,8 +8,7 @@
  "field_order": [
   "item",
   "item_name",
-  "item_price",
-  "select"
+  "item_price"
  ],
  "fields": [
   {
@@ -26,13 +25,6 @@
    "label": "Item Price"
   },
   {
-   "default": "0",
-   "fieldname": "select",
-   "fieldtype": "Check",
-   "in_list_view": 1,
-   "label": "Select"
-  },
-  {
    "fetch_from": "item.item_name",
    "fieldname": "item_name",
    "fieldtype": "Data",
@@ -43,7 +35,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-07-04 22:02:55.532558",
+ "modified": "2024-07-11 07:33:44.963076",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Combo Item",

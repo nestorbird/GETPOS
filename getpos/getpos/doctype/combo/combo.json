@@ -9,8 +9,11 @@
  "field_order": [
   "combo_heading",
   "parent_combo_item",
-  "combo_item",
-  "count"
+  "column_break_jqsor",
+  "mandatory",
+  "count",
+  "section_break_lolck",
+  "combo_item"
  ],
  "fields": [
   {
@@ -30,21 +33,33 @@
   },
   {
    "fieldname": "count",
-   "fieldtype": "Float",
-   "hidden": 1,
-   "label": "Count",
-   "read_only": 1
+   "fieldtype": "Int",
+   "label": "SELECT COUNT"
   },
   {
    "fieldname": "combo_item",
    "fieldtype": "Table",
    "label": "Combo Item",
    "options": "Combo Item"
+  },
+  {
+   "fieldname": "column_break_jqsor",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "mandatory",
+   "fieldtype": "Check",
+   "label": "Mandatory"
+  },
+  {
+   "fieldname": "section_break_lolck",
+   "fieldtype": "Section Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-07-04 20:10:20.989415",
+ "modified": "2024-07-11 07:40:12.184496",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Combo",

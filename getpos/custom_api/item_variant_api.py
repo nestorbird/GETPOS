@@ -76,10 +76,10 @@ def get_stock_qty(item,cost_center=None):
 
 def get_combo_items(item_code, cost_center=None):
     base_url = frappe.db.get_single_value('nbpos Setting', 'base_url')
-    # For Adding Extra Items in Item
     all_combo_items = frappe.db.sql("""
         SELECT 
             c.combo_heading as name,
+            c.mandatory,
             c.count,
             ci.item,
             ci.item_name,
@@ -107,7 +107,7 @@ def get_combo_items(item_code, cost_center=None):
         item = entry['item']
         heading = "Select {}".format(entry['count'] if entry['count'] else 0)
         if name not in grouped_data:
-            grouped_data[name] = {'name': name, 'description': heading, 'options': []}
+            grouped_data[name] = {'name': name,'mandatory':entry['mandatory'],'description': heading, 'options': []}
         grouped_data[name]['options'].append(
             {
                 'item': item,
@@ -131,10 +131,10 @@ def get_combo_items(item_code, cost_center=None):
 #     data = []
 #     filters = {'is_group':0,'name':['not in',('Extra')],
 #                                 'parent_item_group':['not in',('Extra')]}
-#     if item_order_by=='desc':
-#         item_order_by='item_name desc'
-#     else:
-#         item_order_by='item_name asc'
+    # if item_order_by=='desc':
+    #     item_order_by='item_name desc'
+    # else:
+    #     item_order_by='item_name asc'
 #     if from_date:
 #         filters.update({'modified':['>=',from_date]})
 
@@ -212,15 +212,17 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
     filters = {'is_group': 0, 'name': ['not in', ('Extra')],
                'parent_item_group': ['not in', ('Extra')]}
     
+    if item_order_by=='desc':
+        item_order_by='item_name desc'
+    else:
+        item_order_by='item_name asc'
+    
     if from_date:
         filters.update({'modified': ['>=', from_date]})
 
     if item_group:
         filters.update({'name': item_group})
 
-    # if extra_item_group:
-    #     item_groups = get_related_item_groups(extra_item_group)
-    #     filters.update({'name': ['in', item_groups]})
 
     all_groups = frappe.get_all('Item Group', filters=filters, fields=['name', 'image'], order_by='name asc')
 
@@ -236,6 +238,8 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
 
         if item_type:
             item_filters.update({'custom_item_type': item_type})
+        if cost_center:
+                item_filters.update({'custom_cost_center': cost_center})
             
         if source:
             if source=="WEB":
@@ -245,24 +249,14 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
             elif source=="POS":
                 item_filters.update({ 'custom_pos': 1 })
 
-        all_items = frappe.get_all('Item', filters=item_filters, fields=['*'])
-
+        all_items = frappe.get_all('Item', filters=item_filters, fields=['*'],order_by=item_order_by)
         for item in all_items:
             attributes = get_attributes_items(item.name,cost_center)
-            # Check if the item is available in the specified cost center
-            if cost_center:
-                cost_center_exists = frappe.db.exists('Item Cost Center', {
-                    'parent': item.name,
-                    'cost_center': cost_center,
-                    'is_available': 1
-                })
-                if not cost_center_exists:
-                    continue
             image = f"{base_url}{item.image}" if item.get('image') else ''
             item_taxes = get_item_taxes(item.name)
             combo_items = get_combo_items(item.name,cost_center)
 
-            related_items = []
+            # related_items = []
             allergens = []
             item_dict = {
                 'id': item.name, 
@@ -271,8 +265,7 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
                 'attributes': attributes if item.custom_enable_attributesmodifiers==1 else [], 
                 'image': image,
                 "tax": item_taxes, 
-                'description': item.description, 
-                'related_items': [related_items], 
+                'description': item.description,
                 'estimated_time': item.custom_estimated_time, 
                 'item_type': item.custom_item_type,
                 'allergens': [allergens]
@@ -281,34 +274,34 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
             if item_price:
                 item_dict.update({'product_price': item_price})
 
-            # Get related items and their taxes
-            related_items_data = get_related_items(item.name)
-            nested_related_items_list = []
+            # # Get related items and their taxes
+            # related_items_data = get_related_items(item.name)
+            # nested_related_items_list = []
 
-            for related_item in related_items_data:
-                related_item_taxes = get_item_taxes(related_item['name'])
-                related_item['tax'] = related_item_taxes
+            # for related_item in related_items_data:
+            #     related_item_taxes = get_item_taxes(related_item['name'])
+            #     related_item['tax'] = related_item_taxes
 
-                # Get nested related items and their taxes
-                nested_related_items_data = get_related_items(related_item['name'])
-                nested_related_items = []
+            #     # Get nested related items and their taxes
+            #     nested_related_items_data = get_related_items(related_item['name'])
+            #     nested_related_items = []
 
-                for nested_related_item in nested_related_items_data:
-                    nested_related_item_taxes = get_item_taxes(nested_related_item['name'])
-                    nested_related_item['tax'] = nested_related_item_taxes
-                    nested_related_items.append(nested_related_item)
+            #     for nested_related_item in nested_related_items_data:
+            #         nested_related_item_taxes = get_item_taxes(nested_related_item['name'])
+            #         nested_related_item['tax'] = nested_related_item_taxes
+            #         nested_related_items.append(nested_related_item)
 
-                if not nested_related_items:
-                    related_item['related_items'] = [[]]
-                else:
-                    related_item['related_items'] = [nested_related_items]
+            #     if not nested_related_items:
+            #         related_item['related_items'] = [[]]
+            #     else:
+            #         related_item['related_items'] = [nested_related_items]
 
-                nested_related_items_list.append(related_item)
+            #     nested_related_items_list.append(related_item)
 
-            if not nested_related_items_list:
-                item_dict['related_items'] = [[]]
-            else:
-                item_dict['related_items'] = [nested_related_items_list]
+            # if not nested_related_items_list:
+            #     item_dict['related_items'] = [[]]
+            # else:
+            #     item_dict['related_items'] = [nested_related_items_list]
 
             allergens.extend(get_allergens(item.name))
             
@@ -317,7 +310,8 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
                     item_dict.update({'stock':item_stock})
                     
             group_dict.get('items').append(item_dict)
-        data.append(group_dict)
+        if len(group_dict.get('items'))>0:
+            data.append(group_dict)
     return data
 
     #         # # Checking Stock
@@ -413,7 +407,7 @@ def get_related_item_groups(extra_item_group):
 
 def get_attributes_items(item_code,cost_center=None):
     # For Adding Extra Items in Item
-    all_extra_items=frappe.db.sql(""" SELECT a.attribute_heading as name,a.count,ai.item,ai.item_name,ai.price from `tabAttribute Items` ai LEFT JOIN `tabAttributes` a ON ai.parent=a.name WHERE a.parent_item = '{}'  GROUP BY a.name,ai.name
+    all_extra_items=frappe.db.sql(""" SELECT a.attribute_heading as name,a.mandatory,a.count,ai.item,ai.item_name,ai.price from `tabAttribute Items` ai LEFT JOIN `tabAttributes` a ON ai.parent=a.name WHERE a.parent_item = '{}'  GROUP BY a.name,ai.name
 """.format(item_code),as_dict=1)
     
     # Initialize an empty list for the output
@@ -426,7 +420,7 @@ def get_attributes_items(item_code,cost_center=None):
         item = entry['item']
         heading="Select {}".format(entry['count'] if entry['count'] else 0)
         if name not in grouped_data:
-            grouped_data[name] = {'name': name,'description':heading,'options': []}
+            grouped_data[name] = {'name': name,'mandatory':entry['mandatory'],'description':heading,'options': []}
         grouped_data[name]['options'].append(
             {
                 'item': item, 'item_name':entry['item_name'],'price':entry.price if entry.price else get_price_list(item),
@@ -491,9 +485,8 @@ def get_item_taxes(name):
     SELECT
         it.item_tax_template,
         ittd.tax_type,
-        ittd.tax_rate,
-        it.valid_from,
-        ittd.custom_tax_percentage
+        CONCAT(FORMAT(ittd.tax_rate, 2), '%%') AS custom_tax_percentage,
+        it.valid_from
     FROM
         `tabItem` i,
         `tabItem Tax` it,
