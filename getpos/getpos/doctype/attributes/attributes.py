@@ -14,5 +14,6 @@ class Attributes(Document):
 			doc.count = 0
 		selected_count = sum(1 for item in doc.attribute_items)
 		if int(doc.count)>int(selected_count):
-			frappe.throw("Count can't be greater than attribute items in the child table")
-
+			frappe.throw("Count can't be greater than Attribute Items")
+		if doc.mandatory==1 and int(doc.count)<1:
+			doc.count=1
