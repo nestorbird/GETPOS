@@ -486,9 +486,8 @@ def get_item_taxes(name):
     SELECT
         it.item_tax_template,
         ittd.tax_type,
-        ittd.tax_rate,
-        it.valid_from,
-        ittd.custom_tax_percentage
+        CONCAT(FORMAT(ittd.tax_rate, 2), '%%') AS custom_tax_percentage,
+        it.valid_from
     FROM
         `tabItem` i,
         `tabItem Tax` it,
