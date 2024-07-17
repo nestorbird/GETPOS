@@ -1695,36 +1695,45 @@ def resend_sales_invoice_email(sales_order):
     sales_invoice_doc = frappe.db.get_value("Sales Invoice Item",
                                                 filters={"sales_order": sales_order},
                                                 fieldname=["parent"])
-    sales_invoice = frappe.get_doc("Sales Invoice", sales_invoice_doc)
-    recipient = sales_invoice.contact_email
-    # Check if the recipient email is present
-    if recipient:
-        # Generate PDF content
-        pdf_content = get_sales_invoice_pdf(sales_invoice)
-        # Prepare the email content
-        email_subject = f"Sales Invoice {sales_invoice}"
-        email_message = f"Dear {sales_invoice.customer_name},\n\nPlease find attached your sales invoice.\n\nBest regards,\nYour Company Name"
-        # Create an attachment
-        attachment = {
-                'fname': f"{sales_order}.pdf",
-                'fcontent': pdf_content
-        }
-        try:
-            # Send the email
-              make(
-                    recipients=[recipient],
-                    subject=email_subject,
-                    content=email_message,
-                    attachments=[attachment],
-                    send_email=True
-            )
-              res["success_key"]=1
+    if sales_invoice_doc:
+        sales_invoice = frappe.get_doc("Sales Invoice", sales_invoice_doc)
+        recipient = sales_invoice.contact_email
+        # Check if the recipient email is present
+        if recipient:
+                # Generate PDF content
+                pdf_content = get_sales_invoice_pdf(sales_invoice)
+                # Prepare the email content
+                email_subject = f"Sales Invoice {sales_invoice}"
+                email_message = f"Dear {sales_invoice.customer_name},\n\nPlease find attached your sales invoice.\n\nBest regards,\nYour Company Name"
+                # Create an attachment
+                attachment = {
+                        'fname': f"{sales_order}.pdf",
+                        'fcontent': pdf_content
+                }
+                try:
+                        # Send the email
+                        make(
+                                recipients=[recipient],
+                                subject=email_subject,
+                                content=email_message,
+                                attachments=[attachment],
+                                send_email=True
+                        )
+                        res["success_key"]=1
+                        return res
+                except Exception as e:
+                        res["success_key"]=0
+                        res['message'] = "Unable to send mail."    
+                        return res
+        else:
+              res["success_key"]=0
+              res['message'] = "Email not found."    
               return res
-        except Exception as e:
-             frappe.local.response["message"] = {
-            "success_key": 0,
-            "message": str(e)
-        }
+    else:
+          res["success_key"]=0
+          res['message'] = "Invoice not found."    
+          return res
+
 def get_sales_invoice_pdf(sales_invoice_name):
     sales_invoice = frappe.get_doc("Sales Invoice", sales_invoice_name)
     html = frappe.render_template('getpos/templates/pages/sales_invoice_email.html', context={'doc': sales_invoice})

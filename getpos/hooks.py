@@ -161,23 +161,24 @@ doc_events = {
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-# 	"all": [
-# 		"nbpos.tasks.all"
-# 	],
-# 	"daily": [
-# 		"nbpos.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"nbpos.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"nbpos.tasks.weekly"
-# 	]
-# 	"monthly": [
-# 		"nbpos.tasks.monthly"
-# 	]
-# }
+scheduler_events = {
+	# "all": [
+	# 	"nbpos.tasks.all"
+	# ],
+	"daily": [
+		"getpos.getpos.schedulers.expired_gift_card_settlement.create_gift_card_journal_entries"
+	]
+    # ,
+	# "hourly": [
+	# 	"nbpos.tasks.hourly"
+	# ],
+	# "weekly": [
+	# 	"nbpos.tasks.weekly"
+	# ]
+	# "monthly": [
+	# 	"nbpos.tasks.monthly"
+	# ]
+}
 
 # Testing
 # -------
