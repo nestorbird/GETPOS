@@ -1425,8 +1425,7 @@ def get_cost_center_by_pin():
                 return frappe_response(400, f"{missing_param} is missing")
 
         custom_pin = frappe.db.get_value("Cost Center",cost_center,'custom_pin')
-        
-        if custom_pin == pin:
+        if int(custom_pin) == int(pin):
                 return frappe_response(200, {"is_verified": True})
         
         else:
