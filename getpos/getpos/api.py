@@ -4,7 +4,6 @@ import frappe
 import json
 from frappe import _
 import json
-from datetime import datetime
 from frappe.utils import cint
 STANDARD_USERS = ("Guest", "Administrator")
 from frappe.rate_limiter import rate_limit
@@ -16,6 +15,7 @@ from erpnext.stock.stock_ledger import get_previous_sle, get_stock_ledger_entrie
 from erpnext.selling.doctype.sales_order.sales_order import make_sales_invoice
 from frappe.utils import add_to_date, now
 from datetime import datetime, timedelta, time
+from getpos.controllers import frappe_response,handle_exception
 
 
 
@@ -1415,25 +1415,21 @@ def get_location():
 
 
 @frappe.whitelist(allow_guest=True)
-def get_cost_center_by_pin(custom_pin=None):
-    # Get the custom_pin from the function argument or form_dict
-    if not custom_pin:
-        custom_pin = frappe.form_dict.get('custom_pin')
+def get_cost_center_by_pin():  
+        body = frappe.local.form_dict
+        pin = body.get("custom_pin")
+        cost_center = body.get("cost_center")
+        
+        if not pin or not cost_center:
+                missing_param = "custom_pin" if not pin else "cost_center"
+                return frappe_response(400, f"{missing_param} is missing")
 
-    # Validate the provided PIN
-    cost_center = validate_pin(custom_pin)
-    
-    # Prepare the response with only the is_verified key
-    if cost_center:
-        return {
-            "is_verified": True
-        }
-    else:
-        return {
-            "is_verified": False
-        }
+        custom_pin = frappe.db.get_value("Cost Center",cost_center,'custom_pin')
+        
+        if custom_pin == pin:
+                return frappe_response(200, {"is_verified": True})
+        
+        else:
+                return frappe_response(200, {"is_verified": False})
+                
 
-def validate_pin(custom_pin):
-    # Check if the provided PIN exists in any cost center
-    cost_center = frappe.get_all('Cost Center', filters={'custom_pin': custom_pin})
-    return cost_center
