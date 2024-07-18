@@ -713,13 +713,8 @@ def get_customer(mobile_no=None, name=None):
         try:
             # Fetch the customer document
             customer = frappe.get_doc('Customer', name)
-
-            # Check if there are credit limits set for the customer
-            if customer.credit_limits:
-                # Iterate through the credit limits to find the relevant one
-                for cr_limit in customer.credit_limits:
-                    credit_limit = cr_limit.credit_limit
-                    break
+            credit_limit=customer.custom_credit_limit    
+         
 
             # Fetch the total outstanding amount (total unpaid invoices)
            
@@ -1696,7 +1691,7 @@ def resend_sales_invoice_email(sales_order):
                                                 filters={"sales_order": sales_order},
                                                 fieldname=["parent"])
     if sales_invoice_doc:
-        sales_invoice = frappe.get_doc("Sales Invoice", sales_invoice_doc)
+        sales_invoice = frappe.get_doc("Sales Invoice", sales_invoice_doc)        
         recipient = sales_invoice.contact_email
         # Check if the recipient email is present
         if recipient:
@@ -1734,8 +1729,7 @@ def resend_sales_invoice_email(sales_order):
           res['message'] = "Invoice not found."    
           return res
 
-def get_sales_invoice_pdf(sales_invoice_name):
-    sales_invoice = frappe.get_doc("Sales Invoice", sales_invoice_name)
+def get_sales_invoice_pdf(sales_invoice):
     html = frappe.render_template('getpos/templates/pages/sales_invoice_email.html', context={'doc': sales_invoice})
     pdf_content = get_pdf(html)
     return pdf_content
