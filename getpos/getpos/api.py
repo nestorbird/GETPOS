@@ -1774,6 +1774,7 @@ def create_sales_invoice_from_sales_order(doc,gift_card_code,discount_amount):
         if doc.custom_gift_card_code:
             sales_invoice.discount_amount=doc.discount_amount
             sales_invoice.apply_discount_on="Grand Total"
+            sales_invoice.grand_total=sales_invoice.grand_total -float(discount_amount)
         sales_invoice.save(ignore_permissions=1)
         sales_invoice.submit()
         if gift_card_code:
@@ -1784,13 +1785,23 @@ def create_sales_invoice_from_sales_order(doc,gift_card_code,discount_amount):
                         `net_total`=%s,
                         `outstanding_amount`=%s
                         WHERE name = %s
-                """, (sales_invoice.grand_total -float(discount_amount),discount_amount,sales_invoice.net_total -float(discount_amount),sales_invoice.outstanding_amount -float(discount_amount), sales_invoice.name))           
-        if gift_card_code and sales_invoice.grand_total -float(discount_amount) > 0:
-                create_payment_entry(sales_invoice)
-        elif doc.coupon_code and sales_invoice.grand_total > 0:
-              create_payment_entry(sales_invoice)
-        else:
+                """, (sales_invoice.grand_total -float(discount_amount),discount_amount,sales_invoice.net_total - float(discount_amount),sales_invoice.outstanding_amount -float(discount_amount), sales_invoice.name))           
+        grand_total=frappe.db.get_value('Sales Invoice', {'name': sales_invoice.name}, 'grand_total')
+        if grand_total > 0:
               create_payment_entry(sales_invoice) 
+        else:
+              frappe.db.sql("""
+                        UPDATE `tabSales Invoice`
+                        SET `status` = %s                        
+                        WHERE name = %s
+                """, ("Paid",sales_invoice.name))      
+                           
+        # if gift_card_code and float(sales_invoice.grand_total) -float(discount_amount) > 0:
+        #       create_payment_entry(sales_invoice)
+        # elif doc.coupon_code and sales_invoice.grand_total > 0:
+        #       create_payment_entry(sales_invoice)
+        # else:
+        #       create_payment_entry(sales_invoice) 
 
         resend_sales_invoice_email(doc.name)
 
