@@ -790,6 +790,7 @@ def create_customer():
                         customer.customer_name = customer_detail.get("customer_name")
                         customer.mobile_no = customer_detail.get("mobile_no")
                         customer.email_id = customer_detail.get("email_id")
+                        customer.custom_pos_shift = customer_detail.get("pos_opening_shift")
                         customer.customer_group = 'All Customer Groups'
                         customer.territory = 'All Territories'
                         customer.save(ignore_permissions=True)
