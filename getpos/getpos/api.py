@@ -533,7 +533,8 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
                         if(c.image LIKE 'http%%', c.image, concat({base_url}, c.image))) as image,
                         s.custom_return_order_status as return_order_status,
                         CASE WHEN s.coupon_code = null THEN '' ELSE (select coupon_type from `tabCoupon Code` co where co.name=s.coupon_code) END  as coupon_type,
-                        CASE WHEN s.coupon_code = null THEN '' ELSE (select coupon_code from `tabCoupon Code` co where co.name=s.coupon_code) END  as coupon_code
+                        CASE WHEN s.coupon_code = null THEN '' ELSE (select coupon_code from `tabCoupon Code` co where co.name=s.coupon_code) END  as coupon_code,
+                        s.custom_gift_card_code as gift_card_code           
                 FROM `tabSales Order` s, `tabUser` u, `tabCustomer` c
                 WHERE s.hub_manager = u.name and s.customer = c.name 
                         and s.hub_manager = {hub_manager}  and s.docstatus = 1 
