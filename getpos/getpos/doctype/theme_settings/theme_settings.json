@@ -20,6 +20,8 @@
   "lightestgreytextcolor",
   "seagreenprimary",
   "default_currency",
+  "guest_customer",
+  "print_receipt_promotion",
   "column_break_pcle3",
   "buttonbeforetap",
   "ontapcardseagreen",
@@ -32,6 +34,8 @@
   "productbackgroundcolorontap",
   "productbordercolorontap",
   "active",
+  "loyalty_redemption_account",
+  "edit_price_discount_in_percentage",
   "image_upload_section",
   "app_background_image",
   "merchant_background_image",
@@ -230,12 +234,36 @@
    "fieldname": "api_token",
    "fieldtype": "Data",
    "label": "Api Token"
+  },
+  {
+   "fieldname": "guest_customer",
+   "fieldtype": "Data",
+   "label": "Guest Customer",
+   "read_only": 1
+  },
+  {
+   "fieldname": "print_receipt_promotion",
+   "fieldtype": "Link",
+   "label": "Print Receipt Promotion",
+   "options": "Coupon Code"
+  },
+  {
+   "fieldname": "loyalty_redemption_account",
+   "fieldtype": "Link",
+   "label": "Loyalty Redemption Account",
+   "options": "Account"
+  },
+  {
+   "fieldname": "edit_price_discount_in_percentage",
+   "fieldtype": "Float",
+   "label": "Edit Price Discount (In Percentage)",
+   "non_negative": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-07-05 08:50:50.575549",
+ "modified": "2024-07-25 13:20:26.126491",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Theme Settings",

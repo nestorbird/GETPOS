@@ -6,6 +6,7 @@ from frappe import _
 import json
 from frappe.utils import cint
 STANDARD_USERS = ("Guest", "Administrator")
+from frappe.utils.pdf import get_pdf
 from frappe.rate_limiter import rate_limit
 from frappe.utils.password import get_password_reset_limit
 from frappe.utils import (cint,get_formatted_email, nowdate, nowtime, flt)
@@ -14,7 +15,9 @@ from erpnext.stock.utils import get_stock_balance
 from erpnext.stock.stock_ledger import get_previous_sle, get_stock_ledger_entries
 from erpnext.selling.doctype.sales_order.sales_order import make_sales_invoice
 from frappe.utils import add_to_date, now
+from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_entry
 from datetime import datetime, timedelta, time
+from erpnext.selling.doctype.customer.customer import get_customer_outstanding
 from getpos.controllers import frappe_response,handle_exception
 
 
@@ -213,7 +216,7 @@ def get_customer_list_by_hubmanager(hub_manager, last_sync = None):
                         ward, ward_name, name, creation,
                         modified,disabled,
                         if((image = null or image = ''), null, 
-                        if(image LIKE 'http%%', image, concat(%(base_url)s, image))) as image
+                        if(image LIKE 'http%%', image, concat(%(base_url)s, image))) as image ,loyalty_program
                 FROM `tabCustomer`
                 WHERE {conditions}
                 """.format(conditions=conditions), values=filters, as_dict=1)
@@ -523,10 +526,14 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
                         s.ward, s.hub_manager, s.total , s.total_taxes_and_charges , s.grand_total, s.mode_of_payment, 
                         s.mpesa_no, s.contact_display as contact_name,
                         s.contact_phone, s.contact_mobile, s.contact_email,
-                        s.hub_manager, s.creation,
+                        s.hub_manager, s.creation, s.loyalty_points,s.loyalty_amount,s.discount_amount,
+                        s.additional_discount_percentage as discount_percentage,
                         u.full_name as hub_manager_name,
                         if((c.image = null or c.image = ''), null, 
-                        if(c.image LIKE 'http%%', c.image, concat({base_url}, c.image))) as image
+                        if(c.image LIKE 'http%%', c.image, concat({base_url}, c.image))) as image,
+                        s.custom_return_order_status as return_order_status,
+                        CASE WHEN s.coupon_code = null THEN '' ELSE (select coupon_type from `tabCoupon Code` co where co.name=s.coupon_code) END  as coupon_type,
+                        CASE WHEN s.coupon_code = null THEN '' ELSE (select coupon_code from `tabCoupon Code` co where co.name=s.coupon_code) END  as coupon_code
                 FROM `tabSales Order` s, `tabUser` u, `tabCustomer` c
                 WHERE s.hub_manager = u.name and s.customer = c.name 
                         and s.hub_manager = {hub_manager}  and s.docstatus = 1 
@@ -658,23 +665,85 @@ def get_item_stock_balance(hub_manager, item_code, last_sync_date=None, last_syn
         return res
 
 @frappe.whitelist()
-def get_customer(mobile_no):
-        res=frappe._dict()
-        sql = frappe.db.sql(""" SELECT EXISTS(SELECT * FROM `tabCustomer` where mobile_no = '{0}')""".format(mobile_no))
-        result = sql[0][0]
-        if result == 1:
-                customer_detail = frappe.db.sql("""SELECT name,customer_name,customer_primary_contact,
-                        mobile_no,email_id,primary_address,hub_manager FROM `tabCustomer` WHERE 
-                        mobile_no = '{0}'""".format(mobile_no),as_dict=True)
-                res['success_key'] = 1
-                res['message'] = "success"
-                res['customer'] = customer_detail
-                return res        
-        else:
-                res["success_key"] = 0
-                res['mobile_no'] = mobile_no
-                res["message"] = "Mobile Number Does Not Exist"
-                return res
+def get_customer(mobile_no=None, name=None):
+    res = frappe._dict()
+    sql = frappe.db.sql(
+        """SELECT EXISTS(SELECT * FROM `tabCustomer` WHERE mobile_no = %s OR name = %s)""",
+        (mobile_no, name)
+    )
+    result = sql[0][0]
+
+    if result == 1:
+        customer_detail = frappe.db.sql(
+            """SELECT name, customer_name, customer_primary_contact, mobile_no, email_id,
+            primary_address, hub_manager, loyalty_program FROM `tabCustomer`
+            WHERE mobile_no = %s OR name = %s""",
+            (mobile_no, name), as_dict=True
+        )
+
+        loyalty_point_details = frappe._dict(
+            frappe.get_all(
+                "Loyalty Point Entry",
+                filters={
+                    "customer": name,
+                    "expiry_date": (">=", frappe.utils.getdate()),
+                },
+                group_by="company",
+                fields=["company", "sum(loyalty_points) as loyalty_points"],
+                as_list=1,
+            )
+        )
+        companies = frappe.get_all(
+            "Sales Invoice", filters={"docstatus": 1, "customer": name}, distinct=1, fields=["company"]
+        )
+        loyalty_points = 0
+        for d in companies:
+            if loyalty_point_details:
+                loyalty_points = loyalty_point_details.get(d.company)
+
+        conversion_factor = None
+        if customer_detail:
+            conversion_factor = frappe.db.get_value(
+                "Loyalty Program", {"name": customer_detail[0].loyalty_program}, ["conversion_factor"], as_dict=True
+            )
+
+        # Credit limit and outstanding amount logic
+        credit_limit = 0
+        outstanding_amount = 0
+
+        try:
+            # Fetch the customer document
+            customer = frappe.get_doc('Customer', name)
+            credit_limit=customer.custom_credit_limit    
+         
+
+            # Fetch the total outstanding amount (total unpaid invoices)
+           
+            outstanding_amount =  get_customer_outstanding(
+			name, frappe.get_doc("Global Defaults").default_company, ignore_outstanding_sales_order=False
+		)
+
+        except frappe.DoesNotExistError:
+            message = _("Customer not found.")
+        except Exception as e:
+            frappe.log_error(frappe.get_traceback(), _("Error fetching credit limit"))
+            message = _("An error occurred while fetching the credit limit.")
+
+        res['success_key'] = 1
+        res['message'] = "success"
+        res['customer'] = customer_detail
+        res['loyalty_points'] = loyalty_points
+        res['conversion_factor'] = conversion_factor.conversion_factor if conversion_factor else 0
+        res['loyalty_amount'] = loyalty_points * conversion_factor.conversion_factor if conversion_factor else 0
+        res['credit_limit'] = credit_limit
+        res['outstanding_amount'] = outstanding_amount
+        return res
+    else:
+        res["success_key"] = 0
+        res['mobile_no'] = mobile_no
+        res["message"] = "Mobile Number/Customer Does Not Exist"
+        return res
+
 
 @frappe.whitelist()
 def get_all_customer(search=None, from_date=None):
@@ -723,6 +792,7 @@ def create_customer():
                         customer.customer_name = customer_detail.get("customer_name")
                         customer.mobile_no = customer_detail.get("mobile_no")
                         customer.email_id = customer_detail.get("email_id")
+                        customer.custom_pos_shift = customer_detail.get("pos_opening_shift")
                         customer.customer_group = 'All Customer Groups'
                         customer.territory = 'All Territories'
                         customer.save(ignore_permissions=True)
@@ -760,45 +830,7 @@ def get_sub_items(name):
         else:
                 return ""
 
-             
-        
-                
-        
-
-@frappe.whitelist()
-def get_promo_code():
-        res = frappe._dict() 
-        coupon_code = frappe.qb.DocType('Coupon Code') 
-        pricing_rule = frappe.qb.DocType('Pricing Rule')
-        coupon_code =(
-        frappe.qb.from_(coupon_code).inner_join(pricing_rule) .on(coupon_code.pricing_rule == pricing_rule.name) 
-        .select(coupon_code.name , coupon_code.coupon_code, coupon_code.pricing_rule,
-        coupon_code.maximum_use, coupon_code.used, coupon_code.description, 
-        pricing_rule.valid_from , pricing_rule.valid_upto, pricing_rule.apply_on, 
-        pricing_rule.price_or_product_discount, pricing_rule.min_qty,
-        pricing_rule.max_qty, pricing_rule.min_amt, pricing_rule.max_amt, 
-        pricing_rule.rate_or_discount, pricing_rule.apply_discount_on, 
-        pricing_rule.discount_amount, pricing_rule.rate, pricing_rule.discount_percentage )
-        .where( (pricing_rule.apply_on == 'Transaction') 
-        & (pricing_rule.rate_or_discount == 'Discount Percentage') &
-        (pricing_rule.apply_discount_on == 'Grand Total') & 
-        (pricing_rule.price_or_product_discount == "Price")
-        )
-        ).run(as_dict=1)
-        
-        if coupon_code:
-                res['success_key'] = 1
-                res['message'] = "success"
-                res['coupon_code'] = coupon_code
-                return res
-        else:
-                res["success_key"] = 0
-                res["message"] = "No Coupon Code in DB"
-                res['coupon_code']= coupon_code
-                return res
-
-
-
+ 
 @frappe.whitelist(allow_guest=True)
 def get_web_theme_settings():
     theme_settings = frappe.get_doc("Web Theme Settings")
@@ -828,6 +860,7 @@ def get_web_theme_settings():
         "data": theme_settings_dict
     }
     return res
+
 @frappe.whitelist(allow_guest=True)
 def get_theme_settings():
     theme_settings = frappe.get_doc("Theme Settings")
@@ -1067,7 +1100,14 @@ def create_sales_order_kiosk():
         sales_order.status = order_list.get("status")
         sales_order.mode_of_payment = order_list.get("mode_of_payment")
         sales_order.mpesa_no = order_list.get("mpesa_no")
-        sales_order.coupon_code = order_list.get("coupon_code")
+        if order_list.get("coupon_code"):
+                coupon_name = frappe.db.get_value("Coupon Code", {"coupon_code": order_list.get("coupon_code")},"name")
+                sales_order.coupon_code = coupon_name
+        if order_list.get("gift_card_code"):
+                sales_order.custom_gift_card_code = order_list.get("gift_card_code")
+                sales_order.apply_discount_on="Grand Total"
+                sales_order.discount_amount=order_list.get("discount_amount")
+
         sales_order.disable_rounded_total = 1
         cost_center = order_list.get("cost_center")
         
@@ -1100,8 +1140,58 @@ def create_sales_order_kiosk():
         warehouse = get_warehouse_for_cost_center(order_list.get("cost_center"))
         if warehouse:
             sales_order.set_warehouse = warehouse
+        if order_list.get("redeem_loyalty_points") == 1 :
+               sales_order.custom_redeem_loyalty_points = 1
+               sales_order.loyalty_points = order_list.get("loyalty_points")
+               sales_order.loyalty_amount = order_list.get("loyalty_amount")               
+               sales_order.custom_redemption_account = order_list.get("loyalty_redemption_account")   
+        if order_list.get("loyalty_program") :
+               sales_order.custom_loyalty_program = order_list.get("loyalty_program")        
+        if order_list.get("pos_opening_shift") :              
+               sales_order.custom_pos_shift=order_list.get("pos_opening_shift")
+
         sales_order.save(ignore_permissions=True)
+        sales_order.rounded_total=sales_order.grand_total
+        if order_list.get("redeem_loyalty_points") == 1 :
+               sales_order.outstanding_amount=sales_order.grand_total-sales_order.loyalty_amount
+
         sales_order.submit()
+        if order_list.get("gift_card_code"):
+                frappe.db.sql("""
+                        UPDATE `tabSales Order`
+                        SET `grand_total` = %s,
+                        `discount_amount`=%s,
+                        `net_total`=%s
+                        WHERE name = %s
+                """, (sales_order.grand_total -float(order_list.get("discount_amount")) ,float(order_list.get("discount_amount")),sales_order.net_total -float(order_list.get("discount_amount")), sales_order.name))           
+        if order_list.get("gift_card_code"):
+                company_name = frappe.get_doc("Global Defaults").default_company
+                company=frappe.get_doc("Company",company_name)              
+                gift_card_doc = frappe.db.get_value("Gift Card", {"code": order_list.get("gift_card_code")}, ["name", "amount_balance", "amount_used"], as_dict=True)
+                journal_entry = frappe.new_doc("Journal Entry")
+                journal_entry.voucher_type="Journal Entry"
+                journal_entry.company=company.name
+                journal_entry.posting_date=frappe.utils.getdate()	
+                journal_entry.user_remark="customer redeemed the gift card in partial amount that is for $" + str(order_list.get("discount_amount")) + " for the purchase of the good"		
+                journal_entry.append(
+                        "accounts",
+                        {
+                        'account': "Gift card Revenue - " + company.abbr,
+                        'debit_in_account_currency': float(order_list.get("discount_amount")),
+                        'credit_in_account_currency': float(0)
+                        })
+                journal_entry.append(
+                        "accounts",
+                        {
+                        'account': "Sales - " + company.abbr,
+                        'debit_in_account_currency': float(0),
+                        'credit_in_account_currency':float(order_list.get("discount_amount"))
+                })	
+                journal_entry.save(ignore_permissions=True)
+                journal_entry.submit()   
+                frappe.set_value('Gift Card', gift_card_doc.name, 'amount_balance', gift_card_doc.amount_balance - float(order_list.get("discount_amount")))            
+                frappe.set_value('Gift Card', gift_card_doc.name, 'amount_used', gift_card_doc.amount_used + float(order_list.get("discount_amount")))            
+        create_sales_invoice_from_sales_order(sales_order,order_list.get("gift_card_code"),order_list.get("discount_amount"))
 
         latest_order = frappe.get_doc('Sales Order', sales_order.name)
 
@@ -1238,9 +1328,6 @@ def get_sales_order_item_details(order_id=None):
             "success_key": 0,
             "message": str(e)
         }
-
-
-
 
                 
 @frappe.whitelist(methods="POST")
@@ -1431,4 +1518,416 @@ def get_cost_center_by_pin():
         else:
                 return frappe_response(200, {"is_verified": False})
                 
+
+@frappe.whitelist(methods="POST")
+def return_sales_order(sales_invoice):
+    try:
+        frappe.set_user("Administrator")
+        res = frappe._dict()
+        # Fetch the sales invoice number
+        sales_order_number = sales_invoice.get("sales_order_number")
+        sales_invoice_doc = frappe.db.get_value("Sales Invoice Item",
+                                                filters={"sales_order": sales_order_number},
+                                                fieldname=["parent"])
+        if sales_invoice_doc:
+            invoice = frappe.get_doc("Sales Invoice", sales_invoice_doc)
+            return_order_items = sales_invoice.get("return_items")
+            # Update invoice fields for return
+            invoice.is_return = 1
+            invoice.update_outstanding_for_self = 1
+            invoice.return_against = sales_invoice_doc
+            invoice.update_billed_amount_in_delivery_note = 1
+            invoice.total_qty = -sales_invoice.get("total_qty")
+            invoice.mode_of_payment = ''
+            invoice.redeem_loyalty_points = 0
+            invoice.loyalty_points = 0
+            invoice.loyalty_amount = 0
+            invoice.loyalty_program = ''
+            invoice.loyalty_redemption_account = ''            
+            invoice.coupon_code=''
+            invoice.discount_amount=-invoice.discount_amount
+            returned_items = []
+            # Adjust quantities for returned items
+            for item in invoice.items:
+                if return_order_items.get(item.item_code, 0) > 0:
+                    item.qty = -return_order_items[item.item_code]
+                    item.stock_qty = -return_order_items[item.item_code]
+                    returned_items.append(item)
+            invoice.items = returned_items
+            invoice.insert(ignore_permissions=1)
+            # Update sales order custom status
+            frappe.db.sql("""
+                UPDATE `tabSales Order`
+                SET `custom_return_order_status` = %s
+                WHERE name = %s
+            """, (sales_invoice.get("return_type"), sales_order_number))
+            res["success_key"] = 1
+            res["message"] = "Success"
+            res['invoice'] = invoice.name
+            res['amount'] = invoice.grand_total
+            try:
+                # Send email to customer with the sales invoice return attached
+                send_credit_note_email(invoice)  
+            except Exception as e:
+                   pass            
+            return res
+        else:
+            res["success_key"] = 0
+            res["message"] = "Sales invoice not found for this order."
+            res['invoice'] = ""
+            res['amount'] = 0
+            return res
+    except Exception as e:
+        frappe.log_error(frappe.get_traceback(), "return_sales_order Error")
+        return {"success_key": 0, "message": "An unexpected error occurred. Please try again later.", "invoice": "", "amount": 0}
+    
+@frappe.whitelist()
+def edit_customer():
+        customer_detail = frappe.request.data
+        customer_detail = json.loads(customer_detail)
+        frappe.set_user("Administrator")
+        res = frappe._dict()
+        existing_customer = frappe.db.get_value("Customer", {"mobile_no": customer_detail.get("mobile_no")}, ["name", "customer_name", "mobile_no", "email_id"], as_dict=True)
+        if existing_customer and existing_customer.name !=customer_detail.get("name") :                
+                res["success_key"] = 0
+                res["message"] = "Customer already present with this mobile no."
+                res["customer"] = existing_customer
+                return res 
+        else:
+                update_customer = frappe.get_doc("Customer",customer_detail.get("name"))
+                frappe.db.sql("update `tabContact` set `mobile_no` =%s  where name=%s",(customer_detail.get("mobile_no"), update_customer.customer_primary_contact))
+                update_customer.customer_name = customer_detail.get("customer_name")  
+                update_customer.mobile_no = customer_detail.get("mobile_no")  
+                if customer_detail.get("email_id"):
+                                frappe.db.sql("update `tabContact` set `email_id` =%s  where name=%s",(customer_detail.get("email_id"), update_customer.customer_primary_contact))
+                                update_customer.email_id=customer_detail.get("email_id")
+                update_customer.save(ignore_permissions=True)                
+                res['success_key'] = 1
+                res['message'] = "Customer updated successfully"
+                res["customer"] ={"name" : customer_detail.get("name") ,
+                                "customer_name": customer_detail.get("customer_name") ,
+                                "mobile_no" : customer_detail.get("mobile_no") ,
+                                "email_id" : customer_detail.get("email_id") 
+                                }
+                return res
+
+
+@frappe.whitelist()
+def coupon_code_details():
+    current_date = datetime.now().date()
+    def get_details(entity, fields):
+        return {field:entity.get(field) for field in fields}
+    def fetch_coupon_and_pricing_rule(coupon_code):
+        # Fetch details related to the coupon and its associated pricing rule
+        coupon = frappe.db.get_value("Coupon Code", {"coupon_code": coupon_code},
+                                     ["name", "used", "maximum_use", "valid_from", "valid_upto", "pricing_rule","description"], as_dict=True)
+        if not coupon:
+            return None, {"status": "error", "message": _("Coupon code does not exist.")}
+        pricing_rule = frappe.get_doc("Pricing Rule", coupon.get("pricing_rule"))
+        if not pricing_rule:
+            return None, {"status": "error", "message": _("Pricing rule associated with coupon not found.")}
+        return coupon, pricing_rule
+    pricing_rule_fields = [
+        # List of fields to fetch from Pricing Rule document
+        "name", "title", "apply_on", "price_or_product_discount", "coupon_code_based", "selling", "buying",
+        "applicable_for", "customer", "min_qty", "max_qty", "min_amt", "max_amt", "valid_from", "company",
+        "currency", "rate_or_discount", "apply_discount_on", "rate", "discount_amount", "discount_percentage",
+        "for_price_list", "doctype", "items", "item_groups", "customers", "customer_groups", "territories"
+    ]   
+    # Fetch all valid coupons based on current date and their respective pricing rules
+    coupons = frappe.db.get_all("Coupon Code", filters={"valid_upto": (">=", current_date),"coupon_type": "Promotional"},
+                                fields=["name", "coupon_code", "used", "maximum_use", "valid_from", "valid_upto", "pricing_rule","description"])
+    valid_coupons = []
+    for coupon in coupons:
+        pricing_rule = frappe.get_doc("Pricing Rule", coupon.get("pricing_rule"))
+        if coupon["description"] :
+                coupon["description"]=frappe.utils.strip_html_tags(coupon["description"])
+        # Check if the pricing rule is valid, coupon usage is within limit
+        if pricing_rule and is_valid_pricing_rule(pricing_rule, current_date) and coupon["used"] < coupon["maximum_use"]:
+            valid_coupons.append({
+                **get_details(coupon, ["name","coupon_code", "used", "maximum_use", "valid_from", "valid_upto","description"]),
+                "pricing_rule": get_details(pricing_rule, pricing_rule_fields)
+            })
+           
+    # Return success status with valid coupons list
+    return {"status": "success", "valid_coupons": valid_coupons}
+
+@frappe.whitelist(methods=["POST"])
+def validate_coupon_code(coupon_code=None):
+    current_date = datetime.now().date()
+    def get_details(entity, fields):
+        return {field: entity.get(field) for field in fields}
+    def fetch_coupon_and_pricing_rule(coupon_code):
+        # Fetch details related to the coupon and its associated pricing rule
+        coupon = frappe.db.get_value("Coupon Code", {"coupon_code": coupon_code},
+                                     ["name", "used", "maximum_use", "valid_from", "valid_upto", "pricing_rule"], as_dict=True)
+        if not coupon:
+            return None, {"status": "error", "message": _("Coupon code does not exist.")}
+        pricing_rule = frappe.get_doc("Pricing Rule", coupon.get("pricing_rule"))
+        if not pricing_rule:
+            return None, {"status": "error", "message": _("Pricing rule associated with coupon not found.")}
+        return coupon, pricing_rule
+    pricing_rule_fields = [
+        # List of fields to fetch from Pricing Rule document
+        "name", "title", "apply_on", "price_or_product_discount", "coupon_code_based", "selling", "buying",
+        "applicable_for", "customer", "min_qty", "max_qty", "min_amt", "max_amt", "valid_from", "company",
+        "currency", "rate_or_discount", "apply_discount_on", "rate", "discount_amount", "discount_percentage",
+        "for_price_list", "doctype", "items", "item_groups", "customers", "customer_groups", "territories"
+    ]
+    if coupon_code:
+        coupon, pricing_rule = fetch_coupon_and_pricing_rule(coupon_code)
+        if not coupon:
+            return pricing_rule
+        # Validate if the pricing rule associated with the coupon is valid
+        if not is_valid_pricing_rule(pricing_rule, current_date):
+            return {"status": "invalid", "message": _("Associated pricing rule is invalid.")}
+        # Check if the coupon has exceeded its maximum usage limit
+        if coupon["used"] >= coupon["maximum_use"]:
+            return {"status": "invalid", "message": _("Coupon code has reached its maximum use limit.")}
+        # Return valid status with coupon and pricing rule details
+        return {
+            "status": "valid",
+            "message": _("Coupon code and associated pricing rule are valid."),
+            "coupon": {
+                **get_details(coupon, ["name", "used", "maximum_use", "valid_from", "valid_upto"]),
+                "pricing_rule": get_details(pricing_rule, pricing_rule_fields)
+            }
+        }
+    # If no coupon code provided, return an error message
+    return {"status": "error", "message": _("Coupon code is required.")}
+
+def is_valid_pricing_rule(pricing_rule, current_date):
+    def parse_date(date_str):
+        return datetime.strptime(date_str, "%Y-%m-%d").date() if isinstance(date_str, str) else date_str
+    # Parse valid_from and valid_upto dates from the pricing rule
+    rule_valid_from = parse_date(pricing_rule.get("valid_from"))
+    rule_valid_upto = parse_date(pricing_rule.get("valid_upto"))
+    # Check if the current date falls within the valid range of the pricing rule
+    return (not rule_valid_from or current_date >= rule_valid_from) and (not rule_valid_upto or current_date <= rule_valid_upto)
+
+def send_credit_note_email(invoice):
+        customer = frappe.get_doc("Customer", invoice.customer)
+        contact_doc = frappe.get_doc("Contact", customer.customer_primary_contact)
+        email = contact_doc.email_id
+        subject = "Credit Note: {}".format(invoice.name)
+        message = "Please find attached the Credit Note {}.".format(invoice.name)
+        # Use Frappe's PDF generation tool to create the PDF
+        pdf_content = frappe.utils.pdf.get_pdf(frappe.render_template(
+            'getpos/templates/pages/credit_note_email.html', {"doc": invoice}
+        ))
+        attachments = [{
+            "fname": "Credit_Note_{}.pdf".format(invoice.name.replace(" ", "_")),
+            "fcontent": pdf_content
+        }]
+        frappe.sendmail(
+            recipients=email,
+            subject=subject,
+            message=message,
+            attachments=attachments,
+            now=True
+        )
+
+@frappe.whitelist()
+def get_shift_transaction(pos_opening_shift):
+    data = {}
+
+    pos_opening_shift_doc = frappe.get_doc("POS Opening Shift", pos_opening_shift)
+    amt = sum(i.get('amount') for i in pos_opening_shift_doc.balance_details)
+
+    sales_orders = frappe.get_all(
+        "Sales Order",
+        filters={
+            "custom_pos_shift": pos_opening_shift,
+            "docstatus": 1
+        },
+        fields=["name", "customer", "grand_total", "status"]
+    )
+
+    customers = {order.customer for order in sales_orders}
+    customer_first_order_dates = frappe.get_all(
+        "Sales Order",
+        filters={
+            "customer": ["in", list(customers)],
+            "docstatus": 1
+        },
+        fields=["customer", "min(creation) as first_order_date"],
+        group_by="customer"
+    )
+    
+    customer_first_order_dates = {entry.customer: entry.first_order_date for entry in customer_first_order_dates}
+
+    old_customers = set()
+    new_customers = set()
+    sales_order_amount = 0
+    return_order_amount = 0
+    num_transactions = 0
+    cash_collected = 0
+
+    for order in sales_orders:
+        amount = order.grand_total
+
+        if order.status == "Return":
+            return_order_amount += amount
+        else:
+            sales_order_amount += amount
+
+        num_transactions += 1
+        cash_collected += amount
+
+        # Check if the customer is new or old
+        if customer_first_order_dates[order.customer] == order.creation:
+            new_customers.add(order.customer)
+        else:
+            old_customers.add(order.customer)
+
+    data["opening_amount"] = amt
+    data["old_customers"] = list(old_customers)
+    data["new_customers"] = list(new_customers)
+    data["sales_order_amount"] = sales_order_amount
+    data["return_order_amount"] = return_order_amount
+    data["num_transactions"] = num_transactions
+    data["cash_collected"] = cash_collected
+
+    return data
+
+@frappe.whitelist()
+def resend_sales_invoice_email(sales_order):
+    res={}
+    sales_invoice_doc = frappe.db.get_value("Sales Invoice Item",
+                                                filters={"sales_order": sales_order},
+                                                fieldname=["parent"])
+    if sales_invoice_doc:
+        sales_invoice = frappe.get_doc("Sales Invoice", sales_invoice_doc)        
+        recipient = sales_invoice.contact_email
+        # Check if the recipient email is present
+        if recipient:
+                # Generate PDF content
+                pdf_content = get_sales_invoice_pdf(sales_invoice)
+                # Prepare the email content
+                email_subject = f"Sales Invoice {sales_invoice}"
+                email_message = f"Dear {sales_invoice.customer_name},\n\nPlease find attached your sales invoice.\n\nBest regards,\nYour Company Name"
+                # Create an attachment
+                attachment = {
+                        'fname': f"{sales_order}.pdf",
+                        'fcontent': pdf_content
+                }
+                try:
+                        # Send the email
+                        make(
+                                recipients=[recipient],
+                                subject=email_subject,
+                                content=email_message,
+                                attachments=[attachment],
+                                send_email=True
+                        )
+                        res["success_key"]=1
+                        return res
+                except Exception as e:
+                        res["success_key"]=0
+                        res['message'] = "Unable to send mail."    
+                        return res
+        else:
+              res["success_key"]=0
+              res['message'] = "Email not found."    
+              return res
+    else:
+          res["success_key"]=0
+          res['message'] = "Invoice not found."    
+          return res
+
+def get_sales_invoice_pdf(sales_invoice):
+    html = frappe.render_template('getpos/templates/pages/sales_invoice_email.html', context={'doc': sales_invoice})
+    pdf_content = get_pdf(html)
+    return pdf_content
+
+@frappe.whitelist(methods=["POST"])
+def validate_gift_card(gift_card):   
+        frappe.set_user("Administrator")
+        res = frappe._dict()
+        current_date = datetime.now().date()
+        gift_card_details = frappe.db.get_all("Gift Card", filters={"valid_upto": (">=", current_date),"code": gift_card.get("code"),"customer":gift_card.get("customer")},
+                                        fields=["gift_card_name", "discount_amount", "amount_balance", "valid_from", "valid_upto", "description"])
+        if gift_card_details:
+                if gift_card_details[0].amount_balance > 0:
+                        res['success_key'] = 1
+                        res['message'] = "success"
+                        res['gift_card']=gift_card_details
+                else:
+                        res['success_key'] = 1
+                        res['message'] = "Code is invalid"    
+        else:
+                res['success_key'] = 1
+                res['message'] = "Code is invalid"    
+        return res
+
+def create_sales_invoice_from_sales_order(doc,gift_card_code,discount_amount):
+    if (doc.custom_source == "WEB"):
+        pass
+    else:
+        sales_invoice = make_sales_invoice(doc.name)
+        sales_invoice.posting_date = doc.transaction_date
+        sales_invoice.posting_time = doc.transaction_time
+        sales_invoice.due_date = doc.transaction_date        
+        sales_invoice.update_stock = 1
+        if doc.custom_redeem_loyalty_points:
+            sales_invoice.redeem_loyalty_points = doc.custom_redeem_loyalty_points
+            sales_invoice.loyalty_points = doc.loyalty_points
+            sales_invoice.loyalty_amount = doc.loyalty_amount
+            sales_invoice.loyalty_program = doc.custom_loyalty_program
+            sales_invoice.loyalty_redemption_account = doc.custom_redemption_account
+        if doc.coupon_code:
+            sales_invoice.coupon_code=doc.coupon_code
+        if doc.custom_gift_card_code:
+            sales_invoice.discount_amount=doc.discount_amount
+            sales_invoice.apply_discount_on="Grand Total"
+            sales_invoice.grand_total=sales_invoice.grand_total -float(discount_amount)
+        sales_invoice.save(ignore_permissions=1)
+        sales_invoice.submit()
+        if gift_card_code:
+                frappe.db.sql("""
+                        UPDATE `tabSales Invoice`
+                        SET `grand_total` = %s,
+                        `discount_amount`=%s,
+                        `net_total`=%s,
+                        `outstanding_amount`=%s
+                        WHERE name = %s
+                """, (sales_invoice.grand_total -float(discount_amount),discount_amount,sales_invoice.net_total - float(discount_amount),sales_invoice.outstanding_amount -float(discount_amount), sales_invoice.name))           
+        grand_total=frappe.db.get_value('Sales Invoice', {'name': sales_invoice.name}, 'grand_total')
+        if grand_total > 0:
+              create_payment_entry(sales_invoice) 
+        else:
+              frappe.db.sql("""
+                        UPDATE `tabSales Invoice`
+                        SET `status` = %s                        
+                        WHERE name = %s
+                """, ("Paid",sales_invoice.name))      
+                           
+        # if gift_card_code and float(sales_invoice.grand_total) -float(discount_amount) > 0:
+        #       create_payment_entry(sales_invoice)
+        # elif doc.coupon_code and sales_invoice.grand_total > 0:
+        #       create_payment_entry(sales_invoice)
+        # else:
+        #       create_payment_entry(sales_invoice) 
+
+        resend_sales_invoice_email(doc.name)
+
+def create_payment_entry(doc):
+    if doc.mode_of_payment != 'Credit':
+        payment_entry = get_payment_entry("Sales Invoice", doc.name)
+        payment_entry.posting_date = doc.posting_date
+        payment_entry.mode_of_payment = doc.mode_of_payment
+        if doc.mode_of_payment == 'Cash':
+                account = frappe.db.get_value('Account', 
+                        {
+                                'disabled': 0,
+                                'account_type': 'Cash',
+                                'account_name': 'Cash'
+                        },
+                        'name')
+                payment_entry.paid_to = account
+        if doc.mode_of_payment == 'M-Pesa':
+                payment_entry.reference_no = doc.mpesa_no
+                payment_entry.reference_date = doc.posting_date
+        payment_entry.save()
+        payment_entry.submit()
 

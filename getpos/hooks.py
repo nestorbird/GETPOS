@@ -135,6 +135,10 @@ doctype_js = {
 # override_doctype_class = {
 # 	"ToDo": "custom_app.overrides.CustomToDo"
 # }
+override_doctype_class = {
+	"Sales Invoice": "getpos.overrides.sales_invoice.Custom"
+}
+
 
 # Document Events
 # ---------------
@@ -144,13 +148,13 @@ doc_events = {
 	# 	"validate": "getpos.getpos.hooks.warehouse.validate_hub_manager"
 	# },
 	"Sales Order":{
-		"on_submit": "getpos.getpos.hooks.sales_order.on_submit",
+		# "on_submit": "getpos.getpos.hooks.sales_order.on_submit",
 		"validate": "getpos.getpos.hooks.sales_order.validate"
 	},
-	"Sales Invoice":{
-		"on_submit": ["getpos.getpos.hooks.sales_invoice.on_submit","getpos.getpos.hooks.sales_invoice.send_email_on_invoice"]
+	# "Sales Invoice":{
+	# 	"on_submit": ["getpos.getpos.hooks.sales_invoice.on_submit","getpos.getpos.hooks.sales_invoice.send_email_on_invoice"]
 
-	},
+	# },
 	"Item Price":{
 		"validate": "getpos.getpos.hooks.item_price.validate_item_price"
 	},
@@ -185,13 +189,13 @@ after_request = "getpos.getpos.api.after_request"
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
+scheduler_events = {
 # 	"all": [
 # 		"nbpos.tasks.all"
 # 	],
-# 	"daily": [
-# 		"nbpos.tasks.daily"
-# 	],
+	"daily": [
+			"getpos.getpos.schedulers.expired_gift_card_settlement.create_gift_card_journal_entries"
+		]
 # 	"hourly": [
 # 		"nbpos.tasks.hourly"
 # 	],
@@ -201,7 +205,7 @@ after_request = "getpos.getpos.api.after_request"
 # 	"monthly": [
 # 		"nbpos.tasks.monthly"
 # 	]
-# }
+}
 
 # Testing
 # -------

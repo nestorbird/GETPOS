@@ -33,47 +33,6 @@ def get_stock_qty(item,cost_center=None):
 
     
 
-# def get_combo_items(name):
-#     combo_items = frappe.db.sql(''' Select
-#     pbi.item_code , 
-#     pbi.description , 
-#     pbi.qty , 
-#     pbi.uom
-#     from `tabProduct Bundle` pb , `tabProduct Bundle Item`  pbi
-#     Where pbi.parent = pb.name and pbi.parent = %s
-#     ''',(name), as_dict = True)
-
-#     if combo_items:          
-#         return combo_items
-#     else:
-#         return []
-    
-# def get_combo_items(item_code,cost_center=None):
-#     # For Adding Extra Items in Item
-#     all_combo_items=frappe.db.sql(""" SELECT c.combo_heading as name,c.count,ci.item,ci.item_name,ci.item_price from `tabCombo Item` ci LEFT JOIN `tabCombo` c ON ci.parent=c.name WHERE c.parent_combo_item = '{}'  GROUP BY c.name,ci.name
-# """.format(item_code),as_dict=1)
-    
-#     # Initialize an empty list for the output
-#     output_data = []
-
-#     # Create a dictionary to group items by 'name'
-#     grouped_data = {}
-#     for entry in all_combo_items:
-#         name = entry['name']
-#         item = entry['item']
-#         heading="Select {}".format(entry['count'] if entry['count'] else 0)
-#         if name not in grouped_data:
-#             grouped_data[name] = {'name': name, 'description':heading,'options': []}
-#         grouped_data[name]['options'].append(
-#             {
-#                 'item': item,'item_name':entry['item_name'],'price':entry.price if entry.price else get_price_list(item),
-#                 'stock_qty':get_stock_qty({'item_code':item},cost_center) if get_stock_qty({'item_code':item},cost_center) else 0,
-#                 'item_tax':get_item_taxes(item)})
-
-#     output_data = list(grouped_data.values())
-    
-#     return output_data
-
 def get_combo_items(item_code, cost_center=None):
     base_url = frappe.db.get_single_value('nbpos Setting', 'base_url')
     all_combo_items = frappe.db.sql("""
@@ -121,93 +80,12 @@ def get_combo_items(item_code, cost_center=None):
 
     output_data = list(grouped_data.values())
     
-    return output_data
-
-
-    
-# @frappe.whitelist()
-# def get_updated_items(from_date=None, item_group=None, extra_item_group=None, item_code=None,item_type=None,item_order_by=None,cost_center=None,source=None):
-   
-#     data = []
-#     filters = {'is_group':0,'name':['not in',('Extra')],
-#                                 'parent_item_group':['not in',('Extra')]}
-    # if item_order_by=='desc':
-    #     item_order_by='item_name desc'
-    # else:
-    #     item_order_by='item_name asc'
-#     if from_date:
-#         filters.update({'modified':['>=',from_date]})
-
-#     if item_group:
-#         filters.update({'name': item_group})
-    
-
-#     all_groups = frappe.get_all('Item Group',filters=filters,fields=['name','image'],order_by='name asc')
-#     for group in all_groups:
-#         group_dict = {}
-#         item_group_image = f"{base_url}{group.get('image')}" if group.get('image') else ''
-                    
-
-#         item_filters = {'item_group':group.name,'disabled':0,'custom_item':['not in',('Attribute/Modifier')]}
-        
-#         if item_code and not extra_item_group :
-
-#             item_filters.update({ 'name': ['like', '%' + item_code +'%']})
-        
-#         if item_type :
-#             item_filters.update({ 'custom_item_type': item_type })
-            
-#         if source:
-#             if source=="WEB":
-#                 item_filters.update({ 'custom_web': 1 })
-#             elif source=="KIOSK":
-#                 item_filters.update({ 'custom_kiosk': 1 })
-#             elif source=="POS":
-#                 item_filters.update({ 'custom_pos': 1 })
-        
-
-#         all_items = frappe.get_all('Item',filters = item_filters, fields=['*'],order_by=item_order_by)
-
-#         if all_items:
-#             group_dict.update({'item_group':group.name,
-#             'item_group_image':item_group_image, 'items':[]}) 
-#             for item in all_items:
-#                 attributes = get_attributes_items(item.name,cost_center)
-
-#                 if cost_center:
-#                     cost_center_exists = frappe.db.exists('Item Cost Center', {
-#                         'parent': item.name,
-#                         'cost_center': cost_center,
-#                         'is_available': 1  
-#                     })
-#                     if not cost_center_exists:
-#                         continue
-#                 image = f"{base_url}{item.image}" if item.get('image') else ''
-#                 item_taxes = get_item_taxes(item.name)
-#                 combo_items = get_combo_items(item.name)
-                
-
-#                 allergens=[]
-#                 item_dict = {'id':item.name,'name':item.item_name, 'combo_items': combo_items, 'attributes':attributes, 'image': image
-#                 ,"tax":item_taxes,'descrption':item.description, 'estimated_time': item.custom_estimated_time,'item_type':item.custom_item_type,'allergens':allergens}
-#                 item_price = flt(get_price_list(item.name))                
-#                 if item_price:
-#                     item_dict.update({'product_price':item_price})
-#                 allergens.append(get_allergens(item.name)) 
-                
-
-#                 if item.is_stock_item:
-#                     item_stock = get_stock_qty(item,cost_center)
-#                     item_dict.update({'stock':item_stock})
-                    
-#                 group_dict.get('items').append(item_dict)
-#             data.append(group_dict)
-#     return data
+    return output_data   
 
 
 
 @frappe.whitelist(allow_guest=True)
-def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=None, item_type=None, item_order_by=None, cost_center=None,source=None):
+def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=None, item_type=None, item_order_by=None, cost_center=None,source=None,barcode=None):
     data = []
     filters = {'is_group': 0, 'name': ['not in', ('Extra')],
                'parent_item_group': ['not in', ('Extra')]}
@@ -228,7 +106,12 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
 
 
     for group in all_groups:
-        group_dict = {'item_group': group.name, 'item_group_image': f"{base_url}{group.get('image')}" if group.get('image') else '', 'items': []}
+        if  group.get('image') is not None and "https" not in group.get('image'):
+            item_group_image = f"{base_url}{group.get('image')}" if group.get('image') else ''
+        else:
+            item_group_image = f"{group.get('image')}" if group.get('image') else ''  
+
+        group_dict = {'item_group': group.name, 'item_group_image': item_group_image, 'items': []}
 
         #### Getting Items ####
         item_filters = {'item_group':group.name,'disabled':0,'custom_item':['not in',('Attribute/Modifier')]}
@@ -251,8 +134,21 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
 
         all_items = frappe.get_all('Item', filters=item_filters, fields=['*'],order_by=item_order_by)
         for item in all_items:
+            # Check if the item is available from barcode
+            if barcode:
+                barcode_exists=frappe.db.exists('Item Barcode', {
+                    'barcode': barcode,
+                    'parent':item.item_code
+                })
+                if not barcode_exists:
+                    continue
+
             attributes = get_attributes_items(item.name,cost_center)
-            image = f"{base_url}{item.image}" if item.get('image') else ''
+            if  item.get('image') is not None and "https" not in item.get('image'):
+                image = f"{base_url}{item.get('image')}" if item.get('image') else ''
+            else:
+                image = f"{item.get('image')}" if item.get('image') else ''  
+
             item_taxes = get_item_taxes(item.name)
             combo_items = get_combo_items(item.name,cost_center)
 
@@ -272,36 +168,7 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
             }
             item_price = flt(get_price_list(item.name))
             if item_price:
-                item_dict.update({'product_price': item_price})
-
-            # # Get related items and their taxes
-            # related_items_data = get_related_items(item.name)
-            # nested_related_items_list = []
-
-            # for related_item in related_items_data:
-            #     related_item_taxes = get_item_taxes(related_item['name'])
-            #     related_item['tax'] = related_item_taxes
-
-            #     # Get nested related items and their taxes
-            #     nested_related_items_data = get_related_items(related_item['name'])
-            #     nested_related_items = []
-
-            #     for nested_related_item in nested_related_items_data:
-            #         nested_related_item_taxes = get_item_taxes(nested_related_item['name'])
-            #         nested_related_item['tax'] = nested_related_item_taxes
-            #         nested_related_items.append(nested_related_item)
-
-            #     if not nested_related_items:
-            #         related_item['related_items'] = [[]]
-            #     else:
-            #         related_item['related_items'] = [nested_related_items]
-
-            #     nested_related_items_list.append(related_item)
-
-            # if not nested_related_items_list:
-            #     item_dict['related_items'] = [[]]
-            # else:
-            #     item_dict['related_items'] = [nested_related_items_list]
+                item_dict.update({'product_price': item_price})         
 
             allergens.extend(get_allergens(item.name))
             
@@ -312,44 +179,7 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
             group_dict.get('items').append(item_dict)
         if len(group_dict.get('items'))>0:
             data.append(group_dict)
-    return data
-
-    #         # # Checking Stock
-    #         item_stock = {'warehouse': -1, 'stock_qty': -1}
-    #         bundle_bin_qty = 1000000
-    #         if item.is_stock_item:
-    #             item_stock = get_stock_qty(item)
-    #             item_dict.update(item_stock)
-    #         # getting the reserve qty of child items in bundle so that end product can be calculated as per the ready-to-use qty
-    #         elif len(item_dict.get("combo_items")) > 0:
-    #             for combo_item in item_dict.get("combo_items"):
-    #                 item_bin_qty = get_stock_qty(combo_item)
-    #                 combo_item.update(item_bin_qty)
-    #                 available_qty = item_bin_qty.get("stock_qty") / combo_item.get("qty")
-    #                 if bundle_bin_qty > available_qty and frappe.get_value("Item", combo_item.item_code, "is_stock_item"):
-    #                     bundle_bin_qty = available_qty
-    #             item_stock["warehouse"] = item_dict.get("combo_items")[0].get("warehouse")
-    #             item_stock["stock_qty"] = bundle_bin_qty
-    #             item_dict.update(item_stock)
-
-    #         if item_order_by:
-    #             all_items_data['items'].append(item_dict)
-    #         else:
-    #             group_dict['items'].append(item_dict)
-
-    #     # Exclude empty item groups when item_code or item_type filter is applied individually
-    #     if not item_order_by and (item_code or item_type):
-    #         if group_dict['items']:
-    #             data.append(group_dict)
-    #     elif not item_order_by:
-    #         data.append(group_dict)
-
-    # if item_order_by:
-    #     all_items_data['items'] = sorted(all_items_data['items'], key=lambda x: x['name'], reverse=(item_order_by == 'desc'))
-    #     data.append(all_items_data)
-
-    # return data
-
+    return data    
 
 
 def get_related_items_with_tax(item_name):
@@ -428,48 +258,8 @@ def get_attributes_items(item_code,cost_center=None):
                 'item_tax':get_item_taxes(item)})
 
     # Convert grouped data to the desired output format
-    output_data = list(grouped_data.values())
-    
-    # attributes = []
-    # attributes_dict = {}
-    # product_price_addition = 0
-    # if all_extra_items:
-    #     for extra_item in all_extra_items:
-    #         extra_item_doc = frappe.get_cached_doc('Item',extra_item.item)
-    #         extra_item_price = get_price_list(extra_item.item)
-    #         item_tax = get_item_taxes(extra_item.item)
-
-    #         #Checking Stock
-    #         extra_item_stock = ''
-    #         if extra_item_doc.is_stock_item:
-    #             extra_item_stock = get_stock_qty(extra_item_doc)
-    #         # print(attributes_dict,"====888")
-    #         if not attributes_dict.get(extra_item_doc.name):
-    #             # Checking item group
-    #             moq, select_type = frappe.db.get_value('Item Group',extra_item_doc.item_group,['moq','select_type'])
-
-    #             attributes_dict.update({
-    #                             'type': select_type,'moq':moq,
-    #                             'options': [{ 'id':  extra_item_doc.name, 'name':extra_item_doc.item_name,
-    #                             'tax':item_tax if item_tax  else '',
-    #                             'price': extra_item_price if extra_item_price else '','selected':True,
-    #                             'warehouse':extra_item_stock.get('warehouse') if extra_item_stock else -1,
-    #                             'stock_qty':extra_item_stock.get('stock_qty') if extra_item_stock else -1}],
-    #                             })
-    #             product_price_addition += flt(extra_item_price)
-    #         else:
-    #             attributes_dict.get(extra_item_doc.item_group).get('options').append({'id': extra_item_doc.name,
-    #                                 'name': extra_item_doc.item_name, 'selected': False, 
-    #                                 'price':extra_item_price if extra_item_price else '',
-    #                                 'warehouse':extra_item_stock.get('warehouse'),'stock_qty':extra_item_stock.get('stock_qty')
-    #                                 })
-            
-    # if attributes_dict:
-    #     print(attributes_dict)
-    #     # print(attributes_dict,"88888")
-    #     for x in attributes_dict.items():
-    #         attributes.append(x[1])
-    # print(attributes,"++++++++++")
+    output_data = list(grouped_data.values())   
+   
     return output_data
 
 
