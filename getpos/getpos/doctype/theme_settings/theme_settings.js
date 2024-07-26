@@ -11,6 +11,11 @@ frappe.ui.form.on('Theme Settings', {
 			.then(doc => {
 				frm.set_value({take_away: doc.message['name']})
 			})
+		frappe.db.get_value("Customer", {"customer_name": "Guest Customer"}, "name")
+			.then(doc => {
+				frm.set_value({guest_customer: doc.message['name']})
+			})
+		
 
 	}
 });

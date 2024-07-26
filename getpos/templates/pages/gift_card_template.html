@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gift Card</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden; /* Ensure content does not overflow */
+        }
+        .header {
+            text-align: center;
+            padding: 20px 0;
+        }
+        .header img {
+            max-width: 100px;
+        }
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+        .content h1 {
+            color: #333333;
+            margin-bottom: 10px;
+        }
+        .content p {
+            color: #666666;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        .gift-card-details {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #ff6600;
+        }
+        .expiry-date {
+            color: #999999;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px 0;
+            color: #999999;
+            font-size: 14px;
+            border-top: 1px solid #dddddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <h1>Congratulations, {{ doc.customer or 'Customer' }}!</h1>
+            <p>Use the following code to redeem your gift card:</p>
+            <div class="gift-card-details">{{ doc.code or 'Giftcard24' }}</div>
+            <div class="expiry-date">
+                <p>Valid Upto: {{ doc.valid_upto if doc.valid_upto else 'Not specified' }}</p>
+            </div>
+        </div>
+        <div class="footer">
+            <p>Thank you for being a valued customer!</p>
+        </div>
+    </div>
+</body>
+</html>
