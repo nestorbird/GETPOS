@@ -20,7 +20,7 @@
   },
   {
    "fieldname": "price",
-   "fieldtype": "Data",
+   "fieldtype": "Currency",
    "in_list_view": 1,
    "label": "Price"
   },
@@ -35,7 +35,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-07-10 11:51:29.506404",
+ "modified": "2024-07-29 14:37:39.322633",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Attribute Items",
