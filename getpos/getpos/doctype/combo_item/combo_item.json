@@ -20,7 +20,7 @@
   },
   {
    "fieldname": "item_price",
-   "fieldtype": "Data",
+   "fieldtype": "Currency",
    "in_list_view": 1,
    "label": "Item Price"
   },
@@ -35,7 +35,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-07-11 07:33:44.963076",
+ "modified": "2024-07-29 14:38:40.523230",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Combo Item",

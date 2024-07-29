@@ -1473,7 +1473,7 @@ def get_location():
         filter_condition = f'%{body.get("search_location")}%'
         return frappe.db.sql("""
             SELECT DISTINCT custom_location
-            FROM `tabCost Center` WHERE custom_location LIKE %s
+            FROM `tabCost Center` WHERE disabled=0 and custom_location LIKE %s
             ORDER BY custom_location ASC;
             """, (filter_condition,) ,as_dict=1)
 
@@ -1496,7 +1496,7 @@ def get_location():
     else:
         return frappe.db.sql("""
             SELECT Distinct(custom_location)
-            FROM `tabCost Center` WHERE custom_location is NOT NULL
+            FROM `tabCost Center` WHERE custom_location is NOT NULL and disabled=0
             ORDER BY custom_location ASC;
             """,as_dict=1)
 
