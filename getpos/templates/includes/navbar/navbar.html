@@ -1,7 +1,7 @@
 <header class="w-full mx-auto duration-100 ease-in flex-none sticky lg:bg-white top-0 transition-all z-40"
 id="header">
 <div
-	class="w-full mx-auto max-sm:w-full md:max-w-7xl lg:flex lg:max-w-7xl lg:py-3.5 max-md:max-w-7xl md:justify-between py-2">
+	class="w-full mx-auto max-sm:w-full md:max-w-7xl lg:flex lg:max-w-7xl max-md:max-w-7xl md:justify-between">
 	<div class="flex justify-between">
 		<a href="/" class="flex 2xl:lg:mt-0 items-center lg:-mt-1">
 			<img src="/assets/getpos/images/pos-logo.webp" alt="GETPOS"
@@ -47,10 +47,10 @@ id="header">
 		class="w-full lg:w-auto h-[calc(100vh-72px)] items-center lg:bg-transparent lg:flex lg:h-auto lg:mx-5 lg:overflow-visible overflow-y-auto hidden-mobile">
 		<ul class="flex flex-col lg:flex-row lg:self-center lg:w-auto nav-links text-lg w-full laptop-view">
 			<li class="">
-				<a class="flex py-3 no-underline items-center md:px-4 nav-links xl:px-4 inter hover-highlight" href="/about-us" >About us</a>
+				<a class="flex py-2.5 no-underline items-center md:px-4 nav-links xl:px-4 inter hover-highlight" href="/about-us" >About us</a>
 			</li>
 			<li class="mb-dropdown" data-modal-id="modal1">
-			   <button class="flex py-3 no-underline items-center md:px-3 nav-links xl:px-4 inter" id="solutions-link" data-modal-id="modal1">Solutions</button>
+			   <button class="flex py-2.5 no-underline items-center md:px-3 nav-links xl:px-4 inter" id="solutions-link" data-modal-id="modal1">Solutions</button>
 
 			   <div id="modal1" class="fixed hidden-modal z-50 mt-99px">
 				   <div class="flex items-center justify-center">
@@ -59,7 +59,7 @@ id="header">
 						   <div class="modal-content">
 							   <div
 								   class="items-stretch grid md:grid-cols-2 lg:grid-cols-3 sm:grid-cols-1 nav-grid">
-								   <a href="/">
+								   <a href="/retail">
 								   <div class="flex gap-8">
 									   <div class="modal-img">
 										   <img src="/assets/getpos/images/solution-icon1.webp"
@@ -67,8 +67,7 @@ id="header">
 									   </div>
 									   <div class="modal-text">
 										   <h2 class="inter">Retail</h2>
-										   <p class="inter">Lorem ipsum dolor sit amet,
-											   consectetur&nbsp;<br>adipiscing elit</p>
+										   <p class="inter"> Sell products in-store & on the go with cloud-based POS on any device.</p>
 									   </div>
 								   </div>
 								</a>
@@ -79,8 +78,7 @@ id="header">
 									   </div>
 									   <div class="modal-text">
 										   <h2 class="inter">Food</h2>
-										   <p class="inter">Lorem ipsum dolor sit amet,
-											   consectetur&nbsp;<br>adipiscing elit</p>
+										   <p class="inter">Manage orders, payments, inventory & simplify restaurant operations.</p>
 									   </div>
 								   </div>
 								   <div class="flex gap-8">
@@ -90,8 +88,7 @@ id="header">
 									   </div>
 									   <div class="modal-text">
 										   <h2 class="inter">Booking</h2>
-										   <p class="inter">Lorem ipsum dolor sit amet,
-											   consectetur&nbsp;<br>adipiscing elit</p>
+										   <p class="inter">Make organized communication, centralizes payments and efficient staff management.</p>
 									   </div>
 								   </div>
 							   </div>
@@ -100,11 +97,11 @@ id="header">
 				   </div>
 			   </div>
 			</li>
-			<li class="mb-dropdown" data-modal-id="modal2">
-			   <button class="flex py-3 no-underline items-center md:px-3 nav-links xl:px-4 inter"
+			<li data-modal-id="modal2">
+			   <button class="flex py-2.5 no-underline items-center md:px-3 nav-links xl:px-4 inter"
 				   id="features-link" data-modal-id="modal2">Features</button>
 
-			   <div id="modal2" class="fixed hidden-modal z-50 mt-99px">
+			   <!-- <div id="modal2" class="fixed hidden-modal z-50 mt-99px">
 				   <div class="flex items-center justify-center">
 					   <div
 						   class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all w-auto max-w-none">
@@ -170,13 +167,13 @@ id="header">
 						   </div>
 					   </div>
 				   </div>
-			   </div>
+			   </div> -->
 			</li>
-			<li class="mb-dropdown" data-modal-id="modal3">
-			   <button class="flex py-3 no-underline items-center md:px-3 nav-links xl:px-4 inter"
+			<li data-modal-id="modal3">
+			   <button class="flex py-2.5 no-underline items-center md:px-3 nav-links xl:px-4 inter"
 				   id="resources-link" data-modal-id="modal3">Resources</button>
 
-			   <div id="modal3" class="fixed hidden-modal z-50 mt-99px">
+			   <!-- <div id="modal3" class="fixed hidden-modal z-50 mt-99px">
 				   <div class="flex items-center justify-center">
 					   <div
 						   class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all w-auto max-w-none">
@@ -221,13 +218,13 @@ id="header">
 						   </div>
 					   </div>
 				   </div>
-			   </div>
+			   </div> -->
 			</li>
-			<li class="mb-dropdown" data-modal-id="modal4">
-			   <button class="flex py-3 no-underline items-center md:px-3 nav-links xl:px-4 inter"
+			<li data-modal-id="modal4">
+			   <button class="flex py-2.5 no-underline items-center md:px-3 nav-links xl:px-4 inter"
 				   id="company-link" data-modal-id="modal4">Company</button>
 
-			   <div id="modal4" class="fixed hidden-modal z-50 mt-99px">
+			   <!-- <div id="modal4" class="fixed hidden-modal z-50 mt-99px">
 				   <div class="flex items-center justify-center">
 					   <div
 						   class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all w-auto max-w-none">
@@ -282,7 +279,7 @@ id="header">
 						   </div>
 					   </div>
 				   </div>
-			   </div>
+			   </div> -->
 			</li>
 			<li class="mb-dropdown mobile-screen">
 				<button class="header-btn inter btn-hover" data-bs-target="#contactUs" data-bs-toggle="modal"
@@ -337,78 +334,78 @@ aria-hidden="true">
 <!-- Script -->
 
 <script>
-// function openModal(modalId) {
-//     closeAllModals();  
-//     var modal = document.getElementById(modalId);
-//     modal.classList.remove('hidden-modal');
+function openModal(modalId) {
+    closeAllModals();  
+    var modal = document.getElementById(modalId);
+    modal.classList.remove('hidden-modal');
 
-//     var button = document.querySelector('button[data-modal-id="' + modalId + '"]');
-//     if (button) {
-//         button.classList.add('highlight');
-//     }
-// }
+    var button = document.querySelector('button[data-modal-id="' + modalId + '"]');
+    if (button) {
+        button.classList.add('highlight');
+    }
+}
 
-// function closeModal(modalId) {
-//     var modal = document.getElementById(modalId);
-//     modal.classList.add('hidden-modal');
+function closeModal(modalId) {
+    var modal = document.getElementById(modalId);
+    modal.classList.add('hidden-modal');
 
-//     // Remove highlight class from the button
-//     var button = document.querySelector('button[data-modal-id="' + modalId + '"]');
-//     if (button) {
-//         button.classList.remove('highlight');
-//     }
-// }
+    // Remove highlight class from the button
+    var button = document.querySelector('button[data-modal-id="' + modalId + '"]');
+    if (button) {
+        button.classList.remove('highlight');
+    }
+}
 
-// function closeAllModals() {
-//     document.querySelectorAll('.mb-dropdown .fixed').forEach(function(modal) {
-//         modal.classList.add('hidden-modal');
-//     });
+function closeAllModals() {
+    document.querySelectorAll('.mb-dropdown .fixed').forEach(function(modal) {
+        modal.classList.add('hidden-modal');
+    });
 
-//     document.querySelectorAll('.mb-dropdown button').forEach(function(button) {
-//         button.classList.remove('highlight');
-//     });
-// }
+    document.querySelectorAll('.mb-dropdown button').forEach(function(button) {
+        button.classList.remove('highlight');
+    });
+}
 
-// function setupEventListeners() {
-//     var isMobile = window.matchMedia("(max-width: 1023px)").matches;
-//     var dropdowns = document.querySelectorAll('.mb-dropdown');
+function setupEventListeners() {
+    var isMobile = window.matchMedia("(max-width: 1023px)").matches;
+    var dropdowns = document.querySelectorAll('.mb-dropdown');
 
-//     dropdowns.forEach(function(dropdown) {
-//         var modalId = dropdown.getAttribute('data-modal-id');
-//         var button = dropdown.querySelector('button');
+    dropdowns.forEach(function(dropdown) {
+        var modalId = dropdown.getAttribute('data-modal-id');
+        var button = dropdown.querySelector('button');
 
-//         // Remove previous event listeners if any
-//         var newButton = button.cloneNode(true);
-//         button.parentNode.replaceChild(newButton, button);
-//         button = newButton;
+        // Remove previous event listeners if any
+        var newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+        button = newButton;
 
-//         if (isMobile) {
-//             button.addEventListener('click', function() {
-//                 var modal = document.getElementById(modalId);
-//                 if (modal.classList.contains('hidden-modal')) {
-//                     openModal(modalId);
-//                 } else {
-//                     closeModal(modalId);
-//                 }
-//             });
-//         } else {
-//             dropdown.addEventListener('mouseover', function() {
-//                 openModal(modalId);
-//             });
-//             dropdown.addEventListener('mouseout', function() {
-//                 closeModal(modalId);
-//             });
-//         }
-//     });
-// }
+        if (isMobile) {
+            button.addEventListener('click', function() {
+                var modal = document.getElementById(modalId);
+                if (modal.classList.contains('hidden-modal')) {
+                    openModal(modalId);
+                } else {
+                    closeModal(modalId);
+                }
+            });
+        } else {
+            dropdown.addEventListener('mouseover', function() {
+                openModal(modalId);
+            });
+            dropdown.addEventListener('mouseout', function() {
+                closeModal(modalId);
+            });
+        }
+    });
+}
 
-// window.addEventListener('load', function() {
-//     document.querySelectorAll('.mb-dropdown .fixed').forEach(function(modal) {
-//         modal.classList.add('hidden-modal');
-//     });
-//     setupEventListeners();
-// });
-// window.addEventListener('resize', setupEventListeners);
+window.addEventListener('load', function() {
+    document.querySelectorAll('.mb-dropdown .fixed').forEach(function(modal) {
+        modal.classList.add('hidden-modal');
+    });
+    setupEventListeners();
+});
+window.addEventListener('resize', setupEventListeners);
 
 document.addEventListener('DOMContentLoaded', () => {
     const toggleButton = document.querySelector('.toggle-mobile');
@@ -422,4 +419,3 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
-
