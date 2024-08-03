@@ -13,7 +13,8 @@
   "mandatory",
   "count",
   "section_break_naza7",
-  "attribute_items"
+  "attribute_items",
+  "cost_center"
  ],
  "fields": [
   {
@@ -55,11 +56,17 @@
   {
    "fieldname": "section_break_naza7",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-07-10 11:46:40.712189",
+ "modified": "2024-08-03 14:01:38.884132",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Attributes",
