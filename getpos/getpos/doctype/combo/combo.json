@@ -13,7 +13,8 @@
   "mandatory",
   "count",
   "section_break_lolck",
-  "combo_item"
+  "combo_item",
+  "cost_center"
  ],
  "fields": [
   {
@@ -55,11 +56,17 @@
   {
    "fieldname": "section_break_lolck",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-07-11 07:40:12.184496",
+ "modified": "2024-08-03 14:03:47.983933",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Combo",

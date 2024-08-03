@@ -14,7 +14,8 @@
   "estimated_time",
   "status",
   "creation1",
-  "source"
+  "source",
+  "cost_center"
  ],
  "fields": [
   {
@@ -57,11 +58,17 @@
    "fieldname": "source",
    "fieldtype": "Data",
    "label": "Source"
+  },
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-05-30 07:22:09.696844",
+ "modified": "2024-08-03 13:13:33.561592",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Kitchen-Kds",

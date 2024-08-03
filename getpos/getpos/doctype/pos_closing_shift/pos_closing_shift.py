@@ -90,6 +90,7 @@ def get_pos_invoices(pos_opening_shift):
 
 @frappe.whitelist()
 def make_closing_shift_from_opening(opening_shift):
+    res = frappe._dict()
     if isinstance(opening_shift, str):
         opening_shift = json.loads(opening_shift)
     submit_printed_invoices(opening_shift.get("name"))
@@ -163,7 +164,30 @@ def make_closing_shift_from_opening(opening_shift):
     closing_shift.set("payment_reconciliation", payments)
     closing_shift.set("taxes", taxes)
 
-    return closing_shift
+
+    closing_balance = frappe.db.sql(
+            """SELECT   
+            IFNULL(SUM(CASE WHEN si.is_return = 0 THEN sii.base_net_amount ELSE 0 END),0) AS sales_order_amount,
+            IFNULL(SUM(CASE WHEN si.is_return = 1 THEN sii.base_net_amount ELSE 0 END),0) AS return_order_amount,
+            IFNULL(SUM(CASE WHEN si.is_return = 0 and si.mode_of_payment="Cash" THEN si.base_net_total ELSE 0 END) + SUM(CASE WHEN si.is_return = 1 and si.mode_of_payment="Cash" THEN si.base_net_total ELSE 0 END),0) AS cash_collected,
+            IFNULL(SUM(CASE WHEN si.is_return = 0 and si.mode_of_payment="Credit" THEN si.base_net_total ELSE 0 END) + SUM(CASE WHEN si.is_return = 1 and si.mode_of_payment="Credit" THEN si.base_net_total ELSE 0 END),0) AS credit_collected,           
+            IFNULL(SUM(CASE WHEN si.is_return = 0 THEN si.base_net_total ELSE 0 END) + SUM(CASE WHEN si.is_return = 1 THEN si.base_net_total ELSE 0 END),0) AS total_sales_order_amount
+        FROM 
+            `tabPOS Opening Shift` pos
+            LEFT JOIN `tabSales Order` so ON pos.name = so.custom_pos_shift
+            LEFT JOIN `tabSales Invoice Item` sii ON sii.sales_order = so.name
+            LEFT JOIN `tabSales Invoice` si ON si.name = sii.parent
+            LEFT JOIN `tabSales Invoice Payment` sip ON si.name = sip.parent
+            LEFT JOIN `tabPOS Opening Shift Detail` posd ON pos.name = posd.parent
+        WHERE          
+             pos.name=%s""",
+            (opening_shift.get("name")), as_dict=True
+        )
+    
+    # res['closing_shift']=closing_shift
+    res['opening_balance']=frappe.db.get_value("POS Opening Shift Detail", {"parent":opening_shift.get("name")}, ["mode_of_payment","amount"])
+    res['Shift_Detail']=closing_balance
+    return res
 
 
 @frappe.whitelist()

@@ -182,38 +182,38 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
     return data    
 
 
-def get_related_items_with_tax(item_name):
-    related_items_data = get_related_items(item_name)
-    related_items = []
+# def get_related_items_with_tax(item_name):
+#     related_items_data = get_related_items(item_name)
+#     related_items = []
 
-    for related_item in related_items_data:
-        related_item_taxes = get_item_taxes(related_item['name'])
-        related_item['tax'] = related_item_taxes
+#     for related_item in related_items_data:
+#         related_item_taxes = get_item_taxes(related_item['name'])
+#         related_item['tax'] = related_item_taxes
 
-        # Fetch related items for the related item recursively
-        related_item['related_items'] = get_related_items_with_tax(related_item['name'])
+#         # Fetch related items for the related item recursively
+#         related_item['related_items'] = get_related_items_with_tax(related_item['name'])
 
-        related_items.append(related_item)
+#         related_items.append(related_item)
 
-    return related_items
+#     return related_items
 
 
-def get_related_items(item_name):
-    related_items=[]
-    get_related_items_=frappe.get_all('Related Item',filters={"parent": item_name},fields=['item'])
-    if get_related_items_:
-        for related_item in get_related_items_:
-            sub_related_items=[]
-            allergens=[]
-            item_detail=frappe.get_value('Item',related_item.get('item'),['name','description','image','custom_estimated_time','item_name','custom_item_type'])
-            if item_detail:
-                related_item_price = flt(get_price_list(related_item.get('item'))) 
-                allergens.append(get_allergens(item_detail[4]))
-                related_group_items={'id':item_detail[0],'name':item_detail[4],'description':item_detail[1],'image':f"{base_url}{item_detail[2]}",'estimated_time': item_detail[3],'item_type':item_detail[5],'product_price':related_item_price,'allergens':allergens,'related_items':sub_related_items}
-                sub_related_items.append(get_related_items(item_detail[0]))       
-            related_items.append(related_group_items)
+# def get_related_items(item_name):
+#     related_items=[]
+#     get_related_items_=frappe.get_all('Related Item',filters={"parent": item_name},fields=['item'])
+#     if get_related_items_:
+#         for related_item in get_related_items_:
+#             sub_related_items=[]
+#             allergens=[]
+#             item_detail=frappe.get_value('Item',related_item.get('item'),['name','description','image','custom_estimated_time','item_name','custom_item_type'])
+#             if item_detail:
+#                 related_item_price = flt(get_price_list(related_item.get('item'))) 
+#                 allergens.append(get_allergens(item_detail[4]))
+#                 related_group_items={'id':item_detail[0],'name':item_detail[4],'description':item_detail[1],'image':f"{base_url}{item_detail[2]}",'estimated_time': item_detail[3],'item_type':item_detail[5],'product_price':related_item_price,'allergens':allergens,'related_items':sub_related_items}
+#                 sub_related_items.append(get_related_items(item_detail[0]))       
+#             related_items.append(related_group_items)
 
-    return related_items
+#     return related_items
 
 def get_allergens(item_name):
     allergens=[]

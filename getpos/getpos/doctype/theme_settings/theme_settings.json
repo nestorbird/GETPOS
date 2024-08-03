@@ -19,7 +19,6 @@
   "lightgrey",
   "lightestgreytextcolor",
   "seagreenprimary",
-  "default_currency",
   "guest_customer",
   "print_receipt_promotion",
   "column_break_pcle3",
@@ -225,12 +224,6 @@
    "label": "Banner Image"
   },
   {
-   "fieldname": "default_currency",
-   "fieldtype": "Data",
-   "label": "Default Currency",
-   "read_only": 1
-  },
-  {
    "fieldname": "api_token",
    "fieldtype": "Data",
    "label": "Api Token"
@@ -263,7 +256,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-07-25 13:20:26.126491",
+ "modified": "2024-08-02 12:17:37.456198",
  "modified_by": "Administrator",
  "module": "getpos",
  "name": "Theme Settings",

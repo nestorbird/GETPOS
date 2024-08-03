@@ -429,20 +429,21 @@ def add_items_in_order(sales_order, items, order_list):
                         "custom_is_attribute_item":item.get("custom_is_attribute_item"),
                         "custom_is_combo_item":item.get("custom_is_combo_item"),
                         "allow_zero_evaluation_rate":item.get("allow_zero_evaluation_rate"),                    
-                        "item_tax_template": item_tax_template if item_tax_template else ""                
+                        "item_tax_template": item_tax_template if item_tax_template else "" ,
+                        "custom_ca_id":item.get("custom_ca_id")                
                 })
 
-                if item.get("sub_items"):
-                        for extra_item in item.get("sub_items"):
-                              if extra_item.get('tax'):
-                                     extra_item_tax_template = extra_item.get('tax')[0].get('item_tax_template')
-                              sales_order.append("items", {
-                                "item_code": extra_item.get("item_code"),
-                                "qty": extra_item.get("qty"),
-                                "rate": extra_item.get("rate"),
-                                "associated_item": item.get('item_code'),
-                                "item_tax_template": extra_item_tax_template if extra_item_tax_template else "" 
-                               })
+                # if item.get("sub_items"):
+                #         for extra_item in item.get("sub_items"):
+                #               if extra_item.get('tax'):
+                #                      extra_item_tax_template = extra_item.get('tax')[0].get('item_tax_template')
+                #               sales_order.append("items", {
+                #                 "item_code": extra_item.get("item_code"),
+                #                 "qty": extra_item.get("qty"),
+                #                 "rate": extra_item.get("rate"),
+                #                 "associated_item": item.get('item_code'),
+                #                 "item_tax_template": extra_item_tax_template if extra_item_tax_template else "" 
+                #                })
         
         for key,value in sales_taxes.items():
                sales_order.append("taxes", {"charge_type": "On Net Total", "account_head": key, "tax_amount": value, "description": key, })
@@ -572,6 +573,11 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
                                 item_detail["combo_items"] = list(filter( lambda x: x.get("parent_item") == item_detail.item_code , combo_items )) 
                                 
                 item['items'] = new_item_details
+                tax_details = frappe.db.sql("""SELECT st.charge_type, st.account_head, st.tax_amount, st.description, st.rate 
+                                   FROM `tabSales Order` s, `tabSales Taxes and Charges` st 
+                                   WHERE st.parent = %s and st.parenttype = 'Sales Order' """,
+                                   (item.name,), as_dict=True)
+                item['tax_detail'] = tax_details
         if mobile_no:
                 conditions += f" and s.contact_mobile like '%{str(mobile_no).strip()}%'"
 
@@ -714,7 +720,7 @@ def get_customer(mobile_no=None, name=None):
 
         try:
             # Fetch the customer document
-            customer = frappe.get_doc('Customer', name)
+            customer = frappe.get_doc('Customer', customer_detail[0].name)
             credit_limit=customer.custom_credit_limit    
          
 
@@ -856,7 +862,11 @@ def get_web_theme_settings():
                 value = f"{instance_url.rstrip('/')}/{value.lstrip('/')}"
         
         theme_settings_dict[field.fieldname] = value
-
+    currency = frappe.get_doc("Global Defaults").default_currency
+    currency_symbol=frappe.get_doc("Currency",currency).symbol
+    theme_settings_dict['default_currency']=currency
+    theme_settings_dict['currency_symbol']=currency_symbol    
+    theme_settings_dict['default_company']=frappe.get_doc("Global Defaults").default_company    
     res = {
         "data": theme_settings_dict
     }
@@ -885,7 +895,11 @@ def get_theme_settings():
                 value = f"{instance_url.rstrip('/')}/{value.lstrip('/')}"
         
         theme_settings_dict[field.fieldname] = value
-
+    currency = frappe.get_doc("Global Defaults").default_currency
+    currency_symbol=frappe.get_doc("Currency",currency).symbol
+    theme_settings_dict['default_currency']=currency
+    theme_settings_dict['currency_symbol']=currency_symbol    
+    theme_settings_dict['default_company']=frappe.get_doc("Global Defaults").default_company
     res = {
         "data": theme_settings_dict
     }
@@ -949,8 +963,10 @@ def review_rating_order():
 @frappe.whitelist()
 def update_status(order_status):
         try:
-                frappe.db.set_value("Kitchen-Kds", {"order_id":order_status.get('name')}, {'status': order_status.get('status')
-                })
+                doc=frappe.get_doc("Kitchen-Kds",{"order_id":order_status.get('name')})
+                doc.status= order_status.get('status')
+                doc.save(ignore_permissions=True)
+
                 send_order_ready_email(order_status)
                 return {"success_key":1, "message": "success"}
 
@@ -1002,41 +1018,121 @@ def get_all_location_list():
 
 
 @frappe.whitelist(allow_guest=True)
-def get_kitchen_kds(status):
-        try:
-                start_date = add_to_date(now(), hours=-24)
-                end_date = now()
-                all_order = frappe.db.get_all("Kitchen-Kds", 
-                                filters=[
-                                    ['creation', 'between', [start_date, end_date]],
-                                    ['status', '=', status]
-                                ], 
-                                fields=['name', 'order_id', 'custom_order_request', 'status', 'estimated_time', 'type', 'creation1', 'source'])
-                order_items_dict = []
-                for orders in all_order:
-                        try:
-                                items = frappe.db.get_all("Sales Order Item", filters={'parent':orders.get("order_id")}, fields=['item_name','qty'])
-                                order_wise_items = {}
-                                order_wise_items['order_id'] = orders.get("order_id")
-                                order_wise_items['creation'] = orders.get("creation1")
-                                order_wise_items['estimated_time'] = orders.get('estimated_time')
-                                order_wise_items["status"] = orders.get('status')
-                                order_wise_items["type"] = orders.get('type')
-                                order_wise_items['items'] = items
-                                order_wise_items['order_request'] = orders.get('custom_order_request')
-                                order_wise_items['source'] = orders.get('source')
-                                order_items_dict.append(order_wise_items)
+def get_kitchen_kds(status, cost_center=None):
+    try:
+
+        start_datetime = add_to_date(now(), hours=-24)
+        end_datetime = now()
+
+        start_datetime_str = str(start_datetime)
+        end_datetime_str = str(end_datetime)
+
+        cost_center_condition = ""
+        if cost_center:
+            cost_center_condition = "AND cost_center = %s"
+
+        all_order = frappe.db.sql(f"""
+            SELECT 
+                name, 
+                order_id, 
+                custom_order_request, 
+                status, 
+                cost_center,                 
+                estimated_time, 
+                type, 
+                CONCAT(creation1, ' ', time) AS creation1, 
+                source
+            FROM `tabKitchen-Kds`
+            WHERE CONCAT(creation1, ' ', time) BETWEEN %s AND %s
+            AND status = %s {cost_center_condition}
+            ORDER BY CONCAT(creation1, ' ', time) DESC
+        """, (start_datetime_str, end_datetime_str, status) + ((cost_center,) if cost_center else ()), as_dict=True)
+
+        for orders in all_order:
+            try:
+               
                         
-                        except Exception as e:
-                                return {"message": e}
-                        
-                        
-                frappe.publish_realtime('realtime_update', message=order_items_dict)
+                orders['items'] =grouping_combo_attr(orders.order_id)
+
+            except Exception as e:
+                return {"message": str(e)}
+
+        # frappe.publish_realtime('realtime_update', message=all_order)
+
+        return all_order
+
+    except Exception as e:
+        return {"message": str(e)}
 
 
-                return order_items_dict
-        except Exception as e:
-                return {"message": e}
+def grouping_combo_attr(order_id):
+                query =  """
+                                        SELECT 
+                                        soi.item_code,
+                                        soi.item_name,
+                                        soi.custom_ca_id,
+                                        soi.rate,
+                                        soi.custom_is_combo_item,
+                                        soi.custom_is_attribute_item,
+                                        soi.custom_parent_item,
+                                        soi.qty
+                                        FROM 
+                                        `tabSales Order Item` soi,`tabSales Order` s
+                                        WHERE 
+                                        soi.parent=s.name and 
+                                        soi.parent = %s
+                                        """
+
+                items = frappe.db.sql(query, (order_id,), as_dict=True)
+                                
+                
+                grouped_items = {}
+
+                for item in items:
+                        ca_id = item['custom_ca_id']
+                        parent_item = item['custom_parent_item']
+                        
+                        if ca_id not in grouped_items:
+                                grouped_items[ca_id] = []
+
+                        if parent_item is None:
+
+                                grouped_items[ca_id].append({
+                                "item_code": item["item_code"],
+                                "item_name": item["item_name"],
+                                "custom_ca_id": item["custom_ca_id"],
+                                'price':item['rate'],
+                                "custom_is_combo_item": item["custom_is_combo_item"],
+                                "custom_is_attribute_item": item["custom_is_attribute_item"],
+                                "qty": item["qty"],
+                                "child_items": []
+                                })
+                        
+                for item in items:
+                        ca_id = item['custom_ca_id']
+                        parent_item = item['custom_parent_item']
+                        if parent_item is not None:
+                                for parent in grouped_items.get(ca_id, []):
+                                        if parent["item_code"] == parent_item:
+                                                parent["child_items"].append({
+                                                "item_code": item["item_code"],
+                                                "item_name": item["item_name"],
+                                                'price':item['rate'],
+                                                "custom_ca_id": item["custom_ca_id"],
+                                                "custom_is_combo_item": item["custom_is_combo_item"],
+                                                "custom_is_attribute_item": item["custom_is_attribute_item"],
+                                                "custom_parent_item": item["custom_parent_item"],
+                                                "qty": item["qty"]
+                                                })
+
+
+                output = []
+
+                for items_list in grouped_items.values():
+                        output.extend(items_list)
+                        
+                        
+                return output
 
 
 def after_request(whitelisted, response):
@@ -1112,24 +1208,7 @@ def create_sales_order_kiosk():
         sales_order.disable_rounded_total = 1
         cost_center = order_list.get("cost_center")
         
-        # if cost_center:
-        #     custom_times = frappe.db.get_value("Cost Center", cost_center, ["custom_opening_time", "custom_closing_time"], as_dict=True)
-        #     if custom_times:
-                # if not custom_times.get("custom_opening_time") or not custom_times.get("custom_closing_time"):
-                #     frappe.throw("Please fill in the custom opening time and custom closing time for the selected cost center.")
-                
-                # sales_order.custom_opening_time = custom_times.get("custom_opening_time")
-                # sales_order.custom_closing_time = custom_times.get("custom_closing_time")
-
-                # Validate transaction time against current time
-                # now_time = datetime.now().time()
-                # opening_time = (datetime.min + custom_times.get("custom_opening_time")).time()
-                # closing_time = (datetime.min + custom_times.get("custom_closing_time")).time()
-
-                # if not (opening_time <= now_time <= closing_time):
-                #     frappe.throw("Transaction time is outside the allowed operating hours.")
-        
-        
+       
         # Set custom payment status
         if order_list.get("mode_of_payment") == "Card":
             sales_order.custom_payment_status = "Pending"
@@ -1156,42 +1235,16 @@ def create_sales_order_kiosk():
         if order_list.get("redeem_loyalty_points") == 1 :
                sales_order.outstanding_amount=sales_order.grand_total-sales_order.loyalty_amount
 
-        sales_order.submit()
-        if order_list.get("gift_card_code"):
-                frappe.db.sql("""
-                        UPDATE `tabSales Order`
-                        SET `grand_total` = %s,
-                        `discount_amount`=%s,
-                        `net_total`=%s
-                        WHERE name = %s
-                """, (sales_order.grand_total -float(order_list.get("discount_amount")) ,float(order_list.get("discount_amount")),sales_order.net_total -float(order_list.get("discount_amount")), sales_order.name))           
-        if order_list.get("gift_card_code"):
-                company_name = frappe.get_doc("Global Defaults").default_company
-                company=frappe.get_doc("Company",company_name)              
-                gift_card_doc = frappe.db.get_value("Gift Card", {"code": order_list.get("gift_card_code")}, ["name", "amount_balance", "amount_used"], as_dict=True)
-                journal_entry = frappe.new_doc("Journal Entry")
-                journal_entry.voucher_type="Journal Entry"
-                journal_entry.company=company.name
-                journal_entry.posting_date=frappe.utils.getdate()	
-                journal_entry.user_remark="customer redeemed the gift card in partial amount that is for $" + str(order_list.get("discount_amount")) + " for the purchase of the good"		
-                journal_entry.append(
-                        "accounts",
-                        {
-                        'account': "Gift card Revenue - " + company.abbr,
-                        'debit_in_account_currency': float(order_list.get("discount_amount")),
-                        'credit_in_account_currency': float(0)
-                        })
-                journal_entry.append(
-                        "accounts",
-                        {
-                        'account': "Sales - " + company.abbr,
-                        'debit_in_account_currency': float(0),
-                        'credit_in_account_currency':float(order_list.get("discount_amount"))
-                })	
-                journal_entry.save(ignore_permissions=True)
-                journal_entry.submit()   
-                frappe.set_value('Gift Card', gift_card_doc.name, 'amount_balance', gift_card_doc.amount_balance - float(order_list.get("discount_amount")))            
-                frappe.set_value('Gift Card', gift_card_doc.name, 'amount_used', gift_card_doc.amount_used + float(order_list.get("discount_amount")))            
+        sales_order.submit()               
+        # if order_list.get("gift_card_code"):
+        #         frappe.db.sql("""
+        #                 UPDATE `tabSales Order`
+        #                 SET `grand_total` = %s,
+        #                 `discount_amount`=%s,
+        #                 `net_total`=%s
+        #                 WHERE name = %s
+        #         """, (sales_order.grand_total -float(order_list.get("discount_amount")) ,float(order_list.get("discount_amount")),sales_order.net_total -float(order_list.get("discount_amount")), sales_order.name))           
+                  
         create_sales_invoice_from_sales_order(sales_order,order_list.get("gift_card_code"),order_list.get("discount_amount"))
 
         latest_order = frappe.get_doc('Sales Order', sales_order.name)
@@ -1201,16 +1254,19 @@ def create_sales_order_kiosk():
         max_time = max(times)
 
         if order_list.get("source") != "WEB":
-            frappe.get_doc({
+            kds=frappe.get_doc({
                 "doctype": "Kitchen-Kds",
                 "order_id": latest_order.get('name'),
                 "type": order_list.get("type"),
                 "estimated_time": max_time,
                 "status": "Open",
-                "creation1": order_list.get('transaction_date'),
+                "creation1": now(),
                 "custom_order_request": order_list.get('order_request'),
-                "source": order_list.get('source')
-            }).insert(ignore_permissions=1)
+                "source": order_list.get('source'),
+                "cost_center": order_list.get("cost_center")
+            })
+            kds.insert(ignore_permissions=1)
+
 
         res['success_key'] = 1
         res['message'] = "success"
@@ -1304,11 +1360,10 @@ def get_sales_order_item_details(order_id=None):
                 WHERE name = %s
                 """, (doc.cost_center,), as_dict=True)
 
-                item_list = []
+                item_list = grouping_combo_attr(order_id)
                 data = {}
                 max_time = []
                 for item in doc.items:
-                    item_list.append(item.as_dict())
                     estimated_time =frappe.db.get_value("Item", {"item_code" : item.item_code}, 'custom_estimated_time')
                     max_time.append(estimated_time)
 
@@ -1329,6 +1384,7 @@ def get_sales_order_item_details(order_id=None):
             "success_key": 0,
             "message": str(e)
         }
+
 
                 
 @frappe.whitelist(methods="POST")
@@ -1884,15 +1940,50 @@ def create_sales_invoice_from_sales_order(doc,gift_card_code,discount_amount):
             sales_invoice.grand_total=sales_invoice.grand_total -float(discount_amount)
         sales_invoice.save(ignore_permissions=1)
         sales_invoice.submit()
-        if gift_card_code:
-                frappe.db.sql("""
-                        UPDATE `tabSales Invoice`
-                        SET `grand_total` = %s,
-                        `discount_amount`=%s,
-                        `net_total`=%s,
-                        `outstanding_amount`=%s
-                        WHERE name = %s
-                """, (sales_invoice.grand_total -float(discount_amount),discount_amount,sales_invoice.net_total - float(discount_amount),sales_invoice.outstanding_amount -float(discount_amount), sales_invoice.name))           
+        if doc.custom_gift_card_code:
+                company_name = frappe.get_doc("Global Defaults").default_company
+                company=frappe.get_doc("Company",company_name)             
+                journal_entry = frappe.new_doc("Journal Entry")
+                journal_entry.voucher_type="Journal Entry"
+                journal_entry.company=company.name
+                journal_entry.posting_date=frappe.utils.getdate()	
+                journal_entry.user_remark="customer redeemed the gift card in partial amount that is for $" + str(discount_amount) + " for the purchase of the good"		
+                journal_entry.append(
+                        "accounts",
+                        {
+                        'account': "Gift card Revenue - " + company.abbr,
+                        'debit_in_account_currency': float(discount_amount),
+                        'credit_in_account_currency': float(0),
+                        # 'reference_type':"Sales Invoice",
+                        # 'reference_name':sales_invoice.name,
+                        'party_type':'Customer',
+                        'party':doc.customer
+                        })
+                journal_entry.append(
+                        "accounts",
+                        {
+                        'account': "Sales - " + company.abbr,
+                        'debit_in_account_currency': float(0),
+                        'credit_in_account_currency':float(discount_amount),
+                        # 'reference_type':"Sales Invoice",
+                        # 'reference_name':sales_invoice.name,
+                        'party_type':'Customer',
+                        'party':doc.customer
+                })	
+                journal_entry.save(ignore_permissions=True)
+                journal_entry.submit() 
+                gift_card_doc=frappe.db.get_value("Gift Card", {"code": gift_card_code}, ["name", "amount_balance", "amount_used"], as_dict=True)  
+                frappe.set_value('Gift Card', gift_card_doc.name, 'amount_balance', gift_card_doc.amount_balance - float(discount_amount))            
+                frappe.set_value('Gift Card', gift_card_doc.name, 'amount_used', gift_card_doc.amount_used + float(discount_amount))  
+        # if gift_card_code:
+        #         frappe.db.sql("""
+        #                 UPDATE `tabSales Invoice`
+        #                 SET `grand_total` = %s,
+        #                 `discount_amount`=%s,
+        #                 `net_total`=%s,
+        #                 `outstanding_amount`=%s
+        #                 WHERE name = %s
+        #         """, (sales_invoice.grand_total -float(discount_amount),discount_amount,sales_invoice.net_total - float(discount_amount),sales_invoice.outstanding_amount -float(discount_amount), sales_invoice.name))           
         grand_total=frappe.db.get_value('Sales Invoice', {'name': sales_invoice.name}, 'grand_total')
         if grand_total > 0:
               create_payment_entry(sales_invoice) 
