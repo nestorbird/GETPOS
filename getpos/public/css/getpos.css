@@ -310,14 +310,14 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
   .food-complete h2,.inclusive-software h2{color: #000718;text-align: center;font-size: 48px;font-weight: 600;line-height: 56px;padding-bottom: 32px;}
   .food-complete h3,.inclusive-software h3{color: #000;text-align: center;font-size: 24px;font-weight: 400;line-height: 32px;padding-bottom: 100px;}
   .food-complete h4{color: #000718;font-size: 24px;font-weight: 600;line-height: 28px;padding-bottom: 24px;}
-  .food-complete p{color:  #343C4F;font-size: 20px;font-weight: 400;line-height: 32px;}
+  .food-complete p{color:  #343C4F;font-size: 20px;font-weight: 400;line-height: 32px;text-align: justify;}
   .food-complete-box1 {gap:50px;align-items: center;padding-bottom: 100px;}
   .food-complete-box1 .food-left{width: 40%;}
   .food-complete img{box-shadow: 0 4px 20px #0000001f;}
 .food-complete-box1 .food-right{width: 60%;}
-.food-complete-box2 .food-left{width:60%;}
+.food-complete-box2 .food-left{width:56%;}
 .food-complete-box2 {gap:50px;align-items: center;padding-bottom: 100px;}
-.food-complete-box2 .food-right{width:40%;}
+.food-complete-box2 .food-right{width:44%;}
 .booking-page .retail-hero-banner p{padding-right: 220px;}
 .inclusive-software{padding: 100px 86px;}
 .inclusive-software h4{color: #000718;text-align: center;font-size: 24px;font-weight: 600;line-height: 28px;padding: 40px 0 24px 0;}
@@ -331,6 +331,7 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important}
 }
 @media screen and (max-width: 1600px) {
+.inclusive-software {padding: 100px 73px;}
 .food-complete {padding: 100px 83px 0 83px;}
 .food-page .cta-section-about.cta-section-retail p ,.booking-page .cta-section-about.cta-section-retail p {font-size: 22px;line-height: 34px;}
 .retail-hero-btn {font-size: 18px;padding: 10px 25px;}
@@ -379,6 +380,7 @@ header{padding:10px 46px 10px 60px}
 .footer-headings{font-size:14px}
 }
 @media screen and (max-width: 1500px) {
+.inclusive-software {padding: 100px 60px;}
 .footer-main{padding:0 40px}
 .modal-content p br{display:none}
 .cta1-section-retail{padding:100px 60px 100px 0}
