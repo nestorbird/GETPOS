@@ -30,9 +30,9 @@ footer h2 span{color:var(--Secondary-01,#FF1746);font-size:32px;font-weight:600;
 .footer-facebook,.footer-instagram,.footer-linkedin,.footer-youtube{padding-left:20px}
 .padding-left50{padding-left:60px}
 .mt-99px{width:90%;margin:0 auto;left:0;right:0;justify-content:center;padding-top:27px}
-.modal-content a:hover{opacity: .8;}
+.modal-content a:hover{opacity:.7}
 .modal-content{border-radius:8px;background:var(--mind-white,#FFF);padding:41px;width:auto}
-.modal-content h2{color:var(--Hue-03,#145FFF);font-size:24px;font-weight:600;line-height:30px}
+.modal-content h2{color:var(--Hue-03,#145FFF);font-size:22px;font-weight:600;line-height:30px}
 .modal-content p{color:var(--Grays-02,#606574);font-size:16px;font-weight:400;line-height:20px;padding-top:10px}
 .modal-content p br{display:none}
 .nav-grid{gap:52px}
@@ -145,10 +145,13 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 #header.sticky{box-shadow:0 10px 15px -3px #000 0 4px 6px -4px #000;background:#fff}
 .cta-section-about h3{color:#fff;font-size:48px;font-weight:600;line-height:70px;text-transform:capitalize}
 .cta-section-about p{color:#EAEAEA;font-size:20px;font-weight:400;line-height:32px;text-transform:capitalize;padding:40px 0 80px}
-.cta-section-about a{border-radius:10px;background:transparent;padding:16px 40px;justify-content:center;align-items:center;color:#FFF;font-size:20px;font-weight:600;line-height:30px;border:1px solid #fff;transition:all .3s ease-in-out}
+.oms-page .cta-section-about p{font-size:24px;line-height:36px}
+.cta-section-about a{border-radius:10px;background:transparent;padding:16px 40px;justify-content:center;align-items:center;color:#FFF;font-size:20px;font-weight:600;line-height:30px;border:1px solid #fff;transition:all .3s ease-in-out;text-decoration:none}
 .cta-section-about a:hover{opacity:.6;color:#fff}
-.our-values{padding:100px 0}
+.our-values,.oms-features{padding:100px 0}
 .our-values h2{color:#000718;text-align:center;font-size:48px;font-weight:600;line-height:normal;padding-bottom:119px}
+.oms-features h2{color:#000718;text-align:center;font-size:52px;font-weight:600;line-height:64px;padding-bottom:32px}
+.oms-features h3{color:#000718;text-align:center;font-size:20px;font-weight:400;line-height:30px;padding-bottom:100px}
 .our-value-retail h5{color:#000;text-align:center;font-size:24px;font-weight:400;line-height:32px;padding-bottom:119px}
 .our-values.our-value-retail h2{padding-bottom:32px}
 .our-values h3{color:var(--Hue-01,#000718);font-size:32px;line-height:normal;font-weight:600;line-height:normal}
@@ -237,7 +240,7 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 .retail-text p{color:#000;font-size:20px;font-weight:500;line-height:32px;padding-bottom:90px}
 .retail-text .retail-btn{color:#145FFF;font-size:20px;font-weight:600;line-height:30px;padding:10px 20px;border-radius:8px;border:2px solid #145FFF;transition:all .3s ease-in-out}
 .cta1-section-retail{padding:120px 0;background:#000718 url(/assets/getpos/images/cta1-retail-bg.webp)no-repeat;background-size:cover}
-.cta1-retail-text h2{color:#FFF;font-size:48px;font-weight:600;line-height:54px;}
+.cta1-retail-text h2{color:#FFF;font-size:48px;font-weight:600;line-height:54px}
 .cta1-retail-text p{color:#FFF;font-size:20px;font-weight:400;line-height:32px;padding-top:40px}
 .cta1-retail-btn{border-radius:10px;border:1px solid var(--mind-white,#FFF);background:var(--mind-white,#FFF);transition:all .3s ease-in-out;color:#000718;font-size:20px;font-weight:600;line-height:30px;padding:16px 40px}
 .cta1-retail-div{margin-top:90px}
@@ -257,90 +260,87 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 .cta-section-about.cta-section-retail p{padding:48px 10rem 0 0}
 .cta2-retail-div{margin:68px 0}
 .our-values.our-value-retail p{height:auto}
-.retail-hero-banner{ background: #000718 url(/assets/getpos/images/hero-bg.webp)no-repeat center;background-size: cover;background-position: 0 0;padding: 145px 0 83px 0;}
-.retail-hero-banner h1 {color:#FFD500;font-size: 26px;font-weight: 500;line-height: normal;text-transform: uppercase;}
-.retail-hero-banner h2 {color: #FFF;text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);font-size: 64px;font-weight: 600;line-height: 72px;padding: 22px 0 48px 0;}
-.retail-hero-btn {border: 2px solid #fff;border-radius: 8px;color:#fff;font-weight: 600;transition: .3s ease-in-out;font-size: 20px;padding: 15px 30px;line-height: 30px;}
-.retail-hero-banner p {color:#ECECEC;font-size: 24px;font-weight: 400;line-height: 36px;padding-bottom: 48px;}
-.retail-hero-img{float: right;}
-.retail-video-section h2{color: #000718;text-align: center;font-size: 48px;font-weight: 600;line-height: 56px;padding-bottom: 32px;}
-.retail-video-section p{color: #000;text-align: center;font-size: 24px;font-weight: 400;line-height: 32px;padding-bottom: 72px;}
-.retail-video{width:838px;}
-.retail-video-section{padding: 100px 0;}
-.youtube-video-news iframe {position: absolute;top: 0;left: 0;width: 100%;height: 100%;}
-.youtube-video-news {margin-bottom: 32px;position: relative;padding-bottom: 56.25%;height: 0;overflow: hidden;border-radius: 10px;}
+.retail-hero-banner{background:#000718 url(/assets/getpos/images/hero-bg.webp)no-repeat center;background-size:cover;background-position:0 0;padding:145px 0 83px}
+.retail-hero-banner h1{color:#FFD500;font-size:26px;font-weight:500;line-height:normal;text-transform:uppercase}
+.retail-hero-banner h2{color:#FFF;text-shadow:0 0 10px rgba(0,0,0,0.25);font-size:64px;font-weight:600;line-height:72px;padding:22px 0 48px}
+.retail-hero-btn{border:2px solid #fff;border-radius:8px;color:#fff;font-weight:600;transition:.3s ease-in-out;font-size:20px;padding:15px 30px;line-height:30px}
+.retail-hero-banner p{color:#ECECEC;font-size:24px;font-weight:400;line-height:36px;padding-bottom:48px}
+.retail-hero-img{float:right}
+.retail-video-section h2{color:#000718;text-align:center;font-size:48px;font-weight:600;line-height:56px;padding-bottom:32px}
+.retail-video-section p{color:#000;text-align:center;font-size:24px;font-weight:400;line-height:32px;padding-bottom:72px}
+.retail-video{width:838px}
+.retail-video-section{padding:100px 0;background:url(/assets/getpos/images/video-bg.webp)no-repeat center;background-size:cover;background-position:0 0}
+.youtube-video-news iframe{position:absolute;top:0;left:0;width:100%;height:100%}
+.youtube-video-news{margin-bottom:32px;position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:10px}
 @keyframes slideInFromLeft {
-    from {
-      transform: translateX(-100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  }
-  
-  @keyframes slideInFromRight {
-    from {
-      transform: translateX(100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  }
-  
-  .retail-hero-text, .retail-hero-image {
-    opacity: 0; /* Ensure the elements are initially invisible */
-  }
-  
-  .animate-from-left {
-    animation: slideInFromLeft 1s forwards;
-  }
-  
-  .animate-from-right {
-    animation: slideInFromRight 1s forwards;
-  }
-
-  .food-page .cta1-section-retail{background:#000718 url(/assets/getpos/images/cta1-food.webp)no-repeat;background-size:cover}
-  .booking-page .cta1-section-retail{background:#000718 url(/assets/getpos/images/cta1-booking-bg.webp)no-repeat;background-size:cover}
-  .food-page .cta-section-about.cta-section-retail p,.booking-page .cta-section-about.cta-section-retail p{font-size: 24px;line-height: 36px;}
-  .food-complete {padding: 100px 0 0 0;}
-  .food-complete h2,.inclusive-software h2{color: #000718;text-align: center;font-size: 48px;font-weight: 600;line-height: 56px;padding-bottom: 32px;}
-  .food-complete h3,.inclusive-software h3{color: #000;text-align: center;font-size: 24px;font-weight: 400;line-height: 32px;padding-bottom: 100px;}
-  .food-complete h4{color: #000718;font-size: 24px;font-weight: 600;line-height: 28px;padding-bottom: 24px;}
-  .food-complete p{color:  #343C4F;font-size: 20px;font-weight: 400;line-height: 32px;text-align: justify;}
-  .food-complete-box1 {gap:50px;align-items: center;padding-bottom: 100px;}
-  .food-complete-box1 .food-left{width: 40%;}
-  .food-complete img{box-shadow: 0 4px 20px #0000001f;}
-.food-complete-box1 .food-right{width: 60%;}
-.food-complete-box2 .food-left{width:56%;}
-.food-complete-box2 {gap:50px;align-items: center;padding-bottom: 100px;}
-.food-complete-box2 .food-right{width:44%;}
-.booking-page .retail-hero-banner p{padding-right: 220px;}
-.inclusive-software{padding: 100px 86px;}
-.inclusive-software h4{color: #000718;text-align: center;font-size: 24px;font-weight: 600;line-height: 28px;padding: 40px 0 24px 0;}
-.inclusive-software p{color: #343C4F;text-align: center;font-size: 20px;font-style: normal;font-weight: 400;line-height: 32px; /* 160% */}
-.inclusive-software img{width: 100px;}
-.inclusive-box {padding: 30px;border-radius: 4px;background: #FFF;box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);height: 100%;transition:all .3s ease-in-out;cursor: pointer;}
-.inclusive-box:hover{box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);transition:all .3s ease-in-out;}
-.inclusive-grid{gap: 28px;}
-
+from{transform:translateX(-100%);opacity:0}
+to{transform:translateX(0);opacity:1}
+}
+@keyframes slideInFromRight {
+from{transform:translateX(100%);opacity:0}
+to{transform:translateX(0);opacity:1}
+}
+.retail-hero-text,.retail-hero-image{opacity:0}
+.animate-from-left{animation:slideInFromLeft 1s forwards}
+.animate-from-right{animation:slideInFromRight 1s forwards}
+.food-page .cta1-section-retail{background:#000718 url(/assets/getpos/images/cta1-food.webp)no-repeat;background-size:cover}
+.booking-page .cta1-section-retail{background:#000718 url(/assets/getpos/images/cta1-booking-bg.webp)no-repeat;background-size:cover}
+.food-page .cta-section-about.cta-section-retail p,.booking-page .cta-section-about.cta-section-retail p{font-size:24px;line-height:36px}
+.food-complete{padding:100px 0 0}
+.food-complete h2,.inclusive-software h2{color:#000718;text-align:center;font-size:48px;font-weight:600;line-height:56px;padding-bottom:32px}
+.food-complete h3,.inclusive-software h3{color:#000;text-align:center;font-size:24px;font-weight:400;line-height:32px;padding-bottom:100px}
+.food-complete h4{color:#000718;font-size:24px;font-weight:600;line-height:28px;padding-bottom:24px}
+.food-complete p{color:#343C4F;font-size:20px;font-weight:400;line-height:32px;text-align:justify}
+.food-complete-box1{gap:90px;align-items:center;padding-bottom:100px}
+.food-complete-box1 .food-left{width:48.5%}
+.food-complete-box1 .food-right{width:51.5%}
+.food-complete-box2 .food-left{width:57.6%}
+.food-complete-box2{gap:51px;align-items:center;padding-bottom:100px}
+.food-complete-box2 .food-right{width:42.4%}
+.booking-page .retail-hero-banner p{padding-right:220px}
+.inclusive-software{padding:100px 86px}
+.inclusive-software h4{color:#000718;text-align:center;font-size:24px;font-weight:600;line-height:28px;padding:40px 0 24px}
+.inclusive-software p{color:#343C4F;text-align:center;font-size:20px;font-style:normal;font-weight:400;line-height:32px}
+.inclusive-software img{width:100px}
+.inclusive-box{padding:30px;border-radius:4px;background:#FFF;box-shadow:0 0 10px 0 rgba(0,0,0,0.15);height:100%;transition:all .3s ease-in-out;cursor:pointer}
+.inclusive-box:hover{box-shadow:0 0 10px 0 rgba(0,0,0,0.5);transition:all .3s ease-in-out}
+.inclusive-grid{gap:28px}
+.cta1-section-retail.order-management{padding:84px 0;background:url(/assets/getpos/images/about-cta-bg.webp)no-repeat;background-size:cover}
+.oms-cta-gap{gap:130px}
+.oms-cta1{width:550px}
+.order-management .cta1-retail-text p{font-size:24px;line-height:32px}
+.oms-features h4{color:#000718;font-size:24px;font-style:normal;font-weight:600;line-height:30px;padding-bottom:22px}
+.oms-features p{color:#343C4F;text-align:justify;font-size:20px;font-weight:400;line-height:30px}
+.oms-features-left{border-radius:10px;background:#FFF;box-shadow:0 0 10px 0 rgba(0,0,0,0.20);margin-right:170px;padding-right:32px;margin-bottom:70px}
+.oms-features-right{border-radius:10px;background:#FFF;box-shadow:0 0 10px 0 rgba(0,0,0,0.20);margin-left:170px;padding-left:32px;margin-bottom:70px}
+.oms-features-right .oms-text{padding-right:14px}
+.oms-features-left .oms-text{padding-left:12px}
+.oms-features img{border-radius:10px}
+.oms-img{width:25%}
+.oms-text{width:75%}
 @media screen and (min-width: 1921px) {
 body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important}
 }
-@media screen and (max-width: 1600px) {
-.inclusive-software {padding: 100px 73px;}
-.food-complete {padding: 100px 83px 0 83px;}
-.food-page .cta-section-about.cta-section-retail p ,.booking-page .cta-section-about.cta-section-retail p {font-size: 22px;line-height: 34px;}
-.retail-hero-btn {font-size: 18px;padding: 10px 25px;}
-.retail-hero-banner h2{font-size: 60px;line-height: 68px;}
-.retail-video-section p {font-size: 22px;padding-bottom: 64px;}
-.retail-video {width: 790px;}
-.retail-hero-banner {padding: 100px 60px 83px 60px;}
+@media screen and (max-width: 1700px) {
+.oms-features-left{margin-right:122px}
+.oms-features-right{margin-left:122px}
+.oms-features h4{font-size:22px}
+.oms-features{padding:100px 85px}
+.oms-features p{font-size:18px;line-height:26px}
+.modal-content h2{font-size:20px;line-height:30px}
+.oms-cta1{width:auto}
+.inclusive-software{padding:100px 73px}
+.food-complete{padding:100px 83px 0}
+.food-page .cta-section-about.cta-section-retail p,.booking-page .cta-section-about.cta-section-retail p{font-size:22px;line-height:34px}
+.retail-hero-btn{font-size:18px;padding:10px 25px}
+.retail-hero-banner h2{font-size:60px;line-height:68px}
+.retail-video-section p{font-size:22px;padding-bottom:64px}
+.retail-video{width:790px}
+.retail-hero-banner{padding:100px 60px 83px}
 .retail-banner{padding:80px 96px}
 .cta1-section-retail{padding:100px 96px 100px 0}
+.cta1-section-retail.order-management{padding:85px 96px}
+.cta1-section-retail.order-management p br{display:none}
 .retail-modules{padding:100px 90px}
 .retail-module-box p{font-size:22px;line-height:34px}
 .retail-module-box{padding:55px 10px}
@@ -378,9 +378,12 @@ header{padding:10px 46px 10px 60px}
 .footer-bottom p{font-size:16px;line-height:24px}
 .footer-contacts li{font-size:16px}
 .footer-headings{font-size:14px}
+.booking-page .cta1-retail-text p br{display:none}
 }
 @media screen and (max-width: 1500px) {
-.inclusive-software {padding: 100px 60px;}
+.cta1-section-retail.order-management{padding:85px 60px}
+.order-management .cta1-retail-text h2 br{display:none}
+.inclusive-software{padding:100px 60px}
 .footer-main{padding:0 40px}
 .modal-content p br{display:none}
 .cta1-section-retail{padding:100px 60px 100px 0}
@@ -388,8 +391,10 @@ header{padding:10px 46px 10px 60px}
 .cta1-retail-text h2{font-size:42px;line-height:50px}
 .retail-modules{padding:100px 60px}
 .cta-section-retail.cta-section-about{padding:60px 60px 0}
-.retail-hero-banner h2{font-size: 52px;line-height: 62px;}
-.food-complete {padding: 100px 60px 0 60px;}
+.retail-hero-banner h2{font-size:52px;line-height:62px}
+.food-complete{padding:100px 60px 0}
+.oms-features h4{font-size:20px;line-height:28px}
+.oms-features p{font-size:16px;line-height:26px}
 }
 @media screen and (max-width: 1440px) {
 .our-journey{padding:100px 60px}
@@ -411,8 +416,9 @@ header{padding:10px 46px 10px 60px}
 .our-box-right2 h4{padding-top:10px}
 }
 @media screen and (max-width: 1400px) {
-.retail-hero-banner h2 {font-size: 52px;line-height: 62px;}
-.retail-hero-banner p {font-size: 20px;line-height: 32px;}
+.booking-page .cta1-section-retail{background-position:-40px 0}
+.retail-hero-banner h2{font-size:52px;line-height:62px}
+.retail-hero-banner p{font-size:20px;line-height:32px}
 .retail-banner{background-position:right}
 .our-journey{padding:100px 50px}
 .about-welcome{padding:67px 50px 105px}
@@ -433,13 +439,16 @@ header{padding:10px 46px 10px 60px}
 footer .pr-28{padding-right:0!important}
 }
 @media screen and (max-width: 1300px) {
-.food-complete h3,.inclusive-software h3{padding-bottom: 50px;font-size: 22px;}
-.booking-page .retail-hero-banner p {padding-right: 170px;}
-.food-page .cta-section-about.cta-section-retail p,.booking-page .cta-section-about.cta-section-retail p {font-size: 20px;line-height: 32px;}
-.retail-video {width: 640px;}
-.retail-video-section p {padding-bottom: 54px;}
-.retail-hero-banner{padding: 60px 40px 80px;}
-.our-box-right2 h3 {margin-top: 225px;}
+.oms-features h2{font-size:46px;line-height:56px}
+.order-management .cta1-retail-text p{font-size:20px}
+.oms-cta-gap{gap:90px}
+.food-complete h3,.inclusive-software h3{padding-bottom:50px;font-size:22px}
+.booking-page .retail-hero-banner p{padding-right:170px}
+.food-page .cta-section-about.cta-section-retail p,.booking-page .cta-section-about.cta-section-retail p{font-size:20px;line-height:32px}
+.retail-video{width:640px}
+.retail-video-section p{padding-bottom:54px}
+.retail-hero-banner{padding:60px 40px 80px}
+.our-box-right2 h3{margin-top:225px}
 .retail-module-box p{font-size:20px;line-height:32px}
 .about-btn{margin:170px auto auto}
 .cta1-section-retail{padding:80px 50px 80px 0}
@@ -495,19 +504,28 @@ header{padding:0 26px 0 40px}
 .nav-link.py-3{padding-top:12px!important;padding-bottom:12px!important}
 }
 @media screen and (max-width: 1225px) {
-    .our-box-right2 h3 {margin-top: 200px;}
+.our-box-right2 h3{margin-top:200px}
 }
 @media screen and (max-width: 1200px) {
-.food-complete h3 br{display: none;}
-.booking-page .retail-hero-banner p {padding-right: 0;}
-.food-complete-box1 .food-left, .food-complete-box2 .food-right, .food-complete-box1 .food-right, .food-complete-box2 .food-left{width: 100%;}
-.food-complete-box1,.food-complete-box2{gap:40px;padding-bottom: 80px;}
-.food-complete{padding: 50px 50px 0 50px;}
-.food-complete p {font-size: 18px;line-height: 30px;}
-.food-page .cta-section-about.cta-section-retail p,.booking-page .cta-section-about.cta-section-retail p {font-size: 18px;line-height: 30px;}
-.retail-video-section{padding: 50px 0;}
-.retail-hero-banner h2 {font-size: 52px;line-height: 62px;}
-.retail-hero-banner h2 br{display: none;}
+.oms-features h3{padding-bottom:80px}
+.oms-features-left{margin-right:30px;padding-right:20px;margin-bottom:40px}
+.oms-features-right{margin-left:30px;padding-left:20px;margin-bottom:40px}
+.oms-features h4{padding-bottom:16px}
+.oms-features{padding:50px}
+.cta1-section-retail.order-management{padding:50px}
+.oms-cta-gap{gap:50px}
+.inclusive-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.inclusive-software{padding:60px}
+.food-complete h3 br{display:none}
+.booking-page .retail-hero-banner p{padding-right:0}
+.food-complete-box1 .food-left,.food-complete-box2 .food-right,.food-complete-box1 .food-right,.food-complete-box2 .food-left{width:100%}
+.food-complete-box1,.food-complete-box2{gap:40px;padding-bottom:80px}
+.food-complete{padding:50px 50px 0}
+.food-complete p{font-size:18px;line-height:30px}
+.food-page .cta-section-about.cta-section-retail p,.booking-page .cta-section-about.cta-section-retail p{font-size:18px;line-height:30px}
+.retail-video-section{padding:50px 0}
+.retail-hero-banner h2{font-size:52px;line-height:62px}
+.retail-hero-banner h2 br{display:none}
 .our-values.our-value-retail{padding:50px}
 .our-value-retail h5{padding-bottom:60px}
 .retail-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
@@ -518,9 +536,9 @@ header{padding:0 26px 0 40px}
 .about-welcome p,.about-partner p{font-size:18px;line-height:32px;padding-right:0}
 .cta1-retail-div{margin-top:40px}
 .cta1-retail-text p{font-size:20px;padding-top:22px}
-.cta1-section-retail{background:#000718 !important;padding:50px}
+.cta1-section-retail{background:#000718!important;padding:50px}
 .cta1-section-retail .laptop-screen{display:none}
-.cta1-section-retail .w-1\/2{width:100%}
+.cta1-section-retail .w-1\/2,.order-management .w-2\/5,.order-management .w-3\/5{width:100%}
 .our-values h3{font-size:24px}
 .our-values p{font-size:18px}
 .about-partner .w-3\/5,.about-partner .w-2\/5,.wizards-section .w-3\/5,.wizards-section .w-2\/5{width:50%}
@@ -567,13 +585,15 @@ footer h2{font-size:18px;line-height:30px}
 .footer-bottom p br{display:none}
 }
 @media screen and (max-width: 1023px) {
-.retail-banner-gap .w-3\/5{width: 100%;}
-.retail-banner-gap .w-2\/5{display: none;}
-.retail-hero-banner{padding: 50px;}
-.retail-hero-banner h2 {font-size: 42px;line-height: 54px; padding:12px 0 20px 0;}
-.retail-hero-banner p {padding-bottom: 32px;}
-.retail-hero-banner h1{font-size: 22px;}
-.hover-highlight:hover,.nav-links.highlight{border-bottom: none;}
+.order-management .w-2\/5{display:none}
+.inclusive-software{padding:50px}
+.retail-banner-gap .w-3\/5{width:100%}
+.retail-banner-gap .w-2\/5{display:none}
+.retail-hero-banner{padding:50px}
+.retail-hero-banner h2{font-size:42px;line-height:54px;padding:12px 0 20px}
+.retail-hero-banner p{padding-bottom:32px}
+.retail-hero-banner h1{font-size:22px}
+.hover-highlight:hover,.nav-links.highlight{border-bottom:none}
 .our-values .accordion-body{padding:32px 32px 0 20px}
 .our-box-right2 h4{padding:0}
 .our-value-retail h5{font-size:20px;line-height:normal}
@@ -584,7 +604,7 @@ footer h2{font-size:18px;line-height:30px}
 .values-grid,.our-value-retail .values-grid{grid-template-columns:repeat(1,minmax(0,1fr));gap:60px}
 .detail-gap-about{gap:30px}
 .about-banner p{font-size:20px;list-style:36px;padding:16px 0 0}
-.heading-welcome h2,.heading-welcome h2 span,.heading-welcome h2 span,.our-journey h2,.wizards-section h2,.about-partner h2,.our-values h2,.about-stats h2{font-size:32px;line-height:48px}
+.heading-welcome h2,.heading-welcome h2 span,.heading-welcome h2 span,.our-journey h2,.wizards-section h2,.about-partner h2,.our-values h2,.about-stats h2,.oms-features h2{font-size:32px;line-height:48px}
 .stats-box-grid{gap:30px}
 .nb-logo{width:184px;height:auto;object-fit:contain}
 .about-welcome .w-2\/5{display:none}
@@ -635,7 +655,7 @@ footer h2{font-size:18px;line-height:30px}
 .detail-form-about-about h2{font-size:32px;line-height:48px}
 .cta-section-about h3{font-size:30px;line-height:36px}
 .cta-section-about .w-3\/5,.detail-form-about .w-1\/2,.tab-content .md\:flex-row .w-1\/2{width:100%}
-.cta-section-about p{font-size:18px;padding:32px 0;margin-bottom:16px}
+.cta-section-about p,.oms-page .cta-section-about p{font-size:18px;padding:32px 0;margin-bottom:16px;line-height:28px}
 .detail-form-about a{padding-bottom:40px}
 .cta-section-about .w-3\/5{width:100%}
 .cta-section-about{padding:100px 60px 120px}
@@ -671,26 +691,40 @@ footer .pr-28.pr-28{padding-right:0}
 .retail-modules h2{padding-bottom:40px;font-size:32px;line-height:48px}
 }
 @media screen and (max-width: 991px) {
+.oms-img{width:100%}
+.oms-features-left{flex-direction:column;gap:22px}
+.oms-features-right{flex-direction:column-reverse;gap:22px;margin-left:0;padding:20px}
+.oms-features-left{margin-right:0;padding:20px}
+.food-complete h3,.inclusive-software h3{font-size:20px;line-height:32px}
+.oms-features-left .oms-text,.oms-features-right .oms-text{width:100%;padding:0}
+.inclusive-software p{font-size:18px;line-height:30px}
+.inclusive-software h4{padding:32px 0 20px}
+.inclusive-box{padding:20px}
+.retail-video-section h2,.food-complete h2,.inclusive-software h2{font-size:28px;line-height:36px;padding-bottom:12px}
 .cta1-retail-text p{font-size:18px;line-height:30px;padding-bottom:20px}
 .retail-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 .cta1-section-retail h2{font-size:28px;line-height:36px}
-.food-complete-box1{flex-direction: column-reverse;}
-.food-complete-box1, .food-complete-box2 {
-  gap: 40px;
-  padding-bottom: 40px;
-}
-.flex-reversed{flex-direction: column;}
-.reversed-flex{flex-direction: column-reverse;}
-
-
+.food-complete-box1{flex-direction:column-reverse}
+.food-complete-box1,.food-complete-box2{gap:40px;padding-bottom:40px}
+.flex-reversed{flex-direction:column}
+.reversed-flex{flex-direction:column-reverse}
 }
 @media screen and (max-width: 767px) {
-  .food-complete{padding: 40px 20px 0 20px;}
-.retail-hero-banner h1{font-size: 20px;}
-.retail-video {width: 100%;}
-.retail-hero-banner p br{display: none;}
-.retail-hero-banner {padding: 40px 20px;}
-.retail-hero-banner h2{font-size: 38px;line-height: 46px;}
+.oms-features h2{font-size:28px;line-height:36px;text-align:left;padding-bottom:24px}
+.order-management .cta1-retail-text p{font-size:18px;line-height:28px}
+.oms-features h3{padding-bottom:40px;font-size:18px;line-height:28px;text-align:left}
+.cta1-section-retail.order-management{padding:40px 20px 60px}
+.order-management .w-2\/5{display:block}
+.oms-cta-gap{display:flex;flex-direction:column;gap:32px}
+.inclusive-software,.oms-features{padding:40px 20px}
+.inclusive-software img{width:90px}
+.inclusive-grid{grid-template-columns:repeat(1,minmax(0,1fr))}
+.food-complete{padding:40px 20px 0}
+.retail-hero-banner h1{font-size:20px}
+.retail-video{width:100%}
+.retail-hero-banner p br{display:none}
+.retail-hero-banner{padding:40px 20px}
+.retail-hero-banner h2{font-size:38px;line-height:46px}
 .retail-banner{padding:40px 20px;background-position:-140px 0}
 .cta1-section-retail{background:#000718;padding:40px 20px 60px}
 .our-value-retail h5{text-align:left;padding-bottom:32px}
@@ -713,11 +747,11 @@ footer .pr-28.pr-28{padding-right:0}
 .our-box-left h5{font-size:34px}
 .wizards-section .w-3\/5{padding-left:20px}
 .wizards-section p,.wizards-section ul li,.retail-video-section p{font-size:18px;line-height:28px}
-.food-complete h3,.inclusive-software h3{text-align: left;padding-bottom: 40px;font-size: 20px;line-height: 30px;}
-.food-complete  h4 {font-size: 22px;line-height: 28px;padding-bottom: 12px;}
-.retail-video-section h2,.food-complete h2,.inclusive-software h2 {font-size: 28px;line-height: 36px;padding-bottom: 12px;text-align: left;}
-.retail-video-section .items-center{align-items: baseline;}
-.retail-video-section p{text-align: left;padding-bottom: 40px;}
+.food-complete h3,.inclusive-software h3{text-align:left;padding-bottom:40px;font-size:20px;line-height:30px}
+.food-complete h4{font-size:22px;line-height:28px;padding-bottom:12px}
+.retail-video-section h2,.food-complete h2,.inclusive-software h2{text-align:left}
+.retail-video-section .items-center{align-items:baseline}
+.retail-video-section p{text-align:left;padding-bottom:40px}
 .wizards-section ul li{padding-bottom:8px}
 .about-partner-bottom{gap:20px}
 .wizards-section p:first-child{padding-top:0}
