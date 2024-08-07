@@ -261,8 +261,8 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 .cta2-retail-div{margin:68px 0}
 .our-values.our-value-retail p{height:auto}
 .retail-hero-banner{background:#000718 url(/assets/getpos/images/hero-bg.webp)no-repeat center;background-size:cover;background-position:0 0;padding:145px 0 83px}
-.retail-hero-banner h1{color:#FFD500;font-size:26px;font-weight:500;line-height:normal;text-transform:uppercase}
-.retail-hero-banner h2{color:#FFF;text-shadow:0 0 10px rgba(0,0,0,0.25);font-size:64px;font-weight:600;line-height:72px;padding:22px 0 48px}
+.retail-hero-banner h1{color:#FFD500;font-size:26px;font-weight:500;line-height:normal;}
+.retail-hero-banner h2,.retail-hero-banner.food-banner h1{color:#FFF;text-shadow:0 0 10px rgba(0,0,0,0.25);font-size:64px;font-weight:600;line-height:72px;padding:22px 0 34px}
 .retail-hero-btn{border:2px solid #fff;border-radius:8px;color:#fff;font-weight:600;transition:.3s ease-in-out;font-size:20px;padding:15px 30px;line-height:30px}
 .retail-hero-banner p{color:#ECECEC;font-size:24px;font-weight:400;line-height:36px;padding-bottom:48px}
 .retail-hero-img{float:right}
@@ -333,7 +333,7 @@ body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important
 .food-complete{padding:100px 83px 0}
 .food-page .cta-section-about.cta-section-retail p,.booking-page .cta-section-about.cta-section-retail p{font-size:22px;line-height:34px}
 .retail-hero-btn{font-size:18px;padding:10px 25px}
-.retail-hero-banner h2{font-size:60px;line-height:68px}
+.retail-hero-banner h2,.retail-hero-banner.food-banner h1{font-size:60px;line-height:68px}
 .retail-video-section p{font-size:22px;padding-bottom:64px}
 .retail-video{width:790px}
 .retail-hero-banner{padding:100px 60px 83px}
@@ -391,7 +391,7 @@ header{padding:10px 46px 10px 60px}
 .cta1-retail-text h2{font-size:42px;line-height:50px}
 .retail-modules{padding:100px 60px}
 .cta-section-retail.cta-section-about{padding:60px 60px 0}
-.retail-hero-banner h2{font-size:52px;line-height:62px}
+.retail-hero-banner h2,.retail-hero-banner.food-banner h1{font-size:52px;line-height:62px}
 .food-complete{padding:100px 60px 0}
 .oms-features h4{font-size:20px;line-height:28px}
 .oms-features p{font-size:16px;line-height:26px}
@@ -417,7 +417,7 @@ header{padding:10px 46px 10px 60px}
 }
 @media screen and (max-width: 1400px) {
 .booking-page .cta1-section-retail{background-position:-40px 0}
-.retail-hero-banner h2{font-size:52px;line-height:62px}
+.retail-hero-banner h2,.retail-hero-banner.food-banner h1{font-size:52px;line-height:62px}
 .retail-hero-banner p{font-size:20px;line-height:32px}
 .retail-banner{background-position:right}
 .our-journey{padding:100px 50px}
@@ -524,8 +524,8 @@ header{padding:0 26px 0 40px}
 .food-complete p{font-size:18px;line-height:30px}
 .food-page .cta-section-about.cta-section-retail p,.booking-page .cta-section-about.cta-section-retail p{font-size:18px;line-height:30px}
 .retail-video-section{padding:50px 0}
-.retail-hero-banner h2{font-size:52px;line-height:62px}
-.retail-hero-banner h2 br{display:none}
+.retail-hero-banner h2,.retail-hero-banner.food-banner h1{font-size:52px;line-height:62px}
+.retail-hero-banner h2 br,.retail-hero-banner.food-banner h1 br{display:none}
 .our-values.our-value-retail{padding:50px}
 .our-value-retail h5{padding-bottom:60px}
 .retail-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
@@ -590,7 +590,7 @@ footer h2{font-size:18px;line-height:30px}
 .retail-banner-gap .w-3\/5{width:100%}
 .retail-banner-gap .w-2\/5{display:none}
 .retail-hero-banner{padding:50px}
-.retail-hero-banner h2{font-size:42px;line-height:54px;padding:12px 0 20px}
+.retail-hero-banner h2,.retail-hero-banner.food-banner h1{font-size:42px;line-height:54px;padding:12px 0 20px}
 .retail-hero-banner p{padding-bottom:32px}
 .retail-hero-banner h1{font-size:22px}
 .hover-highlight:hover,.nav-links.highlight{border-bottom:none}
@@ -724,7 +724,7 @@ footer .pr-28.pr-28{padding-right:0}
 .retail-video{width:100%}
 .retail-hero-banner p br{display:none}
 .retail-hero-banner{padding:40px 20px}
-.retail-hero-banner h2{font-size:38px;line-height:46px}
+.retail-hero-banner h2,.retail-hero-banner.food-banner h1{font-size:38px;line-height:46px}
 .retail-banner{padding:40px 20px;background-position:-140px 0}
 .cta1-section-retail{background:#000718;padding:40px 20px 60px}
 .our-value-retail h5{text-align:left;padding-bottom:32px}
