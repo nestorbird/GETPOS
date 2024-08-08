@@ -506,7 +506,7 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
                 conditions += f" and s.contact_mobile like '%{str(mobile_no).strip()}%'"
                 
         if name:
-                conditions += f" and s.name = '{name}'"
+                conditions += f" and s.customer_name like '%{str(name).strip()}%'"
        
         if from_date:
                 conditions += " and s.transaction_date between {} and {} order by s.creation desc".format(frappe.db.escape(from_date), frappe.db.escape(to_date))
@@ -531,7 +531,8 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
                         if(c.image LIKE 'http%%', c.image, concat({base_url}, c.image))) as image,
                         s.custom_return_order_status as return_order_status,
                         CASE WHEN s.coupon_code = null THEN '' ELSE (select coupon_type from `tabCoupon Code` co where co.name=s.coupon_code) END  as coupon_type,
-                        CASE WHEN s.coupon_code = null THEN '' ELSE (select coupon_code from `tabCoupon Code` co where co.name=s.coupon_code) END  as coupon_code
+                        CASE WHEN s.coupon_code = null THEN '' ELSE (select coupon_code from `tabCoupon Code` co where co.name=s.coupon_code) END  as coupon_code,
+                        s.custom_gift_card_code as gift_card_code 
                 FROM `tabSales Order` s, `tabUser` u, `tabCustomer` c
                 WHERE s.hub_manager = u.name and s.customer = c.name 
                         and s.hub_manager = {hub_manager}  and s.docstatus = 1 
@@ -875,6 +876,11 @@ def get_theme_settings():
         # if field.fieldtype == "Color":
         theme_settings_dict[field.fieldname] = theme_settings.get(field.fieldname)
 
+    currency = frappe.get_doc("Global Defaults").default_currency
+    currency_symbol=frappe.get_doc("Currency",currency).symbol
+    theme_settings_dict['default_currency']=currency
+    theme_settings_dict['currency_symbol']=currency_symbol    
+    theme_settings_dict['default_company']=frappe.get_doc("Global Defaults").default_company
     res = {
         "data": theme_settings_dict
     }
@@ -952,7 +958,7 @@ def get_all_location_list():
        return frappe.db.sql("""
         SELECT DISTINCT custom_location 
         FROM `tabCost Center` 
-        WHERE custom_location IS NOT NULL
+        WHERE disabled=0 and custom_location IS NOT NULL
         ORDER BY custom_location ASC;
                 """,as_dict=True)
 
@@ -1388,7 +1394,7 @@ def get_location():
         filter_condition = f'%{body.get("search_location")}%'
         return frappe.db.sql("""
             SELECT DISTINCT custom_location
-            FROM `tabCost Center` WHERE custom_location LIKE %s
+            FROM `tabCost Center` WHERE disabled=0 and custom_location LIKE %s
             ORDER BY custom_location ASC;
             """, (filter_condition,) ,as_dict=1)
 
@@ -1410,7 +1416,7 @@ def get_location():
     else:
         return frappe.db.sql("""
             SELECT Distinct(custom_location)
-            FROM `tabCost Center` WHERE custom_location is NOT NULL
+            FROM `tabCost Center` WHERE disabled=0 and custom_location is NOT NULL
             ORDER BY custom_location ASC;
             """,as_dict=1)
     
