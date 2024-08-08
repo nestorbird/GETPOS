@@ -501,7 +501,7 @@ def get_combo_items(name):
         return combo_items
         
 @frappe.whitelist()
-def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_date = nowdate() , mobile_no = None):
+def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_date = nowdate() , mobile_no = None,name=None):
         res= frappe._dict()
         base_url = frappe.db.get_single_value('nbpos Setting', 'base_url')
         filters = {'hub_manager': hub_manager, 'base_url': base_url}
@@ -510,7 +510,9 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
         conditions = ""
         if mobile_no:
                 conditions += f" and s.contact_mobile like '%{str(mobile_no).strip()}%'"
-       
+        if name:
+                conditions += f" and s.customer_name like '%{str(name).strip()}%'"
+        
         if from_date:
                 conditions += " and s.transaction_date between {} and {} order by s.creation desc".format(frappe.db.escape(from_date), frappe.db.escape(to_date))
         else:
@@ -1010,7 +1012,7 @@ def get_all_location_list():
        return frappe.db.sql("""
         SELECT DISTINCT custom_location 
         FROM `tabCost Center` 
-        WHERE custom_location IS NOT NULL
+        WHERE disabled=0 and custom_location IS NOT NULL
         ORDER BY custom_location ASC;
                 """,as_dict=True)
 
