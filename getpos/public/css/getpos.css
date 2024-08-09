@@ -310,7 +310,7 @@ to{transform:translateX(0);opacity:1}
 .oms-cta1{width:550px}
 .order-management .cta1-retail-text p{font-size:24px;line-height:32px}
 .oms-features h4{color:#000718;font-size:24px;font-style:normal;font-weight:600;line-height:30px;padding-bottom:22px}
-.oms-features p{color:#343C4F;text-align:justify;font-size:20px;font-weight:400;line-height:30px}
+.oms-features p{color:#343C4F;text-align:justify;font-size:20px;font-weight:400;line-height:32px}
 .oms-features-left{border-radius:10px;background:#FFF;box-shadow:0 0 10px 0 rgba(0,0,0,0.20);margin-right:170px;padding-right:32px;margin-bottom:70px}
 .oms-features-right{border-radius:10px;background:#FFF;box-shadow:0 0 10px 0 rgba(0,0,0,0.20);margin-left:170px;padding-left:32px;margin-bottom:70px}
 .oms-features-right .oms-text{padding-right:14px}
@@ -318,6 +318,16 @@ to{transform:translateX(0);opacity:1}
 .oms-features img{border-radius:10px}
 .oms-img{width:25%}
 .oms-text{width:75%}
+.oms-banner{padding:100px 0;background:url(/assets/getpos/images/oms-banner.webp)no-repeat center;background-size:cover;background-position:0 0}
+.oms-banner h1{color:  #145FFF;font-size: 26px;font-weight: 600;line-height: normal;text-transform: uppercase}
+.oms-banner h2 {color: #000718;font-size: 52px;font-weight: 600;line-height: 64px;padding: 80px 0 34px 0;}
+.oms-banner p {color: var(--Hue-01, #000718);font-size: 20px;font-weight: 400;line-height: 28px;padding-bottom: 80px;}
+.oms-banner .oms-hero-btn{color:#000718;font-size:20px;font-weight:600;line-height:30px;padding:10px 20px;border-radius:8px;border:2px solid #B3CBFF;transition:all .3s ease-in-out}
+.oms-features .food-complete-box2{gap:80px;align-items:center;padding-bottom:100px}
+.oms-features .food-complete-box2 .food-left{width:50.5%}
+.oms-features .food-complete-box2 .food-right{width:49.5%}
+.oms-features .food-complete-box2 .food-left h4,.oms-features .food-complete-box2 .food-right h4{font-size: 32px;font-weight: 600;line-height: 42px;color: #343C4F;padding-bottom: 24px;}
+
 @media screen and (min-width: 1921px) {
 body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important}
 }
@@ -326,7 +336,7 @@ body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important
 .oms-features-right{margin-left:122px}
 .oms-features h4{font-size:22px}
 .oms-features{padding:100px 85px}
-.oms-features p{font-size:18px;line-height:26px}
+.oms-features p{font-size:18px;line-height:30px}
 .modal-content h2{font-size:20px;line-height:30px}
 .oms-cta1{width:auto}
 .inclusive-software{padding:100px 73px}
@@ -416,6 +426,7 @@ header{padding:10px 46px 10px 60px}
 .our-box-right2 h4{padding-top:10px}
 }
 @media screen and (max-width: 1400px) {
+.oms-features .food-complete-box2 .food-left h4, .oms-features .food-complete-box2 .food-right h4 {font-size: 28px;line-height: 38px;}
 .booking-page .cta1-section-retail{background-position:-40px 0}
 .retail-hero-banner h2,.retail-hero-banner.food-banner h1{font-size:52px;line-height:62px}
 .retail-hero-banner p{font-size:20px;line-height:32px}
@@ -439,6 +450,7 @@ header{padding:10px 46px 10px 60px}
 footer .pr-28{padding-right:0!important}
 }
 @media screen and (max-width: 1300px) {
+.oms-features .food-complete-box2{gap: 60px;}
 .oms-features h2{font-size:46px;line-height:56px}
 .order-management .cta1-retail-text p{font-size:20px}
 .oms-cta-gap{gap:90px}
@@ -507,6 +519,7 @@ header{padding:0 26px 0 40px}
 .our-box-right2 h3{margin-top:200px}
 }
 @media screen and (max-width: 1200px) {
+.oms-features .food-complete-box2{padding-bottom: 40px;gap: 40px;}
 .oms-features h3{padding-bottom:80px}
 .oms-features-left{margin-right:30px;padding-right:20px;margin-bottom:40px}
 .oms-features-right{margin-left:30px;padding-left:20px;margin-bottom:40px}
@@ -691,6 +704,9 @@ footer .pr-28.pr-28{padding-right:0}
 .retail-modules h2{padding-bottom:40px;font-size:32px;line-height:48px}
 }
 @media screen and (max-width: 991px) {
+.oms-features .food-complete-box2 .food-left h4, .oms-features .food-complete-box2 .food-right h4 {padding-bottom: 16px;}
+.oms-features .food-complete-box2 .food-left{width:100%}
+.oms-features .food-complete-box2 .food-right{width:100%}
 .oms-img{width:100%}
 .oms-features-left{flex-direction:column;gap:22px}
 .oms-features-right{flex-direction:column-reverse;gap:22px;margin-left:0;padding:20px}
@@ -710,6 +726,9 @@ footer .pr-28.pr-28{padding-right:0}
 .reversed-flex{flex-direction:column-reverse}
 }
 @media screen and (max-width: 767px) {
+.oms-features .food-complete-box2{padding-bottom: 32px;gap: 32px;}
+/* .oms-features .food-complete-box2 img{} */
+.oms-features .food-complete-box2 .food-left h4, .oms-features .food-complete-box2 .food-right h4 {padding-bottom: 12px;font-size: 24px;line-height: 30px;}
 .oms-features h2{font-size:28px;line-height:36px;text-align:left;padding-bottom:24px}
 .order-management .cta1-retail-text p{font-size:18px;line-height:28px}
 .oms-features h3{padding-bottom:40px;font-size:18px;line-height:28px;text-align:left}
