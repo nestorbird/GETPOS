@@ -40,7 +40,7 @@ class POSClosingShift(Document):
             "POS Opening Shift", self.pos_opening_shift)
         opening_entry.pos_closing_shift = self.name
         opening_entry.set_status()
-        self.delete_draft_invoices()
+        # self.delete_draft_invoices()
         opening_entry.save()
 
     def delete_draft_invoices(self):
@@ -163,8 +163,23 @@ def make_closing_shift_from_opening(opening_shift):
     closing_shift.set("pos_transactions", pos_transactions)
     closing_shift.set("payment_reconciliation", payments)
     closing_shift.set("taxes", taxes)
+    
+    return closing_shift
 
 
+@frappe.whitelist()
+def submit_closing_shift(closing_shift):
+    if isinstance(closing_shift, str):
+        closing_shift = json.loads(closing_shift)
+    closing_shift_doc = frappe.get_doc(closing_shift)
+    closing_shift_doc.flags.ignore_permissions = True
+    closing_shift_doc.save()
+    closing_shift_doc.submit()
+    return closing_shift_doc.name
+
+@frappe.whitelist()
+def get_shift_details(opening_shift):
+    res = frappe._dict()
     closing_balance = frappe.db.sql(
             """SELECT   
             IFNULL(SUM(CASE WHEN si.is_return = 0 THEN sii.base_net_amount ELSE 0 END),0) AS sales_order_amount,
@@ -184,22 +199,9 @@ def make_closing_shift_from_opening(opening_shift):
             (opening_shift.get("name")), as_dict=True
         )
     
-    # res['closing_shift']=closing_shift
     res['opening_balance']=frappe.db.get_value("POS Opening Shift Detail", {"parent":opening_shift.get("name")}, ["mode_of_payment","amount"])
     res['Shift_Detail']=closing_balance
     return res
-
-
-@frappe.whitelist()
-def submit_closing_shift(closing_shift):
-    if isinstance(closing_shift, str):
-        closing_shift = json.loads(closing_shift)
-    closing_shift_doc = frappe.get_doc(closing_shift)
-    closing_shift_doc.flags.ignore_permissions = True
-    closing_shift_doc.save()
-    closing_shift_doc.submit()
-    return closing_shift_doc.name
-
 
 def submit_printed_invoices(pos_opening_shift):
     invoices_list = frappe.get_all("Sales Invoice", filters={
