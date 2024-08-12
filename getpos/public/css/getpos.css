@@ -147,11 +147,12 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 .cta-section-about p{color:#EAEAEA;font-size:20px;font-weight:400;line-height:32px;text-transform:capitalize;padding:40px 0 80px}
 .oms-page .cta-section-about p{font-size:24px;line-height:36px}
 .cta-section-about a{border-radius:10px;background:transparent;padding:16px 40px;justify-content:center;align-items:center;color:#FFF;font-size:20px;font-weight:600;line-height:30px;border:1px solid #fff;transition:all .3s ease-in-out;text-decoration:none}
-.cta-section-about a:hover{opacity:.6;color:#fff}
+.cta-section-about a:hover{opacity:.6;color:#fff;border: none;}
+.oms-page .cta-section-about a{color: #000;background: #fff;}
 .our-values,.oms-features{padding:100px 0}
 .our-values h2{color:#000718;text-align:center;font-size:48px;font-weight:600;line-height:normal;padding-bottom:119px}
 .oms-features h2{color:#000718;text-align:center;font-size:52px;font-weight:600;line-height:64px;padding-bottom:32px}
-.oms-features h3{color:#000718;text-align:center;font-size:20px;font-weight:400;line-height:30px;padding-bottom:100px}
+.oms-features h3{color:#000718;text-align:center;font-size:20px;font-weight:400;line-height:30px;padding-bottom:40px}
 .our-value-retail h5{color:#000;text-align:center;font-size:24px;font-weight:400;line-height:32px;padding-bottom:119px}
 .our-values.our-value-retail h2{padding-bottom:32px}
 .our-values h3{color:var(--Hue-01,#000718);font-size:32px;line-height:normal;font-weight:600;line-height:normal}
@@ -231,7 +232,7 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 .about-partner2{object-fit:contain;width:122px}
 .about-partner3{object-fit:contain;width:153px}
 .about-partner4{object-fit:contain;width:132px}
-.about-us-page .hover-highlight,.food-page #solutions-link,.retail-page #solutions-link{color:#145FFF;border-bottom:3px solid #145FFF}
+.about-us-page .hover-highlight,.food-page #solutions-link,.retail-page #solutions-link,.oms-page #features-link{color:#145FFF;border-bottom:3px solid #145FFF}
 .about-line{position:absolute;top:230px;left:358px}
 .border-div{display:none}
 .retail-banner{padding:100px 0;background:url(/assets/getpos/images/retail-banner.webp)no-repeat;background-size:cover}
@@ -241,9 +242,10 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 .retail-text .retail-btn{color:#145FFF;font-size:20px;font-weight:600;line-height:30px;padding:10px 20px;border-radius:8px;border:2px solid #145FFF;transition:all .3s ease-in-out}
 .cta1-section-retail{padding:120px 0;background:#000718 url(/assets/getpos/images/cta1-retail-bg.webp)no-repeat;background-size:cover}
 .cta1-retail-text h2{color:#FFF;font-size:48px;font-weight:600;line-height:54px}
-.cta1-retail-text p{color:#FFF;font-size:20px;font-weight:400;line-height:32px;padding-top:40px}
-.cta1-retail-btn{border-radius:10px;border:1px solid var(--mind-white,#FFF);background:var(--mind-white,#FFF);transition:all .3s ease-in-out;color:#000718;font-size:20px;font-weight:600;line-height:30px;padding:16px 40px}
-.cta1-retail-div{margin-top:90px}
+.oms-cta1-text h2{color:#FFF;font-size:44px;font-weight:600;line-height:54px}
+.cta1-retail-text p,.oms-cta1-text p{color:#FFF;font-size:20px;font-weight:400;line-height:32px;padding-top:40px}
+.cta1-retail-btn{border-radius:10px;border:1px solid #FFF;background:#FFF;transition:all .3s ease-in-out;color:#000718 !important;font-size:20px;font-weight:600;line-height:30px;padding:14px 38px}
+.cta1-retail-div,.oms-cta1-div{margin-top:90px}
 .retail-module-box{border-radius:20px;border:2px solid transparent;background:#E1EBFF;padding:58px 20px;transition:border .5s ease}
 .retail-box-border{border:2px solid #9BBDFF}
 .retail-grid{gap:24px}
@@ -305,33 +307,201 @@ to{transform:translateX(0);opacity:1}
 .inclusive-box{padding:30px;border-radius:4px;background:#FFF;box-shadow:0 0 10px 0 rgba(0,0,0,0.15);height:100%;transition:all .3s ease-in-out;cursor:pointer}
 .inclusive-box:hover{box-shadow:0 0 10px 0 rgba(0,0,0,0.5);transition:all .3s ease-in-out}
 .inclusive-grid{gap:28px}
-.cta1-section-retail.order-management{padding:84px 0;background:url(/assets/getpos/images/about-cta-bg.webp)no-repeat;background-size:cover}
-.oms-cta-gap{gap:130px}
-.oms-cta1{width:550px}
-.order-management .cta1-retail-text p{font-size:24px;line-height:32px}
+.cta1-section-retail.order-management{padding:40px 0;background:url(/assets/getpos/images/oms-cta1-bg.webp)no-repeat;background-size:cover;border-radius: 10px;}
+.oms-cta-gap{gap:52px}
+.oms-cta1{width:auto}
 .oms-features h4{color:#000718;font-size:24px;font-style:normal;font-weight:600;line-height:30px;padding-bottom:22px}
 .oms-features p{color:#343C4F;text-align:justify;font-size:20px;font-weight:400;line-height:32px}
 .oms-features-left{border-radius:10px;background:#FFF;box-shadow:0 0 10px 0 rgba(0,0,0,0.20);margin-right:170px;padding-right:32px;margin-bottom:70px}
 .oms-features-right{border-radius:10px;background:#FFF;box-shadow:0 0 10px 0 rgba(0,0,0,0.20);margin-left:170px;padding-left:32px;margin-bottom:70px}
 .oms-features-right .oms-text{padding-right:14px}
 .oms-features-left .oms-text{padding-left:12px}
-.oms-features img{border-radius:10px}
+.oms-features img{border-radius:10px;}
 .oms-img{width:25%}
 .oms-text{width:75%}
-.oms-banner{padding:100px 0;background:url(/assets/getpos/images/oms-banner.webp)no-repeat center;background-size:cover;background-position:0 0}
-.oms-banner h1{color:  #145FFF;font-size: 26px;font-weight: 600;line-height: normal;text-transform: uppercase}
-.oms-banner h2 {color: #000718;font-size: 52px;font-weight: 600;line-height: 64px;padding: 80px 0 34px 0;}
-.oms-banner p {color: var(--Hue-01, #000718);font-size: 20px;font-weight: 400;line-height: 28px;padding-bottom: 80px;}
-.oms-banner .oms-hero-btn{color:#000718;font-size:20px;font-weight:600;line-height:30px;padding:10px 20px;border-radius:8px;border:2px solid #B3CBFF;transition:all .3s ease-in-out}
-.oms-features .food-complete-box2{gap:80px;align-items:center;padding-bottom:100px}
+.oms-feature{padding-bottom: 24px;width: 80px;}
+.oms-banner{
+    background: linear-gradient(270deg, rgba(255, 255, 255, 0.00) 65.67%, #FFF 90.82%), url(/assets/getpos/images/oms-banner.webp) #fff -188px 0px / 100% 100% no-repeat;
+    padding:187px 0;background-position: right 100%;background-size: 1300px;}
+.oms-banner h1 {color: #000718;font-size: 52px;font-weight: 600;line-height: 64px;padding: 0 0 44px 0;}
+.oms-banner p {color: #000718;font-size: 20px;font-weight: 400;line-height: 28px;padding-bottom: 80px;}
+.oms-banner .oms-hero-btn{color:#FFF;font-size:20px;font-weight:600;line-height:30px;padding:10px 20px;border-radius:8px;transition:all .3s ease-in-out;background: #145FFF;}
+.oms-features .food-complete-box2{gap:80px;align-items:center;}
+.oms-features .box-gradient-right{padding:40px 40px 40px 0;border-radius: 10px;background: linear-gradient(134deg, rgba(255, 255, 255, 0.50)74.55%, rgba(221, 232, 255, 0.50)101.27%);margin-bottom: 40px;}
+.oms-features .box-gradient-left{padding:40px 0 40px 40px;border-radius: 10px;background: linear-gradient(226deg, rgba(255, 255, 255, 0.50)78.91%, rgba(221, 232, 255, 0.50)98.09%);margin-bottom: 40px;}
+
 .oms-features .food-complete-box2 .food-left{width:50.5%}
 .oms-features .food-complete-box2 .food-right{width:49.5%}
 .oms-features .food-complete-box2 .food-left h4,.oms-features .food-complete-box2 .food-right h4{font-size: 32px;font-weight: 600;line-height: 42px;color: #343C4F;padding-bottom: 24px;}
+
+/* Notification styles */
+.order-notification {
+    width: 600px;
+    position: absolute;
+    right: 200px;
+    margin-top: -60px;
+    animation: zoomInFromBottomRight 1.5s forwards;
+}
+
+.first-notification {
+    width: 280px;
+    position: absolute;
+    right: 60px;
+    bottom: 170px;
+    animation: slideIn 1s forwards;
+    animation-delay: 1.5s; /* 1.5s for .order-notification + 0.5s delay */
+    opacity: 0;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
+}
+
+.second-notification {
+    width: 280px;
+    position: absolute;
+    bottom: 30px;
+    animation: slideIn 1s forwards;
+    animation-delay: 2.5s; /* 2s for .first-notification + 0.5s delay */
+    opacity: 0;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
+}
+
+.third-notification {
+    width: 280px;
+    position: absolute;
+    right: 30px;
+    top: 0;
+    margin-top: -100px;
+    animation: slideIn 1s forwards;
+    animation-delay: 3s; /* 2.5s for .second-notification + 0.5s delay */
+    opacity: 0;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
+}
+
+/* Common styles for notification images */
+/* .oms-banner-image img {
+    transition: all 1s ease-in-out;
+} */
+
+/* Prevent scrolling issues */
+.oms-page{
+    overflow-x: hidden;
+}
+
+/* Keyframes for zooming in from bottom right */
+@keyframes zoomInFromBottomRight {
+    from {
+        transform-origin: bottom right; /* Origin set to bottom right */
+        transform: scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Keyframes for sliding in from the right */
+@keyframes slideIn {
+    from {
+        transform: translateX(110%); /* Adjusted to keep elements fully out of view */
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* zoom oms-cta1 */
+
+/* Initial styles for animations */
+.oms-cta1-left, .oms-cta1-right {
+    opacity: 0;
+    transform: scale(0.5);
+}
+
+/* Animation for w-2/5 div coming from left-top */
+@keyframes zoomInFromLeftTop {
+    from {
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 0;
+    }
+    to {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Animation for w-3/5 div coming from right-center */
+@keyframes zoomInFromRightCenter {
+    from {
+        transform: translate(50%, 0) scale(0.5); /* Adjusted to start from right-center */
+        opacity: 0;
+    }
+    to {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Apply the animations when the elements are active */
+.oms-cta1-right.animate {
+    animation: zoomInFromLeftTop .8s forwards ease-in-out;
+}
+
+.oms-cta1-left.animate {
+    animation: zoomInFromRightCenter .8s forwards ease-in-out;
+}
+
+/* Warehouse Mgmt */
+
+.wms-cta1{padding: 100px 0;background: url(/assets/getpos/images/wms-cta1-bg.webp) no-repeat;background-size: cover;}
+.wms-cta1 h2{color: #000718;font-size: 48px;font-weight: 600;line-height: 56px;padding-bottom: 40px;}
+.wms-cta1 p{color: #000718;font-size: 20px;font-weight: 400;line-height: 32px;padding-bottom: 50px;text-align: justify;}
+.wms-btn{color:#FFF !important;font-size:20px;font-weight:600;line-height:30px;padding:14px 24px;border-radius:8px;transition:all .3s ease-in-out;background: #145FFF;}
+.wms-cta-gap{gap:150px;}
+.wms-cta1-right{height: 500px;width: 100%;border-radius: 7.044px;box-shadow: 0px 0px 18.6px 0px #343C4F;background: url(/assets/getpos/images/wms-cta1-right.webp) no-repeat;  background-size: cover;
+    background-position: left;
+    animation: moveBackground 10s infinite alternate linear;}
+/* Keyframes for moving the background image */
+@keyframes moveBackground {
+    0% {
+        background-position: left; /* Start from the left */
+    }
+    100% {
+        background-position: right; /* End at the right */
+    }
+}
 
 @media screen and (min-width: 1921px) {
 body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important}
 }
 @media screen and (max-width: 1700px) {
+/* Notification styles */
+.order-notification {
+    width: 504px;
+    right: 300px;
+    margin-top: 0px;
+}
+.oms-cta1-text h2{font-size:40px;line-height:54px}
+.first-notification {
+    width: 267px;
+    right: 180px;
+    bottom: 170px;
+}
+
+.second-notification {
+    width: 267px;
+    bottom: 30px;
+    margin-right: 40px;
+}
+
+.third-notification {
+    width: 267px;
+    right: 130px;
+    margin-top: -20px;
+}
+
+.oms-banner{padding: 150px 60px;background-size: 1100px;}
 .oms-features-left{margin-right:122px}
 .oms-features-right{margin-left:122px}
 .oms-features h4{font-size:22px}
@@ -341,7 +511,7 @@ body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important
 .oms-cta1{width:auto}
 .inclusive-software{padding:100px 73px}
 .food-complete{padding:100px 83px 0}
-.food-page .cta-section-about.cta-section-retail p,.booking-page .cta-section-about.cta-section-retail p{font-size:22px;line-height:34px}
+.food-page .cta-section-about.cta-section-retail p,.booking-page .cta-section-about.cta-section-retail p,.oms-page .cta-section-about p{font-size:20px;line-height:32px}
 .retail-hero-btn{font-size:18px;padding:10px 25px}
 .retail-hero-banner h2,.retail-hero-banner.food-banner h1{font-size:60px;line-height:68px}
 .retail-video-section p{font-size:22px;padding-bottom:64px}
@@ -349,7 +519,7 @@ body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important
 .retail-hero-banner{padding:100px 60px 83px}
 .retail-banner{padding:80px 96px}
 .cta1-section-retail{padding:100px 96px 100px 0}
-.cta1-section-retail.order-management{padding:85px 96px}
+.cta1-section-retail.order-management{padding:40px 96px}
 .cta1-section-retail.order-management p br{display:none}
 .retail-modules{padding:100px 90px}
 .retail-module-box p{font-size:22px;line-height:34px}
@@ -391,8 +561,17 @@ header{padding:10px 46px 10px 60px}
 .booking-page .cta1-retail-text p br{display:none}
 }
 @media screen and (max-width: 1500px) {
-.cta1-section-retail.order-management{padding:85px 60px}
-.order-management .cta1-retail-text h2 br{display:none}
+.oms-banner-text{width: 45%;}
+.oms-banner-gap .w-3\/5{width: 55%;}
+.order-notification {
+    right: 200px;
+}
+.first-notification{right: 90px;}
+.oms-banner {
+    background-size: 1020px;
+}
+.cta1-section-retail.order-management{padding:40px 60px}
+.order-management .oms-cta1-text h2 br{display:none}
 .inclusive-software{padding:100px 60px}
 .footer-main{padding:0 40px}
 .modal-content p br{display:none}
@@ -422,6 +601,23 @@ header{padding:10px 46px 10px 60px}
 .cta1-retail-text p br{display:none}
 .cta-section-about.cta-section-retail p{padding:48px 5rem 0 0}
 .stats-box-grid{gap:40px}
+.order-notification{margin-top: 12px;}
+.oms-banner h1 {
+    font-size: 46px;
+    line-height: 58px;
+}
+.oms-banner p br{
+    display: none;
+}
+.second-notification ,.third-notification,.first-notification{
+    width: 240px;;
+}
+.second-notification{
+    bottom: 65px;
+}
+.order-notification {
+    width: 440px;
+}
 .about-banner{background-position:center}
 .our-box-right2 h4{padding-top:10px}
 }
@@ -434,6 +630,9 @@ header{padding:10px 46px 10px 60px}
 .our-journey{padding:100px 50px}
 .about-welcome{padding:67px 50px 105px}
 .wizards-section{padding:100px 50px}
+.oms-banner {
+    padding: 110px 60px;
+}
 .about-partner{padding:90px 50px}
 .about-partner p{padding-right:80px}
 .about-stats{padding:100px 50px}
@@ -450,10 +649,20 @@ header{padding:10px 46px 10px 60px}
 footer .pr-28{padding-right:0!important}
 }
 @media screen and (max-width: 1300px) {
+    .order-notification{width: 400px;}
+    .second-notification {
+        bottom: 80px;
+    }
+    .oms-banner {
+        padding: 100px 60px;
+    }
+    .oms-page .cta-section-about p {
+        font-size: 20px;
+        line-height: 32px;
+    }
 .oms-features .food-complete-box2{gap: 60px;}
 .oms-features h2{font-size:46px;line-height:56px}
-.order-management .cta1-retail-text p{font-size:20px}
-.oms-cta-gap{gap:90px}
+.oms-cta-gap{gap:52px}
 .food-complete h3,.inclusive-software h3{padding-bottom:50px;font-size:22px}
 .booking-page .retail-hero-banner p{padding-right:170px}
 .food-page .cta-section-about.cta-section-retail p,.booking-page .cta-section-about.cta-section-retail p{font-size:20px;line-height:32px}
@@ -517,16 +726,46 @@ header{padding:0 26px 0 40px}
 }
 @media screen and (max-width: 1225px) {
 .our-box-right2 h3{margin-top:200px}
+.oms-banner{padding: 80px 40px;}
+.oms-banner p{font-size: 18px;}
+.oms-banner h1 {
+    font-size: 42px;
+    line-height: 54px;
+}
+.third-notification {
+    right: 95px;
+    margin-top: 0px;
+}
+.order-notification {
+    width: 325px;
+    right: 130px;
+    margin-top: 20px;
+}
+.second-notification {
+    bottom: 125px;
+}
+.first-notification {
+    bottom: 200px;
+}
+.second-notification, .third-notification, .first-notification {
+    width: 180px;
+}
+.oms-banner-text,.oms-banner-gap .w-3\/5 {
+    width: 50%;
+}
+.oms-banner {
+    background-size: 770px;
+}
 }
 @media screen and (max-width: 1200px) {
 .oms-features .food-complete-box2{padding-bottom: 40px;gap: 40px;}
-.oms-features h3{padding-bottom:80px}
+.oms-features h3{padding-bottom:40px}
 .oms-features-left{margin-right:30px;padding-right:20px;margin-bottom:40px}
 .oms-features-right{margin-left:30px;padding-left:20px;margin-bottom:40px}
 .oms-features h4{padding-bottom:16px}
 .oms-features{padding:50px}
 .cta1-section-retail.order-management{padding:50px}
-.oms-cta-gap{gap:50px}
+.oms-cta-gap{gap:30px}
 .inclusive-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 .inclusive-software{padding:60px}
 .food-complete h3 br{display:none}
@@ -547,8 +786,8 @@ header{padding:0 26px 0 40px}
 .heading-welcome{padding-bottom:40px}
 .our-values .accordion-button{font-size:22px}
 .about-welcome p,.about-partner p{font-size:18px;line-height:32px;padding-right:0}
-.cta1-retail-div{margin-top:40px}
-.cta1-retail-text p{font-size:20px;padding-top:22px}
+.cta1-retail-div,.oms-cta1-div{margin-top:40px}
+.cta1-retail-text p,.oms-cta1-text p{font-size:20px;padding-top:22px}
 .cta1-section-retail{background:#000718!important;padding:50px}
 .cta1-section-retail .laptop-screen{display:none}
 .cta1-section-retail .w-1\/2,.order-management .w-2\/5,.order-management .w-3\/5{width:100%}
@@ -600,6 +839,7 @@ footer h2{font-size:18px;line-height:30px}
 @media screen and (max-width: 1023px) {
 .order-management .w-2\/5{display:none}
 .inclusive-software{padding:50px}
+.order-notification {right: 110px;}
 .retail-banner-gap .w-3\/5{width:100%}
 .retail-banner-gap .w-2\/5{display:none}
 .retail-hero-banner{padding:50px}
@@ -708,6 +948,22 @@ footer .pr-28.pr-28{padding-right:0}
 .oms-features .food-complete-box2 .food-left{width:100%}
 .oms-features .food-complete-box2 .food-right{width:100%}
 .oms-img{width:100%}
+.oms-features h3{padding-bottom: 24px;}
+.oms-banner h1 br{display: none;}
+.oms-banner p,.oms-banner h1{padding-bottom: 22px;}
+.oms-banner{padding: 50px 40px;background: url(/assets/getpos/images/oms-banner.webp) no-repeat;background-size: cover;}
+.oms-banner::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8); /* Semi-transparent white overlay */
+    pointer-events: none; /* Ensure the overlay doesn't block interactions */
+}
+.oms-banner-text{width: 100%;}
+.oms-banner-gap .w-3\/5{display: none;}
 .oms-features-left{flex-direction:column;gap:22px}
 .oms-features-right{flex-direction:column-reverse;gap:22px;margin-left:0;padding:20px}
 .oms-features-left{margin-right:0;padding:20px}
@@ -728,13 +984,22 @@ footer .pr-28.pr-28{padding-right:0}
 @media screen and (max-width: 767px) {
 .oms-features .food-complete-box2{padding-bottom: 32px;gap: 32px;}
 /* .oms-features .food-complete-box2 img{} */
+.oms-features .box-gradient-right,.oms-features .box-gradient-left{padding: 0;margin: 20px 0;}
+.oms-banner{padding: 40px 20px;}
+.oms-cta1-text p {
+    font-size: 18px;
+    line-height: 28px;
+}
+.oms-banner h1 {
+    font-size: 38px;
+    line-height: 48px;
+}
 .oms-features .food-complete-box2 .food-left h4, .oms-features .food-complete-box2 .food-right h4 {padding-bottom: 12px;font-size: 24px;line-height: 30px;}
 .oms-features h2{font-size:28px;line-height:36px;text-align:left;padding-bottom:24px}
-.order-management .cta1-retail-text p{font-size:18px;line-height:28px}
-.oms-features h3{padding-bottom:40px;font-size:18px;line-height:28px;text-align:left}
+.oms-features h3{padding-bottom:24px;font-size:18px;line-height:28px;text-align:left}
 .cta1-section-retail.order-management{padding:40px 20px 60px}
 .order-management .w-2\/5{display:block}
-.oms-cta-gap{display:flex;flex-direction:column;gap:32px}
+.oms-cta-gap{display:flex;flex-direction:column;gap:22px;}
 .inclusive-software,.oms-features{padding:40px 20px}
 .inclusive-software img{width:90px}
 .inclusive-grid{grid-template-columns:repeat(1,minmax(0,1fr))}
@@ -811,6 +1076,7 @@ footer{padding:0}
 .footer-bottom p{padding-right:0}
 .cta1-retail-text p:last-child{padding-top:8px}
 .cta1-retail-div{margin-top:30px}
+.oms-cta1-div{margin-top:40px}
 .cta-section-retail.cta-section-about{padding:40px 20px}
 .cta-section-about.cta-section-retail p{padding:20px 0 0;margin:0}
 .cta2-retail-div{margin:32px 0}
