@@ -199,7 +199,14 @@ def get_shift_details(opening_shift):
             (opening_shift.get("name")), as_dict=True
         )
     
-    res['opening_balance']=frappe.db.get_value("POS Opening Shift Detail", {"parent":opening_shift.get("name")}, ["mode_of_payment","amount"])
+    res['opening_balance']=frappe.get_list(
+        "POS Opening Shift Detail",
+        filters={"parent": ["in", opening_shift.get("name")]},
+        fields=["mode_of_payment","amount"],
+        limit_page_length=0,
+        order_by="parent",
+        ignore_permissions=True
+    )
     res['Shift_Detail']=closing_balance
     return res
 
