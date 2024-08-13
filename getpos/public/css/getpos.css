@@ -327,8 +327,8 @@ to{transform:translateX(0);opacity:1}
 .oms-banner p {color: #000718;font-size: 20px;font-weight: 400;line-height: 28px;padding-bottom: 80px;}
 .oms-banner .oms-hero-btn{color:#FFF;font-size:20px;font-weight:600;line-height:30px;padding:10px 20px;border-radius:8px;transition:all .3s ease-in-out;background: #145FFF;}
 .oms-features .food-complete-box2{gap:80px;align-items:center;}
-.oms-features .box-gradient-right{padding:40px 40px 40px 0;border-radius: 10px;background: linear-gradient(134deg, rgba(255, 255, 255, 0.50)74.55%, rgba(221, 232, 255, 0.50)101.27%);margin-bottom: 40px;}
-.oms-features .box-gradient-left{padding:40px 0 40px 40px;border-radius: 10px;background: linear-gradient(226deg, rgba(255, 255, 255, 0.50)78.91%, rgba(221, 232, 255, 0.50)98.09%);margin-bottom: 40px;}
+.oms-features .box-gradient-right{padding:40px;border-radius: 10px;background: linear-gradient(134deg, rgba(255, 255, 255, 0.50)74.55%, rgba(221, 232, 255, 0.50)101.27%);margin-bottom: 40px;}
+.oms-features .box-gradient-left{padding:40px;border-radius: 10px;background: linear-gradient(226deg, rgba(255, 255, 255, 0.50)78.91%, rgba(221, 232, 255, 0.50)98.09%);margin-bottom: 40px;}
 
 .oms-features .food-complete-box2 .food-left{width:50.5%}
 .oms-features .food-complete-box2 .food-right{width:49.5%}
@@ -482,6 +482,15 @@ body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important
     right: 300px;
     margin-top: 0px;
 }
+.wms-cta-gap{
+    gap: 106px;
+}
+.wms-cta1-right{
+    height: 449px;
+}
+.wms-cta1{
+    padding: 100px 60px;
+}
 .oms-cta1-text h2{font-size:40px;line-height:54px}
 .first-notification {
     width: 267px;
@@ -630,9 +639,9 @@ header{padding:10px 46px 10px 60px}
 .our-journey{padding:100px 50px}
 .about-welcome{padding:67px 50px 105px}
 .wizards-section{padding:100px 50px}
-.oms-banner {
-    padding: 110px 60px;
-}
+.oms-banner {padding: 110px 60px;}
+.wms-cta1 h2 {font-size: 44px;line-height: 54px;}
+.wms-cta-gap{gap:80px;}
 .about-partner{padding:90px 50px}
 .about-partner p{padding-right:80px}
 .about-stats{padding:100px 50px}
@@ -647,11 +656,21 @@ header{padding:10px 46px 10px 60px}
 .detail-form-about h2{font-size:48px;line-height:68px}
 .cta-section-about h3{font-size:42px;line-height:64px}
 footer .pr-28{padding-right:0!important}
+.wms-cta1-right {height: 400px;}
+.oms-features{padding: 100px 60px;}
 }
 @media screen and (max-width: 1300px) {
     .order-notification{width: 400px;}
     .second-notification {
         bottom: 80px;
+    }
+    .wms-cta1 h2 {
+        font-size: 42px;
+        line-height: 54px;
+    }
+    .wms-cta1 p {
+        font-size: 18px;
+        line-height: 30px;
     }
     .oms-banner {
         padding: 100px 60px;
@@ -732,6 +751,10 @@ header{padding:0 26px 0 40px}
     font-size: 42px;
     line-height: 54px;
 }
+.wms-cta1 h2 {
+    font-size: 40px;
+    line-height: 52px;
+}
 .third-notification {
     right: 95px;
     margin-top: 0px;
@@ -758,6 +781,10 @@ header{padding:0 26px 0 40px}
 }
 }
 @media screen and (max-width: 1200px) {
+.wms-cta1{padding: 50px;}
+.wms-cta1 p{padding-bottom: 40px;}
+.wms-cta-gap{gap:50px;}
+.wms-cta1 h2 {font-size: 36px;padding-bottom: 24px;line-height: 48px;}
 .oms-features .food-complete-box2{padding-bottom: 40px;gap: 40px;}
 .oms-features h3{padding-bottom:40px}
 .oms-features-left{margin-right:30px;padding-right:20px;margin-bottom:40px}
@@ -839,6 +866,10 @@ footer h2{font-size:18px;line-height:30px}
 @media screen and (max-width: 1023px) {
 .order-management .w-2\/5{display:none}
 .inclusive-software{padding:50px}
+/* .wms-cta-gap{flex-direction: column;} */
+.wms-cta-gap .wms-cta1-left.w-1\/2{width: 60%;}
+.wms-cta-gap .w-1\/2{width: 40%;}
+.wms-cta1-right {height: 330px;}
 .order-notification {right: 110px;}
 .retail-banner-gap .w-3\/5{width:100%}
 .retail-banner-gap .w-2\/5{display:none}
@@ -948,6 +979,10 @@ footer .pr-28.pr-28{padding-right:0}
 .oms-features .food-complete-box2 .food-left{width:100%}
 .oms-features .food-complete-box2 .food-right{width:100%}
 .oms-img{width:100%}
+.wms-cta-gap{flex-direction: column;display: flex;}
+.wms-cta1 h2 br{display: none;}
+.wms-cta-gap .wms-cta1-left.w-1\/2{width: 100%;}
+.wms-cta-gap .w-1\/2{width: 100%;}
 .oms-features h3{padding-bottom: 24px;}
 .oms-banner h1 br{display: none;}
 .oms-banner p,.oms-banner h1{padding-bottom: 22px;}
@@ -983,7 +1018,7 @@ footer .pr-28.pr-28{padding-right:0}
 }
 @media screen and (max-width: 767px) {
 .oms-features .food-complete-box2{padding-bottom: 32px;gap: 32px;}
-/* .oms-features .food-complete-box2 img{} */
+.wms-cta1{padding: 40px 20px;}
 .oms-features .box-gradient-right,.oms-features .box-gradient-left{padding: 0;margin: 20px 0;}
 .oms-banner{padding: 40px 20px;}
 .oms-cta1-text p {
@@ -995,7 +1030,7 @@ footer .pr-28.pr-28{padding-right:0}
     line-height: 48px;
 }
 .oms-features .food-complete-box2 .food-left h4, .oms-features .food-complete-box2 .food-right h4 {padding-bottom: 12px;font-size: 24px;line-height: 30px;}
-.oms-features h2{font-size:28px;line-height:36px;text-align:left;padding-bottom:24px}
+.oms-features h2,.wms-cta1 h2{font-size:28px;line-height:36px;text-align:left;padding-bottom:24px}
 .oms-features h3{padding-bottom:24px;font-size:18px;line-height:28px;text-align:left}
 .cta1-section-retail.order-management{padding:40px 20px 60px}
 .order-management .w-2\/5{display:block}
@@ -1022,6 +1057,7 @@ footer .pr-28.pr-28{padding-right:0}
 .retail-banner h2{font-size:38px;line-height:46px;padding:12px 0 24px}
 .retail-text h1{font-size:20px;line-height:normal}
 .retail-text p{font-size:18px;line-height:28px;padding-bottom:32px}
+.wms-cta1 p{font-size:18px;line-height:28px;}
 #page-login .page-card{padding:40px 0}
 #headingq2 .accordion-button::after{display:none}
 .about-banner h1 br{display:none}
