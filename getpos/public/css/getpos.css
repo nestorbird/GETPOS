@@ -147,12 +147,13 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 .cta-section-about p{color:#EAEAEA;font-size:20px;font-weight:400;line-height:32px;text-transform:capitalize;padding:40px 0 80px}
 .oms-page .cta-section-about p{font-size:24px;line-height:36px}
 .cta-section-about a{border-radius:10px;background:transparent;padding:16px 40px;justify-content:center;align-items:center;color:#FFF;font-size:20px;font-weight:600;line-height:30px;border:1px solid #fff;transition:all .3s ease-in-out;text-decoration:none}
-.cta-section-about a:hover{opacity:.6;color:#fff;border: none;}
-.oms-page .cta-section-about a{color: #000;background: #fff;}
-.our-values,.oms-features{padding:100px 0}
+.cta-section-about a:hover{opacity:.6;color:#fff}
+.oms-page .cta-section-about a{color:#000;background:#fff}
+.our-values{padding:100px 0}
+.oms-features{padding:108px 0}
 .our-values h2{color:#000718;text-align:center;font-size:48px;font-weight:600;line-height:normal;padding-bottom:119px}
 .oms-features h2{color:#000718;text-align:center;font-size:52px;font-weight:600;line-height:64px;padding-bottom:32px}
-.oms-features h3{color:#000718;text-align:center;font-size:20px;font-weight:400;line-height:30px;padding-bottom:40px}
+.oms-features h3{color:#000718;text-align:center;font-size:24px;font-weight:400;line-height:32px;padding-bottom:40px}
 .our-value-retail h5{color:#000;text-align:center;font-size:24px;font-weight:400;line-height:32px;padding-bottom:119px}
 .our-values.our-value-retail h2{padding-bottom:32px}
 .our-values h3{color:var(--Hue-01,#000718);font-size:32px;line-height:normal;font-weight:600;line-height:normal}
@@ -244,7 +245,7 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 .cta1-retail-text h2{color:#FFF;font-size:48px;font-weight:600;line-height:54px}
 .oms-cta1-text h2{color:#FFF;font-size:44px;font-weight:600;line-height:54px}
 .cta1-retail-text p,.oms-cta1-text p{color:#FFF;font-size:20px;font-weight:400;line-height:32px;padding-top:40px}
-.cta1-retail-btn{border-radius:10px;border:1px solid #FFF;background:#FFF;transition:all .3s ease-in-out;color:#000718 !important;font-size:20px;font-weight:600;line-height:30px;padding:14px 38px}
+.cta1-retail-btn{border-radius:10px;border:1px solid #FFF;background:#FFF;transition:all .3s ease-in-out;color:#000718!important;font-size:20px;font-weight:600;line-height:30px;padding:14px 38px}
 .cta1-retail-div,.oms-cta1-div{margin-top:90px}
 .retail-module-box{border-radius:20px;border:2px solid transparent;background:#E1EBFF;padding:58px 20px;transition:border .5s ease}
 .retail-box-border{border:2px solid #9BBDFF}
@@ -263,7 +264,7 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 .cta2-retail-div{margin:68px 0}
 .our-values.our-value-retail p{height:auto}
 .retail-hero-banner{background:#000718 url(/assets/getpos/images/hero-bg.webp)no-repeat center;background-size:cover;background-position:0 0;padding:145px 0 83px}
-.retail-hero-banner h1{color:#FFD500;font-size:26px;font-weight:500;line-height:normal;}
+.retail-hero-banner h1{color:#FFD500;font-size:26px;font-weight:500;line-height:normal}
 .retail-hero-banner h2,.retail-hero-banner.food-banner h1{color:#FFF;text-shadow:0 0 10px rgba(0,0,0,0.25);font-size:64px;font-weight:600;line-height:72px;padding:22px 0 34px}
 .retail-hero-btn{border:2px solid #fff;border-radius:8px;color:#fff;font-weight:600;transition:.3s ease-in-out;font-size:20px;padding:15px 30px;line-height:30px}
 .retail-hero-banner p{color:#ECECEC;font-size:24px;font-weight:400;line-height:36px;padding-bottom:48px}
@@ -307,7 +308,7 @@ to{transform:translateX(0);opacity:1}
 .inclusive-box{padding:30px;border-radius:4px;background:#FFF;box-shadow:0 0 10px 0 rgba(0,0,0,0.15);height:100%;transition:all .3s ease-in-out;cursor:pointer}
 .inclusive-box:hover{box-shadow:0 0 10px 0 rgba(0,0,0,0.5);transition:all .3s ease-in-out}
 .inclusive-grid{gap:28px}
-.cta1-section-retail.order-management{padding:40px 0;background:url(/assets/getpos/images/oms-cta1-bg.webp)no-repeat;background-size:cover;border-radius: 10px;}
+.cta1-section-retail.order-management{padding:40px 0;background:url(/assets/getpos/images/oms-cta1-bg.webp)no-repeat;background-size:cover;border-radius:10px}
 .oms-cta-gap{gap:52px}
 .oms-cta1{width:auto}
 .oms-features h4{color:#000718;font-size:24px;font-style:normal;font-weight:600;line-height:30px;padding-bottom:22px}
@@ -316,205 +317,103 @@ to{transform:translateX(0);opacity:1}
 .oms-features-right{border-radius:10px;background:#FFF;box-shadow:0 0 10px 0 rgba(0,0,0,0.20);margin-left:170px;padding-left:32px;margin-bottom:70px}
 .oms-features-right .oms-text{padding-right:14px}
 .oms-features-left .oms-text{padding-left:12px}
-.oms-features img{border-radius:10px;}
+.oms-features img{border-radius:10px}
 .oms-img{width:25%}
 .oms-text{width:75%}
-.oms-feature{padding-bottom: 24px;width: 80px;}
-.oms-banner{
-    background: linear-gradient(270deg, rgba(255, 255, 255, 0.00) 65.67%, #FFF 90.82%), url(/assets/getpos/images/oms-banner.webp) #fff -188px 0px / 100% 100% no-repeat;
-    padding:187px 0;background-position: right 100%;background-size: 1300px;}
-.oms-banner h1 {color: #000718;font-size: 52px;font-weight: 600;line-height: 64px;padding: 0 0 44px 0;}
-.oms-banner p {color: #000718;font-size: 20px;font-weight: 400;line-height: 28px;padding-bottom: 80px;}
-.oms-banner .oms-hero-btn{color:#FFF;font-size:20px;font-weight:600;line-height:30px;padding:10px 20px;border-radius:8px;transition:all .3s ease-in-out;background: #145FFF;}
-.oms-features .food-complete-box2{gap:80px;align-items:center;}
-.oms-features .box-gradient-right{padding:40px;border-radius: 10px;background: linear-gradient(134deg, rgba(255, 255, 255, 0.50)74.55%, rgba(221, 232, 255, 0.50)101.27%);margin-bottom: 40px;}
-.oms-features .box-gradient-left{padding:40px;border-radius: 10px;background: linear-gradient(226deg, rgba(255, 255, 255, 0.50)78.91%, rgba(221, 232, 255, 0.50)98.09%);margin-bottom: 40px;}
-
-.oms-features .food-complete-box2 .food-left{width:50.5%}
-.oms-features .food-complete-box2 .food-right{width:49.5%}
-.oms-features .food-complete-box2 .food-left h4,.oms-features .food-complete-box2 .food-right h4{font-size: 32px;font-weight: 600;line-height: 42px;color: #343C4F;padding-bottom: 24px;}
-
-/* Notification styles */
-.order-notification {
-    width: 600px;
-    position: absolute;
-    right: 200px;
-    margin-top: -60px;
-    animation: zoomInFromBottomRight 1.5s forwards;
-}
-
-.first-notification {
-    width: 280px;
-    position: absolute;
-    right: 60px;
-    bottom: 170px;
-    animation: slideIn 1s forwards;
-    animation-delay: 1.5s; /* 1.5s for .order-notification + 0.5s delay */
-    opacity: 0;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
-}
-
-.second-notification {
-    width: 280px;
-    position: absolute;
-    bottom: 30px;
-    animation: slideIn 1s forwards;
-    animation-delay: 2.5s; /* 2s for .first-notification + 0.5s delay */
-    opacity: 0;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
-}
-
-.third-notification {
-    width: 280px;
-    position: absolute;
-    right: 30px;
-    top: 0;
-    margin-top: -100px;
-    animation: slideIn 1s forwards;
-    animation-delay: 3s; /* 2.5s for .second-notification + 0.5s delay */
-    opacity: 0;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
-}
-
-/* Common styles for notification images */
-/* .oms-banner-image img {
-    transition: all 1s ease-in-out;
-} */
-
-/* Prevent scrolling issues */
-.oms-page{
-    overflow-x: hidden;
-}
-
-/* Keyframes for zooming in from bottom right */
+.oms-feature{padding-bottom:24px;width:80px}
+.oms-banner{background:linear-gradient(270deg,rgba(255,255,255,0.00) 65.67%,#FFF 90.82%),url(/assets/getpos/images/oms-banner.webp) #fff -188px 0 / 100% 100% no-repeat;padding:187px 0;background-position:right 100%;background-size:1400px}
+.oms-banner h1{color:#000718;font-size:52px;font-weight:600;line-height:64px;padding:0 0 44px}
+.oms-banner p{color:#000718;font-size:20px;font-weight:400;line-height:28px;padding-bottom:80px}
+.oms-banner .oms-hero-btn{color:#000718;font-size:20px;font-weight:600;line-height:30px;padding:10px 20px;border-radius:8px;transition:all .3s ease-in-out;background:transparent;border:1px solid var(--Hue-01,#000718)}
+.oms-features .food-complete-box2{gap:58px;align-items:center}
+.oms-features .box-gradient-right{padding:40px;border-radius:10px;background:linear-gradient(134deg,rgba(255,255,255,0.50)74.55%,rgba(221,232,255,0.50)101.27%);margin-bottom:40px}
+.oms-features .box-gradient-left{padding:40px;border-radius:10px;background:linear-gradient(226deg,rgba(255,255,255,0.50)78.91%,rgba(221,232,255,0.50)98.09%);margin-bottom:40px}
+.oms-features .food-complete-box2 .food-left{width:55%}
+.oms-features .food-complete-box2 .food-right{width:45%}
+.oms-features .food-complete-box2 .food-left h4,.oms-features .food-complete-box2 .food-right h4{font-size:32px;font-weight:600;line-height:42px;color:#343C4F;padding-bottom:24px}
+.order-notification{width:550px;position:absolute;right:270px;animation:zoomInFromBottomRight 1.5s forwards}
+.first-notification{width:280px;position:absolute;right:150px;bottom:130px;animation:slideIn 1s forwards;animation-delay:1.5s;opacity:0;box-shadow:0 0 10px 0 rgba(0,0,0,0.15);border-radius:8px}
+.second-notification{width:280px;position:absolute;bottom:0;animation:slideIn 1s forwards;animation-delay:2.5s;opacity:0;box-shadow:0 0 10px 0 rgba(0,0,0,0.15);border-radius:8px}
+.third-notification{width:280px;position:absolute;right:110px;top:70px;margin-top:-100px;animation:slideIn 1s forwards;animation-delay:3s;opacity:0;box-shadow:0 0 10px 0 rgba(0,0,0,0.15);border-radius:8px}
+.oms-page{overflow-x:hidden}
 @keyframes zoomInFromBottomRight {
-    from {
-        transform-origin: bottom right; /* Origin set to bottom right */
-        transform: scale(0);
-        opacity: 0;
-    }
-    to {
-        transform: scale(1);
-        opacity: 1;
-    }
+from{transform-origin:bottom right;transform:scale(0);opacity:0}
+to{transform:scale(1);opacity:1}
 }
-
-/* Keyframes for sliding in from the right */
 @keyframes slideIn {
-    from {
-        transform: translateX(110%); /* Adjusted to keep elements fully out of view */
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
+from{transform:translateX(110%);opacity:0}
+to{transform:translateX(0);opacity:1}
 }
-
-/* zoom oms-cta1 */
-
-/* Initial styles for animations */
-.oms-cta1-left, .oms-cta1-right {
-    opacity: 0;
-    transform: scale(0.5);
-}
-
-/* Animation for w-2/5 div coming from left-top */
+.oms-cta1-left,.oms-cta1-right{opacity:0;transform:scale(0.5)}
 @keyframes zoomInFromLeftTop {
-    from {
-        transform: translate(-50%, -50%) scale(0.5);
-        opacity: 0;
-    }
-    to {
-        transform: translate(0, 0) scale(1);
-        opacity: 1;
-    }
+from{transform:translate(-50%,-50%) scale(0.5);opacity:0}
+to{transform:translate(0,0) scale(1);opacity:1}
 }
-
-/* Animation for w-3/5 div coming from right-center */
 @keyframes zoomInFromRightCenter {
-    from {
-        transform: translate(50%, 0) scale(0.5); /* Adjusted to start from right-center */
-        opacity: 0;
-    }
-    to {
-        transform: translate(0, 0) scale(1);
-        opacity: 1;
-    }
+from{transform:translate(50%,0) scale(0.5);opacity:0}
+to{transform:translate(0,0) scale(1);opacity:1}
 }
-
-/* Apply the animations when the elements are active */
-.oms-cta1-right.animate {
-    animation: zoomInFromLeftTop .8s forwards ease-in-out;
-}
-
-.oms-cta1-left.animate {
-    animation: zoomInFromRightCenter .8s forwards ease-in-out;
-}
-
-/* Warehouse Mgmt */
-
-.wms-cta1{padding: 100px 0;background: url(/assets/getpos/images/wms-cta1-bg.webp) no-repeat;background-size: cover;}
-.wms-cta1 h2{color: #000718;font-size: 48px;font-weight: 600;line-height: 56px;padding-bottom: 40px;}
-.wms-cta1 p{color: #000718;font-size: 20px;font-weight: 400;line-height: 32px;padding-bottom: 50px;text-align: justify;}
-.wms-btn{color:#FFF !important;font-size:20px;font-weight:600;line-height:30px;padding:14px 24px;border-radius:8px;transition:all .3s ease-in-out;background: #145FFF;}
-.wms-cta-gap{gap:150px;}
-.wms-cta1-right{height: 500px;width: 100%;border-radius: 7.044px;box-shadow: 0px 0px 18.6px 0px #343C4F;background: url(/assets/getpos/images/wms-cta1-right.webp) no-repeat;  background-size: cover;
-    background-position: left;
-    animation: moveBackground 10s infinite alternate linear;}
-/* Keyframes for moving the background image */
+.oms-cta1-right.animate{animation:zoomInFromLeftTop .8s forwards ease-in-out}
+.oms-cta1-left.animate{animation:zoomInFromRightCenter .8s forwards ease-in-out}
+.wms-cta1{padding:108px 0 0 0}
+.wms-cta1 h2{color:#000718;font-size:48px;font-weight:600;line-height:56px;padding-bottom:40px}
+.wms-cta1 p{color:#000718;font-size:20px;font-weight:400;line-height:32px;padding-bottom:50px;text-align:justify}
+.wms-btn{color:#FFF!important;font-size:20px;font-weight:600;line-height:30px;padding:14px 24px;border-radius:8px;transition:all .3s ease-in-out;background:#145FFF}
+.wms-cta-gap{gap:150px}
+.wms-cta1-right{height:450px;width:100%;border-radius:7.044px;background:linear-gradient(90deg,#FFF 0%,rgba(255,255,255,0.00) 20%),url(/assets/getpos/images/wms-cta1-right.webp) no-repeat;background-size:cover;background-position:left;animation:moveBackground 10s infinite alternate linear}
 @keyframes moveBackground {
-    0% {
-        background-position: left; /* Start from the left */
-    }
-    100% {
-        background-position: right; /* End at the right */
-    }
+0%{background-position:left}
+100%{background-position:right}
 }
-
+.wms-page .oms-features{background:url(/assets/getpos/images/wms-solutions-bg.png)no-repeat;background-size:cover}
+.wms-page .oms-features .box-gradient-right{padding-left:0;padding-right:0;margin-bottom:0;background:none}
+.wms-page .oms-features .box-gradient-left{padding-left:0;padding-right:0;margin-bottom:0;background:none}
+.wms-page .oms-features .food-complete-box2{gap:96px}
+.wms-page .oms-features .food-complete-box2 .food-left h4,.wms-page .oms-features .food-complete-box2 .food-right h4{color:#145FFF;font-size:24px;font-weight:600;line-height:28px;text-transform:capitalize}
+@keyframes moveBackground2 {
+0%{background-position:left}
+100%{background-position:right}
+}
+.wms-cta2{background:url(/assets/getpos/images/wms-cta2-bg.webp) no-repeat;background-size:cover;padding:154px 0}
+.wms-cta2.animate{animation:moveBackground2 8s linear forwards}
+.wms-cta2 h3{color:#fff;text-align:center;font-size:48px;font-weight:600;line-height:56px;text-transform:capitalize}
+.wms-cta2 p{color:#fff;text-align:center;text-shadow:0 0 34px #000;font-size:22px;font-weight:400;line-height:34px;padding:40px 0}
+.wms-cta2 a{color:#fff;font-size:20px;font-weight:600;line-height:30px;padding:10px 20px;border-radius:8px;background:#145FFF;box-shadow:0 0 20px 0 rgba(0,0,0,0.15) inset;transition:all .3s ease-in-out}
+.wms-banner{padding:108px 0 0;background:url(/assets/getpos/images/wms-banner-bg.webp)no-repeat;background-size:100% 96%}
+.wms-banner h1{color:#FFF;text-align:center;font-size:64px;font-weight:600;line-height:72px;text-transform:capitalize}
+.wms-banner p{color:#FFF;text-align:center;font-size:28px;font-weight:400;line-height:28px;text-transform:capitalize;padding:32px 0}
+.wms-banner-image1{width:987px;display:flex;margin:auto}
+.wms-banner-image2{position:absolute;width:284px;box-shadow:0 0 40px 0 rgba(0,0,0,0.40);margin-top:335px;left:13%;top:0;border-radius:8px}
+.wms-banner-image3{position:absolute;width:269px;box-shadow:0 0 40px 0 rgba(0,0,0,0.40);bottom:130px;right:17%;border-radius:8px}
+@keyframes moveFromCenterToPosition {
+0%{transform:scale(0) translate(-50%,-50%);opacity:0}
+100%{transform:scale(1) translate(0,0);opacity:1}
+}
+.animate .wms-banner-image2{animation:moveFromCenterToPosition 1s ease-out forwards;transform-origin:center}
+.animate .wms-banner-image3{animation:moveFromCenterToPosition 1s ease-out forwards;transform-origin:center}
+.wms-banner .wms-btn{display:none}
 @media screen and (min-width: 1921px) {
 body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important}
 }
 @media screen and (max-width: 1700px) {
-/* Notification styles */
-.order-notification {
-    width: 504px;
-    right: 300px;
-    margin-top: 0px;
-}
-.wms-cta-gap{
-    gap: 106px;
-}
-.wms-cta1-right{
-    height: 449px;
-}
-.wms-cta1{
-    padding: 100px 60px;
-}
+.wms-banner-image1{width:900px}
+.wms-banner-image2{width:270px;margin-top:300px}
+.wms-banner-image3{width:245px;bottom:115px}
+.wms-cta2{padding:154px 85px}
+.order-notification{width:504px;right:250px;margin-top:0}
+.wms-cta2 p{font-size:20px;line-height:32px}
+.wms-cta-gap{gap:106px}
+.wms-cta1-right{height:449px}
+.wms-cta1{padding:108px 60px 0 60px}
 .oms-cta1-text h2{font-size:40px;line-height:54px}
-.first-notification {
-    width: 267px;
-    right: 180px;
-    bottom: 170px;
-}
-
-.second-notification {
-    width: 267px;
-    bottom: 30px;
-    margin-right: 40px;
-}
-
-.third-notification {
-    width: 267px;
-    right: 130px;
-    margin-top: -20px;
-}
-
-.oms-banner{padding: 150px 60px;background-size: 1100px;}
+.first-notification{width:267px;right:180px;bottom:170px}
+.second-notification{width:267px;bottom:30px;margin-right:40px}
+.third-notification{width:267px;right:130px;margin-top:-20px;top:0}
+.oms-banner{padding:150px 60px;background-size:1100px}
 .oms-features-left{margin-right:122px}
 .oms-features-right{margin-left:122px}
 .oms-features h4{font-size:22px}
-.oms-features{padding:100px 85px}
+.oms-features{padding:108px 85px}
 .oms-features p{font-size:18px;line-height:30px}
 .modal-content h2{font-size:20px;line-height:30px}
 .oms-cta1{width:auto}
@@ -570,15 +469,12 @@ header{padding:10px 46px 10px 60px}
 .booking-page .cta1-retail-text p br{display:none}
 }
 @media screen and (max-width: 1500px) {
-.oms-banner-text{width: 45%;}
-.oms-banner-gap .w-3\/5{width: 55%;}
-.order-notification {
-    right: 200px;
-}
-.first-notification{right: 90px;}
-.oms-banner {
-    background-size: 1020px;
-}
+.oms-banner-text{width:45%}
+.oms-banner-gap .w-3\/5{width:55%}
+.order-notification{right:170px}
+.first-notification{right:50px}
+.third-notification{right:0}
+.oms-banner{background-size:1020px}
 .cta1-section-retail.order-management{padding:40px 60px}
 .order-management .oms-cta1-text h2 br{display:none}
 .inclusive-software{padding:100px 60px}
@@ -605,33 +501,24 @@ header{padding:10px 46px 10px 60px}
 .our-values{padding:100px 60px}
 .value-box-right{padding-right:20px}
 .value-box-left{padding-left:20px}
+.wms-page .oms-features .food-complete-box2{gap:94px}
 }
 @media screen and (max-width: 1430px) {
 .cta1-retail-text p br{display:none}
 .cta-section-about.cta-section-retail p{padding:48px 5rem 0 0}
 .stats-box-grid{gap:40px}
-.order-notification{margin-top: 12px;}
-.oms-banner h1 {
-    font-size: 46px;
-    line-height: 58px;
-}
-.oms-banner p br{
-    display: none;
-}
-.second-notification ,.third-notification,.first-notification{
-    width: 240px;;
-}
-.second-notification{
-    bottom: 65px;
-}
-.order-notification {
-    width: 440px;
-}
+.order-notification{margin-top:12px}
+.oms-banner h1{font-size:46px;line-height:58px}
+.oms-banner p br{display:none}
+.second-notification,.third-notification,.first-notification{width:240px}
+.second-notification{bottom:65px}
+.order-notification{width:440px}
 .about-banner{background-position:center}
 .our-box-right2 h4{padding-top:10px}
 }
 @media screen and (max-width: 1400px) {
-.oms-features .food-complete-box2 .food-left h4, .oms-features .food-complete-box2 .food-right h4 {font-size: 28px;line-height: 38px;}
+.wms-cta2{padding:108px 85px}
+.oms-features .food-complete-box2 .food-left h4,.oms-features .food-complete-box2 .food-right h4{font-size:28px;line-height:38px}
 .booking-page .cta1-section-retail{background-position:-40px 0}
 .retail-hero-banner h2,.retail-hero-banner.food-banner h1{font-size:52px;line-height:62px}
 .retail-hero-banner p{font-size:20px;line-height:32px}
@@ -639,9 +526,9 @@ header{padding:10px 46px 10px 60px}
 .our-journey{padding:100px 50px}
 .about-welcome{padding:67px 50px 105px}
 .wizards-section{padding:100px 50px}
-.oms-banner {padding: 110px 60px;}
-.wms-cta1 h2 {font-size: 44px;line-height: 54px;}
-.wms-cta-gap{gap:80px;}
+.oms-banner{padding:110px 60px}
+.wms-cta1 h2{font-size:44px;line-height:54px}
+.wms-cta-gap{gap:80px}
 .about-partner{padding:90px 50px}
 .about-partner p{padding-right:80px}
 .about-stats{padding:100px 50px}
@@ -656,30 +543,23 @@ header{padding:10px 46px 10px 60px}
 .detail-form-about h2{font-size:48px;line-height:68px}
 .cta-section-about h3{font-size:42px;line-height:64px}
 footer .pr-28{padding-right:0!important}
-.wms-cta1-right {height: 400px;}
-.oms-features{padding: 100px 60px;}
+.wms-cta1-right{height:400px}
+.oms-features{padding:100px 60px}
 }
 @media screen and (max-width: 1300px) {
-    .order-notification{width: 400px;}
-    .second-notification {
-        bottom: 80px;
-    }
-    .wms-cta1 h2 {
-        font-size: 42px;
-        line-height: 54px;
-    }
-    .wms-cta1 p {
-        font-size: 18px;
-        line-height: 30px;
-    }
-    .oms-banner {
-        padding: 100px 60px;
-    }
-    .oms-page .cta-section-about p {
-        font-size: 20px;
-        line-height: 32px;
-    }
-.oms-features .food-complete-box2{gap: 60px;}
+.order-notification{width:400px}
+.second-notification{bottom:80px}
+.wms-banner{padding:80px 0 0}
+.wms-banner-image1{width:800px}
+.wms-banner p{font-size:24px}
+.wms-banner-image2{width:240px}
+.wms-banner-image3{width:230px}
+.wms-page .oms-features .food-complete-box2{gap:60px}
+.wms-cta1 h2{font-size:42px;line-height:54px}
+.wms-cta1 p{font-size:18px;line-height:30px}
+.oms-banner{padding:100px 60px}
+.oms-page .cta-section-about p{font-size:20px;line-height:32px}
+.oms-features .food-complete-box2{gap:50px}
 .oms-features h2{font-size:46px;line-height:56px}
 .oms-cta-gap{gap:52px}
 .food-complete h3,.inclusive-software h3{padding-bottom:50px;font-size:22px}
@@ -727,7 +607,7 @@ footer .pr-28{padding-right:0!important}
 .box-right2{margin-top:-1px;z-index:-10;border-radius:20px 0 0 0;right:0}
 .our-box-bottom{border-bottom:none}
 .our-box-bottom::before{height:335px;top:3px}
-.our-box-bottom::after{display:none}
+.our-box-bottom::after,.oms-features h3 br{display:none}
 .our-box-right1 .flex{gap:20px;align-items:center;padding:0 20px}
 .footer-main{padding:0 40px}
 .modal-content p br{display:none}
@@ -745,47 +625,32 @@ header{padding:0 26px 0 40px}
 }
 @media screen and (max-width: 1225px) {
 .our-box-right2 h3{margin-top:200px}
-.oms-banner{padding: 80px 40px;}
-.oms-banner p{font-size: 18px;}
-.oms-banner h1 {
-    font-size: 42px;
-    line-height: 54px;
-}
-.wms-cta1 h2 {
-    font-size: 40px;
-    line-height: 52px;
-}
-.third-notification {
-    right: 95px;
-    margin-top: 0px;
-}
-.order-notification {
-    width: 325px;
-    right: 130px;
-    margin-top: 20px;
-}
-.second-notification {
-    bottom: 125px;
-}
-.first-notification {
-    bottom: 200px;
-}
-.second-notification, .third-notification, .first-notification {
-    width: 180px;
-}
-.oms-banner-text,.oms-banner-gap .w-3\/5 {
-    width: 50%;
-}
-.oms-banner {
-    background-size: 770px;
-}
+.oms-banner{padding:80px 40px}
+.oms-banner p{font-size:18px}
+.oms-banner h1{font-size:42px;line-height:54px}
+.wms-cta1 h2{font-size:40px;line-height:52px}
+.third-notification{right:0;margin-top:0}
+.order-notification{width:325px;right:130px;margin-top:20px}
+.second-notification{bottom:125px}
+.first-notification{bottom:200px}
+.second-notification,.third-notification,.first-notification{width:180px}
+.oms-banner-text,.oms-banner-gap .w-3\/5{width:50%}
+.oms-banner{background-size:770px}
 }
 @media screen and (max-width: 1200px) {
-.wms-cta1{padding: 50px;}
-.wms-cta1 p{padding-bottom: 40px;}
-.wms-cta-gap{gap:50px;}
-.wms-cta1 h2 {font-size: 36px;padding-bottom: 24px;line-height: 48px;}
-.oms-features .food-complete-box2{padding-bottom: 40px;gap: 40px;}
+.wms-cta2{padding:50px}
+.wms-banner-image1{width:700px}
+.wms-banner{padding:50px 0 0}
+.wms-banner h1{font-size:56px;line-height:68px}
+.wms-banner p{font-size:20px;line-height:32px}
+.wms-banner-image2{width:190px;margin-top:290px;left:10%}
+.wms-banner-image3{width:190px;right:10%;bottom:85px}
+.wms-cta2 p{font-size:18px;line-height:30px;padding:24px 0}
+.wms-cta1{padding:50px}
+.wms-cta1 p{padding-bottom:40px}
+.wms-cta-gap{gap:50px}
+.wms-cta1 h2{font-size:36px;padding-bottom:24px;line-height:48px}
+.oms-features .food-complete-box2{padding-bottom:40px;gap:40px}
 .oms-features h3{padding-bottom:40px}
 .oms-features-left{margin-right:30px;padding-right:20px;margin-bottom:40px}
 .oms-features-right{margin-left:30px;padding-left:20px;margin-bottom:40px}
@@ -795,7 +660,7 @@ header{padding:0 26px 0 40px}
 .oms-cta-gap{gap:30px}
 .inclusive-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 .inclusive-software{padding:60px}
-.food-complete h3 br{display:none}
+.food-complete h3 br,.oms-features h2 br{display:none}
 .booking-page .retail-hero-banner p{padding-right:0}
 .food-complete-box1 .food-left,.food-complete-box2 .food-right,.food-complete-box1 .food-right,.food-complete-box2 .food-left{width:100%}
 .food-complete-box1,.food-complete-box2{gap:40px;padding-bottom:80px}
@@ -866,11 +731,10 @@ footer h2{font-size:18px;line-height:30px}
 @media screen and (max-width: 1023px) {
 .order-management .w-2\/5{display:none}
 .inclusive-software{padding:50px}
-/* .wms-cta-gap{flex-direction: column;} */
-.wms-cta-gap .wms-cta1-left.w-1\/2{width: 60%;}
-.wms-cta-gap .w-1\/2{width: 40%;}
-.wms-cta1-right {height: 330px;}
-.order-notification {right: 110px;}
+.wms-cta-gap .wms-cta1-left.w-1\/2{width:60%}
+.wms-cta-gap .w-1\/2{width:40%}
+.wms-cta1-right{height:330px}
+.order-notification{right:110px}
 .retail-banner-gap .w-3\/5{width:100%}
 .retail-banner-gap .w-2\/5{display:none}
 .retail-hero-banner{padding:50px}
@@ -975,30 +839,25 @@ footer .pr-28.pr-28{padding-right:0}
 .retail-modules h2{padding-bottom:40px;font-size:32px;line-height:48px}
 }
 @media screen and (max-width: 991px) {
-.oms-features .food-complete-box2 .food-left h4, .oms-features .food-complete-box2 .food-right h4 {padding-bottom: 16px;}
+.wms-solutions4{background:linear-gradient(106deg,rgba(225,235,255,0.32) 6.46%,rgba(225,235,255,0.80) 96.05%)}
+.wms-page .oms-features .food-complete-box2{gap:24px}
+.wms-banner{background-size:cover;padding:50px 0 18px}
+.wms-page .oms-features .food-complete-box2 .food-left h4,.wms-page .oms-features .food-complete-box2 .food-right h4{padding:20px 0 16px}
+.oms-features .food-complete-box2 .food-left h4,.oms-features .food-complete-box2 .food-right h4{padding-bottom:16px}
 .oms-features .food-complete-box2 .food-left{width:100%}
 .oms-features .food-complete-box2 .food-right{width:100%}
 .oms-img{width:100%}
-.wms-cta-gap{flex-direction: column;display: flex;}
-.wms-cta1 h2 br{display: none;}
-.wms-cta-gap .wms-cta1-left.w-1\/2{width: 100%;}
-.wms-cta-gap .w-1\/2{width: 100%;}
-.oms-features h3{padding-bottom: 24px;}
-.oms-banner h1 br{display: none;}
-.oms-banner p,.oms-banner h1{padding-bottom: 22px;}
-.oms-banner{padding: 50px 40px;background: url(/assets/getpos/images/oms-banner.webp) no-repeat;background-size: cover;}
-.oms-banner::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.8); /* Semi-transparent white overlay */
-    pointer-events: none; /* Ensure the overlay doesn't block interactions */
-}
-.oms-banner-text{width: 100%;}
-.oms-banner-gap .w-3\/5{display: none;}
+.wms-cta-gap{flex-direction:column;display:flex}
+.wms-cta1 h2 br,.wms-banner-image{display:none}
+.wms-cta-gap .wms-cta1-left.w-1\/2{width:100%}
+.wms-cta-gap .w-1\/2{width:100%}
+.oms-features h3{padding-bottom:24px}
+.oms-banner h1 br{display:none}
+.oms-banner p,.oms-banner h1{padding-bottom:22px}
+.oms-banner{padding:50px 40px;background:url(/assets/getpos/images/oms-banner.webp) no-repeat;background-size:cover}
+.oms-banner::before{content:"";position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.8);pointer-events:none}
+.oms-banner-text{width:100%}
+.oms-banner-gap .w-3\/5{display:none}
 .oms-features-left{flex-direction:column;gap:22px}
 .oms-features-right{flex-direction:column-reverse;gap:22px;margin-left:0;padding:20px}
 .oms-features-left{margin-right:0;padding:20px}
@@ -1017,31 +876,34 @@ footer .pr-28.pr-28{padding-right:0}
 .reversed-flex{flex-direction:column-reverse}
 }
 @media screen and (max-width: 767px) {
-.oms-features .food-complete-box2{padding-bottom: 32px;gap: 32px;}
-.wms-cta1{padding: 40px 20px;}
-.oms-features .box-gradient-right,.oms-features .box-gradient-left{padding: 0;margin: 20px 0;}
-.oms-banner{padding: 40px 20px;}
-.oms-cta1-text p {
-    font-size: 18px;
-    line-height: 28px;
-}
-.oms-banner h1 {
-    font-size: 38px;
-    line-height: 48px;
-}
-.oms-features .food-complete-box2 .food-left h4, .oms-features .food-complete-box2 .food-right h4 {padding-bottom: 12px;font-size: 24px;line-height: 30px;}
-.oms-features h2,.wms-cta1 h2{font-size:28px;line-height:36px;text-align:left;padding-bottom:24px}
+.oms-features .food-complete-box2{padding-bottom:32px;gap:32px}
+.wms-banner h1{font-size:38px;line-height:46px;text-align:left}
+.wms-banner .wms-btn{display:block;margin-top:30px;width:255px}
+.wms-page .oms-features .food-complete-box2 .food-right h4:first-child{padding-top:0}
+.wms-banner p{padding:24px 0 0;text-align:left}
+.wms-cta1{padding:40px 20px 0}
+.wms-cta2 p{padding:0 0 24px;text-align:left}
+.oms-features .box-gradient-right,.oms-features .box-gradient-left{padding:0;margin:20px 0}
+.oms-banner{padding:40px 20px}
+.wms-cta2-div.flex.justify-center{justify-content:start}
+.oms-cta1-text p{font-size:18px;line-height:28px}
+.wms-cta2{padding:40px 20px}
+.oms-banner h1{font-size:38px;line-height:48px;text-align:left}
+.wms-banner{padding:40px 20px}
+.oms-features .food-complete-box2 .food-left h4,.oms-features .food-complete-box2 .food-right h4{padding-bottom:12px;font-size:24px;line-height:30px}
+.oms-features h2,.wms-cta1 h2,.wms-cta2 h3{font-size:28px;line-height:36px;text-align:left;padding-bottom:24px}
 .oms-features h3{padding-bottom:24px;font-size:18px;line-height:28px;text-align:left}
+.wms-page .oms-features h3{padding-bottom:0}
 .cta1-section-retail.order-management{padding:40px 20px 60px}
 .order-management .w-2\/5{display:block}
-.oms-cta-gap{display:flex;flex-direction:column;gap:22px;}
+.oms-cta-gap{display:flex;flex-direction:column;gap:22px}
 .inclusive-software,.oms-features{padding:40px 20px}
 .inclusive-software img{width:90px}
 .inclusive-grid{grid-template-columns:repeat(1,minmax(0,1fr))}
 .food-complete{padding:40px 20px 0}
 .retail-hero-banner h1{font-size:20px}
 .retail-video{width:100%}
-.retail-hero-banner p br{display:none}
+.retail-hero-banner p br,.wms-banner h1 br{display:none}
 .retail-hero-banner{padding:40px 20px}
 .retail-hero-banner h2,.retail-hero-banner.food-banner h1{font-size:38px;line-height:46px}
 .retail-banner{padding:40px 20px;background-position:-140px 0}
@@ -1057,7 +919,7 @@ footer .pr-28.pr-28{padding-right:0}
 .retail-banner h2{font-size:38px;line-height:46px;padding:12px 0 24px}
 .retail-text h1{font-size:20px;line-height:normal}
 .retail-text p{font-size:18px;line-height:28px;padding-bottom:32px}
-.wms-cta1 p{font-size:18px;line-height:28px;}
+.wms-cta1 p{font-size:18px;line-height:28px}
 #page-login .page-card{padding:40px 0}
 #headingq2 .accordion-button::after{display:none}
 .about-banner h1 br{display:none}
