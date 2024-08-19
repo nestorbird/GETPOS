@@ -8,7 +8,7 @@
 .nav-links.highlight{color:#145FFF;border-bottom:3px solid #145FFF}
 .hover-highlight:hover{color:#145FFF;border-bottom:3px solid #145FFF}
 .header-btn{border-radius:8px;background:var(--Secondary-01,#FF1746);box-shadow:0 -4px 4px 0 rgba(0,0,0,0.25) inset;display:flex;padding:12.5px 30.22px;align-items:center;gap:10px;transition:all .3s ease-in-out;color:#FFF;font-size:20px;font-weight:600;line-height:30px}
-header{padding:20px 0}
+header{padding:20px 0 17px 0}
 .lg\:max-w-7xl{max-width:1600px!important}
 .mobile-screen{display:none}
 .navbar,.web-footer{display:none!important}
@@ -30,13 +30,16 @@ footer h2 span{color:var(--Secondary-01,#FF1746);font-size:32px;font-weight:600;
 .footer-facebook,.footer-instagram,.footer-linkedin,.footer-youtube{padding-left:20px}
 .padding-left50{padding-left:60px}
 .mt-99px{width:90%;margin:0 auto;left:0;right:0;justify-content:center;padding-top:27px}
-.modal-content a:hover{opacity:.7}
-.modal-content{border-radius:8px;background:var(--mind-white,#FFF);padding:41px;width:auto}
-.modal-content h2{color:var(--Hue-03,#145FFF);font-size:22px;font-weight:600;line-height:30px}
+/* .modal-content a:hover{opacity:.7} */
+.modal-content{border-radius:8px;background:var(--mind-white,#FFF);padding:30px;width:auto}
+.modal-content h2{color:var(--Hue-03,#145FFF);font-size:22px;font-weight:600;line-height:normal}
 .modal-content p{color:var(--Grays-02,#606574);font-size:16px;font-weight:400;line-height:20px;padding-top:10px}
 .modal-content p br{display:none}
-.nav-grid{gap:52px}
+.nav-grid{gap:7px}
+.modal-img{min-width: 60px;}
+.nav-grid a{padding: 13px;transition:all .3s ease-in-out;border-radius: 10px;}
 .nav-icon-img{width:60px}
+.nav-grid a:hover{transition:all .3s ease-in-out;box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.10);}
 .close-icon{font-size:1.5rem;font-weight:700;color:#333;cursor:pointer;position:absolute;top:10px;right:20px;padding:5px}
 .hidden-modal{display:none}
 #header.sticky{box-shadow:0 10px 15px -3px #000 0 4px 6px -4px #000;background:#fff}
@@ -233,7 +236,7 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 .about-partner2{object-fit:contain;width:122px}
 .about-partner3{object-fit:contain;width:153px}
 .about-partner4{object-fit:contain;width:132px}
-.about-us-page .hover-highlight,.food-page #solutions-link,.retail-page #solutions-link,.oms-page #features-link{color:#145FFF;border-bottom:3px solid #145FFF}
+.about-us-page .hover-highlight,.food-page #solutions-link,.retail-page #solutions-link,.oms-page #features-link,.wms-page #features-link{color:#145FFF;border-bottom:3px solid #145FFF}
 .about-line{position:absolute;top:230px;left:358px}
 .border-div{display:none}
 .retail-banner{padding:100px 0;background:url(/assets/getpos/images/retail-banner.webp)no-repeat;background-size:cover}
@@ -383,14 +386,24 @@ to{transform:translate(0,0) scale(1);opacity:1}
 .wms-banner h1{color:#FFF;text-align:center;font-size:64px;font-weight:600;line-height:72px;text-transform:capitalize}
 .wms-banner p{color:#FFF;text-align:center;font-size:28px;font-weight:400;line-height:28px;text-transform:capitalize;padding:32px 0}
 .wms-banner-image1{width:987px;display:flex;margin:auto}
-.wms-banner-image2{position:absolute;width:284px;box-shadow:0 0 40px 0 rgba(0,0,0,0.40);margin-top:335px;left:13%;top:0;border-radius:8px}
-.wms-banner-image3{position:absolute;width:269px;box-shadow:0 0 40px 0 rgba(0,0,0,0.40);bottom:130px;right:17%;border-radius:8px}
-@keyframes moveFromCenterToPosition {
+.wms-banner-image2{position:absolute;width:284px;box-shadow:0 0 40px 0 rgba(0,0,0,0.40);margin-top:335px;left:13%;top:0;border-radius:8px;transform: translateX(100%) scale(0);opacity: 0;transition: transform 1s ease-in-out, opacity 0s ease-in-out;}
+.wms-banner-image3{position:absolute;width:269px;box-shadow:0 0 40px 0 rgba(0,0,0,0.40);bottom:130px;right:17%;border-radius:8px;transform: translateX(-100%) scale(0);opacity: 0;transition: transform 1s ease-in-out, opacity 0s ease-in-out;}
+/* @keyframes moveFromCenterToPosition {
 0%{transform:scale(0) translate(-50%,-50%);opacity:0}
 100%{transform:scale(1) translate(0,0);opacity:1}
+} */
+/* .wms-banner-image2 {
+    opacity: 0;
+    transition: transform 1s ease-in-out, opacity 0s ease-in-out;
 }
-.animate .wms-banner-image2{animation:moveFromCenterToPosition 1s ease-out forwards;transform-origin:center}
-.animate .wms-banner-image3{animation:moveFromCenterToPosition 1s ease-out forwards;transform-origin:center}
+
+.wms-banner-image2 {
+    opacity: 0;
+    transition: transform 1s ease-in-out, opacity 0s ease-in-out;
+} */
+
+.animate .wms-banner-image2{transform: translateX(0) scale(1);opacity: 1;}
+.animate .wms-banner-image3{transform: translateX(0) scale(1);opacity: 1;}
 .wms-banner .wms-btn{display:none}
 @media screen and (min-width: 1921px) {
 body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important}
@@ -415,7 +428,7 @@ body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important
 .oms-features h4{font-size:22px}
 .oms-features{padding:108px 85px}
 .oms-features p{font-size:18px;line-height:30px}
-.modal-content h2{font-size:20px;line-height:30px}
+.modal-content h2{font-size:20px;line-height:normal}
 .oms-cta1{width:auto}
 .inclusive-software{padding:100px 73px}
 .food-complete{padding:100px 83px 0}
@@ -460,7 +473,7 @@ body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important
 .our-values{padding:100px 96px}
 header{padding:10px 46px 10px 60px}
 .modal-content{padding:30px 25px}
-.nav-grid{gap:30px}
+/* .nav-grid{gap:30px} */
 .mt-99px{width:97%}
 .footer-main{padding:0 80px}
 .footer-bottom p{font-size:16px;line-height:24px}
@@ -547,6 +560,8 @@ footer .pr-28{padding-right:0!important}
 .oms-features{padding:100px 60px}
 }
 @media screen and (max-width: 1300px) {
+.modal-img {min-width: 40px;}
+.nav-grid{gap: 0;}
 .order-notification{width:400px}
 .second-notification{bottom:80px}
 .wms-banner{padding:80px 0 0}
@@ -612,7 +627,7 @@ footer .pr-28{padding-right:0!important}
 .footer-main{padding:0 40px}
 .modal-content p br{display:none}
 .modal-content p{font-size:12px}
-.modal-content h2{font-size:18px;line-height:30px}
+.modal-content h2{font-size:18px;line-height:normal}
 header span.mr-4{display:flex;height:45px}
 .header-btn{font-size:18px;height:45px;padding:12px 24px}
 .nav-links{line-height:normal;padding-bottom:12px!important;padding-top:12px!important}
@@ -729,6 +744,8 @@ footer h2{font-size:18px;line-height:30px}
 .footer-bottom p br{display:none}
 }
 @media screen and (max-width: 1023px) {
+.nav-grid a {padding: 10px 0;}
+.nav-grid a:hover {box-shadow:none;}
 .order-management .w-2\/5{display:none}
 .inclusive-software{padding:50px}
 .wms-cta-gap .wms-cta1-left.w-1\/2{width:60%}
