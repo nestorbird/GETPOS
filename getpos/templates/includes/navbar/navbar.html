@@ -46,9 +46,9 @@ id="header">
 	<nav aria-label="Main navigation"
 		class="w-full lg:w-auto h-[calc(100vh-72px)] items-center lg:bg-transparent lg:flex lg:h-auto lg:mx-5 lg:overflow-visible overflow-y-auto hidden-mobile">
 		<ul class="flex flex-col lg:flex-row lg:self-center lg:w-auto nav-links text-lg w-full laptop-view">
-			<li class="">
+			<!-- <li class="">
 				<a class="flex py-2.5 no-underline items-center md:px-4 nav-links xl:px-4 inter hover-highlight" href="/about-us" >About us</a>
-			</li>
+			</li> -->
 			<li class="mb-dropdown" data-modal-id="modal1">
 			   <button class="flex py-2.5 no-underline items-center md:px-3 nav-links xl:px-4 inter" id="solutions-link" data-modal-id="modal1">Solutions</button>
 
@@ -231,11 +231,14 @@ id="header">
 				   </div>
 			   </div>
 			</li>
-			<li data-modal-id="modal4">
+			<li class="">
+				<a class="flex py-2.5 no-underline items-center md:px-4 nav-links xl:px-4 inter hover-highlight" href="/about-us" >About us</a>
+			</li>
+			<!-- <li data-modal-id="modal4">
 			   <button class="flex py-2.5 no-underline items-center md:px-3 nav-links xl:px-4 inter"
 				   id="company-link" data-modal-id="modal4">Company</button>
 
-			   <!-- <div id="modal4" class="fixed hidden-modal z-50 mt-99px">
+			   <div id="modal4" class="fixed hidden-modal z-50 mt-99px">
 				   <div class="flex items-center justify-center">
 					   <div
 						   class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all w-auto max-w-none">
@@ -290,8 +293,8 @@ id="header">
 						   </div>
 					   </div>
 				   </div>
-			   </div> -->
-			</li>
+			   </div>
+			</li> -->
 			<li class="mb-dropdown mobile-screen">
 				<button class="header-btn inter btn-hover" data-bs-target="#contactUs" data-bs-toggle="modal"
 					type="button">Contact us</button>
