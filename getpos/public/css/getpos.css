@@ -12,23 +12,23 @@ header{padding:20px 0 17px 0}
 .lg\:max-w-7xl{max-width:1600px!important}
 .mobile-screen{display:none}
 .navbar,.web-footer{display:none!important}
-footer{padding:103px 0 0;background:url(/assets/getpos/images/footer-bg.webp)no-repeat;background-size:cover}
+footer{padding:102px 0 0;background:url(/assets/getpos/images/footer-bg.webp)no-repeat;background-size:cover}
 .footer-main{padding:0}
 .home-swiper{width:100%;height:470px}
 .home-swiper .swiper-slide{height:100%!important}
-.footer-logo{width:337px;min-width:initial;height:inherit}
+.footer-logo{width:243px;min-width:initial;height:inherit}
 .footer-lower .copyright-txt{color:rgba(0,7,24,0.60);font-size:16px;font-weight:400;line-height:24px;letter-spacing:-.145px}
 .footer-lower{align-items:center;justify-content:center;padding:0 0 20px}
 .footer-bottom{padding-bottom:60px}
 .footer-bottom p{color:#000718;font-size:16px;font-weight:400;line-height:24px;letter-spacing:-.145px}
 .footer-padding{padding-bottom:31px}
-footer h2{color:#000718;font-size:24px;font-weight:500;line-height:34px;letter-spacing:-.145px;padding-top:135px}
+footer h2{color:#000718;font-size:24px;font-weight:500;line-height:34px;letter-spacing:-.145px;padding-top:43px}
 footer h2 span{color:var(--Secondary-01,#FF1746);font-size:32px;font-weight:600;line-height:24px;letter-spacing:-.145px}
 .footer-contacts li{gap:12px;margin-bottom:21px;color:#000718;font-size:16px;font-weight:400;line-height:normal;letter-spacing:-.145px}
 .footer-privacy{padding-top:9px}
 .footer-headings{color:#000718;font-size:14px;font-weight:600;line-height:normal;letter-spacing:1px;text-transform:uppercase;padding-bottom:68px;padding-top:42px}
 .footer-facebook,.footer-instagram,.footer-linkedin,.footer-youtube{padding-left:20px}
-.padding-left50{padding-left:60px}
+.padding-left50{padding-left:80px}
 .mt-99px{width:90%;margin:0 auto;left:0;right:0;justify-content:center;padding-top:27px}
 /* .modal-content a:hover{opacity:.7} */
 .modal-content{border-radius:8px;background:var(--mind-white,#FFF);padding:30px;width:auto}
@@ -381,34 +381,51 @@ to{transform:translate(0,0) scale(1);opacity:1}
 .wms-cta2.animate{animation:moveBackground2 8s linear forwards}
 .wms-cta2 h3{color:#fff;text-align:center;font-size:48px;font-weight:600;line-height:56px;text-transform:capitalize}
 .wms-cta2 p{color:#fff;text-align:center;text-shadow:0 0 34px #000;font-size:22px;font-weight:400;line-height:34px;padding:40px 0}
-.wms-cta2 a{color:#fff;font-size:20px;font-weight:600;line-height:30px;padding:10px 20px;border-radius:8px;background:#145FFF;box-shadow:0 0 20px 0 rgba(0,0,0,0.15) inset;transition:all .3s ease-in-out}
+.wms-cta2-div a{color:#fff;font-size:20px;font-weight:600;line-height:30px;padding:10px 20px;border-radius:8px;background:#145FFF;box-shadow:0 0 20px 0 rgba(0,0,0,0.15) inset;transition:all .3s ease-in-out}
 .wms-banner{padding:108px 0 0;background:url(/assets/getpos/images/wms-banner-bg.webp)no-repeat;background-size:100% 96%}
 .wms-banner h1{color:#FFF;text-align:center;font-size:64px;font-weight:600;line-height:72px;text-transform:capitalize}
 .wms-banner p{color:#FFF;text-align:center;font-size:28px;font-weight:400;line-height:28px;text-transform:capitalize;padding:32px 0}
 .wms-banner-image1{width:987px;display:flex;margin:auto}
 .wms-banner-image2{position:absolute;width:284px;box-shadow:0 0 40px 0 rgba(0,0,0,0.40);margin-top:335px;left:13%;top:0;border-radius:8px;transform: translateX(100%) scale(0);opacity: 0;transition: transform 1s ease-in-out, opacity 0s ease-in-out;}
 .wms-banner-image3{position:absolute;width:269px;box-shadow:0 0 40px 0 rgba(0,0,0,0.40);bottom:130px;right:17%;border-radius:8px;transform: translateX(-100%) scale(0);opacity: 0;transition: transform 1s ease-in-out, opacity 0s ease-in-out;}
-/* @keyframes moveFromCenterToPosition {
-0%{transform:scale(0) translate(-50%,-50%);opacity:0}
-100%{transform:scale(1) translate(0,0);opacity:1}
-} */
-/* .wms-banner-image2 {
-    opacity: 0;
-    transition: transform 1s ease-in-out, opacity 0s ease-in-out;
-}
-
-.wms-banner-image2 {
-    opacity: 0;
-    transition: transform 1s ease-in-out, opacity 0s ease-in-out;
-} */
-
 .animate .wms-banner-image2{transform: translateX(0) scale(1);opacity: 1;}
 .animate .wms-banner-image3{transform: translateX(0) scale(1);opacity: 1;}
 .wms-banner .wms-btn{display:none}
+.manufacturing-banner{background:url(/assets/getpos/images/manufacturing-bg.webp) no-repeat;background-size:cover;padding:182px 0 108px 0;height: 850px;background-position: 0 -27px;}
+.manufacturing-banner h1{color: #FFF;font-size: 64px;font-weight: 600;line-height: 80px;text-transform: capitalize;}
+.manufacturing-box-gap{gap: 16px;}
+.manufacturing-icon{width: 40px;}
+.manufacturing-line{position: absolute;width: 139px;top: 0;margin: 60px 0 0px 218px;}
+.manufacturing-banner p{color: #FFF;font-size: 20px;font-weight: 400;line-height: 16px;text-transform: capitalize;}
+.manufacturing-banner .stats-box-grid{column-gap: 114px;row-gap: 54px;padding-top: 64px;}
+.manufacturing-need{background:url(/assets/getpos/images/manu-need-bg.webp) no-repeat;background-size:cover;padding:108px 0;}
+.manu-need-text h2{color: var(--Grays-04, var(--mind-white, #FFF));font-size: 48px;font-weight: 600;line-height: 56px;text-transform: capitalize;}
+.manu-need-text p{color: #FFF;font-size: 20px;font-weight: 400;line-height: 32px;}
+.manu-need-text{gap: 150px;padding-bottom: 80px;}
+.manu-need1{margin-top: 91px;}
+.manu-need2{margin-top: 230px;}
+.manu-need3{margin-top: 130px;}
+.manu-need-img{gap: 48px;padding-bottom: 80px;}
+.cta-section-manufacturing{padding: 0 0;background: #000718;}
+.cta-section-manufacturing h2{color: #FFF;font-size: 24px;font-weight: 600;line-height: 28px;text-transform: capitalize;}
+.cta-section-manufacturing h3{font-size: 48px;font-weight: 600;line-height: 56px;text-transform: capitalize;padding: 24px 0 48px 0;}
+.cta-section-manufacturing p{color:#FFF;font-size: 20px;font-weight: 400;line-height: 32px;padding: 0 10rem 48px 0;}
+.cta-manu-img{width: 463px;float: right;margin-top: -210px;}
+
+
 @media screen and (min-width: 1921px) {
 body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important}
 }
-@media screen and (max-width: 1700px) {
+@media screen and (max-width: 1708px) {
+    .manufacturing-banner {
+        height: auto;
+        background-position: 0 0;
+        padding: 182px 80px 80px 80px;
+    }
+    .manu-need-text{gap: 80px;}
+    .manufacturing-need{padding: 108px 80px;}
+.cta-section-manufacturing{padding: 0 85px;}
+.cta-manu-img{margin-top: -200px;}
 .wms-banner-image1{width:900px}
 .wms-banner-image2{width:270px;margin-top:300px}
 .wms-banner-image3{width:245px;bottom:115px}
@@ -483,6 +500,7 @@ header{padding:10px 46px 10px 60px}
 }
 @media screen and (max-width: 1500px) {
 .oms-banner-text{width:45%}
+.manufacturing-banner {padding: 150px 80px 80px 80px;background-position: right;}
 .oms-banner-gap .w-3\/5{width:55%}
 .order-notification{right:170px}
 .first-notification{right:50px}
@@ -504,6 +522,8 @@ header{padding:10px 46px 10px 60px}
 .oms-features p{font-size:16px;line-height:26px}
 }
 @media screen and (max-width: 1440px) {
+.cta-section-manufacturing p {padding: 0 6rem 32px 0;}
+.cta-section-manufacturing h3 {padding: 18px 0 32px 0;}
 .our-journey{padding:100px 60px}
 .about-welcome{padding:67px 60px 105px}
 .wizards-section{padding:100px 60px}
@@ -531,6 +551,7 @@ header{padding:10px 46px 10px 60px}
 }
 @media screen and (max-width: 1400px) {
 .wms-cta2{padding:108px 85px}
+.manufacturing-banner {padding: 150px 60px 80px 60px;background-position: right;}
 .oms-features .food-complete-box2 .food-left h4,.oms-features .food-complete-box2 .food-right h4{font-size:28px;line-height:38px}
 .booking-page .cta1-section-retail{background-position:-40px 0}
 .retail-hero-banner h2,.retail-hero-banner.food-banner h1{font-size:52px;line-height:62px}
@@ -561,8 +582,12 @@ footer .pr-28{padding-right:0!important}
 }
 @media screen and (max-width: 1300px) {
 .modal-img {min-width: 40px;}
+.cta-section-manufacturing{padding: 0 60px;}
 .nav-grid{gap: 0;}
+.manufacturing-banner {padding: 150px 60px 80px 60px;background-position: right;}
 .order-notification{width:400px}
+.manufacturing-banner h1 {font-size: 54px;line-height: 72px;}
+.manufacturing-line {width: 120px;margin: 60px 0 0px 186px;}
 .second-notification{bottom:80px}
 .wms-banner{padding:80px 0 0}
 .wms-banner-image1{width:800px}
@@ -633,7 +658,7 @@ header span.mr-4{display:flex;height:45px}
 .nav-links{line-height:normal;padding-bottom:12px!important;padding-top:12px!important}
 .logo-size{width:260px}
 header{padding:0 26px 0 40px}
-.footer-logo{width:230px}
+/* .footer-logo{width:230px} */
 .logo-size{width:260px}
 .nav-links,.header-btn{font-size:16px}
 .nav-link.py-3{padding-top:12px!important;padding-bottom:12px!important}
@@ -653,7 +678,11 @@ header{padding:0 26px 0 40px}
 .oms-banner{background-size:770px}
 }
 @media screen and (max-width: 1200px) {
+.cta-section-manufacturing p {padding: 0 4rem 32px 0;}
+.manufacturing-banner {padding: 40px;background-position: left;}
 .wms-cta2{padding:50px}
+.cta-section-manufacturing{padding: 0 50px;}
+.cta-manu-img{margin: 0;width: auto;}
 .wms-banner-image1{width:700px}
 .wms-banner{padding:50px 0 0}
 .wms-banner h1{font-size:56px;line-height:68px}
@@ -845,7 +874,7 @@ header{padding:0 10px 0 20px}
 .footer-main{padding:0 20px}
 .footer-bottom{padding-bottom:40px}
 footer{padding:48px 0 0}
-.footer-logo{width:243px}
+/* .footer-logo{width:243px} */
 footer .pr-28.pr-28{padding-right:0}
 .footer-bottom p{font-size:16px;line-height:24px;padding-right:20px}
 .footer-headings{font-size:16px;padding:32px 0 12px}
@@ -856,6 +885,12 @@ footer .pr-28.pr-28{padding-right:0}
 .retail-modules h2{padding-bottom:40px;font-size:32px;line-height:48px}
 }
 @media screen and (max-width: 991px) {
+.cta-section-manufacturing .laptop-screen.w-2\/5{display: none;}
+.cta-section-manufacturing .w-3\/5{width: 100%;}
+.manufacturing-banner .stats-box-grid{padding-top: 32px;gap: 32px;}
+.cta-section-manufacturing{padding:50px;}
+.cta-section-manufacturing p {padding: 0 0 32px 0;}
+.manufacturing-banner h1 {font-size: 38px;line-height: 58px;}
 .wms-solutions4{background:linear-gradient(106deg,rgba(225,235,255,0.32) 6.46%,rgba(225,235,255,0.80) 96.05%)}
 .wms-page .oms-features .food-complete-box2{gap:24px}
 .wms-banner{background-size:cover;padding:50px 0 18px}
@@ -870,6 +905,9 @@ footer .pr-28.pr-28{padding-right:0}
 .wms-cta-gap .w-1\/2{width:100%}
 .oms-features h3{padding-bottom:24px}
 .oms-banner h1 br{display:none}
+.manufacturing-line{margin: 45px 0 0 60px;}
+.manufacturing-banner p {line-height: 28px;font-size: 18px;}
+.manufacturing-icon {width: 30px;}
 .oms-banner p,.oms-banner h1{padding-bottom:22px}
 .oms-banner{padding:50px 40px;background:url(/assets/getpos/images/oms-banner.webp) no-repeat;background-size:cover}
 .oms-banner::before{content:"";position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.8);pointer-events:none}
@@ -893,6 +931,12 @@ footer .pr-28.pr-28{padding-right:0}
 .reversed-flex{flex-direction:column-reverse}
 }
 @media screen and (max-width: 767px) {
+.manufacturing-banner{padding: 40px 20px;}
+.manufacturing-banner .stats-box-grid {padding-top: 24px;gap: 24px;}
+.cta-section-manufacturing{padding: 40px 20px;}
+.cta-section-manufacturing p{font-size: 18px;line-height: 28px;padding-bottom: 24px;}
+.cta-section-manufacturing h3{font-size: 28px;line-height: 36px;padding-bottom: 24px;}
+.cta-section-manufacturing h2{font-size: 22px;}
 .oms-features .food-complete-box2{padding-bottom:32px;gap:32px}
 .wms-banner h1{font-size:38px;line-height:46px;text-align:left}
 .wms-banner .wms-btn{display:block;margin-top:30px;width:255px}
