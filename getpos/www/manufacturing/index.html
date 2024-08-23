@@ -12,7 +12,8 @@
 <section class="relative manufacturing-banner">
     <div class="relative mx-auto lg:max-w-7xl max-lg:max-w-7xl max-sm:w-full justify-between manufacturing-banner-gap">
         <div class="manufacturing-banner-text">
-            <h1 class="Gelasio">GETPOS for <br>Organized Manufacturing <br>And Subcontracting</h1>
+            <h1 class="Gelasio heading-font">GETPOS for</h1>
+            <div class="manufacturing-heading-animation"><h2 class="Gelasio heading-font">Organized Manufacturing <br>And Subcontracting</h2></div>
             <img alt="oms-cta1" src="/assets/getpos/images/manufacturing-line.webp" class="manufacturing-line"/>
 
             <div class="flex stats-box-grid">
@@ -94,7 +95,7 @@
     <div class="relative mx-auto lg:max-w-7xl max-lg:max-w-7xl max-sm:w-full flex flex-col">
     <h2 class="inter">GETPOS -<span class="pink-span"> Cloud Based POS Solution</span> For <br>Manufacturing & Subcontracting</h2>
     
-    <div class="manufacturing-complete-box1 reversed-flex flex">
+    <div class="manufacturing-complete-box1 reversed-flex flex manufacturing-feature-animation1">
         <div class="manufacturing-left">
             <img alt="manufacturing-feature1" src="/assets/getpos/images/manufacturing-feature1.webp" class="manufacturing-feature1">
         </div>
@@ -105,20 +106,20 @@
         </div>
     </div>
 
-    <div class="manufacturing-complete-box1 flex-reversed flex">
+    <div class="manufacturing-complete-box1 flex-reversed flex manufacturing-feature-animation2">
         <div class="manufacturing-right">
             <h3 class="inter">Work Order</h3>
             <h4 class="inter">Monitor to Progress</h4>
             <p class="inter">Our Work Order feature enables you to create, manage, and monitor work orders seamlessly. Assign tasks, set deadlines, and track progress in real-time. This ensures that every job is completed on time, within budget, and to the required standards.</p>
         </div>
         <div class="manufacturing-left">
-            <img alt="manufacturing-feature1" src="/assets/getpos/images/manufacturing-feature2.webp" class="manufacturing-feature1">
+            <img alt="manufacturing-feature1" src="/assets/getpos/images/manufacturing-feature2.webp" class="manufacturing-feature2">
         </div>
     </div>
 
-    <div class="manufacturing-complete-box1 reversed-flex flex">
+    <div class="manufacturing-complete-box1 reversed-flex flex manufacturing-feature-animation3">
         <div class="manufacturing-left">
-            <img alt="manufacturing-feature1" src="/assets/getpos/images/manufacturing-feature3.webp" class="manufacturing-feature1">
+            <img alt="manufacturing-feature1" src="/assets/getpos/images/manufacturing-feature3.webp" class="manufacturing-feature3">
         </div>
         <div class="manufacturing-right">
             <h3 class="inter">Manufacturers</h3>
@@ -127,20 +128,20 @@
         </div>
     </div>
 
-    <div class="manufacturing-complete-box1 flex-reversed flex">
+    <div class="manufacturing-complete-box1 flex-reversed flex manufacturing-feature-animation4">
         <div class="manufacturing-right">
             <h3 class="inter">Manufacturers</h3>
             <h4 class="inter">Engineer to order</h4>
             <p class="inter">Engineer to Order manufacturing requires precise coordination and customization. GETPOS supports this with detailed tracking and management features, ensuring that every custom order meets client specifications and is delivered on time.</p>
         </div>
         <div class="manufacturing-left">
-            <img alt="manufacturing-feature1" src="/assets/getpos/images/manufacturing-feature4.webp" class="manufacturing-feature1">
+            <img alt="manufacturing-feature1" src="/assets/getpos/images/manufacturing-feature4.webp" class="manufacturing-feature4">
         </div>
     </div>
 
-    <div class="manufacturing-complete-box1 reversed-flex flex">
+    <div class="manufacturing-complete-box1 reversed-flex flex manufacturing-feature-animation5">
         <div class="manufacturing-left">
-            <img alt="manufacturing-feature1" src="/assets/getpos/images/manufacturing-feature5.webp" class="manufacturing-feature1">
+            <img alt="manufacturing-feature1" src="/assets/getpos/images/manufacturing-feature5.webp" class="manufacturing-feature5">
         </div>
         <div class="manufacturing-right">
             <h3 class="inter">Production Plan</h3>
@@ -163,7 +164,7 @@
                         efficiency and reliability of GETPOS. Simplify your order management, enhance customer
                         satisfaction, and boost your business performance. </p>
                 </div>
-                <div class="wms-cta2-div flex"> <a class="cursor-pointer btn-hover" data-bs-target="#contactUs"
+                <div class="manufacturing-cta2-div flex"> <a class="cursor-pointer btn-hover" data-bs-target="#contactUs"
                     data-bs-toggle="modal">Book a Demo Session</a></div>
             </div>
         </div>
@@ -179,6 +180,72 @@
 
 <script>
     document.body.classList.add('manufacturing-page');
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const headingAnimation = document.querySelector('.manufacturing-heading-animation');
+    const rightImgAnimation = document.querySelector('.manufacturing-right-img');
+
+    headingAnimation.classList.add('animate-heading');
+    rightImgAnimation.classList.add('animate-right-img');
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const images = document.querySelectorAll('.manu-need-image');
+
+    const observerOptions = {
+        root: null, // Observe the viewport
+        threshold: 0.5 // Trigger when 50% of the section is in view
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show');
+            }
+        });
+    }, observerOptions);
+
+    images.forEach(image => observer.observe(image));
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const featureBoxes = document.querySelectorAll('.manufacturing-feature-animation1, .manufacturing-feature-animation2, .manufacturing-feature-animation3, .manufacturing-feature-animation4, .manufacturing-feature-animation5');
+
+    const observerOptions = {
+        root: null, // Observe the viewport
+        threshold: 0.5 // Trigger when 50% of the element is in view
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show-feature1');
+            }
+        });
+    }, observerOptions);
+
+    featureBoxes.forEach(box => observer.observe(box));
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const ctaSection = document.querySelector('.cta-section-manufacturing');
+
+    const observerOptions = {
+        root: null, // Observe the viewport
+        threshold: 0.5 // Trigger when 50% of the section is in view
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show-cta-button');
+            }
+        });
+    }, observerOptions);
+
+    observer.observe(ctaSection);
+});
+
 
 </script>
 
