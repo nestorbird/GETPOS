@@ -391,14 +391,15 @@ to{transform:translate(0,0) scale(1);opacity:1}
 .animate .wms-banner-image2{transform: translateX(0) scale(1);opacity: 1;}
 .animate .wms-banner-image3{transform: translateX(0) scale(1);opacity: 1;}
 .wms-banner .wms-btn{display:none}
-.manufacturing-banner{background:url(/assets/getpos/images/manufacturing-bg.webp) no-repeat;background-size:cover;padding:182px 0 108px 0;height: 850px;background-position: 0 -27px;}
+.manufacturing-banner{background:#000 url(/assets/getpos/images/manufacturing-bg.webp) no-repeat;padding: 182px 0 80px 0;background-size: 2020px;}
+.manufacturing-right-img{position: absolute;width: 610px;right: 0;top: 0;}
 .manufacturing-banner h1{color: #FFF;font-size: 64px;font-weight: 600;line-height: 80px;text-transform: capitalize;}
 .manufacturing-box-gap{gap: 16px;}
 .manufacturing-icon{width: 40px;}
-.manufacturing-line{position: absolute;width: 139px;top: 0;margin: 60px 0 0px 218px;}
+.manufacturing-line{position: absolute;width: 110px;top: 0;margin: 65px 0 0px 210px;}
 .manufacturing-banner p{color: #FFF;font-size: 20px;font-weight: 400;line-height: 16px;text-transform: capitalize;}
 .manufacturing-banner .stats-box-grid{column-gap: 114px;row-gap: 54px;padding-top: 64px;}
-.manufacturing-need{background:url(/assets/getpos/images/manu-need-bg.webp) no-repeat;background-size:cover;padding:108px 0;}
+.manufacturing-need{background:url(/assets/getpos/images/manu-need-bg.webp) no-repeat;background-size:cover;padding:108px 0;position: relative;z-index: 9;}
 .manu-need-text h2{color: var(--Grays-04, var(--mind-white, #FFF));font-size: 48px;font-weight: 600;line-height: 56px;text-transform: capitalize;}
 .manu-need-text p{color: #FFF;font-size: 20px;font-weight: 400;line-height: 32px;}
 .manu-need-text{gap: 150px;padding-bottom: 80px;}
@@ -411,6 +412,25 @@ to{transform:translate(0,0) scale(1);opacity:1}
 .cta-section-manufacturing h3{font-size: 48px;font-weight: 600;line-height: 56px;text-transform: capitalize;padding: 24px 0 48px 0;}
 .cta-section-manufacturing p{color:#FFF;font-size: 20px;font-weight: 400;line-height: 32px;padding: 0 10rem 48px 0;}
 .cta-manu-img{width: 463px;float: right;margin-top: -210px;}
+.manufacturing-features{padding: 108px 0;background:url(/assets/getpos/images/manufacturing-feature-bg.webp) no-repeat;background-size:cover;}
+.manufacturing-left{
+    width: 64.454%;
+}
+.manufacturing-right{
+    width: 35.546%;
+}
+.manufacturing-features h2{color:  #000718;
+    text-align: center;
+    font-size: 48px;
+    font-weight: 600;
+    line-height: 56px;
+    text-transform: capitalize;
+    padding-bottom: 120px;}
+.manufacturing-complete-box1{align-items: center;padding-bottom: 120px;}
+.manufacturing-feature1{width: 100%;}
+.manufacturing-complete-box1 h3{color:#000718;font-size: 44px;font-weight: 600;line-height: 40px;text-transform: capitalize;padding-bottom: 8px;}
+.manufacturing-complete-box1 h4{color:#145FFF;font-size: 32px;font-weight: 400;line-height: 40px;text-transform: capitalize;padding-bottom: 38px;}
+.manufacturing-complete-box1 p{color: #000;font-size: 16px;font-weight: 400;line-height: 24px;}
 
 
 @media screen and (min-width: 1921px) {
@@ -421,8 +441,10 @@ body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important
         height: auto;
         background-position: 0 0;
         padding: 182px 80px 80px 80px;
+        background-size: 1700px;
     }
-    .manu-need-text{gap: 80px;}
+    .manufacturing-features{padding: 108px 80px;}
+    .manu-need-text{gap: 20px;}
     .manufacturing-need{padding: 108px 80px;}
 .cta-section-manufacturing{padding: 0 85px;}
 .cta-manu-img{margin-top: -200px;}
@@ -525,6 +547,7 @@ header{padding:10px 46px 10px 60px}
 .cta-section-manufacturing p {padding: 0 6rem 32px 0;}
 .cta-section-manufacturing h3 {padding: 18px 0 32px 0;}
 .our-journey{padding:100px 60px}
+.manufacturing-right-img{width: 570px;}
 .about-welcome{padding:67px 60px 105px}
 .wizards-section{padding:100px 60px}
 .about-partner{padding:90px 60px}
@@ -551,6 +574,7 @@ header{padding:10px 46px 10px 60px}
 }
 @media screen and (max-width: 1400px) {
 .wms-cta2{padding:108px 85px}
+.manu-need-text h2 {font-size: 42px;line-height: 52px;}
 .manufacturing-banner {padding: 150px 60px 80px 60px;background-position: right;}
 .oms-features .food-complete-box2 .food-left h4,.oms-features .food-complete-box2 .food-right h4{font-size:28px;line-height:38px}
 .booking-page .cta1-section-retail{background-position:-40px 0}
@@ -558,6 +582,7 @@ header{padding:10px 46px 10px 60px}
 .retail-hero-banner p{font-size:20px;line-height:32px}
 .retail-banner{background-position:right}
 .our-journey{padding:100px 50px}
+.manufacturing-features h2,.manufacturing-complete-box1{padding-bottom: 80px;}
 .about-welcome{padding:67px 50px 105px}
 .wizards-section{padding:100px 50px}
 .oms-banner{padding:110px 60px}
@@ -582,12 +607,18 @@ footer .pr-28{padding-right:0!important}
 }
 @media screen and (max-width: 1300px) {
 .modal-img {min-width: 40px;}
+.manufacturing-need {padding: 108px 60px;}
+.manu-need-text{padding-bottom: 60px;}
+.manu-need1{margin-top: 71px;}
+.manu-need2{margin-top: 210px;}
+.manu-need3{margin-top: 110px;}
 .cta-section-manufacturing{padding: 0 60px;}
 .nav-grid{gap: 0;}
+.manufacturing-right-img {width: 545px;}
 .manufacturing-banner {padding: 150px 60px 80px 60px;background-position: right;}
 .order-notification{width:400px}
 .manufacturing-banner h1 {font-size: 54px;line-height: 72px;}
-.manufacturing-line {width: 120px;margin: 60px 0 0px 186px;}
+.manufacturing-line {width: 110px;margin: 60px 0 0px 186px;}
 .second-notification{bottom:80px}
 .wms-banner{padding:80px 0 0}
 .wms-banner-image1{width:800px}
@@ -678,6 +709,14 @@ header{padding:0 26px 0 40px}
 .oms-banner{background-size:770px}
 }
 @media screen and (max-width: 1200px) {
+.manufacturing-need{padding: 50px;}
+.manu-need1{margin-top: 51px;}
+.manu-need2{margin-top: 190px;}
+.manu-need3{margin-top: 80px;}
+.manu-need-text h2 {font-size: 34px;line-height: 46px;}
+.manu-need-img,.manu-need-text{padding-bottom: 50px;}
+.manu-need-text p {font-size: 18px;line-height: 30px;}
+.manufacturing-right-img {width: 340px;margin-top: 121px;}
 .cta-section-manufacturing p {padding: 0 4rem 32px 0;}
 .manufacturing-banner {padding: 40px;background-position: left;}
 .wms-cta2{padding:50px}
@@ -704,8 +743,14 @@ header{padding:0 26px 0 40px}
 .oms-cta-gap{gap:30px}
 .inclusive-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 .inclusive-software{padding:60px}
-.food-complete h3 br,.oms-features h2 br{display:none}
+.food-complete h3 br,.oms-features h2 br,.manufacturing-features h2 br{display:none}
+.manufacturing-features{padding: 50px 50px 0 50px;}
+.manufacturing-left{width: 50%;}
+.manufacturing-right{width: 50%;}
 .booking-page .retail-hero-banner p{padding-right:0}
+.manufacturing-complete-box1 h4 {font-size: 28px;padding-bottom: 24px;}
+.manufacturing-complete-box1 h3 {font-size: 38px;}
+.manufacturing-complete-box1{gap: 40px;}
 .food-complete-box1 .food-left,.food-complete-box2 .food-right,.food-complete-box1 .food-right,.food-complete-box2 .food-left{width:100%}
 .food-complete-box1,.food-complete-box2{gap:40px;padding-bottom:80px}
 .food-complete{padding:50px 50px 0}
@@ -775,7 +820,7 @@ footer h2{font-size:18px;line-height:30px}
 @media screen and (max-width: 1023px) {
 .nav-grid a {padding: 10px 0;}
 .nav-grid a:hover {box-shadow:none;}
-.order-management .w-2\/5{display:none}
+.order-management .w-2\/5,.manufacturing-right-img{display:none}
 .inclusive-software{padding:50px}
 .wms-cta-gap .wms-cta1-left.w-1\/2{width:60%}
 .wms-cta-gap .w-1\/2{width:40%}
@@ -883,8 +928,17 @@ footer .pr-28.pr-28{padding-right:0}
 .footer-contacts li{font-size:16px}
 .retail-modules{padding:50px}
 .retail-modules h2{padding-bottom:40px;font-size:32px;line-height:48px}
+.manufacturing-features h2{font-size: 36px;line-height: 42px;}
 }
 @media screen and (max-width: 991px) {
+.manufacturing-features h2, .manufacturing-complete-box1{padding-bottom: 40px;}
+.manufacturing-complete-box1 h3 {font-size: 20px;line-height: normal;}
+.manufacturing-complete-box1{gap: 24px;}
+.manufacturing-complete-box1 h4 {font-size: 24px;padding-bottom: 18px;}
+.manu-need-text h2 {font-size: 28px;line-height: 38px;}
+.manufacturing-left,.manufacturing-right{width: 100%;}
+.manu-need-text .w-2\/5,.manu-need-text .w-3\/5{width: 100%;}
+.manu-need-text{flex-direction: column;}
 .cta-section-manufacturing .laptop-screen.w-2\/5{display: none;}
 .cta-section-manufacturing .w-3\/5{width: 100%;}
 .manufacturing-banner .stats-box-grid{padding-top: 32px;gap: 32px;}
@@ -932,6 +986,19 @@ footer .pr-28.pr-28{padding-right:0}
 }
 @media screen and (max-width: 767px) {
 .manufacturing-banner{padding: 40px 20px;}
+.manufacturing-need{padding: 40px 20px;}
+.manu-need-img, .manu-need-text{padding-bottom: 40px;}
+.manu-need-img{gap: 16px;}
+.manu-need1{margin-top: 20px;}
+.manu-need2{margin-top: 60px;}
+.manu-need3{margin-top: 40px;}
+.manufacturing-features {padding: 40px 20px 0 20px;}
+.manufacturing-features h2 {
+    font-size: 28px;
+    line-height: 38px;
+    padding-bottom: 24px;
+}
+.manufacturing-page .wms-cta2-div.flex.justify-center{justify-content: center;}
 .manufacturing-banner .stats-box-grid {padding-top: 24px;gap: 24px;}
 .cta-section-manufacturing{padding: 40px 20px;}
 .cta-section-manufacturing p{font-size: 18px;line-height: 28px;padding-bottom: 24px;}
