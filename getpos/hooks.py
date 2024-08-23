@@ -76,6 +76,7 @@ doctype_js = {
 	"Warehouse": "public/js/doctype_js/warehouse.js",
 	"Account": "public/js/doctype_js/account.js",
 	"Customer": "public/js/doctype_js/customer.js",
+    "Cost Center": "public/js/doctype_js/cost_center.js",
 	"Item": "public/js/doctype_js/item.js",
     "Pricing Rule" : "public/js/doctype_js/pricing_rule.js",
     "Email Template" : "public/js/doctype_js/email_template.js",
@@ -143,27 +144,16 @@ override_doctype_class = {
 # Document Events
 # ---------------
 # Hook on document methods and events
-doc_events = {
-	# "Warehouse": {
-	# 	"validate": "getpos.getpos.hooks.warehouse.validate_hub_manager"
-	# },
-	"Sales Order":{
-		# "on_submit": "getpos.getpos.hooks.sales_order.on_submit",
+doc_events = {	
+	"Sales Order":{		
 		"validate": "getpos.getpos.hooks.sales_order.validate"
-	},
-	# "Sales Invoice":{
-	# 	"on_submit": ["getpos.getpos.hooks.sales_invoice.on_submit","getpos.getpos.hooks.sales_invoice.send_email_on_invoice"]
-
-	# },
+	},	
 	"Item Price":{
 		"validate": "getpos.getpos.hooks.item_price.validate_item_price"
 	},
     "Version":{
         "after_insert": "getpos.getpos.hooks.version.after_insert"
-	},
-    "Cost Center" : {
-		"after_insert" : "getpos.getpos.hooks.cost_center.create_warehouse"
-	},
+	},   
 	"Item Group" : {
 		"before_insert" : "getpos.getpos.hooks.item_group.item_group_length"
 	},

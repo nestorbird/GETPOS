@@ -2025,3 +2025,31 @@ def create_payment_entry(doc):
         payment_entry.save()
         payment_entry.submit()
 
+
+@frappe.whitelist()
+def clear_demo_data():
+        res = frappe._dict()
+        company = frappe.db.get_single_value("Global Defaults", "demo_company")
+        try:
+                tdr = frappe.new_doc("Transaction Deletion Record")
+                tdr.company=company
+                tdr.process_in_single_transaction = True
+                tdr.save(ignore_permissions=True)
+                tdr.submit()
+                tdr.start_deletion_tasks()
+                frappe.db.commit()
+                frappe.db.set_single_value("Global Defaults", "demo_company", "")
+                frappe.delete_doc("Company", company, ignore_permissions=True)
+                frappe.db.commit()
+                res['success_key'] = 1
+                res['message'] = "Demo company and transactional data deleted successfully."  
+        except Exception as e:
+                res['success_key'] = 0
+                res['message'] = e 
+        return res
+
+
+
+
+
+
