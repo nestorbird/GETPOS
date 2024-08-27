@@ -184,9 +184,9 @@ def get_shift_details(opening_shift):
             """SELECT   
             IFNULL(SUM(CASE WHEN si.is_return = 0 THEN sii.base_net_amount ELSE 0 END),0) AS sales_order_amount,
             IFNULL(SUM(CASE WHEN si.is_return = 1 THEN sii.base_net_amount ELSE 0 END),0) AS return_order_amount,
-            IFNULL(SUM(CASE WHEN si.is_return = 0 and si.mode_of_payment="Cash" THEN si.base_net_total ELSE 0 END) + SUM(CASE WHEN si.is_return = 1 and si.mode_of_payment="Cash" THEN si.base_net_total ELSE 0 END),0) AS cash_collected,
-            IFNULL(SUM(CASE WHEN si.is_return = 0 and si.mode_of_payment="Credit" THEN si.base_net_total ELSE 0 END) + SUM(CASE WHEN si.is_return = 1 and si.mode_of_payment="Credit" THEN si.base_net_total ELSE 0 END),0) AS credit_collected,           
-            IFNULL(SUM(CASE WHEN si.is_return = 0 THEN si.base_net_total ELSE 0 END) + SUM(CASE WHEN si.is_return = 1 THEN si.base_net_total ELSE 0 END),0) AS total_sales_order_amount
+            IFNULL(SUM(CASE WHEN si.is_return = 0 and si.mode_of_payment="Cash" THEN sii.base_net_amount ELSE 0 END),0) AS cash_collected,
+            IFNULL(SUM(CASE WHEN si.is_return = 0 and si.mode_of_payment="Credit" THEN sii.base_net_amount ELSE 0 END),0) AS credit_collected,           
+            IFNULL(SUM(CASE WHEN si.is_return = 0 THEN sii.base_net_amount ELSE 0 END) - SUM(CASE WHEN si.is_return = 1 THEN sii.base_net_amount ELSE 0 END),0) AS total_sales_order_amount
         FROM 
             `tabPOS Opening Shift` pos
             LEFT JOIN `tabSales Order` so ON pos.name = so.custom_pos_shift
