@@ -420,7 +420,7 @@ to{transform:translate(0,0) scale(1);opacity:1}
 .manufacturing-feature1{width:100%}
 .manufacturing-complete-box1 h3{color:#000718;font-size:44px;font-weight:600;line-height:40px;text-transform:capitalize;padding-bottom:8px}
 .manufacturing-complete-box1 h4{color:#145FFF;font-size:32px;font-weight:400;line-height:40px;text-transform:capitalize;padding-bottom:38px}
-.manufacturing-complete-box1 p{color:#000;font-size:16px;font-weight:400;line-height:24px}
+.manufacturing-complete-box1 p{color:#606574;font-size:18px;font-weight:400;line-height:30px}
 .manufacturing-heading-animation{opacity:0;transform:translateY(500px);transition:transform 1s ease-out,opacity 1s ease-out}
 .animate-heading{opacity:1;transform:translateY(0)}
 .animate-right-img{animation:zoomInFromRightCenter .8s forwards ease-in-out}
@@ -439,11 +439,11 @@ to{transform:translate(0,0) scale(1);opacity:1}
 .manufacturing-cta2-div a{color:#fff;font-size:0;font-weight:600;line-height:30px;padding:10px 20px;border-radius:8px;background:#145FFF;box-shadow:0 0 20px 0 rgba(0,0,0,0.15) inset;transition:width .5s ease-out,font-size .5s ease-out;width:20px}
 .show-cta-button .manufacturing-cta2-div a{width:auto;font-size:20px;transition:all .3s ease-in-out}
 .hr-banner{padding:108px 0 0;background:#000718}
-.hr-banner h1{color:#FFF;font-size:200px;font-weight:700;line-height:72px;letter-spacing:-3px;text-transform:uppercase;text-align:center}
+.hr-banner h1{color:#FFF;font-size:200px;font-weight:700;line-height:72px;letter-spacing:-3px;text-transform:uppercase;text-align:center;opacity: 0.8;}
 .hr-banner h2{color:#FFF;font-size:64px;font-weight:600;line-height:72px;text-transform:capitalize}
 .hr-banner p{color:#FFF;font-size:20px;font-style:normal;font-weight:400;line-height:32px;padding-top:40px}
 .hr-right-line{position:absolute}
-.hr-left-line{position:absolute;position:absolute;margin-left:56px;margin-top:50px}
+.hr-left-line{position:absolute;margin-left:56px;margin-top:50px}
 .hr-right-line{position:absolute;right:202px;top:-68px}
 .payroll-need{padding:108px 0}
 .payroll-need h2{color:#000718;font-size:48px;font-weight:600;line-height:56px;text-transform:capitalize}
@@ -452,7 +452,7 @@ to{transform:translate(0,0) scale(1);opacity:1}
 .payroll-need-text{gap:300px}
 .manufacturing-features{overflow-x:hidden!important}
 .payroll-need1{width:416px}
-.payroll-need1-bg{width:391px;position:absolute;top:-20px;margin-left:50px;z-index:-1}
+.payroll-need1-bg{width:370px;position:absolute;top:-20px;margin-left:50px;z-index:-1}
 .payroll-need2{position:absolute;right:55px;margin-top:40px;width:40px}
 .payroll-need3{position:absolute;margin:26rem 0 0 36rem;width:40px}
 .payroll-need-righttop{position:absolute;margin-top:-118px;right:0}
@@ -465,7 +465,7 @@ to{transform:translate(0,0) scale(1);opacity:1}
 .hr-cta-box{padding:64px;border-radius:var(--radius-input,4px);border:1px solid rgba(246,248,255,0.50);background:rgba(71,84,109,0.22);box-shadow:0 0 10px 0 rgba(0,0,0,0.10);backdrop-filter:blur(41.349998474121094px)}
 .hr-cta a{color:#000A3B;font-size:20px;font-weight:600;line-height:30px;padding:10px 20px;border-radius:4px;background:#fff;transition:all .3s ease-in-out}
 .hr-cta-text{width:80%}
-.hr-features{padding:108px 0;background:linear-gradient(0deg,#FFF 98.84%,#E1EBFF 100%)}
+.hr-features{padding:108px 0;background:linear-gradient(0deg,#FFF 98.84%,#E1EBFF 100%);overflow-x: hidden;}
 .hr-features-text h2{color:#000718;font-size:48px;font-weight:600;line-height:56px;text-transform:capitalize}
 .hr-features-text p{color:var(--Hue-01,#000718);font-size:20px;font-weight:400;line-height:32px}
 .hr-features-text p:nth-child(2){padding-top:16px}
@@ -478,17 +478,20 @@ to{transform:translate(0,0) scale(1);opacity:1}
 .hr-employee1-left{position:absolute;margin:-230px 0 0 150px;border-radius:7.48px;background:rgba(255,255,255,0.90);width:25.973%;box-shadow:0 0 9.35px 0 rgba(0,0,0,0.15)}
 .hr-employee1-right{border-radius:4.208px;background:rgba(255,255,255,0.90);box-shadow:0 0 5.26px 0 rgba(0,0,0,0.15);float:right;margin-top:-62px;position:absolute;right:11%;width:12%}
 .hr-employee1-left,.hr-employee1-right{opacity:0;transform:translateX(0);transition:opacity 1s ease,transform 1s ease}
+.hr-employee10-left.hr-employee1-left{opacity:0;transform:translateY(50px);transition:opacity .8s ease,transform .8s ease}
+.hr-employee10-right.hr-employee1-right{opacity:0;transform:translateY(-50px);transition:opacity .8s ease,transform .8s ease;margin-top: 62px;}
 .hr-employee1-right{transform:translateX(0)}
 .hr-employee1-show{opacity:1;transform:translateX(0)}
+.hr-employee10-right.hr-employee1-right.hr-employee1-show,.hr-employee10-left.hr-employee1-left.hr-employee1-show{opacity:1;transform:translateX(0)}
 .employee1-animation{padding:86px 0 124px}
 .hr-features-bg6{right:28%;margin-top:-55px;width:40px}
-.hr-features-bg1{right:28%;width:40px;margin-top:5rem;right:12%;width:40px;margin-top:35rem}
-.hr-features-bg5{margin:15rem 0 0}
-.hr-features-bg4{right:0}
-.hr-features-bg3{margin:250px 0 0 30px}
-.hr-complete-box1{padding-bottom:124px;gap:150px;align-items:center}
+.hr-features-bg1{right:12%;width:40px;margin-top:35rem}
+.hr-features-bg5{margin:15rem 0 0;width: 130px;}
+.hr-features-bg4{right:0;width: 81px;}
+.hr-features-bg3{margin:250px 0 0 30px;width: 95px;}
+.hr-complete-box1{padding-bottom:124px;gap:115px;align-items:center}
 .hr-complete-box1 h3{color:#000718;font-size:24px;font-weight:600;line-height:28px;text-transform:capitalize;padding:32px 0}
-.hr-complete-box1 p{color:#000;font-size:20px;font-weight:400;line-height:32px}
+.hr-complete-box1 p{color:#606574;font-size:18px;font-weight:400;line-height:30px}
 .hr-complete-box1 .hr-features-icon{width:111px}
 .hr-left{width:65%}
 .hr-right{width:35%}
@@ -496,19 +499,177 @@ to{transform:translate(0,0) scale(1);opacity:1}
 .hr-feature3,.hr-feature6,.hr-feature8{transform:scale(0.5) translateX(0);transform-origin:left;transition:transform .6s ease-in-out}
 .hr-features-bg2{margin-top:41rem;right:30%}
 .hr-feature2.in-view-hr,.hr-feature3.in-view-hr,.hr-feature4.in-view-hr,.hr-feature6.in-view-hr,.hr-feature7.in-view-hr,.hr-feature8.in-view-hr{transform:scale(1)translateX(0)}
-.hr-features-leave{right:33%;margin-top:-280px}
+.hr-features-leave{right:33%;margin-top:-280px;width: 5%;}
 .hr-features-attendance{right:22%;margin-top:40rem}
 .hr-employee4-bg{margin:-72px 0 0 140px;width:40px}
 .hr-employee5{width:66.4%;display:flex;margin:auto}
-.hr-employee5-left{position:absolute;width:20%}
-.hr-employee5-right{position:absolute;width:30%;right:0}
-.employee5-animation{padding-bottom:124px}
+.hr-employee5-left{position:absolute;width:35%;margin: 34rem 0 0 23rem;border-radius: 8px;background: rgba(255, 255, 255, 0.90);box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);backdrop-filter: blur(15px);}
+.hr-employee5-right{position:absolute;width:26%;margin: 39.5rem 0 0 52rem;z-index: 9;border-radius: 8px;background: rgba(255, 255, 255, 0.90);box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);backdrop-filter: blur(15px);}
+.employee5-animation{padding-bottom:300px;}
+.hr-employee5-left, .hr-employee5-right {
+    opacity: 0;
+    transition: transform .8s ease-out, opacity .8s ease-out;
+}
+
+.hr-employee5-left {
+    transform: translateX(-100%);
+}
+
+.hr-employee5-right {
+    transform: translateX(100%);
+}
+
+.employee5-animation.animate .hr-employee5-left {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.employee5-animation.animate .hr-employee5-right {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.hr-employee6-bg{margin: 20px 0 0 15rem;width: 40px;opacity: .8;}
+.hr-complete-box1.hr-complete-box2{padding-left: 160px;gap:300px}
+.hr-employee9-top,.hr-employee9-bottom{width: 34.121%;box-shadow: 0px 0px 27.857px 0px rgba(0, 0, 0, 0.15);border-radius: 11.143px;}
+.hr-employee9-bottom{margin: 20rem 0 0 5rem;}
+.hr-employee9-top{margin: 14rem 0 0 -6rem;z-index: 1;}
+.hr-employee9-bg{
+    margin: 0 0 0 30rem;
+}
+.hr-employee9-bg2 {
+width: 40px;
+margin: 0 0 0 37rem;
+}
+/* *{border: 1px solid red;} */
+
+/* Initial Styles */
+.hr-employee9-top,
+.hr-employee9-bottom {
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
+/* Animation for hr-employee9-top */
+@keyframes fadeInTop {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Animation for hr-employee9-bottom */
+@keyframes fadeInBottom {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.hr-employee9-top.animate-hr9 {
+    animation: fadeInTop 1s forwards;
+}
+
+.hr-employee9-bottom.animate-hr9{
+    animation: fadeInBottom 1s forwards 0.5s; /* Starts after 0.5s delay */
+}
+
+/* Initial States */
+.hr-animating-text h2,.hr-animating-text p {
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.hr-banner h1 {
+    opacity: 0.8;
+    transition: opacity 1s ease-in-out;
+}
+
+.hr-right-img{z-index: 9;position: relative;}
+
+/* Animation when in view */
+.animate-banner-hr .hr-animating-text h2,.animate-banner-hr .hr-animating-text p {
+    opacity: 1;
+}
+
+.animate-banner-hr h1 {
+    opacity: 0.05;
+}
+
+
+.payroll-need1-bg {
+    transform: rotateY(0deg);
+    transition: transform 1s ease-in-out;
+}
+
+.payroll-need1-bg.show-need {
+    transform: rotateY(180deg);
+}
+
+
+
 @media screen and (min-width: 1921px) {
 body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important}
 }
 @media screen and (max-width: 1708px) {
+    .hr-banner {
+        padding: 108px 80px 0 80px;
+    }
+    .hr-left-line {
+        margin-left: 0;
+    }
+    .hr-features-bg1{margin-top:33rem}
+.hr-employee1-left{margin:-205px 0 0 150px;}
+.hr-employee1-right {
+    width: 12.5%;
+}
+.hr-features-bg5 {
+    margin: 11rem 0 0;
+}
+.hr-complete-box1 p {
+    font-size: 16px;
+    line-height: 28px;
+}
+
+.hr-features-bg2 {
+    margin-top: 38rem;
+}
+    .payroll-need-text {
+        gap: 245px;
+    }
+    .payroll-need {
+        padding: 108px 80px;
+    }
+    .payroll-need1 {
+        width: 340px;
+    }
+    .payroll-need1-bg {
+        width: 320px;
+        top: 0;
+    }
+    .payroll-need3 {
+        margin: 28rem 0 0 35rem;
+    }    
+    .hr-complete-box1{padding-left: 80px;padding-right: 80px;}
+    .hr-complete-box1.hr-complete-box2{padding-right: 0;padding-left: 80px;}
+    .payroll-need-text{align-items: center;}
+    .hr-features-icon {
+        width: 16%;
+    }
+    .hr-features-attendance {
+        margin-top: 34rem;
+    }
+    .hr-features-heading {
+        width: 44%;
+    }
+.hr-banner h1 {font-size: 180px;}
 .manufacturing-banner{padding:108px 80px 80px;background-size:1700px}
 .manufacturing-right-img{width:530px}
+.manufacturing-complete-box1 p{color:#606574;font-size:16px;font-weight:400;line-height:24px}
 .padding-left50{padding-left:9.6rem}
 .padding-left40{padding-left:3rem}
 .manufacturing-feature1,.manufacturing-feature3,.manufacturing-feature5{transform:translateX(-800px)}
@@ -589,6 +750,24 @@ header{padding:10px 46px 10px 60px}
 .footer-headings{font-size:14px}
 .booking-page .cta1-retail-text p br{display:none}
 }
+@media screen and (max-width: 1536px) {
+.hr-employee5-left {
+    margin: 29rem 0 0 20.5rem;
+}
+.hr-employee5-right {
+    margin: 34rem 0 0 45rem;
+}
+.hr-employee9-bg {
+    margin: 0 0 0 22rem;
+}
+.hr-employee5-left {
+    margin: 32.5rem 0 0 22rem;
+}
+.hr-employee5-right {
+    margin: 37.5rem 0 0 49rem;
+}
+}
+
 @media screen and (max-width: 1500px) {
 .oms-banner-text{width:45%}
 .manufacturing-banner{padding:150px 80px 80px;background-position:right}
