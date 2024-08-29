@@ -236,7 +236,7 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 .about-partner2{object-fit:contain;width:122px}
 .about-partner3{object-fit:contain;width:153px}
 .about-partner4{object-fit:contain;width:132px}
-.about-us-page .hover-highlight,.food-page #solutions-link,.retail-page #solutions-link,.oms-page #features-link,.wms-page #features-link,.manufacturing-page #features-link{color:#145FFF;border-bottom:3px solid #145FFF}
+.about-us-page .hover-highlight,.food-page #solutions-link,.retail-page #solutions-link,.oms-page #features-link,.wms-page #features-link,.manufacturing-page #features-link,.hr-page #features-link{color:#145FFF;border-bottom:3px solid #145FFF}
 .about-line{position:absolute;top:230px;left:358px}
 .border-div{display:none}
 .retail-banner{padding:100px 0;background:url(/assets/getpos/images/retail-banner.webp)no-repeat;background-size:cover}
@@ -401,7 +401,7 @@ to{transform:translate(0,0) scale(1);opacity:1}
 .manufacturing-banner .stats-box-grid{column-gap:114px;row-gap:54px;padding-top:64px}
 .manufacturing-need{background:url(/assets/getpos/images/manu-need-bg.webp) no-repeat;background-size:cover;padding:108px 0;position:relative;z-index:9}
 .manu-need-text h2{color:var(--Grays-04,var(--mind-white,#FFF));font-size:48px;font-weight:600;line-height:56px;text-transform:capitalize}
-.manu-need-text p{color:#FFF;font-size:20px;font-weight:400;line-height:32px}
+.manu-need-text p{color:#FFF;font-size:20px;font-weight:400;line-height:32px;text-align:justify}
 .manu-need-text{gap:150px;padding-bottom:55px}
 .manu-need1{margin-top:91px}
 .manu-need2{margin-top:230px}
@@ -428,7 +428,7 @@ to{transform:translate(0,0) scale(1);opacity:1}
 from{transform:translate(50%,0) scale(0.5);opacity:0}
 to{transform:translate(0,0) scale(1);opacity:1}
 }
-.manufacturing-page{overflow-x:hidden}
+.manufacturing-page,.hr-page{overflow-x:hidden}
 .manu-need-image img{opacity:0;transform:translateY(50px) scale(0.8);transition:transform .5s ease-out,opacity .5s ease-out}
 .manu-need-image.show img{opacity:1;transform:translateY(0) scale(1)}
 .manufacturing-feature1,.manufacturing-feature3,.manufacturing-feature5{transform:translateX(-1000px);transition:transform 1s ease-out,opacity 1s ease-out}
@@ -439,11 +439,11 @@ to{transform:translate(0,0) scale(1);opacity:1}
 .manufacturing-cta2-div a{color:#fff;font-size:0;font-weight:600;line-height:30px;padding:10px 20px;border-radius:8px;background:#145FFF;box-shadow:0 0 20px 0 rgba(0,0,0,0.15) inset;transition:width .5s ease-out,font-size .5s ease-out;width:20px}
 .show-cta-button .manufacturing-cta2-div a{width:auto;font-size:20px;transition:all .3s ease-in-out}
 .hr-banner{padding:108px 0 0;background:#000718}
-.hr-banner h1{color:#FFF;font-size:200px;font-weight:700;line-height:72px;letter-spacing:-3px;text-transform:uppercase;text-align:center;opacity: 0.8;}
+.hr-banner h1{color:#FFF;font-size:200px;font-weight:700;line-height:72px;letter-spacing:-3px;text-transform:uppercase;text-align:center;opacity:.8}
 .hr-banner h2{color:#FFF;font-size:64px;font-weight:600;line-height:72px;text-transform:capitalize}
 .hr-banner p{color:#FFF;font-size:20px;font-style:normal;font-weight:400;line-height:32px;padding-top:40px}
 .hr-right-line{position:absolute}
-.hr-left-line{position:absolute;margin-left:56px;margin-top:50px}
+.hr-left-line{position:absolute;margin-left:0;margin-top:50px}
 .hr-right-line{position:absolute;right:202px;top:-68px}
 .payroll-need{padding:108px 0}
 .payroll-need h2{color:#000718;font-size:48px;font-weight:600;line-height:56px;text-transform:capitalize}
@@ -465,7 +465,7 @@ to{transform:translate(0,0) scale(1);opacity:1}
 .hr-cta-box{padding:64px;border-radius:var(--radius-input,4px);border:1px solid rgba(246,248,255,0.50);background:rgba(71,84,109,0.22);box-shadow:0 0 10px 0 rgba(0,0,0,0.10);backdrop-filter:blur(41.349998474121094px)}
 .hr-cta a{color:#000A3B;font-size:20px;font-weight:600;line-height:30px;padding:10px 20px;border-radius:4px;background:#fff;transition:all .3s ease-in-out}
 .hr-cta-text{width:80%}
-.hr-features{padding:108px 0;background:linear-gradient(0deg,#FFF 98.84%,#E1EBFF 100%);overflow-x: hidden;}
+.hr-features{padding:108px 0;background:linear-gradient(0deg,#FFF 98.84%,#E1EBFF 100%);overflow-x:hidden}
 .hr-features-text h2{color:#000718;font-size:48px;font-weight:600;line-height:56px;text-transform:capitalize}
 .hr-features-text p{color:var(--Hue-01,#000718);font-size:20px;font-weight:400;line-height:32px}
 .hr-features-text p:nth-child(2){padding-top:16px}
@@ -479,16 +479,16 @@ to{transform:translate(0,0) scale(1);opacity:1}
 .hr-employee1-right{border-radius:4.208px;background:rgba(255,255,255,0.90);box-shadow:0 0 5.26px 0 rgba(0,0,0,0.15);float:right;margin-top:-62px;position:absolute;right:11%;width:12%}
 .hr-employee1-left,.hr-employee1-right{opacity:0;transform:translateX(0);transition:opacity 1s ease,transform 1s ease}
 .hr-employee10-left.hr-employee1-left{opacity:0;transform:translateY(50px);transition:opacity .8s ease,transform .8s ease}
-.hr-employee10-right.hr-employee1-right{opacity:0;transform:translateY(-50px);transition:opacity .8s ease,transform .8s ease;margin-top: 62px;}
+.hr-employee10-right.hr-employee1-right{opacity:0;transform:translateY(-50px);transition:opacity .8s ease,transform .8s ease;margin-top:62px}
 .hr-employee1-right{transform:translateX(0)}
 .hr-employee1-show{opacity:1;transform:translateX(0)}
 .hr-employee10-right.hr-employee1-right.hr-employee1-show,.hr-employee10-left.hr-employee1-left.hr-employee1-show{opacity:1;transform:translateX(0)}
 .employee1-animation{padding:86px 0 124px}
 .hr-features-bg6{right:28%;margin-top:-55px;width:40px}
 .hr-features-bg1{right:12%;width:40px;margin-top:35rem}
-.hr-features-bg5{margin:15rem 0 0;width: 130px;}
-.hr-features-bg4{right:0;width: 81px;}
-.hr-features-bg3{margin:250px 0 0 30px;width: 95px;}
+.hr-features-bg5{margin:15rem 0 0;width:130px}
+.hr-features-bg4{right:0;width:81px}
+.hr-features-bg3{margin:250px 0 0 30px;width:95px}
 .hr-complete-box1{padding-bottom:124px;gap:115px;align-items:center}
 .hr-complete-box1 h3{color:#000718;font-size:24px;font-weight:600;line-height:28px;text-transform:capitalize;padding:32px 0}
 .hr-complete-box1 p{color:#606574;font-size:18px;font-weight:400;line-height:30px}
@@ -499,174 +499,69 @@ to{transform:translate(0,0) scale(1);opacity:1}
 .hr-feature3,.hr-feature6,.hr-feature8{transform:scale(0.5) translateX(0);transform-origin:left;transition:transform .6s ease-in-out}
 .hr-features-bg2{margin-top:41rem;right:30%}
 .hr-feature2.in-view-hr,.hr-feature3.in-view-hr,.hr-feature4.in-view-hr,.hr-feature6.in-view-hr,.hr-feature7.in-view-hr,.hr-feature8.in-view-hr{transform:scale(1)translateX(0)}
-.hr-features-leave{right:33%;margin-top:-280px;width: 5%;}
+.hr-features-leave{right:33%;margin-top:-280px;width:5%}
 .hr-features-attendance{right:22%;margin-top:40rem}
 .hr-employee4-bg{margin:-72px 0 0 140px;width:40px}
 .hr-employee5{width:66.4%;display:flex;margin:auto}
-.hr-employee5-left{position:absolute;width:35%;margin: 34rem 0 0 23rem;border-radius: 8px;background: rgba(255, 255, 255, 0.90);box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);backdrop-filter: blur(15px);}
-.hr-employee5-right{position:absolute;width:26%;margin: 39.5rem 0 0 52rem;z-index: 9;border-radius: 8px;background: rgba(255, 255, 255, 0.90);box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);backdrop-filter: blur(15px);}
-.employee5-animation{padding-bottom:300px;}
-.hr-employee5-left, .hr-employee5-right {
-    opacity: 0;
-    transition: transform .8s ease-out, opacity .8s ease-out;
-}
-
-.hr-employee5-left {
-    transform: translateX(-100%);
-}
-
-.hr-employee5-right {
-    transform: translateX(100%);
-}
-
-.employee5-animation.animate .hr-employee5-left {
-    transform: translateX(0);
-    opacity: 1;
-}
-
-.employee5-animation.animate .hr-employee5-right {
-    transform: translateX(0);
-    opacity: 1;
-}
-
-.hr-employee6-bg{margin: 20px 0 0 15rem;width: 40px;opacity: .8;}
-.hr-complete-box1.hr-complete-box2{padding-left: 160px;gap:300px}
-.hr-employee9-top,.hr-employee9-bottom{width: 34.121%;box-shadow: 0px 0px 27.857px 0px rgba(0, 0, 0, 0.15);border-radius: 11.143px;}
-.hr-employee9-bottom{margin: 20rem 0 0 5rem;}
-.hr-employee9-top{margin: 14rem 0 0 -6rem;z-index: 1;}
-.hr-employee9-bg{
-    margin: 0 0 0 30rem;
-}
-.hr-employee9-bg2 {
-width: 40px;
-margin: 0 0 0 37rem;
-}
-/* *{border: 1px solid red;} */
-
-/* Initial Styles */
-.hr-employee9-top,
-.hr-employee9-bottom {
-    opacity: 0;
-    transform: translateY(-20px);
-}
-
-/* Animation for hr-employee9-top */
+.hr-employee5-left{position:absolute;width:35%;margin:34rem 0 0 23rem;border-radius:8px;background:rgba(255,255,255,0.90);box-shadow:0 0 10px 0 rgba(0,0,0,0.15);backdrop-filter:blur(15px)}
+.hr-employee5-right{position:absolute;width:26%;margin:39.5rem 0 0 52rem;z-index:9;border-radius:8px;background:rgba(255,255,255,0.90);box-shadow:0 0 10px 0 rgba(0,0,0,0.15);backdrop-filter:blur(15px)}
+.employee5-animation{padding-bottom:300px}
+.hr-employee5-left,.hr-employee5-right{opacity:0;transition:transform .8s ease-out,opacity .8s ease-out}
+.hr-employee5-left{transform:translateX(-100%)}
+.hr-employee5-right{transform:translateX(100%)}
+.employee5-animation.animate .hr-employee5-left{transform:translateX(0);opacity:1}
+.employee5-animation.animate .hr-employee5-right{transform:translateX(0);opacity:1}
+.hr-employee6-bg{margin:20px 0 0 15rem;width:40px;opacity:.8}
+.hr-complete-box1.hr-complete-box2{padding-left:160px;gap:300px}
+.hr-employee9-top,.hr-employee9-bottom{width:34.121%;box-shadow:0 0 27.857px 0 rgba(0,0,0,0.15);border-radius:11.143px}
+.hr-employee9-bottom{margin:20rem 0 0 5rem}
+.hr-employee9-top{margin:14rem 0 0 -6rem;z-index:1}
+.hr-employee9-bg{margin:0 0 0 30rem}
+.hr-employee9-bg2{width:40px;margin:0 0 0 37rem}
+.hr-employee9-top,.hr-employee9-bottom{opacity:0;transform:translateY(-20px)}
 @keyframes fadeInTop {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+from{opacity:0}
+to{opacity:1}
 }
-
-/* Animation for hr-employee9-bottom */
 @keyframes fadeInBottom {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+from{opacity:0}
+to{opacity:1}
 }
-
-.hr-employee9-top.animate-hr9 {
-    animation: fadeInTop 1s forwards;
-}
-
-.hr-employee9-bottom.animate-hr9{
-    animation: fadeInBottom 1s forwards 0.5s; /* Starts after 0.5s delay */
-}
-
-/* Initial States */
-.hr-animating-text h2,.hr-animating-text p {
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
-}
-
-.hr-banner h1 {
-    opacity: 0.8;
-    transition: opacity 1s ease-in-out;
-}
-
-.hr-right-img{z-index: 9;position: relative;}
-
-/* Animation when in view */
-.animate-banner-hr .hr-animating-text h2,.animate-banner-hr .hr-animating-text p {
-    opacity: 1;
-}
-
-.animate-banner-hr h1 {
-    opacity: 0.05;
-}
-
-
-.payroll-need1-bg {
-    transform: rotateY(0deg);
-    transition: transform 1s ease-in-out;
-}
-
-.payroll-need1-bg.show-need {
-    transform: rotateY(180deg);
-}
-
-
-
+.hr-employee9-top.animate-hr9{animation:fadeInTop 1s forwards}
+.hr-employee9-bottom.animate-hr9{animation:fadeInBottom 1s forwards .5s}
+.hr-animating-text h2,.hr-animating-text p{opacity:0;transition:opacity 1s ease-in-out}
+.hr-banner h1{opacity:.8;transition:opacity 1s ease-in-out}
+.hr-right-img{z-index:9;position:relative}
+.animate-banner-hr .hr-animating-text h2,.animate-banner-hr .hr-animating-text p{opacity:1}
+.animate-banner-hr h1{opacity:.05}
+.payroll-need1-bg{transform:rotateY(0deg);transition:transform 1s ease-in-out}
+.payroll-need1-bg.show-need{transform:rotateY(180deg)}
+.hr-employee9-responsive,.hr-features-mobile{display:none}
 @media screen and (min-width: 1921px) {
 body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important}
 }
 @media screen and (max-width: 1708px) {
-    .hr-banner {
-        padding: 108px 80px 0 80px;
-    }
-    .hr-left-line {
-        margin-left: 0;
-    }
-    .hr-features-bg1{margin-top:33rem}
-.hr-employee1-left{margin:-205px 0 0 150px;}
-.hr-employee1-right {
-    width: 12.5%;
-}
-.hr-features-bg5 {
-    margin: 11rem 0 0;
-}
-.hr-complete-box1 p {
-    font-size: 16px;
-    line-height: 28px;
-}
-
-.hr-features-bg2 {
-    margin-top: 38rem;
-}
-    .payroll-need-text {
-        gap: 245px;
-    }
-    .payroll-need {
-        padding: 108px 80px;
-    }
-    .payroll-need1 {
-        width: 340px;
-    }
-    .payroll-need1-bg {
-        width: 320px;
-        top: 0;
-    }
-    .payroll-need3 {
-        margin: 28rem 0 0 35rem;
-    }    
-    .hr-complete-box1{padding-left: 80px;padding-right: 80px;}
-    .hr-complete-box1.hr-complete-box2{padding-right: 0;padding-left: 80px;}
-    .payroll-need-text{align-items: center;}
-    .hr-features-icon {
-        width: 16%;
-    }
-    .hr-features-attendance {
-        margin-top: 34rem;
-    }
-    .hr-features-heading {
-        width: 44%;
-    }
-.hr-banner h1 {font-size: 180px;}
+.hr-banner{padding:108px 80px 0}
+.hr-left-line{margin-left:0}
+.hr-cta-img{top:133px}
+.hr-features-bg1{margin-top:33rem}
+.hr-employee1-left{margin:-205px 0 0 150px}
+.hr-employee1-right{width:12.5%;right:14%}
+.hr-features-bg5{margin:11rem 0 0}
+.hr-complete-box1 p{font-size:16px;line-height:28px}
+.hr-features-bg2{margin-top:35rem}
+.payroll-need-text{gap:245px}
+.payroll-need{padding:108px 80px}
+.payroll-need1{width:340px}
+.payroll-need1-bg{width:320px;top:0}
+.payroll-need3{margin:28rem 0 0 35rem}
+.hr-complete-box1,.employee1-animation,.employee5-animation,.hr-features-text{padding-left:80px;padding-right:80px}
+.hr-complete-box1.hr-complete-box2{padding-right:0;padding-left:80px}
+.payroll-need-text{align-items:center}
+.hr-features-icon{width:16%}
+.hr-features-attendance{margin-top:34rem}
+.hr-features-heading{width:44%}
+.hr-banner h1{font-size:180px}
 .manufacturing-banner{padding:108px 80px 80px;background-size:1700px}
 .manufacturing-right-img{width:530px}
 .manufacturing-complete-box1 p{color:#606574;font-size:16px;font-weight:400;line-height:24px}
@@ -749,25 +644,15 @@ header{padding:10px 46px 10px 60px}
 .footer-contacts li{font-size:16px}
 .footer-headings{font-size:14px}
 .booking-page .cta1-retail-text p br{display:none}
+.payroll-need-lefttop{margin-top:-90px;margin-left:0;width:65px}
 }
-@media screen and (max-width: 1536px) {
-.hr-employee5-left {
-    margin: 29rem 0 0 20.5rem;
+@media screen and (max-width: 1600px) {
+.hr-employee5-left{margin:29rem 0 0 20.5rem}
+.hr-employee9-top{margin:11rem 0 0 -6rem}
+.hr-employee9-bottom{margin:16rem 0 0 4.5rem}
+.hr-employee5-right{margin:34rem 0 0 45rem}
+.hr-employee9-bg{margin:0 0 0 22rem}
 }
-.hr-employee5-right {
-    margin: 34rem 0 0 45rem;
-}
-.hr-employee9-bg {
-    margin: 0 0 0 22rem;
-}
-.hr-employee5-left {
-    margin: 32.5rem 0 0 22rem;
-}
-.hr-employee5-right {
-    margin: 37.5rem 0 0 49rem;
-}
-}
-
 @media screen and (max-width: 1500px) {
 .oms-banner-text{width:45%}
 .manufacturing-banner{padding:150px 80px 80px;background-position:right}
@@ -795,6 +680,10 @@ header{padding:10px 46px 10px 60px}
 .oms-features p{font-size:16px;line-height:26px}
 }
 @media screen and (max-width: 1440px) {
+.hr-employee5-left{margin:26.5rem 0 0 19rem}
+.hr-employee1-right{right:14%}
+.hr-employee1-left{margin:-185px 0 0 150px}
+.hr-employee5-right{margin:31rem 0 0 45rem}
 .cta-section-manufacturing p{padding:0 6rem 32px 0}
 .cta-section-manufacturing h3{padding:18px 0 32px}
 .our-journey{padding:100px 60px}
@@ -812,6 +701,7 @@ header{padding:10px 46px 10px 60px}
 }
 @media screen and (max-width: 1430px) {
 .cta1-retail-text p br{display:none}
+.hr-banner h1{font-size:166px}
 .cta-section-about.cta-section-retail p{padding:48px 5rem 0 0}
 .stats-box-grid{gap:40px}
 .order-notification{margin-top:12px}
@@ -825,6 +715,11 @@ header{padding:10px 46px 10px 60px}
 }
 @media screen and (max-width: 1400px) {
 .wms-cta2{padding:108px 85px}
+.hr-employee5-left{margin:25rem 0 0 19rem}
+.hr-features-leave{right:35%}
+.hr-employee5-right{margin:30rem 0 0 44rem}
+.hr-cta p{font-size:20px;line-height:30px;padding-right:3rem}
+.hr-banner h1{font-size:162px}
 .padding-left50{padding-left:7.6rem}
 .manu-need-text h2{font-size:42px;line-height:52px}
 .manufacturing-banner{padding:150px 60px 80px;background-position:right}
@@ -859,6 +754,23 @@ footer .pr-28{padding-right:0!important}
 }
 @media screen and (max-width: 1300px) {
 .modal-img{min-width:40px}
+.hr-cta-img{top:initial;bottom:-80px}
+.hr-features-bg1{margin-top:30rem}
+.hr-features-attendance{margin-top:30rem}
+.hr-employee5-left{margin:23rem 0 0 16.5rem}
+.hr-employee5-right{margin:27.5rem 0 0 39rem}
+.hr-employee9-bg2{margin:0 0 0 35rem}
+.hr-employee9-top{margin:9rem 0 0 -6rem}
+.hr-employee9-bottom{margin:13rem 0 0 4.5rem}
+.hr-cta{padding:80px}
+.payroll-need2{right:0}
+.payroll-need3{margin:28rem 0 0 26rem}
+.hr-banner h1{font-size:150px}
+.payroll-need-text{gap:120px}
+.payroll-need3{margin:28rem 0 0 28rem}
+.payroll-need p,.hr-features-text p{font-size:18px;line-height:30px}
+.hr-features-icon{width:14%}
+.hr-features-heading{width:46%}
 .manufacturing-need{padding:108px 60px}
 .manu-need-text{padding-bottom:60px}
 .manu-need1{margin-top:71px}
@@ -932,7 +844,7 @@ footer .pr-28{padding-right:0!important}
 .box-right2{margin-top:-1px;z-index:-10;border-radius:20px 0 0 0;right:0}
 .our-box-bottom{border-bottom:none}
 .our-box-bottom::before{height:335px;top:3px}
-.our-box-bottom::after,.oms-features h3 br{display:none}
+.our-box-bottom::after,.oms-features h3 br,.hr-employee4-bg{display:none}
 .our-box-right1 .flex{gap:20px;align-items:center;padding:0 20px}
 .footer-main{padding:0 40px}
 .modal-content p br{display:none}
@@ -950,6 +862,7 @@ header{padding:0 26px 0 40px}
 @media screen and (max-width: 1225px) {
 .our-box-right2 h3{margin-top:200px}
 .oms-banner{padding:80px 40px}
+.hr-banner h1{font-size:140px}
 .oms-banner p{font-size:18px}
 .oms-banner h1{font-size:42px;line-height:54px}
 .wms-cta1 h2{font-size:40px;line-height:52px}
@@ -963,10 +876,21 @@ header{padding:0 26px 0 40px}
 }
 @media screen and (max-width: 1200px) {
 .manufacturing-need{padding:50px}
+.hr-features-para{width:45%}
+.hr-features-heading{width:55%}
 .manu-need1{margin-top:51px}
+.hr-banner h1{font-size:110px}
+.hr-banner{padding:50px 50px 0}
 .padding-left40{padding-left:0}
 .manu-need2{margin-top:190px}
 .manu-need3{margin-top:80px}
+.payroll-need-text{gap:50px}
+.payroll-need1{width:270px}
+.payroll-need1-bg{width:250px;top:50px}
+.payroll-need3{margin:28rem 0 0 20rem}
+.hr-features{padding:80px 0}
+.hr-complete-box1,.employee1-animation,.employee5-animation,.hr-features-text{padding-left:50px;padding-right:50px}
+.hr-features-text{padding-bottom:50px}
 .manu-need-text h2{font-size:34px;line-height:46px}
 .manu-need-img,.manu-need-text{padding-bottom:50px}
 .manu-need-text p{font-size:18px;line-height:30px}
@@ -997,8 +921,21 @@ header{padding:0 26px 0 40px}
 .oms-cta-gap{gap:30px}
 .inclusive-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 .inclusive-software{padding:60px}
-.food-complete h3 br,.oms-features h2 br,.manufacturing-features h2 br{display:none}
+.hr-employee1-right{margin-top:-45px;right:11%}
+.hr-employee1-left{margin:-140px 0 0 130px}
+.employee5-animation{padding-bottom:150px}
+.hr-employee5-left{margin:19rem 0 0 13.5rem}
+.hr-employee5-right{margin:22.5rem 0 0 30rem}
+.food-complete h3 br,.oms-features h2 br,.manufacturing-features h2 br,.payroll-need-righttop,.hr-features-attendance,.hr-features-leave,.hr-features-bg4,.hr-features-bg5,.hr-features-bg3,.hr-employee9-bg2,.hr-employee9-bg,.hr-features-bg2,.hr-features-bg1,.hr-features-text .hr-features-icon{display:none}
 .manufacturing-features{padding:50px 50px 0}
+.hr-cta{padding:50px}
+.hr-cta-box{padding:40px}
+.hr-cta-img{width:250px;top:initial;bottom:-50px}
+.hr-complete-box1.hr-complete-box2{padding-left:50px;gap:140px}
+.employee1-animation{padding:80px 0}
+.hr-complete-box1{padding-bottom:80px;gap:50px}
+.hr-complete-box1 h3{padding:20px 0}
+.hr-complete-box1 .hr-features-icon{width:80px}
 .manufacturing-left{width:50%}
 .manufacturing-right{width:50%}
 .booking-page .retail-hero-banner p{padding-right:0}
@@ -1012,7 +949,11 @@ header{padding:0 26px 0 40px}
 .food-page .cta-section-about.cta-section-retail p,.booking-page .cta-section-about.cta-section-retail p{font-size:18px;line-height:30px}
 .retail-video-section{padding:50px 0}
 .retail-hero-banner h2,.retail-hero-banner.food-banner h1{font-size:52px;line-height:62px}
-.retail-hero-banner h2 br,.retail-hero-banner.food-banner h1 br{display:none}
+.retail-hero-banner h2 br,.retail-hero-banner.food-banner h1 br,.hr-banner p br,.payroll-need-lefttop,.payroll-need-bottomleft{display:none}
+.hr-banner p{padding-top:16px}
+.hr-left-line{margin-top:10px}
+.hr-right-line{top:-30px;width:50px}
+.payroll-need{padding:50px}
 .our-values.our-value-retail{padding:50px}
 .our-value-retail h5{padding-bottom:60px}
 .retail-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
@@ -1074,7 +1015,8 @@ footer h2{font-size:18px;line-height:30px}
 @media screen and (max-width: 1023px) {
 .nav-grid a{padding:10px 0}
 .nav-grid a:hover{box-shadow:none}
-.order-management .w-2\/5,.manufacturing-right-img{display:none}
+.hr-employee9-responsive{display:flex}
+.order-management .w-2\/5,.manufacturing-right-img,.hr-complete-box2{display:none}
 .inclusive-software{padding:50px}
 .wms-cta-gap .wms-cta1-left.w-1\/2{width:60%}
 .wms-cta-gap .w-1\/2{width:40%}
@@ -1184,9 +1126,22 @@ footer .pr-28.pr-28{padding-right:0}
 .manufacturing-features h2{font-size:36px;line-height:42px}
 }
 @media screen and (max-width: 991px) {
+.hr-banner h1{font-size:80px}
+.hr-cta p{padding-right:0}
+.hr-employee5{width:90%}
+.hr-banner h2{font-size:48px;line-height:52px}
+.hr-right-line{right:80px}
+.hr-employee1{width:90%}
+.hr-employee1-right{margin-top:-40px;right:40px;width:100px}
+.hr-employee1-left{margin:-40px 0 0}
+.hr-right,.hr-left{width:50%}
+.hr-page .retail-hero-slide{padding:40px 0}
 .manufacturing-feature2,.manufacturing-feature4{transform:translateX(500px)}
 .manufacturing-feature1,.manufacturing-feature3,.manufacturing-feature5{transform:translateX(-500px)}
 .manufacturing-features h2,.manufacturing-complete-box1{padding-bottom:40px}
+.hr-animating-text{align-items:end}
+.payroll-need-text{flex-direction:column-reverse;gap:40px}
+.payroll-need-text .w-3\/5{width:100%}
 .manufacturing-complete-box1 h3{font-size:20px;line-height:normal}
 .manufacturing-complete-box1{gap:24px}
 .manufacturing-complete-box1 h4{font-size:24px;padding-bottom:18px}
@@ -1194,8 +1149,11 @@ footer .pr-28.pr-28{padding-right:0}
 .manufacturing-left,.manufacturing-right{width:100%}
 .manu-need-text .w-2\/5,.manu-need-text .w-3\/5{width:100%}
 .manu-need-text{flex-direction:column}
-.cta-section-manufacturing .laptop-screen.w-2\/5{display:none}
-.cta-section-manufacturing .w-3\/5{width:100%}
+.cta-section-manufacturing .laptop-screen.w-2\/5,.payroll-need-text .w-2\/5,.payroll-need3,.hr-features-text h2 br,.hr-features-bg6,.hr-page .laptop-screen{display:none}
+.hr-features-text{flex-direction:column;gap:40px;padding-bottom:0}
+.cta-section-manufacturing .w-3\/5,.hr-cta-text{width:100%}
+.employee1-animation{padding:80px 40px}
+.hr-complete-box1{padding-bottom:80px;gap:40px;align-items:end}
 .manufacturing-banner .stats-box-grid{padding-top:32px;gap:32px}
 .cta-section-manufacturing{padding:50px}
 .cta-section-manufacturing p{padding:0 0 32px}
@@ -1207,9 +1165,9 @@ footer .pr-28.pr-28{padding-right:0}
 .oms-features .food-complete-box2 .food-left h4,.oms-features .food-complete-box2 .food-right h4{padding-bottom:16px}
 .oms-features .food-complete-box2 .food-left{width:100%}
 .oms-features .food-complete-box2 .food-right{width:100%}
-.oms-img{width:100%}
+.oms-img,.hr-features-heading,.hr-features-para{width:100%}
 .wms-cta-gap{flex-direction:column;display:flex}
-.wms-cta1 h2 br,.wms-banner-image{display:none}
+.wms-cta1 h2 br,.wms-banner-image,.hr-employee4-bg{display:none}
 .wms-cta-gap .wms-cta1-left.w-1\/2{width:100%}
 .wms-cta-gap .w-1\/2{width:100%}
 .oms-features h3{padding-bottom:24px}
@@ -1238,9 +1196,24 @@ footer .pr-28.pr-28{padding-right:0}
 .food-complete-box1,.food-complete-box2{gap:40px;padding-bottom:40px}
 .flex-reversed{flex-direction:column}
 .reversed-flex{flex-direction:column-reverse}
+.hr-page .flex-reversed{flex-direction:row}
+.hr-page .reversed-flex{flex-direction:row}
 }
 @media screen and (max-width: 767px) {
-.manufacturing-banner{padding:40px 20px}
+.hr-complete-box1{padding:20px;gap:24px;align-items:end}
+.manufacturing-banner,.payroll-need,.hr-cta{padding:40px 20px}
+.hr-cta-box{padding:20px}
+.hr-features-mobile{display:flex}
+.hr-banner{padding:40px 20px 0}
+.hr-right,.hr-left{width:100%}
+.hr-page .flex-reversed{flex-direction:column}
+.hr-page .reversed-flex{flex-direction:column-reverse}
+.hr-features{padding:40px 0 20px}
+.hr-animating-text .w-1\/2{width:100%}
+.hr-page .retail-hero-slide{padding:20px 0 0}
+.hr-banner h1{font-size:50px;line-height:normal}
+.hr-right-line{right:0;margin:0;top:-18px}
+.hr-left-line{margin-top:-20px;width:50px;left:-2px}
 .manufacturing-need{padding:40px 20px}
 .manu-need-img,.manu-need-text{padding-bottom:40px}
 .manu-need-img{gap:16px}
@@ -1248,7 +1221,14 @@ footer .pr-28.pr-28{padding-right:0}
 .manu-need2{margin-top:60px}
 .manu-need3{margin-top:40px}
 .manufacturing-features{padding:40px 20px 0}
-.manufacturing-features h2{font-size:28px;line-height:38px;padding-bottom:24px}
+.manufacturing-features h2,.hr-features-text h2,.hr-cta h2{font-size:28px;line-height:38px;padding-bottom:24px}
+.hr-features-text{padding:0 20px 20px;gap:0}
+.hr-feature2,.hr-feature4,.hr-feature7{transform:scale(1) translateX(0)}
+.hr-cta p{font-size:18px;line-height:28px;padding:0 0 32px}
+.hr-complete-box1 .hr-features-icon{width:60px}
+.hr-feature3,.hr-feature6,.hr-feature8{transform:scale(1) translateX(0)}
+.employee1-animation,.employee5-animation{padding:40px 20px;display:none}
+.hr-employee1-right{position:relative;margin:0;left:initial;right:initial;width:100%}
 .manufacturing-page .wms-cta2-div.flex.justify-center{justify-content:center}
 .manufacturing-banner .stats-box-grid{padding-top:24px;gap:24px}
 .cta-section-manufacturing{padding:40px 20px}
@@ -1270,8 +1250,9 @@ footer .pr-28.pr-28{padding-right:0}
 .oms-banner h1{font-size:38px;line-height:48px;text-align:left}
 .wms-banner{padding:40px 20px}
 .oms-features .food-complete-box2 .food-left h4,.oms-features .food-complete-box2 .food-right h4{padding-bottom:12px;font-size:24px;line-height:30px}
-.oms-features h2,.wms-cta1 h2,.wms-cta2 h3{font-size:28px;line-height:36px;text-align:left;padding-bottom:24px}
+.oms-features h2,.wms-cta1 h2,.wms-cta2 h3,.payroll-need h2{font-size:28px;line-height:36px;text-align:left;padding-bottom:24px}
 .oms-features h3{padding-bottom:24px;font-size:18px;line-height:28px;text-align:left}
+.payroll-need p{padding:0 0 24px}
 .wms-page .oms-features h3{padding-bottom:0}
 .cta1-section-retail.order-management{padding:40px 20px 60px}
 .order-management .w-2\/5{display:block}
@@ -1282,7 +1263,9 @@ footer .pr-28.pr-28{padding-right:0}
 .food-complete{padding:40px 20px 0}
 .retail-hero-banner h1{font-size:20px}
 .retail-video{width:100%}
-.retail-hero-banner p br,.wms-banner h1 br{display:none}
+.hr-banner p{line-height:28px;font-size:18px;padding:16px}
+.retail-hero-banner p br,.wms-banner h1 br,.payroll-need2,.hr-cta h2 br{display:none}
+.hr-animating-text{flex-direction:column}
 .retail-hero-banner{padding:40px 20px}
 .retail-hero-banner h2,.retail-hero-banner.food-banner h1{font-size:38px;line-height:46px}
 .retail-banner{padding:40px 20px;background-position:-140px 0}
