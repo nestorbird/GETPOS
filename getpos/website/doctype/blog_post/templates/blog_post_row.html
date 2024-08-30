@@ -1,0 +1,35 @@
+{%- set post = doc -%}
+
+		  <li id="mb-72">
+		<article class="max-w-md mx-auto md:max-w-none grid news-list-block md:grid-cols-1">
+		  <div>
+		  <a class="relative block group" href="{{post.route}}">
+				<div class="relative">
+				  <picture>
+					<img src="{{ post.cover_image }}" alt="{{post.title}} - Cover Image" class="news-list-img" />
+			  </picture>
+				</div>
+			  </a>
+			  <h3 class="text-base sm:text-base font-bold leading-tight mb-2 font-heading px-3 py-3">
+				<a class="hover:text-primary dark:hover:text-blue-700 transition ease-in duration-200 inter" href="{{post.route}}">
+					{{ post.title }}
+				</a>
+			  </h3>
+			  </div>
+		  <div class="mt-0 px-3 pb-3">
+			<header>
+			  <div class="mb-1">
+				<div class="flex gap-2 items-center justify-between">
+				  <div class="flex items-center gap-2">
+					<!-- {author &&   <img alt="banner" src={author} class="news-list-author" />}
+					{description &&  <h4 class="new-author-heading inter" set:html={description}/>} -->
+				  </div>
+				  <div>
+					<h6 class="inter new-author-date">{{ frappe.format_date(post.published_on) }}</h6>
+				  </div>
+				</div>
+			  </div>
+			</header>
+		  </div>
+		</article>
+		</li>
