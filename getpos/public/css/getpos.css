@@ -83,8 +83,18 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 .about-welcome h3{padding:64px 0 12px;color:#343C4F;font-size:20px;font-weight:400;line-height:32px}
 .about-welcome h4{color:#000718;font-size:28px;font-weight:600;line-height:36px}
 .about-welcome-flex{gap:150px}
-.our-journey{background:linear-gradient(180deg,#F4F8FF 2.14%,#FFF 35.9%,#F4F8FF 100%);padding:100px 0}
-.our-journey h2{color:#000718;font-size:48px;font-weight:600;line-height:30px;padding-bottom:94px;text-align:center}
+.our-journey{background:url(/assets/getpos/images/our-jrny-bg.webp)no-repeat;padding:100px 0;background-size:cover}
+.our-journey h2{color:#000718;font-size:48px;font-weight:600;line-height:56px;padding-bottom:94px;text-align:center}
+.our-jrny-box{padding:60px 30px 70px;background:#fff;border-radius:6.203px;border:.775px solid #145FFF;z-index:9;position:relative;box-shadow:0 0 31.014px 0 rgba(0,0,0,0.16);width:60%}
+.our-jrny-line{width:26px;position:absolute;margin:26rem 0 0 54%;z-index:1}
+.our-jrny-box{opacity:0;transform:translateX(-30%);transition:transform .7s ease-out,opacity 1s ease-out}
+.our-jrny-end.our-jrny-box{transform:translateX(30%);transition:transform .7s ease-out,opacity 1s ease-out}
+.our-jrny-box.animated,.our-jrny-end.animated{opacity:1;transform:translateX(0)}
+.our-jrny-box p{color:#000718;font-size:18px;font-style:normal;text-align:center;font-weight:400;padding-top:32px;line-height:30px}
+.our-jrny-box h5{color:#001B61;text-align:center;font-size:32px;font-weight:600;line-height:36px}
+.our-jrny-box h6{color:#FF1746;font-size:50px;font-style:normal;font-weight:600;border-radius:6px;padding:12px;margin-left:-75px;margin-top:-95px;width:240px;text-align:center;background:rgba(255,255,255,0.40);box-shadow:0 0 15.507px 0 rgba(0,0,0,0.20);backdrop-filter:blur(3.10142183303833px);line-height:42px;text-transform:capitalize}
+.our-jrny-end{align-self:flex-end}
+.our-jrny-gap{gap:200px}
 .our-box-left{border-radius:20px;border:1px solid #9BBDFF;background:#E1EBFF;width:370px;height:557px;padding:0 20px 60px 0}
 .our-box-right1{border-radius:20px;border:1px solid #9BBDFF;background:#E1EBFF;width:100%;height:250px;display:flex;justify-content:center;align-items:baseline;flex-direction:column}
 .our-box-right1 img{position:absolute;top:0}
@@ -562,7 +572,7 @@ to{opacity:1}
 .account-main-img{opacity:0;transform:translateX(100%);transition:all 1s ease-in-out}
 .account-hero-image{width:50%}
 .account-hero-text{width:50%}
-.account-page,.account-hero-banner{overflow-x:hidden}
+.account-page,.account-hero-banner,.our-journey,.wizards-section,.about-us-page{overflow-x:hidden}
 .account-need h2{color:#000718;font-size:48px;font-weight:600;line-height:56px;text-transform:capitalize}
 .account-need p{color:#000;font-size:20px;font-weight:400;line-height:32px}
 .account-need .account-need-btn{color:#145FFF;font-size:20px;font-weight:600;line-height:normal;text-transform:capitalize;border-radius:8px;border:1px solid #145FFF;background:#FFF;padding:16px 24px;transition:all .3s ease-in-out}
@@ -620,6 +630,8 @@ body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important
 @media screen and (max-width: 1708px) {
 .single-news h3{font-size:18px;line-height:28px}
 .accounts-cta-para{padding-left:0}
+.our-jrny-box p{font-size:16px;line-height:28px}
+.our-jrny-line{margin:28rem 0 0 54%}
 .accounts-cta{padding:160px 80px}
 .footer-logo{width:260px}
 .accounts-complete-box1 p{font-size:16px;line-height:26px}
@@ -745,6 +757,8 @@ body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important
 }
 @media screen and (max-width: 1500px) {
 .oms-banner-text{width:45%}
+.our-jrny-box{width:65%}
+.our-jrny-line{margin:26rem 0 0 54%}
 .single-news h3{font-size:16px;line-height:26px}
 .footer-logo{width:240px}
 .manufacturing-banner{padding:150px 80px 80px;background-position:right}
@@ -853,6 +867,7 @@ footer .pr-28{padding-right:0!important}
 }
 @media screen and (max-width: 1300px) {
 .modal-img{min-width:40px}
+.our-jrny-line{margin:28rem 0 0 54%}
 .single-news header p{font-size:16px;line-height:30px}
 .account-hero-banner{padding:80px 50px}
 .blue-gradient-accounts{height:4000px}
@@ -980,6 +995,7 @@ header span.mr-4{display:flex;height:45px}
 }
 @media screen and (max-width: 1200px) {
 .single-news-header{gap:24px}
+.our-jrny-box{width:75%}
 .accounts-cta{padding:50px}
 .accounts-cta-gap{flex-direction:column;align-items:baseline;gap:40px}
 .logo-size{width:170px}
@@ -1252,6 +1268,9 @@ footer .pr-28.pr-28{padding-right:0}
 @media screen and (max-width: 991px) {
 .hr-banner h1{font-size:80px}
 .hr-cta p{padding-right:0}
+.our-jrny-gap{gap:100px}
+.our-jrny-box{width:100%}
+.our-jrny-box h6{font-size:28px;padding:10px;margin-left:-30px;width:200px}
 .single-news .grid-cols-3{grid-template-columns:repeat(2,minmax(0,1fr))}
 .footer-logo{margin-top:0}
 .accounts-right,.accounts-left{width:100%}
@@ -1339,6 +1358,11 @@ footer .pr-28.pr-28{padding-right:0}
 .hr-complete-box1{padding:20px;gap:24px;align-items:end}
 .single-news h3{font-size:20px;line-height:30px}
 .account-need{padding:40px 0}
+.our-jrny-box h6{margin:-70px 0 0 -25px;position:absolute}
+.our-jrny-box p{padding-top:24px}
+.our-jrny-gap{padding-top:20px;gap:80px}
+.our-jrny-line{margin:44rem 0 0 50%}
+.our-jrny-box{padding:40px 20px}
 .account-feature51{margin:-85px 0 0 -10px}
 .account-features-text{flex-direction:column}
 .flip-animate{transform:rotateY(0)!important}
