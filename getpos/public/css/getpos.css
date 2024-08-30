@@ -1,14 +1,14 @@
 @import "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap";
 @import "https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400..700;1,400..700&display=swap";
 .inter{font-family:Inter;font-style:normal}
-.logo-size{width:359px}
+.logo-size{width:250px}
 .nav-links{color:#212121;font-size:20px;font-weight:500;line-height:normal;border-bottom:3px solid transparent}
 .Gelasio{font-family:Gelasio,serif;font-style:normal}
 .app-logo{display:flex;margin:auto}
 .nav-links.highlight{color:#145FFF;border-bottom:3px solid #145FFF}
 .hover-highlight:hover{color:#145FFF;border-bottom:3px solid #145FFF}
 .header-btn{border-radius:8px;background:var(--Secondary-01,#FF1746);box-shadow:0 -4px 4px 0 rgba(0,0,0,0.25) inset;display:flex;padding:12.5px 30.22px;align-items:center;gap:10px;transition:all .3s ease-in-out;color:#FFF;font-size:20px;font-weight:600;line-height:30px}
-header{padding:20px 0 17px}
+#header{padding:20px 0 17px}
 .lg\:max-w-7xl{max-width:1600px!important}
 .mobile-screen{display:none}
 .navbar,.web-footer{display:none!important}
@@ -16,7 +16,8 @@ footer{padding:102px 0 0;background:url(/assets/getpos/images/footer-bg.webp)no-
 .footer-main{padding:0}
 .home-swiper{width:100%;height:470px}
 .home-swiper .swiper-slide{height:100%!important}
-.footer-logo{width:243px;min-width:initial;height:inherit}
+.detail-gap-about,.about-us-page,.wizards-section{overflow-x:hidden}
+.footer-logo{width:310px;min-width:initial;height:inherit;margin-top:42px}
 .footer-lower .copyright-txt{color:rgba(0,7,24,0.60);font-size:16px;font-weight:400;line-height:24px;letter-spacing:-.145px}
 .footer-lower{align-items:center;justify-content:center;padding:0 0 20px}
 .footer-bottom{padding-bottom:60px}
@@ -69,14 +70,16 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 .about-slide-animation h1{animation-delay:0}
 .about-slide-animation p{animation-delay:0}
 .about-button{animation-delay:0}
-.heading-welcome h2{color:#000718;font-size:48px;font-weight:600;line-height:30px}
-.heading-welcome h2 span{font-size:56px;font-weight:700;line-height:30px}
+.heading-welcome h2{color:#000718;font-size:48px;font-weight:600;line-height:30px;padding-bottom:32px}
+.heading-welcome h2 span{font-size:56px;font-weight:700;line-height:normal}
 .heading-welcome h2 span b{font-weight:700;color:#FF1746}
-.heading-welcome{gap:11px;display:flex;justify-content:center;align-items:center;padding-bottom:97px}
+.heading-welcome{gap:11px;display:flex;justify-content:start}
 .nb-logo{width:267px;height:71.2px;object-fit:contain}
-.about-welcome{padding:67px 0 105px;background:url(/assets/getpos/images/welcome-left.webp)no-repeat;background-size:contain}
+.about-welcome{padding:180px 0;background:url(/assets/getpos/images/welcome-left.webp)no-repeat;background-size:contain}
 .welcome-left{width:486px;display:none}
-.about-welcome p{color:#343C4F;font-size:20px;font-weight:400;line-height:32px}
+.about-welcome p{color:#343C4F;font-size:20px;font-weight:400;line-height:32px;padding-bottom:24px}
+.about-welcome p span{color:var(--Hue-01,#000718);font-size:44px;font-weight:700;line-height:30px}
+.about-welcome p span b{font-weight:700;color:#FF1746}
 .about-welcome h3{padding:64px 0 12px;color:#343C4F;font-size:20px;font-weight:400;line-height:32px}
 .about-welcome h4{color:#000718;font-size:28px;font-weight:600;line-height:36px}
 .about-welcome-flex{gap:150px}
@@ -146,10 +149,10 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 .cta-section-about{background:url(/assets/getpos/images/about-cta-bg.webp)no-repeat;background-size:cover}
 .cta-img{width:403px;float:right}
 #header.sticky{box-shadow:0 10px 15px -3px #000 0 4px 6px -4px #000;background:#fff}
-.cta-section-about h3{color:#fff;font-size:48px;font-weight:600;line-height:70px;text-transform:capitalize}
+.cta-section-about h3{color:#fff;font-size:48px;font-weight:600;line-height:70px;text-transform:capitalize;padding-bottom:60px}
 .cta-section-about p{color:#EAEAEA;font-size:20px;font-weight:400;line-height:32px;text-transform:capitalize;padding:40px 0 80px}
 .oms-page .cta-section-about p{font-size:24px;line-height:36px}
-.cta-section-about a{border-radius:10px;background:transparent;padding:16px 40px;justify-content:center;align-items:center;color:#FFF;font-size:20px;font-weight:600;line-height:30px;border:1px solid #fff;transition:all .3s ease-in-out;text-decoration:none}
+.cta-section-about a{border-radius:10px;background:#fff;padding:16px 40px;justify-content:center;align-items:center;color:#000A3B;font-size:20px;font-weight:600;line-height:30px;border:1px solid #fff;transition:all .3s ease-in-out;text-decoration:none}
 .cta-section-about a:hover{opacity:.6;color:#fff}
 .oms-page .cta-section-about a{color:#000;background:#fff}
 .our-values{padding:100px 0}
@@ -182,8 +185,9 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 .stats-box-grid{gap:76px}
 .about-stats .stats-box-gap{gap:36px}
 .about-stats{padding:100px 0;background:linear-gradient(180deg,#F4F8FF 0%,#FFF 100%)}
-.wizards-section h2,.about-partner h2{text-align:center;color:#000718;font-size:48px;font-weight:600;line-height:normal;padding-bottom:120px}
-.wizards-section p{color:#343C4F;font-size:20px;font-weight:500;line-height:32px;padding-top:42px}
+.about-partner h2{text-align:left;color:#000718;font-size:48px;font-weight:600;line-height:normal;padding-bottom:32px}
+.wizards-section h2{color:#000718;font-size:48px;font-weight:600;line-height:normal;padding-bottom:72px;text-align:center}
+.wizards-section p{color:#343C4F;font-size:24px;font-weight:400;line-height:36px;padding-top:42px}
 .wizards-section ul{list-style-type:disc;padding-top:42px}
 .wizards-section ul li{color:#000718;font-size:22px;font-weight:600;line-height:36px}
 .wizards-section{padding:100px 0}
@@ -226,9 +230,8 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 .detail-form-left,.detail-form-right{opacity:0}
 .detail-form-left.animated-about{animation:slideInFromLeft .5s ease-out forwards}
 .detail-form-right.animated-about{animation:slideInFromRight .5s ease-out forwards}
-.about-partner p{color:#000718;font-size:20px;font-style:normal;font-weight:400;line-height:32px;padding-right:180px}
-.about-partner p:first-child{padding-bottom:32px}
-.about-partner{padding:90px 0;background:url(/assets/getpos/images/partner-bg.webp)no-repeat;background-size:cover}
+.about-partner p{color:#000718;font-size:24px;font-style:normal;font-weight:400;line-height:36px;padding-right:180px;padding-bottom:32px}
+.about-partner{padding:90px 0;background:#FBE9E9 url(/assets/getpos/images/partner-bg.webp)no-repeat;background-size:cover}
 .about-partner-gap{align-items:center}
 .about-partner-bottom{gap:40px}
 .about-partner .w-2\/5{display:flex;flex-direction:column;gap:40px;justify-content:inherit;align-items:center}
@@ -236,7 +239,7 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 .about-partner2{object-fit:contain;width:122px}
 .about-partner3{object-fit:contain;width:153px}
 .about-partner4{object-fit:contain;width:132px}
-.about-us-page .hover-highlight,.food-page #solutions-link,.retail-page #solutions-link,.oms-page #features-link,.wms-page #features-link,.manufacturing-page #features-link,.hr-page #features-link{color:#145FFF;border-bottom:3px solid #145FFF}
+.about-us-page .hover-highlight,.food-page #solutions-link,.retail-page #solutions-link,.oms-page #features-link,.wms-page #features-link,.manufacturing-page #features-link,.hr-page #features-link,.account-page #features-link{color:#145FFF;border-bottom:3px solid #145FFF}
 .about-line{position:absolute;top:230px;left:358px}
 .border-div{display:none}
 .retail-banner{padding:100px 0;background:url(/assets/getpos/images/retail-banner.webp)no-repeat;background-size:cover}
@@ -428,7 +431,7 @@ to{transform:translate(0,0) scale(1);opacity:1}
 from{transform:translate(50%,0) scale(0.5);opacity:0}
 to{transform:translate(0,0) scale(1);opacity:1}
 }
-.manufacturing-page,.hr-page{overflow-x:hidden}
+.manufacturing-page,.hr-page,.manufacturing-features{overflow-x:hidden}
 .manu-need-image img{opacity:0;transform:translateY(50px) scale(0.8);transition:transform .5s ease-out,opacity .5s ease-out}
 .manu-need-image.show img{opacity:1;transform:translateY(0) scale(1)}
 .manufacturing-feature1,.manufacturing-feature3,.manufacturing-feature5{transform:translateX(-1000px);transition:transform 1s ease-out,opacity 1s ease-out}
@@ -537,10 +540,94 @@ to{opacity:1}
 .payroll-need1-bg{transform:rotateY(0deg);transition:transform 1s ease-in-out}
 .payroll-need1-bg.show-need{transform:rotateY(180deg)}
 .hr-employee9-responsive,.hr-features-mobile{display:none}
+.single-news{padding:80px 0 28px}
+.single-news header h1{color:#252F41;font-size:56px;font-weight:700;line-height:45px;letter-spacing:-.8px}
+.single-news header p{color:#343A50;font-size:18px;font-weight:400;line-height:32px;letter-spacing:-.5px}
+.single-news h3{color:#263238!important;font-size:20px;font-weight:700;line-height:30px;letter-spacing:-.5px}
+.single-news-header{margin-bottom:72px}
+.news-list-block{border-radius:10px;background:#FFF;box-shadow:0 8px 64px 0 rgba(0,0,0,0.06);height:100%;display:flex;height:100%;flex-direction:column;justify-content:space-between}
+.news-list-img{border-radius:10px 10px 0 0;height:auto;width:100%}
+.new-author-date{color:#66737A;font-size:16px;font-weight:400;line-height:20px}
+#mb-72{margin-bottom:72px;transition:all .3s ease-in-out;border-radius:10px}
+#mb-72:hover{transition:all .3s ease-in-out;box-shadow:0 0 10px 0 rgba(0,0,0,0.40);opacity:.9}
+.account-hero-banner{background:url(/assets/getpos/images/accounts-bg.webp)no-repeat center;background-size:cover;background-position:0 0;padding:100px 0}
+.account-hero-banner h1{color:#FFF;font-size:64px;font-weight:600;line-height:72px;text-transform:capitalize}
+.account-hero-banner p{color:#FFF;font-size:20px;font-weight:400;line-height:32px;padding-top:80px}
+.account-banner-gap{align-items:center}
+.account-right1-img{width:200px;top:0}
+.account-right2-img{width:294px;top:0;right:0}
+.account-right3-img{width:180px;top:0}
+.account-right4-img{width:380px;top:0;margin-top:30rem;right:30px}
+.blue-span{color:#145FFF}
+.account-main-img{opacity:0;transform:translateX(100%);transition:all 1s ease-in-out}
+.account-hero-image{width:50%}
+.account-hero-text{width:50%}
+.account-page,.account-hero-banner{overflow-x:hidden}
+.account-need h2{color:#000718;font-size:48px;font-weight:600;line-height:56px;text-transform:capitalize}
+.account-need p{color:#000;font-size:20px;font-weight:400;line-height:32px}
+.account-need .account-need-btn{color:#145FFF;font-size:20px;font-weight:600;line-height:normal;text-transform:capitalize;border-radius:8px;border:1px solid #145FFF;background:#FFF;padding:16px 24px;transition:all .3s ease-in-out}
+.account-need{padding:108px 0 0}
+.account-need-div{margin-top:80px}
+.account-need h3{color:#B3CBFF;font-size:128px;font-weight:600;line-height:normal;text-transform:uppercase;opacity:.1}
+.account-need-bg{background:url(/assets/getpos/images/account-need-bg.webp)no-repeat center;background-size:cover;background-position:center 20px;display:flex;margin:auto;padding-top:40px;width:100%}
+.acount-need-bg2{right:0;margin-top:8rem}
+.acount-need-bg1{margin-top:8rem}
+.account-need-bg2{opacity:0;transform:translateY(20%);transition:all .5s ease-in-out;width:43%;display:flex;margin:auto}
+.accounts-complete-box1 h3{color:#000718;font-size:24px;font-weight:600;line-height:28px;text-transform:capitalize;padding-bottom:24px}
+.accounts-complete-box1 p{color:#606574;text-align:justify;font-size:18px;font-weight:400;line-height:28px}
+.accounts-complete-box1{gap:100px;padding-bottom:80px;align-items:center}
+.account-feature53,.account-feature54,.account-feature52{border-radius:5.125px;box-shadow:0 0 10.25px 0 rgba(76,76,89,0.20)}
+.accounts-left{width:65%}
+.accounts-right{width:35%}
+.account-feature53{margin-top:-70px;margin-left:-70px}
+.account-feature52{margin-top:-40px;margin-left:-40px}
+.account-feature51{margin:-200px 0 0 -90px}
+.accounts-complete-box1.accounts-complete-box2{gap:250px;padding-top:80px}
+.account-feature54{transform:translateX(-100%);opacity:0;transition:all .8s ease-in-out}
+.account-feature53{transform:translateX(100%);opacity:0;transition:all .8s ease-in-out}
+.account-feature51{transform:translateY(100%);opacity:0;transition:all .8s ease-in-out}
+.account-feature52{transform:translateY(-100%);opacity:0;transition:all .8s ease-in-out}
+.account-feature54,.account-feature53,.account-feature51,.account-feature52,.accounts-animation .accounts-right,.accounts-animation .accounts-left img{opacity:0;transition:all .8s ease-in-out}
+.translate-left{transform:translateX(100%)}
+.translate-right{transform:translateX(-100%)}
+.accounts-left img.animate-opacity,.accounts-right.animate-opacity{opacity:1}
+.animate-transform{transform:translateX(0)}
+.account-features-text h2{padding-bottom:32px;text-align:left}
+.account-features-text{gap:82px}
+.account-features-text p{color:#000718;font-size:20px;font-weight:400;line-height:32px}
+.account-feature-icon{width:20%}
+.account-feature-heading{width:80%}
+.account-page .manufacturing-features{background:url(/assets/getpos/images/account-feature-bg.webp) no-repeat;background-size:cover;background-position:center}
+.blue-gradient-accounts{width:100%;height:6000px;background:linear-gradient(180deg,#DBECFC 0%,#FFF 3.76%);position:absolute;z-index:-1}
+.flip-animate{transform:rotateY(180deg);transform-origin:center;opacity:0;transition:transform 1s ease,opacity 0 ease;width:60%}
+.flip-animate.flip-in-view{display:inline-block;animation:.8s ease-in-out forwards rotateFadeEffect}
+@keyframes rotateFadeEffect {
+0%{opacity:0;transform:rotateY(0)}
+50%{opacity:.5;transform:rotateY(180deg)}
+100%{opacity:1;transform:rotateY(0)}
+}
+.accounts-cta{padding:160px 0;background:url(/assets/getpos/images/accounts-cta-bg.webp) no-repeat;background-size:cover;background-position:center}
+.accounts-cta h3{color:#fff;font-size:64px;font-weight:700;line-height:72px;letter-spacing:1px;text-transform:capitalize}
+.accounts-cta p{color:#F6F8FF;font-size:24px;font-style:normal;font-weight:400;line-height:34px}
+.accounts-cta a{border-radius:10px;background:#fff;padding:16px 40px;justify-content:center;align-items:center;color:#000A3B;font-size:20px;font-weight:600;line-height:30px;border:1px solid #fff;transition:all .3s ease-in-out;text-decoration:none}
+.account-cta-btn{margin-top:60px}
+.accounts-cta-head{width:30%}
+.accounts-cta-para{width:70%;padding-left:9rem}
+.wizards-section-gap{gap:50px}
 @media screen and (min-width: 1921px) {
 body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important}
 }
 @media screen and (max-width: 1708px) {
+.single-news h3{font-size:18px;line-height:28px}
+.accounts-cta-para{padding-left:0}
+.accounts-cta{padding:160px 80px}
+.footer-logo{width:260px}
+.accounts-complete-box1 p{font-size:16px;line-height:26px}
+.account-feature51{margin:-150px 0 0 -70px}
+.flip-animate{width:70%}
+.account-main-img{width:100%}
+.account-hero-banner{padding:100px 80px}
+.single-news{padding:80px 54px 28px}
 .hr-banner{padding:108px 80px 0}
 .hr-left-line{margin-left:0}
 .hr-cta-img{top:133px}
@@ -606,20 +693,20 @@ body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important
 .retail-banner{padding:80px 96px}
 .cta1-section-retail{padding:100px 96px 100px 0}
 .cta1-section-retail.order-management{padding:40px 96px}
-.cta1-section-retail.order-management p br{display:none}
+.cta1-section-retail.order-management p br,.accounts-cta p br{display:none}
 .retail-modules{padding:100px 90px}
 .retail-module-box p{font-size:22px;line-height:34px}
 .retail-module-box{padding:55px 10px}
 .retail-grid{gap:20px}
 .retail-text p{padding-bottom:60px}
 .mt-99px{padding-top:18px}
-.logo-size{width:310px}
+.logo-size{width:243px}
 .nav-links{font-size:18px}
 .about-welcome-flex{gap:110px}
 .about-banner p{font-size:20px;line-height:32px}
 .our-box-bottom h3{bottom:45px}
 .cta-section-about{padding:0 85px 0 75px}
-.about-welcome{padding:67px 80px 105px}
+.about-welcome{padding:120px 80px}
 .about-btn{margin:250px auto auto}
 .detail-form-about{padding:100px 80px}
 .our-journey{padding:100px 96px}
@@ -633,10 +720,11 @@ body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important
 .wizard-left2{width:175px;height:auto;margin-top:-79px}
 .wizard-right2{width:194px;height:auto}
 .about-partner{padding:90px}
-.about-partner p{padding-right:150px}
+.about-partner p{padding-right:50px;font-size:22px;line-height:34px}
+.wizards-section p{font-size:22px;line-height:34px}
 .about-stats{padding:100px 96px}
 .our-values{padding:100px 96px}
-header{padding:10px 46px 10px 60px}
+#header{padding:10px 46px 10px 60px}
 .modal-content{padding:30px 25px}
 .mt-99px{width:97%}
 .footer-main{padding:0 80px}
@@ -645,6 +733,7 @@ header{padding:10px 46px 10px 60px}
 .footer-headings{font-size:14px}
 .booking-page .cta1-retail-text p br{display:none}
 .payroll-need-lefttop{margin-top:-90px;margin-left:0;width:65px}
+.account-need-text{padding:0 80px}
 }
 @media screen and (max-width: 1600px) {
 .hr-employee5-left{margin:29rem 0 0 20.5rem}
@@ -652,9 +741,12 @@ header{padding:10px 46px 10px 60px}
 .hr-employee9-bottom{margin:16rem 0 0 4.5rem}
 .hr-employee5-right{margin:34rem 0 0 45rem}
 .hr-employee9-bg{margin:0 0 0 22rem}
+.new-author-date{font-size:12px}
 }
 @media screen and (max-width: 1500px) {
 .oms-banner-text{width:45%}
+.single-news h3{font-size:16px;line-height:26px}
+.footer-logo{width:240px}
 .manufacturing-banner{padding:150px 80px 80px;background-position:right}
 .oms-banner-gap .w-3\/5{width:55%}
 .order-notification{right:170px}
@@ -682,13 +774,14 @@ header{padding:10px 46px 10px 60px}
 @media screen and (max-width: 1440px) {
 .hr-employee5-left{margin:26.5rem 0 0 19rem}
 .hr-employee1-right{right:14%}
+.account-features-text{padding:0 0 20px}
 .hr-employee1-left{margin:-185px 0 0 150px}
 .hr-employee5-right{margin:31rem 0 0 45rem}
 .cta-section-manufacturing p{padding:0 6rem 32px 0}
 .cta-section-manufacturing h3{padding:18px 0 32px}
 .our-journey{padding:100px 60px}
 .manufacturing-right-img{width:570px}
-.about-welcome{padding:67px 60px 105px}
+.about-welcome{padding:108px 60px}
 .wizards-section{padding:100px 60px}
 .about-partner{padding:90px 60px}
 .about-partner p{padding-right:100px}
@@ -715,6 +808,12 @@ header{padding:10px 46px 10px 60px}
 }
 @media screen and (max-width: 1400px) {
 .wms-cta2{padding:108px 85px}
+.flip-animate{width:80%}
+.accounts-cta{padding:100px 80px}
+.about-partner p{font-size:20px;line-height:32px}
+.wizards-section p{font-size:20px;line-height:32px}
+.accounts-complete-box1.accounts-complete-box2{gap:200px}
+.account-page .manufacturing-features h2{padding-bottom:24px}
 .hr-employee5-left{margin:25rem 0 0 19rem}
 .hr-features-leave{right:35%}
 .hr-employee5-right{margin:30rem 0 0 44rem}
@@ -730,7 +829,7 @@ header{padding:10px 46px 10px 60px}
 .retail-banner{background-position:right}
 .our-journey{padding:100px 50px}
 .manufacturing-features h2,.manufacturing-complete-box1{padding-bottom:80px}
-.about-welcome{padding:67px 50px 105px}
+.about-welcome{padding:108px 50px}
 .wizards-section{padding:100px 50px}
 .oms-banner{padding:110px 60px}
 .wms-cta1 h2{font-size:44px;line-height:54px}
@@ -754,6 +853,12 @@ footer .pr-28{padding-right:0!important}
 }
 @media screen and (max-width: 1300px) {
 .modal-img{min-width:40px}
+.single-news header p{font-size:16px;line-height:30px}
+.account-hero-banner{padding:80px 50px}
+.blue-gradient-accounts{height:4000px}
+.accounts-complete-box1{gap:80px}
+.accounts-complete-box1.accounts-complete-box2{gap:150px}
+.single-news{padding:80px 34px 28px}
 .hr-cta-img{top:initial;bottom:-80px}
 .hr-features-bg1{margin-top:30rem}
 .hr-features-attendance{margin-top:30rem}
@@ -853,9 +958,8 @@ footer .pr-28{padding-right:0!important}
 header span.mr-4{display:flex;height:45px}
 .header-btn{font-size:18px;height:45px;padding:12px 24px}
 .nav-links{line-height:normal;padding-bottom:12px!important;padding-top:12px!important}
-.logo-size{width:260px}
-header{padding:0 26px 0 40px}
-.logo-size{width:260px}
+.logo-size{width:230px}
+#header{padding:0 26px 0 40px}
 .nav-links,.header-btn{font-size:16px}
 .nav-link.py-3{padding-top:12px!important;padding-bottom:12px!important}
 }
@@ -875,6 +979,18 @@ header{padding:0 26px 0 40px}
 .oms-banner{background-size:770px}
 }
 @media screen and (max-width: 1200px) {
+.single-news-header{gap:24px}
+.accounts-cta{padding:50px}
+.accounts-cta-gap{flex-direction:column;align-items:baseline;gap:40px}
+.logo-size{width:170px}
+.flip-animate,.accounts-cta-para,.accounts-cta-head{width:100%}
+.accounts-complete-box1{gap:50px;padding-bottom:40px!important}
+.account-need-text{padding:0 50px;gap:32px}
+.account-need{padding:50px 0 0}
+.single-news header p br{display:none}
+.account-hero-banner{padding:50px}
+.account-hero-banner h1{font-size:52px;line-height:62px}
+.account-hero-banner p{font-size:18px;line-height:30px;padding-top:24px}
 .manufacturing-need{padding:50px}
 .hr-features-para{width:45%}
 .hr-features-heading{width:55%}
@@ -1014,6 +1130,12 @@ footer h2{font-size:18px;line-height:30px}
 }
 @media screen and (max-width: 1023px) {
 .nav-grid a{padding:10px 0}
+.single-news header h1{padding-bottom:16px}
+.account-need h2{font-size:32px;line-height:40px}
+.account-need p{font-size:18px;line-height:30px}
+.single-news{padding:50px 8px 28px}
+#mb-72{margin-bottom:22px}
+.single-news-header{flex-direction:column;align-items:baseline;gap:0;margin:16px 0 40px}
 .nav-grid a:hover{box-shadow:none}
 .hr-employee9-responsive{display:flex}
 .order-management .w-2\/5,.manufacturing-right-img,.hr-complete-box2{display:none}
@@ -1023,7 +1145,9 @@ footer h2{font-size:18px;line-height:30px}
 .wms-cta1-right{height:330px}
 .order-notification{right:110px}
 .retail-banner-gap .w-3\/5{width:100%}
-.retail-banner-gap .w-2\/5{display:none}
+.retail-banner-gap .w-2\/5,.account-need h3{display:none}
+.account-need-bg{padding-top:30px}
+.account-need-div{margin-top:40px}
 .retail-hero-banner{padding:50px}
 .retail-hero-banner h2,.retail-hero-banner.food-banner h1{font-size:42px;line-height:54px;padding:12px 0 20px}
 .retail-hero-banner p{padding-bottom:32px}
@@ -1088,7 +1212,7 @@ footer h2{font-size:18px;line-height:30px}
 .detail-form-about-about a{font-size:22px;line-height:36px;padding-bottom:40px}
 .detail-form-about-about .w-1\/2{width:100%}
 .detail-form-about-about h2{font-size:32px;line-height:48px}
-.cta-section-about h3{font-size:30px;line-height:36px}
+.cta-section-about h3{font-size:30px;line-height:36px;padding-bottom:40px}
 .cta-section-about .w-3\/5,.detail-form-about .w-1\/2,.tab-content .md\:flex-row .w-1\/2{width:100%}
 .cta-section-about p,.oms-page .cta-section-about p{font-size:18px;padding:32px 0;margin-bottom:16px;line-height:28px}
 .detail-form-about a{padding-bottom:40px}
@@ -1107,7 +1231,7 @@ footer h2{font-size:18px;line-height:30px}
 .footer-lower .copyright-txt{text-align:center;margin:0!important}
 footer h2{padding-top:24px;margin:0}
 button:focus:not(:focus-visible){box-shadow:none!important}
-header{padding:0 10px 0 20px}
+#header{padding:0 10px 0 20px}
 .mobile-screen{display:block!important;padding:20px 0 15px}
 .hidden-mobile{display:none}
 .padding-left50{padding-left:0}
@@ -1128,6 +1252,18 @@ footer .pr-28.pr-28{padding-right:0}
 @media screen and (max-width: 991px) {
 .hr-banner h1{font-size:80px}
 .hr-cta p{padding-right:0}
+.single-news .grid-cols-3{grid-template-columns:repeat(2,minmax(0,1fr))}
+.footer-logo{margin-top:0}
+.accounts-right,.accounts-left{width:100%}
+.account-feature51{margin:-150px 0 0 -10px}
+.account-feature52{margin-top:-20px}
+.account-feature53{margin-top:0;margin-left:-40px}
+.accounts-complete-box1.accounts-complete-box2{gap:24px;padding-top:0}
+.account-hero-banner h1,.accounts-cta h3{font-size:46px;line-height:54px}
+.accounts-cta{padding:40px 20px 60px}
+.account-cta-btn{margin-top:40px}
+.accounts-cta p{font-size:20px;line-height:30px;padding-top:24px}
+.account-banner-gap{gap:40px}
 .hr-employee5{width:90%}
 .hr-banner h2{font-size:48px;line-height:52px}
 .hr-right-line{right:80px}
@@ -1201,6 +1337,26 @@ footer .pr-28.pr-28{padding-right:0}
 }
 @media screen and (max-width: 767px) {
 .hr-complete-box1{padding:20px;gap:24px;align-items:end}
+.single-news h3{font-size:20px;line-height:30px}
+.account-need{padding:40px 0}
+.account-feature51{margin:-85px 0 0 -10px}
+.account-features-text{flex-direction:column}
+.flip-animate{transform:rotateY(0)!important}
+.flip-animate.flip-in-view{display:inline-block;animation:.1s ease-in-out forwards rotateFadeEffect}
+.account-need-text{flex-direction:column;gap:32px;padding:0 20px}
+.account-need-text .w-1\/2{width:100%}
+.account-need-bg{background:none;padding:24px 20px 0}
+.account-need p{padding-top:16px;line-height:28px}
+.account-need-bg2{width:100%}
+.account-banner-gap{gap:40px;flex-direction:column}
+.account-hero-banner{padding:40px 20px}
+.account-hero-text,.account-hero-image{width:100%}
+.single-news{padding:24px 8px 34px}
+#mb-72{margin-bottom:6px}
+.single-news .grid-cols-3{grid-template-columns:repeat(1,minmax(0,1fr))}
+.single-news-header{flex-direction:column;align-items:start}
+.single-news header h1{padding-bottom:16px;font-size:28px;line-height:40px}
+.single-news-header{margin:16px 0 42px}
 .manufacturing-banner,.payroll-need,.hr-cta{padding:40px 20px}
 .hr-cta-box{padding:20px}
 .hr-features-mobile{display:flex}
@@ -1227,7 +1383,7 @@ footer .pr-28.pr-28{padding-right:0}
 .hr-cta p{font-size:18px;line-height:28px;padding:0 0 32px}
 .hr-complete-box1 .hr-features-icon{width:60px}
 .hr-feature3,.hr-feature6,.hr-feature8{transform:scale(1) translateX(0)}
-.employee1-animation,.employee5-animation{padding:40px 20px;display:none}
+.employee1-animation,.employee5-animation,.account-feature-icon{padding:40px 20px;display:none}
 .hr-employee1-right{position:relative;margin:0;left:initial;right:initial;width:100%}
 .manufacturing-page .wms-cta2-div.flex.justify-center{justify-content:center}
 .manufacturing-banner .stats-box-grid{padding-top:24px;gap:24px}
@@ -1241,11 +1397,14 @@ footer .pr-28.pr-28{padding-right:0}
 .wms-page .oms-features .food-complete-box2 .food-right h4:first-child{padding-top:0}
 .wms-banner p{padding:24px 0 0;text-align:left}
 .wms-cta1{padding:40px 20px 0}
+.account-feature-heading{width:100%}
+.account-page .manufacturing-features h2.accounts-complete-box1 h3{padding-bottom:12px}
+.accounts-complete-box1{gap:24px}
 .wms-cta2 p{padding:0 0 24px;text-align:left}
 .oms-features .box-gradient-right,.oms-features .box-gradient-left{padding:0;margin:20px 0}
 .oms-banner{padding:40px 20px}
 .wms-cta2-div.flex.justify-center{justify-content:start}
-.oms-cta1-text p{font-size:18px;line-height:28px}
+.oms-cta1-text p,.account-features-text p{font-size:18px;line-height:28px}
 .wms-cta2{padding:40px 20px}
 .oms-banner h1{font-size:38px;line-height:48px;text-align:left}
 .wms-banner{padding:40px 20px}
@@ -1302,7 +1461,8 @@ footer .pr-28.pr-28{padding-right:0}
 .about-partner2{width:75px}
 .about-partner3{width:105px}
 .about-partner1{width:180px}
-.about-partner-gap{gap:24px}
+.about-partner-gap{gap:0}
+.about-partner p,.about-partner h2{padding-bottom:24px}
 .about-partner4{width:85px}
 .our-box-left h3,.our-box-right1 h3,.our-box-right2 h3,.our-box-bottom h3{font-size:72px}
 .bottom-wizard{margin-left:0}
@@ -1320,13 +1480,14 @@ footer .pr-28.pr-28{padding-right:0}
 .about-stats .stats-box-gap{gap:16px}
 .about-banner h1{font-size:32px;line-height:48px}
 .about-btn{margin:100px auto auto}
-.heading-welcome{flex-direction:column;gap:4px;padding-bottom:32px}
+.heading-welcome{flex-direction:column;gap:4px;padding-bottom:0}
 .at-nestorbird h5{font-size:24px;line-height:36px}
 .at-nestorbird h4{font-size:20px}
 .box-circle{width:28px}
 .value-icon-img{width:24px}
 .our-values h3{font-size:20px}
-.heading-welcome h2{text-align:center}
+.heading-welcome h2{text-align:left;padding-bottom:16px}
+.about-welcome p{padding-bottom:16px}
 .cta-section-about{padding:40px 20px 60px}
 footer{padding:0}
 #header .hidden-mobile.block{height:100vh}

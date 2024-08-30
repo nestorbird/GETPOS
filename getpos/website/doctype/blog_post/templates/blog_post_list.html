@@ -1,0 +1,63 @@
+
+<!-- {% extends "templates/web.html" %}
+{% block title %}{{ blog_title or _("Blog") }}{% endblock %}
+{% block hero %}{% endblock %} -->
+
+
+
+{% block page_content %}
+
+<!-- {{ web_block("Hero",
+	values={
+		'title': blog_title or _("NestoBird Blogs"),
+		'subtitle': blog_introduction or '',
+	},
+	add_container=0,
+	add_top_padding=0,
+	add_bottom_padding=0,
+	css_class="py-5"
+) }} -->
+
+<!-- <header>
+	<div class="container">
+		<h1><span>Blogs</span></h1>
+	</div>
+</header> -->
+
+
+
+
+<div class="blog-list-content">
+	<div class="website-list" data-doctype="{{ doctype }}" data-txt="{{ txt or '[notxt]' | e }}">
+		{% if not result -%}
+		<div class="text-muted" style="min-height: 300px;">
+			{{ no_result_message or _("Nothing to show") }}
+		</div>
+		{% else %}
+		<main class="antialiased text-page bg-white dark:text-slate-300 tracking-tight dark:bg-dark single-news news-listing-page blog news-detail-page">
+			<section class="mx-auto lg:max-w-7xl max-lg:max-w-7xl max-sm:w-full">
+			<header class="mb-8 md:mb-16 justify-between items-center mx-auto flex single-news-header">
+		  <h1 class="inter text-left ">Blogs</h1>
+		  <p class="inter"><b style="font-weight:600;">GETPOS -</b> A Hub of Creative Minds, Tech-Freaks, Sales&nbsp;<br>Consultants, Branding Experts, and above all, the Perfect&nbsp;<br>Escalators to take your business to new heights.</p>
+		  </header>
+			<ul class="grid gap-4 grid-cols-3">
+			{% for item in result %}
+		{{ item }}
+			{% endfor %}
+		</ul>
+	</section>
+	</main>
+		{% endif %}
+		<button class="btn btn-light btn-more btn {% if not show_more -%} hidden {%- endif %}">{{ _("Load More") }}</button>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<!-- <script>{% include "templates/includes/list/list.js" %} -->
+document.body.classList.add('blog-page');
+</script>
+
+{% endblock %}
+
