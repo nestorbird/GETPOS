@@ -9,81 +9,66 @@
 
 	
 <section class="{{ type }}">
-<div class="container-fluid">
-	<div class="about-row row">
-	  <div class="col-md-8 left-about">
-		<div class="blog-container">
-			<article class="blog-content" itemscope itemtype="http://schema.org/BlogPosting">
-				<!-- begin blog content -->
-				<div class="blog-header">
-					<div>
-						<!-- <a class="mr-2" href="/blog">{{ _('Blog') }}</a> -->
-						<!-- <span class="text-muted">/</span> -->
-						<!-- <a class="ml-2" href="/{{ category.route }}">{{ category.title }}</a> -->
-			<img class="bloginnerimg" src="{{meta_image}}" alt="{{ title }}">
-
-					</div>
-					<h1 itemprop="headline" class="blog-title">{{ title }}</h1>
-					<!-- <p class="blog-intro">
-						{{ blog_intro }}
-					</p> -->
-					<div class="text-muted">
-						<time datetime="{{ published_on }}">{{ frappe.format_date(published_on) }}</time>
-						{%- if read_time -%}
-						&nbsp;&middot;
-						<span>{{ read_time }} min read</span>
-						{%- endif -%}
-					</div>
-				</div>
-				<!-- <hr class="my-5">
-				<div itemprop="articleBody" class="from-markdown">
-					{{ content }}
-				</div> -->
-				<!-- end blog content -->
-			</article>
-			<!-- {%- if enable_cta -%}
-				{{ web_block(
-					"Section With Small CTA",
-					values=cta,
-					add_container=0,
-					add_top_padding=0,
-					add_bottom_padding=0,
-					css_class="my-5"
-				) }}
-			{%- endif -%} -->
-			<!-- <div class="blog-footer">
-				<div class="blog-feedback">
-					{% if not disable_likes %}
-						{% include 'templates/includes/likes/likes.html' %}
-					{% endif %}
-				</div>
-				{% if social_links %}
-					<div>
-						{% for link in social_links %}
-							<a href="{{ link.link }}" class="text-muted ml-2 fa fa-{{ link.icon }}" target="_blank"></a>
-						{% endfor %}
-					</div>
-				{% endif %}
-				<div>
-					{{ _('Published on') }} <time datetime="{{ published_on }}">{{ frappe.format_date(published_on) }}</time>
-				</div>
-			</div> -->
-		
-			<!-- {% if blogger_info %}
-				<hr class="mt-2 mb-5">
-				{% include "templates/includes/blog/blogger.html" %}
-			{% endif %}
-		
-			{% if not disable_comments %}
-				<div class="blog-comments">
-					{% include 'templates/includes/comments/comments.html' %}
-				</div>
-			{% endif %} -->
-		
+	<section class="news-section news-section-blog">
+		<article>
+		  <header>
+			<h3 class="max-w-3xl mx-auto leading-relaxed tracking-tighter">BLOGS</h3>
+			<h1
+			  class="max-w-3xl mx-auto text-3xl font-bold leading-relaxed tracking-tighter"
+			>
+			{{ title }}
+			</h1>
+			<div class="date-format flex justify-between text-gray-400 max-w-3xl mx-auto">
+			 
+			  <p class="inter">By <span style="color:#000718;">Venkat</span></p>
+			  <p class="inter flex gap-2 items-center" style="line-height: 22px;">
+				<span><svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path fill-rule="evenodd" clip-rule="evenodd" d="M22.07 6.03097C22.0716 5.56183 21.9807 5.09697 21.8026 4.66294C21.6245 4.22891 21.3627 3.83422 21.032 3.50141C20.7013 3.16859 20.3084 2.90417 19.8755 2.72325C19.4426 2.54232 18.9784 2.44844 18.5092 2.44696H5.21703C4.74788 2.44844 4.28362 2.54232 3.85077 2.72325C3.41791 2.90417 3.02493 3.16859 2.69427 3.50141C2.36362 3.83422 2.10176 4.22891 1.92366 4.66294C1.74556 5.09697 1.6547 5.56183 1.65627 6.03097V17.4993C1.6547 17.9684 1.74556 18.4333 1.92366 18.8673C2.10176 19.3013 2.36362 19.696 2.69427 20.0289C3.02493 20.3617 3.41791 20.6261 3.85077 20.807C4.28362 20.9879 4.74788 21.0818 5.21703 21.0833H18.5092C18.9784 21.0818 19.4426 20.9879 19.8755 20.807C20.3084 20.6261 20.7013 20.3617 21.032 20.0289C21.3627 19.696 21.6245 19.3013 21.8026 18.8673C21.9807 18.4333 22.0716 17.9684 22.07 17.4993V6.03097ZM20.6461 6.03097V17.4993C20.6471 17.7807 20.5926 18.0596 20.4857 18.32C20.3789 18.5804 20.2218 18.8172 20.0234 19.0169C19.825 19.2165 19.5893 19.3752 19.3296 19.4837C19.0699 19.5922 18.7914 19.6486 18.5099 19.6494H5.21703C4.93557 19.6486 4.65704 19.5922 4.39735 19.4837C4.13766 19.3752 3.9019 19.2165 3.70352 19.0169C3.50515 18.8172 3.34806 18.5804 3.24122 18.32C3.13437 18.0596 3.07988 17.7807 3.08084 17.4993V6.03097C3.07979 5.74946 3.13422 5.4705 3.24102 5.21003C3.34783 4.94956 3.50491 4.71269 3.70329 4.51295C3.90167 4.31321 4.13746 4.15452 4.3972 4.04595C4.65693 3.93737 4.93551 3.88104 5.21703 3.88017H18.5092C18.7908 3.88104 19.0693 3.93737 19.3291 4.04595C19.5888 4.15452 19.8246 4.31321 20.023 4.51295C20.2214 4.71269 20.3784 4.94956 20.4852 5.21003C20.592 5.4705 20.6471 5.74946 20.6461 6.03097Z" fill="#606574"/>
+					<path fill-rule="evenodd" clip-rule="evenodd" d="M21.3592 9.01923H2.37069C2.17796 9.025 1.99505 9.10562 1.86076 9.24399C1.72648 9.38236 1.65137 9.56759 1.65137 9.76041C1.65137 9.95323 1.72648 10.1385 1.86076 10.2768C1.99505 10.4152 2.17796 10.4958 2.37069 10.5016H21.3592C21.5519 10.4958 21.7348 10.4152 21.8691 10.2768C22.0034 10.1385 22.0785 9.95323 22.0785 9.76041C22.0785 9.56759 22.0034 9.38236 21.8691 9.24399C21.7348 9.10562 21.5519 9.025 21.3592 9.01923Z" fill="#606574"/>
+					<path fill-rule="evenodd" clip-rule="evenodd" d="M6.86548 0.906468V5.46921C6.83865 5.69648 6.9009 5.9253 7.03916 6.10766C7.17741 6.29002 7.38093 6.41174 7.607 6.44727C7.83295 6.41158 8.0363 6.2898 8.17442 6.10746C8.31254 5.92512 8.3747 5.69638 8.34786 5.46921V0.906468C8.3747 0.679299 8.31254 0.450561 8.17442 0.268218C8.0363 0.0858747 7.83295 -0.0359086 7.607 -0.0715942C7.38093 -0.0360622 7.17741 0.0856559 7.03916 0.268016C6.9009 0.450376 6.83865 0.679201 6.86548 0.906468Z" fill="#606574"/>
+					<path fill-rule="evenodd" clip-rule="evenodd" d="M15.3811 0.906468V5.46921C15.3543 5.69648 15.4165 5.9253 15.5548 6.10766C15.693 6.29002 15.8966 6.41174 16.1226 6.44727C16.3487 6.41174 16.5522 6.29002 16.6905 6.10766C16.8287 5.9253 16.891 5.69648 16.8641 5.46921V0.906468C16.891 0.679201 16.8287 0.450376 16.6905 0.268016C16.5522 0.0856559 16.3487 -0.0360622 16.1226 -0.0715942C15.8966 -0.0360622 15.693 0.0856559 15.5548 0.268016C15.4165 0.450376 15.3543 0.679201 15.3811 0.906468Z" fill="#606574"/>
+				  </svg></span>
+				<time datetime="{{ published_on }}">{{ frappe.format_date(published_on) }}</time>
+				
+				<!-- {%- if read_time -%}
+							&nbsp;&middot;
+							<span>{{ read_time }} min read</span>
+							{%- endif -%} -->
+			  </p>
+			</div>
+			<hr class="m-auto max-w-3xl" style="color: #606574;border-top-width:1.333px;padding-bottom: 32px;">
+		  </header>
+		  <div
+			class="mx-auto max-w-3xl prose prose-lg lg:prose-xl dark:prose-invert prose-md prose-headings:font-heading prose-headings:leading-tighter prose-headings:tracking-tighter prose-headings:font-bold prose-a:text-primary prose-img:rounded-md prose-img:shadow-lg mt-0 blog-post-page"
+		  >
+		  <div class="news-banner-img2">
+			<picture>
+			  <img alt="{{ title }}" src="{{meta_image}}" loading="eager" decoding="async" class="mb-8 sm:rounded-md object-cover" style="margin:0 0 2rem 0;" width="auto" height="auto"/>
+		 </picture>
 		</div>
-	  </div>
-	</div>
-  </div>
+		<div itemprop="articleBody" class="from-markdown">
+			{{ content }}
+		</div>
+		  </div>
+		
+		  <div class="mx-auto max-w-3xl flex justify-between flex-col sm:flex-row news-author-section items-center ">
+			<div class=" flex author-section">
+		
+			</div>
+			<div class="sm:mt-1 align-middle to-black dark:text-slate-600 blog-share-btns">
+			  <SocialShare url={url} text={post.title} class="mt-0 sm:mt-1 align-middle text-gray-500 dark:text-slate-600 blog-share-btns " />
+		  </div>
+		  </div>
+		
+		  
+		  <!-- <div class="flex justify-between flex-col text-gray-400 max-w-3xl mx-auto mt-0 mb-2 px-4  text-center sm:items-center social-none-blog">
+			<p>
+			  Published on 
+			  <time datetime={String(post.publishDate)}>{getFormattedDate(post.publishDate)}</time>
+			</p>
+		  </div> -->
+		</article>
+	
 </section>
 <script>
 	frappe.ready(() => {
@@ -95,3 +80,4 @@
 	document.body.classList.add("blog-detail");
   </script>
 {% endblock %}
+
