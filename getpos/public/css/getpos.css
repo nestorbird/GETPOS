@@ -249,7 +249,7 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 .about-partner2{object-fit:contain;width:122px}
 .about-partner3{object-fit:contain;width:153px}
 .about-partner4{object-fit:contain;width:132px}
-.about-us-page .hover-highlight,.food-page #solutions-link,.retail-page #solutions-link,.oms-page #features-link,.wms-page #features-link,.manufacturing-page #features-link,.hr-page #features-link,.account-page #features-link,.blog-listing-page #resources-link{color:#145FFF;border-bottom:3px solid #145FFF}
+.about-us-page .hover-highlight,.food-page #solutions-link,.retail-page #solutions-link,.oms-page #features-link,.wms-page #features-link,.manufacturing-page #features-link,.hr-page #features-link,.account-page #features-link,.blog-listing-page #resources-link,.blog-detail #resources-link{color:#145FFF;border-bottom:3px solid #145FFF}
 .about-line{position:absolute;top:230px;left:358px}
 .border-div{display:none}
 .retail-banner{padding:100px 0;background:url(/assets/getpos/images/retail-banner.webp)no-repeat;background-size:cover}
@@ -624,13 +624,63 @@ to{opacity:1}
 .accounts-cta-head{width:30%}
 .accounts-cta-para{width:70%;padding-left:9rem}
 .wizards-section-gap{gap:50px}
-.news-section{padding:99px 0 0}
+.news-section{padding:99px 0 90px}
 .news-section h3{color:#263238;font-size:16px;font-weight:400;line-height:20px;letter-spacing:.5px;margin-bottom:20px}
 .news-section h1{color:#000718;font-size:42px;font-weight:700;line-height:60px;letter-spacing:-.8px;margin-bottom:26px}
 .blog-post-page h2{color:#252F41;font-family:Inter;font-size:32px;font-style:normal;font-weight:700;line-height:48px;letter-spacing:-.8px;margin:32px 0 16px}
 .news-section p{color:#606574;font-size:18px;font-weight:400;line-height:32px;letter-spacing:-.5px;margin:0 0 20px;font-family:Inter;font-style:normal}
-.news-section .blog-post-page p{margin:0 0 22px}
+.news-section .blog-post-page p{margin:0 0 22px;color:#333;}
 .news-section picture{margin-top:0!important}
+@-moz-document url-prefix() {
+    .mt-99px {
+        top: 70px;
+    }
+@media screen and (max-width: 1708px) {
+    .mt-99px {
+        top: 63px;
+    }
+}
+/* @media screen and (max-width: 1023px) {
+    .mt-99px {
+        top: initial;
+    }
+} */
+}
+.btn-tertiary {
+    display: inline-flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    border-width: 1px;
+    --tw-border-opacity: 1;
+    border-color: rgb(156 163 175 / var(--tw-border-opacity));
+    background-color: transparent;
+    padding: .875rem 1.5rem;
+    text-align: center;
+    font-size: 18px;
+    line-height: 1.5rem;
+    font-weight: 600;
+    line-height: 1.375;
+    opacity: .9;
+    border-style: none;
+    --tw-shadow: 0 0 #0000;
+    --tw-shadow-colored: 0 0 #0000;
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    color: var(--aw-color-text-muted);
+}
+.blog-detail .max-w-3xl{max-width: 860px;}
+.btn-tertiary:hover {
+    opacity: 1;
+    color: rgb(17 24 39 / var(--tw-text-opacity));
+    border-color: rgb(75 85 99 / var(--tw-border-opacity));
+    --tw-bg-opacity: 1;
+    background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+}
+.news-banner-img2 img{
+    border-radius: 10px;
+}
+
 @media screen and (min-width: 1921px) {
 body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important}
 }
@@ -875,6 +925,9 @@ footer .pr-28{padding-right:0!important}
 }
 @media screen and (max-width: 1300px) {
 .modal-img{min-width:40px}
+.blog-detail .max-w-3xl {
+    max-width: 780px;
+}
 .news-section .tracking-tighter br{display:none}
 .our-jrny-line{margin:28rem 0 0 54%}
 .single-news header p{font-size:16px;line-height:30px}
@@ -1276,6 +1329,7 @@ footer .pr-28.pr-28{padding-right:0}
 }
 @media screen and (max-width: 991px) {
 .hr-banner h1{font-size:80px}
+.blog-detail .max-w-3xl {max-width: initial;}
 .news-section{padding:40px 8px}
 .hr-cta p{padding-right:0}
 .our-jrny-gap{gap:100px}
@@ -1372,7 +1426,8 @@ footer .pr-28.pr-28{padding-right:0}
 .news-section h1{font-size:32px;font-weight:700;line-height:42px;letter-spacing:-.8px}
 .news-section p{font-size:16px!important;line-height:27px}
 .news-section .tracking-tighter br{display:block}
-.news-section .tracking-tighter{margin-bottom:12px}
+.news-section .tracking-tighter{margin-bottom:24px}
+.news-banner-img2 img,.blog-gray-line{margin-bottom: 24px !important;}
 .account-need{padding:40px 0}
 .our-jrny-box h6{margin:-70px 0 0 -25px;position:absolute}
 .our-jrny-box p{padding-top:24px}
