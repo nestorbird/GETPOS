@@ -162,7 +162,7 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 .cta-section-about h3{color:#fff;font-size:48px;font-weight:600;line-height:70px;text-transform:capitalize;padding-bottom:60px}
 .cta-section-about p{color:#EAEAEA;font-size:20px;font-weight:400;line-height:32px;text-transform:capitalize;padding:40px 0 80px}
 .oms-page .cta-section-about p{font-size:24px;line-height:36px}
-.cta-section-about a{border-radius:10px;background:#fff;padding:16px 40px;justify-content:center;align-items:center;color:#000A3B;font-size:20px;font-weight:600;line-height:30px;border:1px solid #fff;transition:all .3s ease-in-out;text-decoration:none}
+.cta-section-about a{border-radius:10px;background:#fff;padding:16px 40px;justify-content:center;align-items:center;color:#000A3B !important;font-size:20px;font-weight:600;line-height:30px;border:1px solid #fff;transition:all .3s ease-in-out;text-decoration:none}
 .cta-section-about a:hover{opacity:.6;color:#fff}
 .oms-page .cta-section-about a{color:#000;background:#fff}
 .our-values{padding:100px 0}
@@ -1419,6 +1419,8 @@ footer .pr-28.pr-28{padding-right:0}
 .hr-page .reversed-flex{flex-direction:row}
 }
 @media screen and (max-width: 767px) {
+.accounts-right, .accounts-animation .accounts-left img{opacity: 1 !important;}
+.translate-right,.translate-left {transform: translateX(0);}
 .hr-complete-box1{padding:20px;gap:24px;align-items:end}
 .single-news h3{font-size:20px;line-height:30px}
 .news-section .blog-post-page p{margin:0 0 18px}
