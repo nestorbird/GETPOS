@@ -628,9 +628,25 @@ to{opacity:1}
 .news-section h3{color:#263238;font-size:16px;font-weight:400;line-height:20px;letter-spacing:.5px;margin-bottom:20px}
 .news-section h1{color:#000718;font-size:42px;font-weight:700;line-height:60px;letter-spacing:-.8px;margin-bottom:26px}
 .blog-post-page h2{color:#252F41;font-family:Inter;font-size:32px;font-style:normal;font-weight:700;line-height:48px;letter-spacing:-.8px;margin:32px 0 16px}
-.news-section p{color:#606574;font-size:18px;font-weight:400;line-height:32px;letter-spacing:-.5px;margin:0 0 20px;font-family:Inter;font-style:normal}
-.news-section .blog-post-page p{margin:0 0 22px;color:#333;}
+.news-section p{color:#606574;font-size:16px;font-weight:400;line-height:30px;letter-spacing:-.5px;margin:0 0 17px;font-family:Inter;font-style:normal}
+.news-section .blog-post-page p{margin:0 0 22px;color:#333;font-size:18px;line-height:32px;}
 .news-section picture{margin-top:0!important}
+.blog-whatsapp-flex{margin: 54px 0 2px 0;display: flex;gap: 20px;}
+.blog-bookdemo {
+    color: #f9f8fb;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: .8px;
+    border-radius: 10px;
+    background: #0e0d15;
+    transition: all .3s ease-in-out;
+}
+.blog-whatsapp {
+    gap: 8px;
+    display: flex;
+    align-items: center;
+}
 @-moz-document url-prefix() {
     .mt-99px {
         top: 70px;
@@ -680,6 +696,7 @@ to{opacity:1}
 .news-banner-img2 img{
     border-radius: 10px;
 }
+.blog-gray-line{color: #606574;border-top-width:1.333px;padding-bottom: 56px;opacity: 1;}
 
 @media screen and (min-width: 1921px) {
 body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important}
@@ -925,9 +942,6 @@ footer .pr-28{padding-right:0!important}
 }
 @media screen and (max-width: 1300px) {
 .modal-img{min-width:40px}
-.blog-detail .max-w-3xl {
-    max-width: 780px;
-}
 .news-section .tracking-tighter br{display:none}
 .our-jrny-line{margin:28rem 0 0 54%}
 .single-news header p{font-size:16px;line-height:30px}
@@ -1421,15 +1435,16 @@ footer .pr-28.pr-28{padding-right:0}
 @media screen and (max-width: 767px) {
 .accounts-right, .accounts-animation .accounts-left img{opacity: 1 !important;}
 .translate-right,.translate-left {transform: translateX(0);}
+.blog-whatsapp-flex {margin: 0 0 4px 0;gap: 8px;}
 .hr-complete-box1{padding:20px;gap:24px;align-items:end}
 .single-news h3{font-size:20px;line-height:30px}
 .news-section .blog-post-page p{margin:0 0 18px}
-.blog-post-page h2{font-size:26px;line-height:38px;margin:0 0 20px}
+.blog-post-page h2{font-size:26px;line-height:38px;margin:0 0 12px}
 .news-section h1{font-size:32px;font-weight:700;line-height:42px;letter-spacing:-.8px}
-.news-section p{font-size:16px!important;line-height:27px}
+.news-section p{font-size:18px!important;line-height:28px !important;}
 .news-section .tracking-tighter br{display:block}
-.news-section .tracking-tighter{margin-bottom:24px}
-.news-banner-img2 img,.blog-gray-line{margin-bottom: 24px !important;}
+.news-section .tracking-tighter{margin-bottom:20px}
+.news-banner-img2 img,.blog-gray-line{margin-bottom: 24px !important;padding: 0 !important;}
 .account-need{padding:40px 0}
 .our-jrny-box h6{margin:-70px 0 0 -25px;position:absolute}
 .our-jrny-box p{padding-top:24px}
@@ -1480,7 +1495,7 @@ footer .pr-28.pr-28{padding-right:0}
 .hr-cta p{font-size:18px;line-height:28px;padding:0 0 32px}
 .hr-complete-box1 .hr-features-icon{width:60px}
 .hr-feature3,.hr-feature6,.hr-feature8{transform:scale(1) translateX(0)}
-.employee1-animation,.employee5-animation,.account-feature-icon{padding:40px 20px;display:none}
+.employee1-animation,.employee5-animation,.account-feature-icon,.news-author-section{padding:40px 20px;display:none}
 .hr-employee1-right{position:relative;margin:0;left:initial;right:initial;width:100%}
 .manufacturing-page .wms-cta2-div.flex.justify-center{justify-content:center}
 .manufacturing-banner .stats-box-grid{padding-top:24px;gap:24px}
@@ -1599,6 +1614,14 @@ footer{padding:0}
 .cta-section-about.cta-section-retail p{padding:20px 0 0;margin:0}
 .cta2-retail-div{margin:32px 0}
 }
+@media screen and (max-width: 385px) {
+.blog-whatsapp-flex {
+    flex-direction: column;
+    gap: 0;
+}
+.blog-whatsapp{margin: 0 !important;}
+}
+
 @media screen and (max-width: 480px) {
 .retail-banner h2 br,.cta1-section-retail h2 br{display:none}
 .retail-module-box p{font-size:15px;line-height:24px}
