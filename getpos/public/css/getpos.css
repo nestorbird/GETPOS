@@ -7,7 +7,7 @@
 .app-logo{display:flex;margin:auto}
 .nav-links.highlight{color:#145FFF;border-bottom:3px solid #145FFF}
 .hover-highlight:hover{color:#145FFF;border-bottom:3px solid #145FFF}
-.header-btn{border-radius:8px; background: linear-gradient(to right, #3fa9f5, #5e66fa, #a860ea);box-shadow:0 -4px 4px 0 rgba(0,0,0,0.25) inset;display:flex;padding:12.5px 30.22px;align-items:center;gap:10px;transition:all .3s ease-in-out;color:#FFF;font-size:20px;font-weight:600;line-height:30px}
+.header-btn{border-radius:8px; background:#000;box-shadow:0 -4px 4px 0 rgba(0,0,0,0.25) inset;display:flex;padding:12.5px 30.22px;align-items:center;gap:10px;transition:all .3s ease-in-out;color:#FFF;font-size:20px;font-weight:600;line-height:30px}
 #header{padding:20px 0 17px}
 .lg\:max-w-7xl{max-width:1600px!important}
 .mobile-screen{display:none}
@@ -581,10 +581,10 @@ to{opacity:1}
 .account-need{padding:108px 0 0}
 .account-need-div{margin-top:80px}
 .account-need h3{color:#B3CBFF;font-size:128px;font-weight:600;line-height:normal;text-transform:uppercase;opacity:.1}
-.account-need-bg{background:url(/assets/getpos/images/account-need-bg.webp)no-repeat center;background-size:cover;background-position:center 20px;display:flex;margin:auto;padding-top:40px;width:100%}
+.account-need-bg{background:url(/assets/getpos/images/account-need-bg.webp)no-repeat center;background-size:cover;background-position:center 20px;display:flex;margin:auto;padding-top:40px;width:100%;justify-content: center;}
 .acount-need-bg2{right:0;margin-top:8rem}
 .acount-need-bg1{margin-top:8rem}
-.account-need-bg2{opacity:0;transform:translateY(20%);transition:all .5s ease-in-out;width:43%;display:flex;margin:auto}
+.account-need-bg2{opacity:0;transform:translateY(20%);transition:all .5s ease-in-out;width:56%;display:flex;margin:auto}
 .accounts-complete-box1 h3{color:#000718;font-size:24px;font-weight:600;line-height:28px;text-transform:capitalize;padding-bottom:24px}
 .accounts-complete-box1 p{color:#606574;text-align:justify;font-size:18px;font-weight:400;line-height:28px}
 .accounts-complete-box1{gap:100px;padding-bottom:80px;align-items:center}
@@ -944,6 +944,7 @@ footer .pr-28{padding-right:0!important}
 }
 @media screen and (max-width: 1300px) {
 .modal-img{min-width:40px}
+.account-need-bg2{width:50%;}
 .news-section .tracking-tighter br{display:none}
 .our-jrny-line{margin:28rem 0 0 54%}
 .single-news header p{font-size:16px;line-height:30px}
@@ -1437,6 +1438,8 @@ footer .pr-28.pr-28{padding-right:0}
 @media screen and (max-width: 767px) {
 .accounts-right, .accounts-animation .accounts-left img{opacity: 1 !important;}
 .translate-right,.translate-left {transform: translateX(0);}
+.our-jrny-box h5{font-size:24px;line-height:normal;padding-top: 16px;}
+.our-jrny-box p {padding-top: 16px;}
 .blog-whatsapp-flex {margin: 0 0 4px 0;gap: 8px;}
 .hr-complete-box1{padding:20px;gap:24px;align-items:end}
 .single-news h3{font-size:20px;line-height:30px}
