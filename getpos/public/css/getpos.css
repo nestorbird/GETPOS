@@ -1,13 +1,13 @@
 @import "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap";
 @import "https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400..700;1,400..700&display=swap";
 .inter{font-family:Inter;font-style:normal}
-.logo-size{width:250px}
+.logo-size{width:270px}
 .nav-links{color:#212121;font-size:20px;font-weight:500;line-height:normal;border-bottom:3px solid transparent}
 .Gelasio{font-family:Gelasio,serif;font-style:normal}
 .app-logo{display:flex;margin:auto}
 .nav-links.highlight{color:#145FFF;border-bottom:3px solid #145FFF}
 .hover-highlight:hover{color:#145FFF;border-bottom:3px solid #145FFF}
-.header-btn{border-radius:8px;background:var(--Secondary-01,#FF1746);box-shadow:0 -4px 4px 0 rgba(0,0,0,0.25) inset;display:flex;padding:12.5px 30.22px;align-items:center;gap:10px;transition:all .3s ease-in-out;color:#FFF;font-size:20px;font-weight:600;line-height:30px}
+.header-btn{border-radius:8px; background: linear-gradient(to right, #3fa9f5, #5e66fa, #a860ea);box-shadow:0 -4px 4px 0 rgba(0,0,0,0.25) inset;display:flex;padding:12.5px 30.22px;align-items:center;gap:10px;transition:all .3s ease-in-out;color:#FFF;font-size:20px;font-weight:600;line-height:30px}
 #header{padding:20px 0 17px}
 .lg\:max-w-7xl{max-width:1600px!important}
 .mobile-screen{display:none}
@@ -16,8 +16,8 @@ footer{padding:102px 0 0;background:url(/assets/getpos/images/footer-bg.webp)no-
 .footer-main{padding:0}
 .home-swiper{width:100%;height:470px}
 .home-swiper .swiper-slide{height:100%!important}
-.detail-gap-about,.about-us-page,.wizards-section{overflow-x:hidden}
-.footer-logo{width:310px;min-width:initial;height:inherit;margin-top:42px}
+.detail-gap-about,.about-us-page,.wizards-section,.retail-hero-banner,.retail-page,.food-banner,.food-page,.booking-page,.food-banner{overflow-x:hidden}
+.footer-logo{width:370px;min-width:initial;height:inherit;margin-top:25px}
 .footer-lower .copyright-txt{color:rgba(0,7,24,0.60);font-size:16px;font-weight:400;line-height:24px;letter-spacing:-.145px}
 .footer-lower{align-items:center;justify-content:center;padding:0 0 20px}
 .footer-bottom{padding-bottom:60px}
@@ -72,14 +72,14 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 .about-button{animation-delay:0}
 .heading-welcome h2{color:#000718;font-size:48px;font-weight:600;line-height:30px;padding-bottom:32px}
 .heading-welcome h2 span{font-size:56px;font-weight:700;line-height:normal}
-.heading-welcome h2 span b{font-weight:700;color:#FF1746}
+.heading-welcome h2 span b{font-weight:700;background: linear-gradient(to right, #3fa9f5, #5e66fa, #a860ea);-webkit-background-clip: text;-webkit-text-fill-color: transparent;}
 .heading-welcome{gap:11px;display:flex;justify-content:start}
 .nb-logo{width:267px;height:71.2px;object-fit:contain}
 .about-welcome{padding:180px 0;background:url(/assets/getpos/images/welcome-left.webp)no-repeat;background-size:contain}
 .welcome-left{width:486px;display:none}
 .about-welcome p{color:#343C4F;font-size:20px;font-weight:400;line-height:32px;padding-bottom:24px}
 .about-welcome p span{color:var(--Hue-01,#000718);font-size:44px;font-weight:700;line-height:30px}
-.about-welcome p span b{font-weight:700;color:#FF1746}
+.about-welcome p span b{font-weight:700;background: linear-gradient(to right, #3fa9f5, #5e66fa, #a860ea);-webkit-background-clip: text;-webkit-text-fill-color: transparent;}
 .about-welcome h3{padding:64px 0 12px;color:#343C4F;font-size:20px;font-weight:400;line-height:32px}
 .about-welcome h4{color:#000718;font-size:28px;font-weight:600;line-height:36px}
 .about-welcome-flex{gap:150px}
@@ -92,7 +92,7 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 .our-jrny-box.animated,.our-jrny-end.animated{opacity:1;transform:translateX(0)}
 .our-jrny-box p{color:#000718;font-size:18px;font-style:normal;text-align:center;font-weight:400;padding-top:32px;line-height:30px}
 .our-jrny-box h5{color:#001B61;text-align:center;font-size:32px;font-weight:600;line-height:36px}
-.our-jrny-box h6{color:#FF1746;font-size:50px;font-style:normal;font-weight:600;border-radius:6px;padding:12px;margin-left:-75px;margin-top:-95px;width:240px;text-align:center;background:rgba(255,255,255,0.40);box-shadow:0 0 15.507px 0 rgba(0,0,0,0.20);backdrop-filter:blur(3.10142183303833px);line-height:42px;text-transform:capitalize}
+.our-jrny-box h6{color:#3fa9f5;font-size:50px;font-style:normal;font-weight:600;border-radius:6px;padding:12px;margin-left:-75px;margin-top:-95px;width:240px;text-align:center;background:rgba(255,255,255,0.40);box-shadow:0 0 15.507px 0 rgba(0,0,0,0.20);backdrop-filter:blur(3.10142183303833px);line-height:42px;text-transform:capitalize}
 .our-jrny-end{align-self:flex-end}
 .our-jrny-gap{gap:200px}
 .our-box-left{border-radius:20px;border:1px solid #9BBDFF;background:#E1EBFF;width:370px;height:557px;padding:0 20px 60px 0}
@@ -120,7 +120,9 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 .our-box-bottom h5 b{font-weight:600}
 .at-nestorbird{padding-top:85px}
 .at-nestorbird h3{color:var(--Hue-01,#000718);font-size:32px;font-weight:500;line-height:30px;padding-bottom:42px;text-align:center}
-.pink-span{color:#FF1746}
+.pink-span{background: linear-gradient(to right, #3fa9f5, #5e66fa, #a860ea);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;}
 .at-nestorbird h4{color:var(--Hue-01,#000718);text-align:center;font-size:28px;font-weight:400;line-height:52px}
 .at-nestorbird h5{color:var(--Hue-01,#000718);text-align:center;font-size:36px;font-weight:600;line-height:52px;padding-top:8px}
 @keyframes fadeIn {
@@ -249,7 +251,7 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 .about-partner2{object-fit:contain;width:122px}
 .about-partner3{object-fit:contain;width:153px}
 .about-partner4{object-fit:contain;width:132px}
-.about-us-page .hover-highlight,.food-page #solutions-link,.retail-page #solutions-link,.oms-page #features-link,.wms-page #features-link,.manufacturing-page #features-link,.hr-page #features-link,.account-page #features-link,.blog-listing-page #resources-link,.blog-detail #resources-link{color:#145FFF;border-bottom:3px solid #145FFF}
+.about-us-page .hover-highlight,.food-page #solutions-link,.retail-page #solutions-link,.oms-page #features-link,.wms-page #features-link,.manufacturing-page #features-link,.hr-page #features-link,.account-page #features-link,.blog-listing-page #resources-link,.blog-detail #resources-link,.booking-page #solutions-link{color:#145FFF;border-bottom:3px solid #145FFF}
 .about-line{position:absolute;top:230px;left:358px}
 .border-div{display:none}
 .retail-banner{padding:100px 0;background:url(/assets/getpos/images/retail-banner.webp)no-repeat;background-size:cover}
@@ -399,8 +401,8 @@ to{transform:translate(0,0) scale(1);opacity:1}
 .wms-banner h1{color:#FFF;text-align:center;font-size:64px;font-weight:600;line-height:72px;text-transform:capitalize}
 .wms-banner p{color:#FFF;text-align:center;font-size:28px;font-weight:400;line-height:28px;text-transform:capitalize;padding:32px 0}
 .wms-banner-image1{width:987px;display:flex;margin:auto}
-.wms-banner-image2{position:absolute;width:284px;box-shadow:0 0 40px 0 rgba(0,0,0,0.40);margin-top:335px;left:13%;top:0;border-radius:8px;transform:translateX(100%) scale(0);opacity:0;transition:transform 1s ease-in-out,opacity 0 ease-in-out}
-.wms-banner-image3{position:absolute;width:269px;box-shadow:0 0 40px 0 rgba(0,0,0,0.40);bottom:130px;right:17%;border-radius:8px;transform:translateX(-100%) scale(0);opacity:0;transition:transform 1s ease-in-out,opacity 0 ease-in-out}
+.wms-banner-image2{position:absolute;width:284px;box-shadow:0 0 40px 0 rgba(0,0,0,0.40);margin-top:335px;left:13%;top:0;border-radius:8px;transform:translateX(100%) scale(0);opacity:0;transition:transform 1s ease-in-out,opacity 1s ease-in-out}
+.wms-banner-image3{position:absolute;width:269px;box-shadow:0 0 40px 0 rgba(0,0,0,0.40);bottom:130px;right:17%;border-radius:8px;transform:translateX(-100%) scale(0);opacity:0;transition:transform 1s ease-in-out,opacity 1s ease-in-out}
 .animate .wms-banner-image2{transform:translateX(0) scale(1);opacity:1}
 .animate .wms-banner-image3{transform:translateX(0) scale(1);opacity:1}
 .wms-banner .wms-btn{display:none}
@@ -708,7 +710,7 @@ body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important
 .our-jrny-box p{font-size:16px;line-height:28px}
 .our-jrny-line{margin:28rem 0 0 54%}
 .accounts-cta{padding:160px 80px}
-.footer-logo{width:260px}
+.footer-logo{width:300px}
 .accounts-complete-box1 p{font-size:16px;line-height:26px}
 .account-feature51{margin:-150px 0 0 -70px}
 .flip-animate{width:70%}
@@ -787,7 +789,7 @@ body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important
 .retail-grid{gap:20px}
 .retail-text p{padding-bottom:60px}
 .mt-99px{padding-top:18px}
-.logo-size{width:243px}
+.logo-size{width:260px}
 .nav-links{font-size:18px}
 .about-welcome-flex{gap:110px}
 .about-banner p{font-size:20px;line-height:32px}
@@ -835,7 +837,7 @@ body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important
 .our-jrny-box{width:65%}
 .our-jrny-line{margin:26rem 0 0 54%}
 .single-news h3{font-size:16px;line-height:26px}
-.footer-logo{width:240px}
+.footer-logo{width:280px}
 .manufacturing-banner{padding:150px 80px 80px;background-position:right}
 .oms-banner-gap .w-3\/5{width:55%}
 .order-notification{right:170px}
@@ -1074,7 +1076,7 @@ header span.mr-4{display:flex;height:45px}
 .our-jrny-box{width:75%}
 .accounts-cta{padding:50px}
 .accounts-cta-gap{flex-direction:column;align-items:baseline;gap:40px}
-.logo-size{width:170px}
+.logo-size{width:200px}
 .flip-animate,.accounts-cta-para,.accounts-cta-head{width:100%}
 .accounts-complete-box1{gap:50px;padding-bottom:40px!important}
 .account-need-text{padding:0 50px;gap:32px}
