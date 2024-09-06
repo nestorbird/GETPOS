@@ -184,7 +184,8 @@ scheduler_events = {
 # 		"nbpos.tasks.all"
 # 	],
 	"daily": [
-			"getpos.getpos.schedulers.expired_gift_card_settlement.create_gift_card_journal_entries"
+			"getpos.getpos.schedulers.expired_gift_card_settlement.create_gift_card_journal_entries",
+            "getpos.getpos.schedulers.opencart_integration.order_integration"
 		]
 # 	"hourly": [
 # 		"nbpos.tasks.hourly"
