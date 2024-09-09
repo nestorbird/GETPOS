@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/static/css/main.f4a1add9.css",
+    "main.js": "/static/js/main.78027365.js",
+    "static/js/453.89add862.chunk.js": "/static/js/453.89add862.chunk.js",
+    "static/media/empty-cart.png": "/static/media/empty-cart.fbc1b439020f2243c453.png",
+    "static/media/no-img.png": "/static/media/no-img.dd70289d7e7cc284ed19.png",
+    "static/media/logo.svg": "/static/media/logo.6c6a6b2228ef203914642b9eb1a68e79.svg",
+    "static/media/icon-finance.svg": "/static/media/icon-finance.ab7b3b29f4d0ef3b899d396cba22c415.svg",
+    "static/media/icon-profile.svg": "/static/media/icon-profile.7fd792fd7915ad4a2241a15472f3afc0.svg",
+    "static/media/icon-changePwd.svg": "/static/media/icon-changePwd.7e02d230b9cdfd2d4c6010cfb1c93148.svg",
+    "static/media/icon-order.svg": "/static/media/icon-order.a592c29c24f04a55f1986aebd7269b31.svg",
+    "static/media/icon-logout.svg": "/static/media/icon-logout.c104749b75301204e1d74be0984fc349.svg",
+    "static/media/icon-customer.svg": "/static/media/icon-customer.d837371dc5c8254ddcb99d47758c0a35.svg",
+    "static/media/icon-home.svg": "/static/media/icon-home.c8feb0715680b3edb89b13039b8130ad.svg",
+    "index.html": "/index.html",
+    "main.f4a1add9.css.map": "/static/css/main.f4a1add9.css.map",
+    "main.78027365.js.map": "/static/js/main.78027365.js.map",
+    "453.89add862.chunk.js.map": "/static/js/453.89add862.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f4a1add9.css",
+    "static/js/main.78027365.js"
+  ]
+}
