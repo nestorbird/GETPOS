@@ -29,8 +29,9 @@ import CashPaymentPopup from "./CashPaymentPopup";
 import { CartContext } from "../common/CartContext";
 import AddCustomerForm from "./Addcustomer";
 import PromoCodePopup from "./PromoCodePopup";
+import { useThemeSettings } from "./ThemeSettingContext";
 
-const Cart = ({ onPlaceOrder }) => {
+const Cart = ({ onPlaceOrder, onReservationClick }) => {
   const [selectedTab, setSelectedTab] = useState("Takeaway");
   const [customers, setCustomers] = useState([]);
   const [guestCustomer, setGuestCustomer] = useState();
@@ -45,7 +46,6 @@ const Cart = ({ onPlaceOrder }) => {
   const [customerSelected, setCustomerSelected] = useState(false);
   const [customerSelectedDetails, setCustomerSelectedDetails] = useState([]);
   const [showAddCustomerForm, setShowAddCustomerForm] = useState(false);
-  const [ currencySymbol, setCurrenySymbol ] = useState("")
 
   const {
     cartItems,
@@ -80,6 +80,8 @@ const Cart = ({ onPlaceOrder }) => {
   const [editPriceDiscount, setEditpriceDiscount] = useState(0);
   const [storedPassword, setStoredPassword] = useState("");
   const [lastAuthorizedPrices, setLastAuthorizedPrices] = useState({});
+  const themeSettings = useThemeSettings();
+  const [isTaxExpanded, setIsTaxExpanded] = useState(false);
 
   useEffect(() => {
     const storedPromoCode = localStorage.getItem("promoCode");
@@ -167,10 +169,106 @@ const Cart = ({ onPlaceOrder }) => {
     );
   };
 
+  const calculateTaxForItem = (item) => {
+    if (!item.tax || item.tax.length === 0) return 0;
+
+    const taxPercentage = parseFloat(
+      item.tax[0].custom_tax_percentage.replace("%", "")
+    );
+    const itemTotal = item.product_price * item.quantity;
+    const taxAmount = (itemTotal * taxPercentage) / 100;
+
+    return taxAmount;
+  };
+
+  const calculateTotalTax = (items) => {
+    return items.reduce((total, item) => {
+      if (!item.tax || item.tax.length === 0) return total;
+
+      const itemTotalTax = item.tax.reduce((itemTaxSum, taxEntry) => {
+        return itemTaxSum + calculateTaxForEntry(item, taxEntry);
+      }, 0);
+
+      return total + itemTotalTax;
+    }, 0);
+  };
+
+  const calculateTotalWithTax = (items) => {
+    const subtotal = calculateSubtotal(items);
+    const totalTax = calculateTotalTax(items);
+    return subtotal + totalTax;
+  };
+
+  const groupTaxesByRate = (items) => {
+    const taxGroups = {};
+
+    items.forEach((item) => {
+      // Sort the tax entries to ensure CGST comes before SGST
+      const sortedTaxes = item.tax.sort((a, b) => {
+        if (a.tax_type.includes("CGST") && b.tax_type.includes("SGST"))
+          return -1;
+        if (a.tax_type.includes("SGST") && b.tax_type.includes("CGST"))
+          return 1;
+        return 0;
+      });
+
+      sortedTaxes.forEach((taxEntry) => {
+        const taxLabel = taxEntry.tax_type.includes("SGST") ? "SGST" : "CGST";
+        const taxKey = `${taxLabel}-${taxEntry.custom_tax_percentage}`;
+
+        if (!taxGroups[taxKey]) {
+          taxGroups[taxKey] = {
+            taxLabel, // CGST or SGST
+            custom_tax_percentage: taxEntry.custom_tax_percentage,
+            totalTaxAmount: 0,
+          };
+        }
+
+        const itemTotal = item.product_price * item.quantity;
+        const taxAmount =
+          (itemTotal * parseFloat(taxEntry.custom_tax_percentage)) / 100;
+        taxGroups[taxKey].totalTaxAmount += taxAmount;
+      });
+    });
+
+    return Object.values(taxGroups);
+  };
+
+  const calculateTaxForEntry = (item, taxEntry) => {
+    const taxPercentage = parseFloat(
+      taxEntry.custom_tax_percentage.replace("%", "")
+    );
+    const itemTotal = item.product_price * item.quantity;
+    return (itemTotal * taxPercentage) / 100;
+  };
+
+  const getTotalTaxForItem = (item) => {
+    if (!item.tax || item.tax.length === 0) return 0;
+
+    return item.tax.reduce((total, taxEntry) => {
+      return total + calculateTaxForEntry(item, taxEntry);
+    }, 0);
+  };
+
+  const toggleTaxExpand = () => {
+    setIsTaxExpanded((prev) => !prev);
+  };
+
   const [subtotal, setSubtotal] = useState(calculateSubtotal(cartItems));
+  const [totalTax, setTotalTax] = useState(calculateTotalTax(cartItems));
+  const [totalWithTax, setTotalWithTax] = useState(
+    calculateTotalWithTax(cartItems)
+  );
+
+  useEffect(() => {
+    setSubtotal(calculateSubtotal(cartItems));
+    setTotalTax(calculateTotalTax(cartItems));
+    setTotalWithTax(calculateTotalWithTax(cartItems));
+  }, [cartItems]);
+
   const discount = 0;
   // const taxRate = 0.1;
-  const taxRate = 0;
+  // const taxRate = 0;
   // const total = subtotal - couponDiscount + tax;
 
   const handleCashButtonClick = () => {
@@ -341,9 +439,7 @@ const Cart = ({ onPlaceOrder }) => {
               .toLowerCase()
               .includes(searchTerm.toLowerCase())) ||
           (customer.mobile_no &&
-            customer.mobile_no
-              .toLowerCase()
-              .includes(searchTerm.toLowerCase()))
+            customer.mobile_no.toLowerCase().includes(searchTerm.toLowerCase()))
       );
       setFilteredCustomers(filtered);
       setShowAddCustomerForm(filtered.length === 0 && !selectedCustomer);
@@ -352,7 +448,6 @@ const Cart = ({ onPlaceOrder }) => {
       setShowAddCustomerForm(false);
     }
   }, [searchTerm, customers, selectedCustomer]);
-  
 
   const handleAddCustomer = (newCustomer) => {
     setCustomers([...customers, newCustomer]);
@@ -389,16 +484,17 @@ const Cart = ({ onPlaceOrder }) => {
   );
 
   const stockQtyMap = cartItems.reduce((map, cartItem) => {
-    const stockQty = cartItem.stock.length > 0 ? cartItem.stock[0].stock_qty : 0;
+    const stockQty =
+      cartItem.stock.length > 0 ? cartItem.stock[0].stock_qty : 0;
     map[cartItem.id] = stockQty;
     return map;
   }, {});
-  
+
   const handleIncrement = (index) => {
     const updatedCartItems = [...cartItems];
     const selectedItem = updatedCartItems[index];
     const stockQty = stockQtyMap[selectedItem.id];
-  
+
     if (selectedItem.quantity < stockQty) {
       updatedCartItems[index].quantity += 1;
       setCartItems(updatedCartItems);
@@ -468,7 +564,9 @@ const Cart = ({ onPlaceOrder }) => {
       name: new Date().getTime(),
       items: cartItems,
       subtotal: subtotal,
-      total: grandTotal,
+      total: totalWithTax,
+      grand_total: totalWithTax,
+      loyalty_amount: loyaltyAmount,
       customer: {
         customer_name: selectedCustomer.customer_name,
         mobile_no: selectedCustomer.mobile_no,
@@ -482,12 +580,27 @@ const Cart = ({ onPlaceOrder }) => {
 
     parkedOrders.push(newParkedOrder);
     localStorage.setItem("parkedOrders", JSON.stringify(parkedOrders));
-
+    localStorage.removeItem("couponDiscount");
+    localStorage.removeItem("promoCode");
     setCartItems([]);
-    localStorage.removeItem("cartItems");
-
+    setPromoCode("");
+    setDiscountAmount(0);
     setSelectedCustomer(null);
     setSearchTerm("");
+    setCouponCodes("");
+    setCouponDiscount("");
+    setValidatedPromoCode("");
+    setRedeem(0);
+    setCustomerSelectedDetails([]);
+    setLoyaltyAmount(0);
+    setLoyaltyInput("");
+    localStorage.removeItem("GiftCardDiscount");
+    setGiftCardDiscount("");
+    setGiftCard("");
+    setIsGiftCardValid(false);
+    setIsPromoCodeValid(false);
+
+    localStorage.removeItem("cartItems");
     localStorage.removeItem("selectedCustomer");
     localStorage.removeItem("CustomerDetails");
 
@@ -527,10 +640,10 @@ const Cart = ({ onPlaceOrder }) => {
     );
   };
   // const subtotal = calculateSubtotal(cartItems);
-  const tax = subtotal * taxRate;
+  // const tax = subtotal * taxRate;
   let grandTotal =
-    subtotal - couponDiscount - loyaltyAmount - discountAmount + tax;
-
+    totalWithTax - loyaltyAmount - discountAmount - couponDiscount;
+  // grandTotal = Math.max(grandTotal - couponDiscount, 0);
   const placeOrder = async (customer) => {
     if (grandTotal < 0) {
       Modal.error({
@@ -679,9 +792,10 @@ const Cart = ({ onPlaceOrder }) => {
         setLoyaltyRedemptionAccount(
           res.data.message.data.loyalty_redemption_account
         );
-        setEditpriceDiscount(res.data.message.data.edit_price_discount);
+        setEditpriceDiscount(
+          res.data.message.data.edit_price_discount_in_percentage
+        );
         setGuestCustomer(guestCustomer);
-        setCurrenySymbol(res.data.message.data.currency_symbol)
         console.log("Guest customer", guestCustomer);
       } else {
         console.log("Error in getting the Guest Customer");
@@ -760,7 +874,9 @@ const Cart = ({ onPlaceOrder }) => {
     const newPrice = parseFloat(editedPrices[cartItem.id]);
     if (isNaN(newPrice)) {
       console.error(
-        `Invalid price entered for item at index ${index}: ${editedPrices[cartItem.id]}`
+        `Invalid price entered for item at index ${index}: ${
+          editedPrices[cartItem.id]
+        }`
       );
       return;
     }
@@ -810,7 +926,6 @@ const Cart = ({ onPlaceOrder }) => {
       setAuthPendingItem(null);
       setAuthModalVisible(false);
       setPassword("");
-    
     }
   };
 
@@ -831,14 +946,17 @@ const Cart = ({ onPlaceOrder }) => {
     const { id, originalPrice } = authPendingItem;
     setEditedPrices((prev) => ({
       ...prev,
-      [id]: lastAuthorizedPrices[id] !== undefined ? lastAuthorizedPrices[id] : originalPrice,
+      [id]:
+        lastAuthorizedPrices[id] !== undefined
+          ? lastAuthorizedPrices[id]
+          : originalPrice,
     }));
   };
 
   const handleAuthCancel = () => {
     resetToOriginalPrice();
     setAuthModalVisible(false);
-    setPassword("")
+    setPassword("");
   };
 
   const renderCartItems = () => {
@@ -850,49 +968,78 @@ const Cart = ({ onPlaceOrder }) => {
         </div>
       );
     }
+    const calculateTotalTaxPercentage = (item) => {
+      if (!item.tax || item.tax.length === 0) return "0.0%";
 
-    return cartItems.map((item, index) => (
-      <div key={index} className="cart-item">
-        <span className="cart-item-name">{item.name}</span>
-        <span className="cart-item-unitprice">
-          <Input
-            type="number"
-            value={
-              editedPrices[item.id] !== undefined
-                ? editedPrices[item.id]
-                : item.product_price
-            }
-            onChange={(e) =>
-              handleUnitPriceChange(index, parseFloat(e.target.value))
-            }
-            onBlur={() => validatePriceChange(index)}
-            className="unit-price-input"
-            onKeyPress={(e) => {
-              if (e.key === "Enter") {
-                validatePriceChange(index);
+      const totalPercentage = item.tax.reduce((total, taxEntry) => {
+        return total + parseFloat(taxEntry.custom_tax_percentage);
+      }, 0);
+
+      return `${totalPercentage}%`;
+    };
+
+    return cartItems.map((item, index) => {
+      const totalTaxRate = item?.tax?.length
+        ? item.tax.reduce((acc, tax) => acc + tax.rate, 0)
+        : 0;
+
+      return (
+        <div key={index} className="cart-item">
+          <span className="cart-item-name">{item.name}</span>
+
+          {/* Tax Rate Column */}
+          <span className="cart-item-taxrate">
+            {calculateTotalTaxPercentage(item)}
+          </span>
+
+          {/* Unit Price Input */}
+          <span className="cart-item-unitprice">
+            <Input
+              type="number"
+              value={
+                editedPrices[item.id] !== undefined
+                  ? editedPrices[item.id]
+                  : item.product_price
               }
-            }}
-            step="any"
-          />
-        </span>
-        <span className="cart-item-qty quantity-control">
-          <Button onClick={() => handleDecrement(index)}>-</Button>
-          <span>{item.quantity}</span>
-          <Button onClick={() => handleIncrement(index)}>+</Button>
-        </span>
-        <span className="cart-item-totalprice">
-          {(currencySymbol || "$")}{(item.product_price * item.quantity).toFixed(2)}
-        </span>
-        <span className="cart-item-action">
-          <img
-            src={DeleteImg}
-            alt="Delete"
-            onClick={() => handleRemoveFromCart(index)}
-            style={{ cursor: "pointer", marginRight: "4px" }}
-          />
-        </span>
-      </div>
-    ));
+              onChange={(e) =>
+                handleUnitPriceChange(index, parseFloat(e.target.value))
+              }
+              onBlur={() => validatePriceChange(index)}
+              className="unit-price-input"
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  validatePriceChange(index);
+                }
+              }}
+              step="any"
+            />
+          </span>
+
+          {/* Quantity Controls */}
+          <span className="cart-item-qty quantity-control">
+            <Button onClick={() => handleDecrement(index)}>-</Button>
+            <span>{item.quantity}</span>
+            <Button onClick={() => handleIncrement(index)}>+</Button>
+          </span>
+
+          {/* Total Price */}
+          <span className="cart-item-totalprice">
+            {themeSettings?.currency_symbol || "$"}
+            {(item.product_price * item.quantity).toFixed(2)}
+          </span>
+
+          {/* Delete Action */}
+          <span className="cart-item-action">
+            <img
+              src={DeleteImg}
+              alt="Delete"
+              onClick={() => handleRemoveFromCart(index)}
+              style={{ cursor: "pointer", marginRight: "4px" }}
+            />
+          </span>
+        </div>
+      );
+    });
   };
 
   const handleClearStorage = () => {
@@ -1025,9 +1172,7 @@ const Cart = ({ onPlaceOrder }) => {
         title: "Credit Limit Zero",
         content: (
           <div style={{ textAlign: "center" }}>
-            <p>
-              Credit limit is zero. Please add the credit limit.
-            </p>
+            <p>Credit limit is zero. Please add the credit limit.</p>
           </div>
         ),
       });
@@ -1040,8 +1185,8 @@ const Cart = ({ onPlaceOrder }) => {
         content: (
           <div style={{ textAlign: "center" }}>
             <p>
-              Insufficient Credit Limit, please make a payment entry to increase the
-              credit limit
+              Insufficient Credit Limit, please make a payment entry to increase
+              the credit limit
             </p>
             <h4>
               <strong>Available Credit: {availableCredit}</strong>
@@ -1058,18 +1203,30 @@ const Cart = ({ onPlaceOrder }) => {
     <div className="cartItems">
       <div>
         <ul className="tab-header">
-          <li
-            className={selectedTab === "Takeaway" ? "active" : ""}
+          {/* <li
+            className={selectedTab === "Delivery" ? "active" : "active"} // remove active from 2nd part
+            onClick={() => {
+              setSelectedTab("Delivery");
+            }}
+          >
+         
+          </li> */}
+          {/* <li
+            className={selectedTab === "Takeaway" ? "active" : "active"} // remove active from 2nd part after testing
             onClick={() => setSelectedTab("Takeaway")}
           >
-            Takeaway
-          </li>
-          {/* <li
-            className={selectedTab === "Delivery" ? "active" : ""}
-            onClick={() => setSelectedTab("Delivery")}
-          >
-            Delivery
+         
           </li> */}
+          {/* <li
+            className={selectedTab === "Delivery" ? "active" : "active"} // remove active from 2nd part
+            onClick={() => {
+              setSelectedTab("Booking");
+              onReservationClick();
+            }}
+          >
+          
+          </li> */}
+          <li className="active"></li>
         </ul>
         <div className="tab-content">
           <div
@@ -1101,9 +1258,11 @@ const Cart = ({ onPlaceOrder }) => {
                     )}
                 </div>
               </div>
-              {/* <Button className="quick-order-btn" onClick={handleQuickOrder}>
-                Quick Order
-              </Button> */}
+              {/* <div className="quick-order-btn-div">
+                <Button className="quick-order-btn" onClick={handleQuickOrder}>
+                  Quick Order
+                </Button>
+              </div> */}
             </div>
             <div className="cart-header d-flex justify-content-between">
               <div className="cart-head-left">
@@ -1140,6 +1299,8 @@ const Cart = ({ onPlaceOrder }) => {
                   <div className="cart-item-cont">
                     <div className="cart-item cart-item-head">
                       <span className="cart-item-name">Product Name</span>
+                      <span className="cart-item-taxrate">Tax Rate</span>{" "}
+                      {/* New Tax Rate Column */}
                       <span className="cart-item-unitprice">Unit Price</span>
                       <span className="cart-item-qty">Qty</span>
                       <span className="cart-item-totalprice">Total</span>
@@ -1149,8 +1310,115 @@ const Cart = ({ onPlaceOrder }) => {
                   </div>
                   <div className="cart-sub-total">
                     <span>Subtotal</span>
-                    <span>{(currencySymbol || "$")}{subtotal.toFixed(2)}</span>
-                  </div>     
+                    <span>
+                      {themeSettings?.currency_symbol || "$"}
+                      {subtotal.toFixed(2)}
+                    </span>
+                  </div>
+                  {/* <div className="promo-header" onClick={toggleExpand}>
+                    <span>{isExpanded ? "▼" : "►"} Promotion</span>
+                  </div> */}
+                  {isExpanded && (
+                    <div className="promocode">
+                      <div>
+                        <label>Enter Promo Code</label>
+                        <span className="promo-input-wrap">
+                          <input
+                            type="text"
+                            placeholder=" "
+                            value={
+                              validatedPromoCode
+                                ? `${validatedPromoCode} Applied`
+                                : ""
+                            }
+                            onClick={handlePromoCodeClick}
+                            readOnly
+                            disabled={isGiftCardValid}
+                          />
+                          {validatedPromoCode ? (
+                            <Button
+                              type="submit"
+                              onClick={handleRemovePromoCode}
+                            >
+                              <img src={ButtonCross} alt="Remove Promo Code" />
+                            </Button>
+                          ) : (
+                            <Button
+                              type="submit"
+                              onClick={handlePromoCodeClick}
+                            >
+                              <img src={ButtonTick} alt="Apply Promo Code" />
+                            </Button>
+                          )}
+                        </span>
+                      </div>
+                      {!isguestCustomer && (
+                        <>
+                          <div>
+                            <label>Enter Gift Card</label>
+                            <span className="promo-input-wrap">
+                              <input
+                                type="text"
+                                placeholder=""
+                                value={giftCard}
+                                onChange={(e) => setGiftCard(e.target.value)}
+                                readOnly={isGiftCardValid}
+                                disabled={validatedPromoCode}
+                              />
+                              {isGiftCardValid ? (
+                                <Button
+                                  type="submit"
+                                  onClick={handleRemoveGiftCard}
+                                >
+                                  <img
+                                    src={ButtonCross}
+                                    alt="Remove Gift Card"
+                                  />
+                                </Button>
+                              ) : (
+                                <Button
+                                  type="submit"
+                                  onClick={handleGiftCardClick}
+                                >
+                                  <img src={ButtonTick} alt="Apply Gift Card" />
+                                </Button>
+                              )}
+                            </span>
+                          </div>
+                          <div>
+                            <label>
+                              Loyalty Points (
+                              {customerSelectedDetails.loyalty_points})
+                            </label>
+                            <span className="promo-input-wrap">
+                              <input
+                                type="text"
+                                placeholder=""
+                                value={loyaltyInput}
+                                onChange={handleLoyaltyInputChange}
+                                max={customerSelectedDetails.loyalty_points}
+                              />
+                              {isLoyaltyPointsValid ? (
+                                <Button
+                                  type="button"
+                                  onClick={handleRemoveLoyaltyPoints}
+                                >
+                                  <img
+                                    src={ButtonCross}
+                                    alt="Remove Loyalty Points"
+                                  />
+                                </Button>
+                              ) : (
+                                <Button type="button" onClick={handleSubmit}>
+                                  <img src={ButtonTick} alt="" />
+                                </Button>
+                              )}
+                            </span>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  )}
                   <div className="cart-footer">
                     <div className="cart-summary">
                       {validatedPromoCode && (
@@ -1163,7 +1431,7 @@ const Cart = ({ onPlaceOrder }) => {
                           </span>
                           <span className="color-text">
                             {" "}
-                            - {(currencySymbol || "$")}
+                            - {themeSettings?.currency_symbol || "$"}
                             {couponDiscount
                               ? couponDiscount.toFixed(2)
                               : "0.00"}
@@ -1174,7 +1442,7 @@ const Cart = ({ onPlaceOrder }) => {
                         <div>
                           <span>Loyalty Points</span>
                           <span className="color-text">
-                            - {(currencySymbol || "$")}
+                            - {themeSettings?.currency_symbol || "$"}
                             {loyaltyAmount ? loyaltyAmount.toFixed(2) : "0.00"}
                           </span>
                         </div>
@@ -1183,17 +1451,66 @@ const Cart = ({ onPlaceOrder }) => {
                         <div>
                           <span>Gift card</span>
                           <span className="color-text">
-                            - {(currencySymbol || "$")}
+                            - {themeSettings?.currency_symbol || "$"}
                             {discountAmount
                               ? discountAmount.toFixed(2)
                               : "0.00"}
                           </span>
                         </div>
                       )}
-                      <div>
-                        <span>Tax</span>
-                        <span>{(currencySymbol || "$")}{tax.toFixed(2)}</span>
+
+                      <div className="tax-header" onClick={toggleTaxExpand}>
+                        <span>{isTaxExpanded ? "▼" : "►"} Total Tax</span>
+                        <span>
+                          {themeSettings?.currency_symbol || "$"}
+                          {groupTaxesByRate(cartItems)
+                            .reduce(
+                              (total, group) => total + group.totalTaxAmount,
+                              0
+                            )
+                            .toFixed(2)}
+                        </span>
                       </div>
+
+                      {isTaxExpanded && (
+                        <span className="tax-details-section">
+                          {groupTaxesByRate(cartItems).map(
+                            (group, index, array) => (
+                              <span
+                                key={index}
+                                className={`tax-group ${
+                                  index % 2 === 1 && index !== array.length - 1
+                                    ? "with-separator sgst"
+                                    : ""
+                                }${
+                                  index === array.length - 1 ? "last-tax" : ""
+                                }`}
+                              >
+                                {/* Display CGST or SGST with percentage */}
+                                <span className="tax-name">
+                                  {group.taxLabel}{" "}
+                                  {parseFloat(group.custom_tax_percentage)}%
+                                </span>
+                                <span className="tax-amount">
+                                  {themeSettings?.currency_symbol || "$"}
+                                  {group.totalTaxAmount.toFixed(2)}
+                                </span>
+                              </span>
+                            )
+                          )}
+                        </span>
+                      )}
+                      {/* <div className="total-tax">
+                        <span>Total Tax</span>
+                        <span>
+                          {themeSettings?.currency_symbol || "$"}
+                          {totalTax.toFixed(2)}
+                        </span>
+                      </div> */}
+                      {/* <div>
+                        <span>Tax</span>
+                        <span>${totalTax.toFixed(2)}</span>
+                      </div> */}
                     </div>
                     {/* <div className="cart-grand-total">
                       <span>Grand Total</span>
@@ -1219,9 +1536,9 @@ const Cart = ({ onPlaceOrder }) => {
             className={`tab-pane ${selectedTab === "Delivery" ? "active" : ""}`}
           >
             <h2>Delivery</h2>
-            <div className="quick-order">
+            {/* <div className="quick-order">
               <Button className="quick-order-btn">Quick Order</Button>
-            </div>
+            </div> */}
             <div className="cart-header d-flex justify-content-between">
               <div className="cart-head-left">
                 <h3>Cart</h3>
@@ -1229,7 +1546,8 @@ const Cart = ({ onPlaceOrder }) => {
                   {cartItems.length} Items
                 </span>
                 <span className="cart-head-total">
-                  Total - ${subtotal.toFixed(2)}
+                  Total - {themeSettings?.currency_symbol || "$"}
+                  {subtotal.toFixed(2)}
                 </span>
               </div>
               <div className="cart-head-right">
@@ -1256,7 +1574,8 @@ const Cart = ({ onPlaceOrder }) => {
                       <div key={index} className="cart-item">
                         <span className="cart-item-name">{item.name}</span>
                         <span className="cart-item-unitprice">
-                          ${item.product_price}
+                          {themeSettings?.currency_symbol || "$"}
+                          {item.product_price}
                         </span>
                         <span className="cart-item-qty quantity-control">
                           <Button onClick={() => handleDecrement(index)}>
@@ -1268,7 +1587,8 @@ const Cart = ({ onPlaceOrder }) => {
                           </Button>
                         </span>
                         <span className="cart-item-totalprice">
-                          ${(item.product_price * item.quantity).toFixed(2)}
+                          {themeSettings?.currency_symbol || "$"}
+                          {(item.product_price * item.quantity).toFixed(2)}
                         </span>
                         <span className="cart-item-action">
                           <img
@@ -1283,7 +1603,10 @@ const Cart = ({ onPlaceOrder }) => {
                   </div>
                   <div className="cart-sub-total">
                     <span>Subtotal</span>
-                    <span>${subtotal.toFixed(2)}</span>
+                    <span>
+                      {themeSettings?.currency_symbol || "$"}
+                      {subtotal.toFixed(2)}
+                    </span>
                   </div>
 
                   <div className="promocode">
@@ -1333,7 +1656,7 @@ const Cart = ({ onPlaceOrder }) => {
                       </div>
                       <div>
                         <span>Tax</span>
-                        <span>${tax.toFixed(2)}</span>
+                        <span>${totalTax.toFixed(2)}</span>
                       </div>
                     </div>
                     <div className="cart-grand-total">
@@ -1400,7 +1723,10 @@ const Cart = ({ onPlaceOrder }) => {
       <div className="cart-footer-cards d-flex justify-content-between">
         <div className="d-flex flex-column cart-place-order">
           <span className="">{cartItems.length} Items</span>
-          <span className="cart-head-total">{(currencySymbol || "$")}{grandTotal.toFixed(2)}</span>
+          <span className="cart-head-total">
+            {themeSettings?.currency_symbol || "$"}
+            {grandTotal.toFixed(2)}
+          </span>
         </div>
         <div className="order-controls">
           <Button
@@ -1422,6 +1748,16 @@ const Cart = ({ onPlaceOrder }) => {
             <img src={IconCard} alt="" />
             Card
           </Button>
+          {!isguestCustomer && (
+            <Button
+              className="cash-card-btn"
+              type={selectedPaymentMethod === "Credit" ? "primary" : "default"}
+              onClick={() => handleCreditClick("Credit")}
+            >
+              <img src={IconCredit} alt="" />
+              Credit
+            </Button>
+          )}
         </div>
       </div>
       {authModalVisible && (
@@ -1447,8 +1783,9 @@ const Cart = ({ onPlaceOrder }) => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <div className="authbtndiv">
-
-            <button className="Authbtn" onClick={handleAuth}>Authorize</button>
+            <button className="Authbtn" onClick={handleAuth}>
+              Authorize
+            </button>
           </div>
         </Modal>
       )}

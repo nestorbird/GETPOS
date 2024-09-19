@@ -2,14 +2,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 :root {
-  --primary-color: #ffd814;
+  --primary-color: #93e7ff;
   --secondary-color: #3e4b5c;
   --primary-text-color: #131921;
   --secondary-text-color: #fff;
   --error-color: #dc3545;
   --placeholder-color: #909090;
   --border-color: #a7b2c0;
-  --highlight-color: #00CE52;
+  --highlight-color: #00ce52;
 }
 
 body {
@@ -44,13 +44,17 @@ button {
   position: relative;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 40px;
+  padding: 0px 30px;
   background-color: var(--primary-text-color);
   border-bottom: 1px solid #ddd;
 }
 
 .header-logo img {
-  height: 27px;
+  height: 60px;
+}
+
+.header-right {
+  padding: 10px 0px;
 }
 
 .search-container {
@@ -65,7 +69,7 @@ button {
   width: 336px;
 }
 
-.search-container input[type=text] {
+.search-container input[type="text"] {
   background: #0000;
   border: 0;
   color: var(--border-color);
@@ -148,7 +152,7 @@ button {
 }
 
 .dropdown-content a:hover {
-  background-color: #ddb347;
+  background-color: var(--primary-color);
   color: var(--secondary-text-color);
 }
 
@@ -198,6 +202,20 @@ button.dropdown-button {
   margin-bottom: 50px;
 }
 
+.login-button:hover {
+  background-color: #4e8bd2;
+}
+
+.button-location-submit:hover {
+  background-color: #4e8bd2;
+}
+.button-open-shift:hover {
+  background-color: #4e8bd2;
+}
+.button-close-shift:hover {
+  background-color: #4e8bd2;
+}
+
 .login-form {
   display: flex;
   flex-direction: column;
@@ -219,7 +237,6 @@ button.dropdown-button {
 .form-group select,
 .form-group input,
 .form-group span input.ant-input {
-
   height: 70px;
   padding: 0 30px;
   gap: 10px;
@@ -234,7 +251,6 @@ button.dropdown-button {
 }
 
 .form-group span input::placeholder {
-
   color: var(--placeholder-color);
 }
 
@@ -295,7 +311,7 @@ header button {
 }
 
 button:hover {
-  background-color: #ddb347;
+  background-color: var(--primary-color);
 }
 
 .main-screen {
@@ -305,8 +321,6 @@ button:hover {
   min-height: 80vh;
   justify-content: space-between;
 }
-
-
 
 /* Sidebar */
 
@@ -386,6 +400,7 @@ button:hover {
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 400px;
 }
 
 .main-screen {
@@ -426,7 +441,7 @@ button:hover {
 }
 
 .tab-header li {
-  padding: 20px 20px;
+  padding: 30px 20px;
   cursor: pointer;
   width: 100%;
   background: var(--secondary-color);
@@ -440,7 +455,7 @@ button:hover {
 }
 
 .tab-header li.active {
-  background-color: var(--primary-color);
+  background-color: var(--primary-text-color);
   color: var(--primary-text-color);
 }
 
@@ -479,7 +494,7 @@ button:hover {
 
 .cart-search {
   border-radius: 8px;
-  border: 1px solid #D6DBE1;
+  border: 1px solid #d6dbe1;
   height: 50px;
   padding: 0;
   display: flex;
@@ -511,7 +526,7 @@ button:hover {
   width: 100%;
   padding: 20px;
   border-radius: 8px;
-  border: #D6DBE1;
+  border: #d6dbe1;
   background: var(--secondary-text-color);
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   z-index: 1;
@@ -521,7 +536,7 @@ button:hover {
 }
 
 .autoCompleteForm .ant-input-outlined {
-  background: var(--secondary-text-color)fff;
+  background: var(--secondary-text-color) fff;
   border-radius: 8px;
   display: flex;
   height: 52px;
@@ -529,7 +544,7 @@ button:hover {
   align-items: center;
   gap: 10px;
   align-self: stretch;
-  border: 1px solid #D6DBE1;
+  border: 1px solid #d6dbe1;
   flex-direction: column;
   color: var(--border-color);
   font-size: 22px;
@@ -538,7 +553,7 @@ button:hover {
 
 .ant-select-single .ant-select-selector .ant-select-selection-placeholder {
   color: var(--border-color);
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 500;
   text-align: left;
 }
@@ -573,7 +588,7 @@ button:hover {
 
 .search-customer-list .search-cust-number::before {
   content: " ";
-  background: #D6DBE1;
+  background: #d6dbe1;
   width: 2px;
   height: 10px;
   margin: 0 35px 0 0;
@@ -633,7 +648,6 @@ button:hover {
   font-style: normal;
   font-weight: 500;
   line-height: 20px;
-
 }
 
 .cart-header {
@@ -740,7 +754,7 @@ ul.ant-dropdown-menu.ant-dropdown-menu-root.ant-dropdown-menu-vertical {
   font-family: "Inter";
   overflow-y: auto;
   flex-grow: 1;
-  max-height: 809px
+  max-height: 809px;
 }
 
 .cart-item-cont {
@@ -753,14 +767,14 @@ ul.ant-dropdown-menu.ant-dropdown-menu-root.ant-dropdown-menu-vertical {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  gap: 7px;
 }
 
 .cart-item span {
   flex: 1;
   text-align: left;
   text-align: left;
-  color: #232F3E;
+  color: #232f3e;
   font-size: 16px;
   font-weight: 500;
   line-height: 21px;
@@ -781,7 +795,11 @@ ul.ant-dropdown-menu.ant-dropdown-menu-root.ant-dropdown-menu-vertical {
 
 span.cart-item-unitprice {
   flex: 0.6;
-  text-align: right;
+  text-align: left;
+}
+
+.unit-price-input.ant-input {
+  padding: 2px !important;
 }
 
 span.cart-item-qty {
@@ -811,7 +829,7 @@ span.cart-item-qty.quantity-control {
   text-align: center;
   flex-shrink: 0;
   border-radius: 100px;
-  border: 1px solid #D6DBE1;
+  border: 1px solid #d6dbe1;
 }
 
 span.cart-item-qty.quantity-control span {
@@ -823,12 +841,11 @@ span.cart-item-qty.quantity-control span {
   color: var(--primary-text-color);
   font-family: Poppins;
   text-align: center;
-  background: #D6DBE1;
+  background: #d6dbe1;
   font-size: 15.845px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-
 }
 
 span.cart-item-qty.quantity-control button {
@@ -856,6 +873,7 @@ span.cart-item-qty.quantity-control button span {
   justify-content: space-between;
   align-items: flex-start;
   border-top: 1px solid #576474;
+  border-bottom: 1px solid #576474;
   color: var(--primary-text-color);
   font-size: 22px;
   font-style: normal;
@@ -864,14 +882,16 @@ span.cart-item-qty.quantity-control button span {
 }
 
 .cart-summary {
+  padding-top: 8px;
+  border-top: 1px solid #576474;
   border-bottom: 1px solid #576474;
 }
 
 .cart-summary div {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 15px;
-  color: #232F3E;
+  margin-bottom: 10px;
+  color: #232f3e;
   font-size: 16px;
   font-weight: 500;
   line-height: 21px;
@@ -891,7 +911,7 @@ span.cart-item-qty.quantity-control button span {
 
 .promo-code-popup .ant-modal-content {
   padding: 0;
-  background: #F3F5FA;
+  background: #f3f5fa;
 }
 
 .ant-modal .ant-modal-close {
@@ -927,7 +947,7 @@ span.cart-item-qty.quantity-control button span {
 
 span.promo-input-wrap {
   border-radius: 100px;
-  border: 1px solid #D6DBE1;
+  border: 1px solid #d6dbe1;
   height: 40px;
   width: 100%;
   display: flex;
@@ -935,7 +955,7 @@ span.promo-input-wrap {
   padding: 0 5px;
 }
 
-span.promo-input-wrap input[type=text] {
+span.promo-input-wrap input[type="text"] {
   border-radius: 100px 0 0 100px;
   width: 100%;
   border: 0;
@@ -947,7 +967,7 @@ span.promo-input-wrap input[type=text] {
   outline: none;
 }
 
-span.promo-input-wrap input[type=text]::placeholder {
+span.promo-input-wrap input[type="text"]::placeholder {
   color: #576474;
 }
 
@@ -968,7 +988,7 @@ span.promo-input-wrap button img {
 
 .promo-code-box {
   border-radius: 10px;
-  background: #F3F5FA;
+  background: #f3f5fa;
 }
 
 .promoCodeContainer {
@@ -979,7 +999,7 @@ span.promo-input-wrap button img {
   align-items: center;
   gap: 10px;
   border-radius: 8px;
-  border: 2px solid #D6DBE1;
+  border: 2px solid #d6dbe1;
 }
 
 .promoCodeContainer input {
@@ -1008,7 +1028,7 @@ span.promo-input-wrap button img {
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  width: 70%;
+  width: 80%;
 }
 
 .order-controls .swiper {
@@ -1022,7 +1042,7 @@ button.ant-modal-close {
 .promocode .input-box {
   height: 40px;
   border-radius: 100px;
-  border: 1px solid #D6DBE1;
+  border: 1px solid #d6dbe1;
 }
 
 .couponCodesList {
@@ -1068,7 +1088,7 @@ button.ant-modal-close {
   flex-direction: column;
   justify-content: space-between;
   padding: 20px 30px;
-  width: 100%
+  width: 100%;
 }
 
 .coupon-code-small {
@@ -1149,7 +1169,7 @@ button.ant-modal-close {
   align-items: center;
   gap: 10px;
   border-radius: 6px;
-  border: 2px solid #A7B2C0;
+  border: 2px solid #a7b2c0;
   color: #fff;
   background: transparent;
   font-size: 25px;
@@ -1170,8 +1190,10 @@ button.ant-modal-close {
 .order-controls button.ant-btn-default.cash-card-btn:hover {
   border-radius: 12.676px;
   border: 2px solid var(--primary-color);
-  background: rgba(255, 216, 20, 0.20);
-  color: var(--primary-text-color);
+  /* cash button takeaway cart */
+  background: rgba(255, 216, 20, 0.2);
+  background: #3e4b5c;
+  color: var(--secondary-text-color);
 }
 
 .order-controls button.ant-btn-default.cash-card-btn:hover img {
@@ -1311,7 +1333,8 @@ h4.product-name {
 }
 
 .add-button:hover {
-  background-color: #ffc700;
+  /* background-color: #ffc700; */
+  background-color: #4e8bd2;
 }
 
 .overlay {
@@ -1360,7 +1383,7 @@ h4.product-name {
 .popup-row {
   justify-content: space-between;
   border-radius: 10px;
-  border: 1px solid #D6DBE1;
+  border: 1px solid #d6dbe1;
   display: flex;
   height: 70px;
   padding: 0 25px;
@@ -1412,13 +1435,12 @@ h4.product-name {
   align-items: center;
   gap: 12px;
   border-radius: 4px;
-  background: #F3F5FA;
+  background: #f3f5fa;
   color: var(--primary-text-color);
   font-size: 31px;
   font-weight: 500;
   width: 65px;
   height: 65px;
-
 }
 
 .keypad button.clearbtn {
@@ -1453,7 +1475,6 @@ button.ok-btn {
   background: var(--primary-color);
   text-transform: uppercase;
 }
-
 
 .overlay {
   position: fixed;
@@ -1500,7 +1521,7 @@ button.ok-btn {
 .heading-img span {
   flex: 0.6 1;
   border-radius: 3px;
-  background: var(--secondary-text-color)FDB;
+  background: var(--secondary-text-color) FDB;
   padding: 5px 25px;
   text-align: center;
   display: inline-block;
@@ -1569,7 +1590,7 @@ button.ok-btn {
   align-items: center;
   flex-shrink: 0;
   border-radius: 135px;
-  border: 1px solid #D6DBE1;
+  border: 1px solid #d6dbe1;
 }
 
 .popup-qty input {
@@ -1579,7 +1600,7 @@ button.ok-btn {
   justify-content: center;
   align-items: center;
   gap: 14px;
-  background: #D6DBE1;
+  background: #d6dbe1;
   border: 0;
   height: 100%;
   color: var(--primary-text-color);
@@ -1616,8 +1637,6 @@ button.ok-btn {
   font-weight: 700;
 }
 
-
-
 .popup-footer {
   display: flex;
   justify-content: space-between;
@@ -1646,7 +1665,6 @@ button.ok-btn {
 .main-cont {
   padding: 55px;
   margin-bottom: 100px;
-
 }
 
 .main-cont h1 {
@@ -1780,7 +1798,7 @@ button.cus-edit {
 
 .edit-customer-modal .ant-modal-title {
   border-radius: 8px 8px 0px 0px;
-  background: #F1F4F8;
+  background: #f1f4f8;
   color: var(--primary-text-color);
   height: 80px;
   font-size: 30px;
@@ -1829,7 +1847,7 @@ button.cus-edit {
   align-items: center;
   gap: 10px;
   border-radius: 4px;
-  border: 1px solid #D6DBE1;
+  border: 1px solid #d6dbe1;
   color: #576474;
   font-size: 24px;
   font-weight: 400;
@@ -1845,7 +1863,7 @@ button.cus-edit {
   align-items: center;
   gap: 10px;
   border-radius: 4px;
-  border: 1px solid #D6DBE1;
+  border: 1px solid #d6dbe1;
   color: #576474;
   font-size: 24px;
   font-weight: 400;
@@ -1890,7 +1908,7 @@ button.cus-edit {
   background: transparent;
 }
 
-.ant-tabs .ant-tabs-tab+.ant-tabs-tab,
+.ant-tabs .ant-tabs-tab + .ant-tabs-tab,
 .ant-tabs .ant-tabs-tab {
   padding: 0;
   margin: 0 8px 0 0;
@@ -1986,7 +2004,7 @@ button.cus-edit {
 }
 
 .content-failed .order-box {
-  border-left: 6px solid #F24E1E;
+  border-left: 6px solid #f24e1e;
 }
 
 .content-complete .order-box {
@@ -2001,7 +2019,7 @@ button.cus-edit {
 .content-complete .order-box.returned span,
 .content-complete .order-box.returned p span,
 .content-complete .order-box.returned p.order-date {
-  color: #b9babd
+  color: #b9babd;
 }
 
 .content-complete .order-box.returned p span p.return-status {
@@ -2029,9 +2047,9 @@ button.cus-edit {
   height: 25px;
   white-space: nowrap;
   padding: 0 20px;
-  border: 1px solid rgba(242, 78, 30, 0.30);
-  background: rgba(242, 78, 30, 0.10);
-  color: #F24E1E;
+  border: 1px solid rgba(242, 78, 30, 0.3);
+  background: rgba(242, 78, 30, 0.1);
+  color: #f24e1e;
   font-size: 16px;
   font-weight: 400;
   line-height: normal;
@@ -2077,7 +2095,7 @@ span.amountAndDate {
 }
 
 button.ant-modal-close span.ant-modal-close-x {
-  background: #232F3E;
+  background: #232f3e;
   width: 48px;
   height: 48px;
   border-radius: 100px;
@@ -2090,7 +2108,6 @@ button.ant-modal-close span.ant-modal-close-x .anticon svg {
 }
 
 :where(.css-dev-only-do-not-override-3rel02).ant-modal .ant-modal-close:hover {
-
   background-color: transparent;
 }
 
@@ -2132,7 +2149,7 @@ p.order-cus-details span {
 
 p.order-cus-details span::before {
   content: "";
-  background: #D6DBE1;
+  background: #d6dbe1;
   width: 2px;
   height: 15px;
   position: absolute;
@@ -2145,8 +2162,8 @@ p.order-cus-details span::before {
   flex-direction: column;
   align-items: flex-start;
   gap: 30px;
-  border-top: 1px solid #D6DBE1;
-  border-bottom: 1px solid #D6DBE1;
+  border-top: 1px solid #d6dbe1;
+  border-bottom: 1px solid #d6dbe1;
   padding: 20px 0;
   margin: 15px 0;
 }
@@ -2181,10 +2198,7 @@ ul.order-items li span.select-name {
   display: flex;
   gap: 10px;
   width: 50%;
-
 }
-
-
 
 span.prod-detail-price {
   width: 18%;
@@ -2203,8 +2217,8 @@ span.prod-detail-price {
 }
 
 .custom-checkbox .ant-checkbox-checked .ant-checkbox-inner {
-  background-color: #FFD700;
-  border-color: #FFD700;
+  background-color: #ffd700;
+  border-color: #ffd700;
 }
 
 .custom-checkbox .ant-checkbox-checked .ant-checkbox-inner::after {
@@ -2220,7 +2234,7 @@ span.prod-detail-price {
 ul.order-items li .return-qty {
   width: 40px;
   border-radius: 4px;
-  border: 1px solid #D6DBE1;
+  border: 1px solid #d6dbe1;
   color: #576474;
   text-align: center;
   font-size: 16px;
@@ -2242,7 +2256,7 @@ ul.order-items li .return-qty {
   align-items: center;
   gap: 10px;
   border-radius: 8px;
-  background: #F24E1E;
+  background: #f24e1e;
   color: var(--secondary-text-color);
   font-size: 18px;
   font-weight: 400;
@@ -2258,9 +2272,8 @@ ul.order-items li .return-qty {
   opacity: 0.2;
 }
 
-
 .return-msg {
-  color: #F24E1E;
+  color: #f24e1e;
   padding: 0 0 10px 0;
   display: block;
   font-size: 16px;
@@ -2316,8 +2329,6 @@ ul.order-items li .return-qty {
   position: relative;
   box-shadow: -7px -8px 16px 0px #00000026;
 }
-
-
 
 .account-page {
   display: flex;
@@ -2377,7 +2388,7 @@ ul.order-items li .return-qty {
 }
 
 .account-page .content-right h3 {
-  background: #F1F4F8;
+  background: #f1f4f8;
   height: 80px;
   line-height: 80px;
   padding: 0 50px;
@@ -2440,7 +2451,6 @@ ul.order-items li .return-qty {
   font-size: 24px;
   font-weight: 600;
 }
-
 
 .footer-nav {
   display: flex;
@@ -2515,10 +2525,13 @@ ul.order-items li .return-qty {
   justify-content: center;
 }
 
-.customer-error-modal {}
+.customer-error-modal {
+}
 
-.customer-error-modal.ant-modal-confirm-error .ant-modal-confirm-body>.anticon {
-  color: #232F3E;
+.customer-error-modal.ant-modal-confirm-error
+  .ant-modal-confirm-body
+  > .anticon {
+  color: #232f3e;
   position: absolute;
   right: -20px;
   top: -10px;
@@ -2527,7 +2540,11 @@ ul.order-items li .return-qty {
   display: none;
 }
 
-.customer-error-modal.ant-modal-confirm-error .ant-modal-confirm-body>.anticon .anticon svg {
+.customer-error-modal.ant-modal-confirm-error
+  .ant-modal-confirm-body
+  > .anticon
+  .anticon
+  svg {
   font-size: 40px;
 }
 
@@ -2539,7 +2556,9 @@ ul.order-items li .return-qty {
   text-align: center;
 }
 
-.customer-error-modal.ant-modal-confirm-error .anticon+.ant-modal-confirm-paragraph {
+.customer-error-modal.ant-modal-confirm-error
+  .anticon
+  + .ant-modal-confirm-paragraph {
   max-width: 100%;
 }
 
@@ -2567,7 +2586,7 @@ ul.order-items li .return-qty {
   text-align: center;
 }
 
-.ant-modal-confirm-success .ant-modal-confirm-body>.anticon {
+.ant-modal-confirm-success .ant-modal-confirm-body > .anticon {
   color: #52c41a;
   font-size: 40px;
   margin: 0 0 20px;
@@ -2578,7 +2597,7 @@ ul.order-items li .return-qty {
   margin-top: 30px;
 }
 
-.ant-modal-confirm .anticon+.ant-modal-confirm-paragraph {
+.ant-modal-confirm .anticon + .ant-modal-confirm-paragraph {
   width: 100%;
 }
 
@@ -2697,7 +2716,7 @@ span.text-red {
 }
 .unit-price-input {
   border: none;
-  text-align: end;
+  text-align: start;
 }
 
 .Auth-input {
@@ -2723,7 +2742,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
 /* Red button with white text */
 .pagination button.next {
-  background-color:var(--primary-color);
+  background-color: var(--primary-color);
   color: var(--primary-text-color);
 }
 
@@ -2734,7 +2753,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .pagination button.prev:hover {
-  background-color:var(--primary-color);
+  background-color: var(--primary-color);
   color: var(--primary-text-color);
 }
 
@@ -2747,14 +2766,12 @@ input[type="number"]::-webkit-inner-spin-button {
 
 /* CustomerPage.css */
 
-
 .pagination {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-top: 20px;
 }
-
 
 .pagination button {
   padding: 10px 20px;
@@ -2820,9 +2837,8 @@ input[type="number"]::-webkit-inner-spin-button {
   }
 
   .cart-body {
-    max-height: 383px;
+    max-height: 384px;
   }
-
 
   .order-box .ant-card-body p.order-date {
     color: #576474;
@@ -2835,7 +2851,6 @@ input[type="number"]::-webkit-inner-spin-button {
     width: auto;
     height: 71px;
   }
-
 }
 
 @media (max-width: 1630px) {
@@ -2905,7 +2920,6 @@ input[type="number"]::-webkit-inner-spin-button {
     justify-content: flex-start;
   }
 
-
   .popup-row input {
     font-size: 25px;
   }
@@ -2955,6 +2969,9 @@ input[type="number"]::-webkit-inner-spin-button {
   .cart-sub-total {
     padding: 9px 0px;
   }
+  .cart-summary {
+    padding-top: 7px;
+  }
 
   .order-controls button {
     padding: 0px 4px;
@@ -2963,7 +2980,7 @@ input[type="number"]::-webkit-inner-spin-button {
   }
   .order-controls button img {
     opacity: 0.4;
-    width:34px;
+    width: 34px;
   }
 }
 
@@ -3071,7 +3088,6 @@ input[type="number"]::-webkit-inner-spin-button {
     opacity: 0.4;
     width: 30px;
   }
-
 }
 
 @media (max-width: 1290px) {
@@ -3087,7 +3103,6 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 @media (max-width: 1200px) {
-
   .product-image img {
     width: auto;
     height: 70px;
@@ -3155,7 +3170,6 @@ input[type="number"]::-webkit-inner-spin-button {
     font-size: 19px;
     font-weight: 400;
   }
-
 }
 
 @media (max-width: 1198px) {
@@ -3171,7 +3185,7 @@ input[type="number"]::-webkit-inner-spin-button {
     padding: 30px 30px;
   }
 
-  body{
+  body {
     overflow-y: auto;
   }
 
@@ -3291,15 +3305,12 @@ input[type="number"]::-webkit-inner-spin-button {
   }
   .account-page .content input[type="text"],
   .account-page .content input[type="password"] {
-
     width: 100%;
   }
 
   .account-page .content button {
-
     width: 100%;
   }
-
 }
 
 @media (max-width: 1000px) {
@@ -3314,13 +3325,14 @@ input[type="number"]::-webkit-inner-spin-button {
     gap: 14px;
   }
   .cart-sub-total {
-    padding: 1px 0px;
+    padding: 10px 0px;
   }
   .order-controls {
-    margin-bottom: 14px;
+    /* margin-bottom: 14px; */
+    align-items: center;
+    width: 90%;
   }
 }
-
 
 @media (max-width: 768px) {
   .button-container {
@@ -3371,7 +3383,6 @@ input[type="number"]::-webkit-inner-spin-button {
     font-size: 15px;
   }
 
-
   .order-box .ant-card-body p.status-row {
     flex-direction: column;
     align-items: flex-start;
@@ -3382,12 +3393,10 @@ input[type="number"]::-webkit-inner-spin-button {
     font-size: 15px;
   }
 
-
   .footer-nav li .footer-nav-item {
     flex-direction: column;
     align-items: center;
   }
-
 
   /* Burger menu styles */
   .burger-menu {
@@ -3409,7 +3418,6 @@ input[type="number"]::-webkit-inner-spin-button {
     padding: 25px 20px;
     gap: 20px;
   }
-
 
   .search-container {
     display: flex;
@@ -3474,9 +3482,6 @@ input[type="number"]::-webkit-inner-spin-button {
     flex-direction: column;
   }
 
-
-
-
   .product-catalog h2 {
     font-size: 25px;
   }
@@ -3489,9 +3494,6 @@ input[type="number"]::-webkit-inner-spin-button {
     display: block;
   }
 
-
-
-
   .ant-drawer .ant-drawer-title {
     font-size: 25px;
   }
@@ -3500,7 +3502,6 @@ input[type="number"]::-webkit-inner-spin-button {
     right: 15px;
     position: absolute;
   }
-
 
   button.ant-modal-close span.ant-modal-close-x {
     margin: -5px -16px;
@@ -3511,7 +3512,6 @@ input[type="number"]::-webkit-inner-spin-button {
   }
 
   .ant-modal .ant-modal-footer {
-
     padding: 0 20px;
   }
 
@@ -3522,8 +3522,6 @@ input[type="number"]::-webkit-inner-spin-button {
   .edit-customer-modal.ant-modal input[type="email"] {
     font-size: 22px;
   }
-
-
 
   .product-popup {
     padding: 20px;
@@ -3575,11 +3573,9 @@ input[type="number"]::-webkit-inner-spin-button {
   .account-page .content-right {
     margin-top: 40px;
   }
-
 }
 
 @media (max-width: 600px) {
-
   ul.order-items li .return-qty {
     padding: 0;
   }
@@ -3654,20 +3650,18 @@ input[type="number"]::-webkit-inner-spin-button {
     font-size: 20px;
   }
 
-  .ant-tabs .ant-tabs-tab+.ant-tabs-tab,
+  .ant-tabs .ant-tabs-tab + .ant-tabs-tab,
   .ant-tabs .ant-tabs-tab {
-
     margin: 0;
   }
 
-  .ant-tabs>.ant-tabs-nav .ant-tabs-nav-wrap,
-  .ant-tabs>div>.ant-tabs-nav .ant-tabs-nav-wrap {
-
+  .ant-tabs > .ant-tabs-nav .ant-tabs-nav-wrap,
+  .ant-tabs > div > .ant-tabs-nav .ant-tabs-nav-wrap {
     justify-content: space-evenly;
   }
 
-  .ant-tabs>.ant-tabs-nav .ant-tabs-nav-list,
-  .ant-tabs>div>.ant-tabs-nav .ant-tabs-nav-list {
+  .ant-tabs > .ant-tabs-nav .ant-tabs-nav-list,
+  .ant-tabs > div > .ant-tabs-nav .ant-tabs-nav-list {
     gap: 10px;
   }
 
@@ -3728,7 +3722,6 @@ input[type="number"]::-webkit-inner-spin-button {
   }
 }
 
-
 .authbtndiv {
   display: flex;
   justify-content: center;
@@ -3741,4 +3734,365 @@ input[type="number"]::-webkit-inner-spin-button {
   padding: 0.5rem 2rem;
   font-weight: 700;
   font-size: 1rem;
+}
+
+/* Main container for tax details */
+.tax-details-section {
+  /* margin-top: 20px; */
+  /* padding: 10px; */
+
+  border-radius: 5px;
+  display: block !important;
+}
+
+.tax-details-heading {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.tax-item {
+  margin-bottom: 20px;
+}
+
+.tax-item-name {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+/* Container for each item's tax details */
+.tax-item-details {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+/* Style for each tax entry */
+.tax-entry {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  padding: 5px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.tax-entry:last-child {
+  border-bottom: none;
+}
+
+/* Individual elements for tax name, percentage, and amount */
+.tax-name {
+  width: 50%;
+  text-align: left;
+}
+
+.tax-percentage {
+  width: 25%;
+  text-align: center;
+}
+
+.tax-amount {
+  width: 25%;
+  text-align: right;
+  font-weight: bold;
+}
+
+/* Total tax section */
+.total-tax {
+  margin-top: 15px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Style for the tax group */
+.tax-group {
+  display: flex;
+  justify-content: space-between;
+  /* padding: 10px 0; */
+}
+
+/* Add a border-bottom between CGST and SGST pairs */
+.tax-group.with-separator {
+  border-bottom: 1px solid #576474;
+  margin-bottom: 10px;
+}
+
+.tax-group.sgst {
+  padding-bottom: 10px;
+}
+.cart-item-taxrate {
+  width: 100px;
+  text-align: right;
+}
+
+.last-tax {
+  padding-bottom: 10px;
+}
+
+/* Main container for date and time */
+.reservation-date-time-container {
+  display: flex;
+  gap: 20px; /* Spacing between calendar and time picker */
+}
+
+/* Calendar styling */
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #d9d9d9;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 5px;
+}
+.calendar-header Button {
+  border: none;
+  box-shadow: none;
+  background: transparent; /* Optional: to remove background color */
+  cursor: pointer; /* Optional: to show pointer cursor on hover */
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    7,
+    1fr
+  ); /* 7 columns for the days of the week */
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.calendar-day {
+  padding: 3px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 50%; /* Rounded corners */
+  background-color: transparent;
+}
+
+.calendar-day:hover {
+  background-color: #f0f0f0;
+}
+
+.selected-day {
+  background-color: #1890ff;
+  color: white;
+  border-radius: 50%; /* Rounded corners for selected day */
+}
+
+/* Horizontal line under header */
+.calendar-container hr,
+.time-container hr {
+  border: none;
+  border-bottom: 1px solid #d9d9d9;
+  margin: 10px 0;
+}
+
+/* Time picker styling */
+
+.time-item:hover {
+  background-color: #f0f0f0;
+}
+
+.outside-month {
+  color: #ccc; /* Faded color for days outside the current month */
+}
+
+.time-container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #d9d9d9; /* Add border */
+  padding: 10px;
+  border-radius: 8px; /* Match the border-radius with the calendar */
+  height: 100%; /* Ensure height matches the calendar container */
+  /* justify-content: space-between; Align content vertically */
+}
+
+.time-list-container {
+  max-height: 240px; /* Set the height to match the calendar's height */
+  overflow-y: auto;
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: transparent transparent; /* Initially invisible scrollbar */
+}
+
+.time-item {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.selected-time {
+  background-color: #f0f0f0; /* Example of selected time styling */
+}
+
+/* General Input Styling */
+.guests-input,
+.special-request-input {
+  margin-top: 20px;
+}
+
+/* Footer Buttons */
+.reservation-popup-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.reservation-back-btn,
+.reservation-continue-btn {
+  width: 45%;
+  padding: 10px 0;
+  font-size: 1rem;
+  border-radius: 5px;
+}
+.reservation-back-btn {
+  height: 50px;
+}
+
+.time-list-container::-webkit-scrollbar {
+  width: 4px; /* Make the scrollbar thin */
+  background-color: transparent; /* Initially invisible background */
+}
+
+/* Scrollbar track (background) */
+.time-list-container::-webkit-scrollbar-track {
+  background-color: transparent; /* Transparent background */
+}
+
+/* Scrollbar handle */
+.time-list-container::-webkit-scrollbar-thumb {
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.2
+  ); /* Make the scrollbar handle thin and slightly visible */
+  border-radius: 10px; /* Round the scrollbar handle */
+}
+
+/* Show scrollbar on hover */
+.time-list-container:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5); /* Darken on hover for visibility */
+}
+
+/* For Firefox (customizing scrollbar appearance) */
+.time-list-container::-moz-scrollbar {
+  width: 4px;
+}
+
+.time-list-container::-moz-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+/* Show scrollbar on active scroll for WebKit */
+.time-list-container:active::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5); /* Darken during active scrolling */
+}
+
+.reservation-popup-title {
+  text-align: center;
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7 columns for each weekday */
+  text-align: center;
+  font-weight: bold;
+  padding-bottom: 5px;
+}
+
+.calendar-weekday {
+  padding: 5px;
+}
+
+/* table availability  */
+.table-container {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.table-category {
+  margin-bottom: 20px;
+}
+
+.table-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.table-item {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.table-item.available {
+  background-color: white;
+}
+
+.table-item.unavailable {
+  background-color: #d9d9d9;
+  cursor: not-allowed;
+}
+
+.table-item.selected {
+  background-color: yellow;
+}
+
+.table-availability-popup-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.table-availability-back,
+.table-availability-book {
+  width: 100px;
+  height: 40px;
+  font-size: 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.table-availability-back {
+  background-color: #f0f0f0;
+  color: #000;
+  border: 1px solid #d9d9d9;
+  transition: background-color 0.3s ease;
+  width: 50%;
+  height: 50px;
+}
+
+.table-availability-back:hover {
+  background-color: #d9d9d9;
+}
+
+.table-availability-book {
+  background-color: #001f3f;
+  color: white;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.table-availability-book:hover {
+  background-color: #004080;
 }

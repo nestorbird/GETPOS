@@ -81,9 +81,13 @@ const LoginScreen = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 suffix={
-                  <Tooltip title={showPassword ? "Hide Password" : "Show Password"}>
+                  <Tooltip
+                    title={showPassword ? "Hide Password" : "Show Password"}
+                  >
                     {showPassword ? (
-                      <EyeInvisibleOutlined onClick={handleTogglePasswordVisibility} />
+                      <EyeInvisibleOutlined
+                        onClick={handleTogglePasswordVisibility}
+                      />
                     ) : (
                       <EyeOutlined onClick={handleTogglePasswordVisibility} />
                     )}
@@ -92,7 +96,7 @@ const LoginScreen = () => {
                 required
               />
             </div>
-            <button type="primary" htmlType="submit">
+            <button className="login-button" type="primary" htmlType="submit">
               Login
             </button>
           </form>

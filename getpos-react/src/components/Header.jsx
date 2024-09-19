@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./style.css";
-import Logo from "../assets/images/logo.svg";
+import Logo from "../assets/images/logo.png";
 import SearchIcon from "../assets/images/Search-icon.png";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 
 const Header = ({ onSearch }) => {
   const [user, setUser] = useState(null);
@@ -10,10 +10,9 @@ const Header = ({ onSearch }) => {
   const location = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
 
-
   useEffect(() => {
     const userData = localStorage.getItem("user");
-    
+
     if (userData) {
       setUser(JSON.parse(userData));
     } else {
@@ -21,8 +20,8 @@ const Header = ({ onSearch }) => {
     }
   }, []);
 
-  const costCenter = localStorage.getItem("costCenter")
-  const Openshift = localStorage.getItem("openingShiftResponse")
+  const costCenter = localStorage.getItem("costCenter");
+  const Openshift = localStorage.getItem("openingShiftResponse");
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
@@ -44,18 +43,19 @@ const Header = ({ onSearch }) => {
           <img src={Logo} alt="Logo" />
         )}
       </div>
-      {user && location.pathname === '/main' ? (
-        <>
-          <div className="search-container">
-            <input
-              type="text"
-              placeholder="Search"
-              value={searchQuery}
-              onChange={handleSearch}
-            />
-            <img src={SearchIcon} alt=""/>
-          </div>
-          {/* <div className="header-user-profile">
+      <div className="header-right">
+        {user && location.pathname === "/main" ? (
+          <>
+            <div className="search-container">
+              <input
+                type="text"
+                placeholder="Search"
+                value={searchQuery}
+                onChange={handleSearch}
+              />
+              <img src={SearchIcon} alt="" />
+            </div>
+            {/* <div className="header-user-profile">
             <img
               src={user.profileImage || PlaceholderProfile}
               alt="Profile"
@@ -74,27 +74,28 @@ const Header = ({ onSearch }) => {
               </div>
             </div>
           </div> */}
-        </>
-      ) : (
-        []
-      )}
-      <div
-        className={`burger-menu ${menuOpen ? "open" : ""}`}
-        onClick={toggleMenu}
-      >
-        <div className="burger-bar"></div>
-        <div className="burger-bar"></div>
-        <div className="burger-bar"></div>
-      </div>
-      <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
-        {user ? (
-          <>
-            <a href="/profile">Profile</a>
-            <a href="/logout">Logout</a>
           </>
         ) : (
-          <a href="/">Login</a>
+          []
         )}
+        <div
+          className={`burger-menu ${menuOpen ? "open" : ""}`}
+          onClick={toggleMenu}
+        >
+          <div className="burger-bar"></div>
+          <div className="burger-bar"></div>
+          <div className="burger-bar"></div>
+        </div>
+        <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
+          {user ? (
+            <>
+              <a href="/profile">Profile</a>
+              <a href="/logout">Logout</a>
+            </>
+          ) : (
+            <a href="/">Login</a>
+          )}
+        </div>
       </div>
     </header>
   );

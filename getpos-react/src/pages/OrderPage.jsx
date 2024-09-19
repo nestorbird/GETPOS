@@ -1,13 +1,17 @@
-
 import React, { useState, useEffect, useContext } from "react";
 import { Modal, Spin, Tabs } from "antd";
 import Layout from "../components/Layout";
 import OrderBox from "../components/OrderBox";
 import SearchIcon from "../assets/images/icon-search.png";
-import { fetchCategoriesAndProducts, fetchSalesOrderList, fetchSearchSalesOrderList, getGuestCustomer, } from "../modules/LandingPage";
+import {
+  fetchCategoriesAndProducts,
+  fetchSalesOrderList,
+  fetchSearchSalesOrderList,
+} from "../modules/LandingPage";
 import OrderDetailModal from "../components/OrderDetailModal";
 import { CartContext } from "../common/CartContext";
-import Pagination from '../components/pagination';
+import Pagination from "../components/pagination";
+import { useNavigate } from "react-router-dom";
 const { TabPane } = Tabs;
 const OrderPage = ({ hubManagerEmail }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -17,25 +21,25 @@ const OrderPage = ({ hubManagerEmail }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentPageParked, setCurrentPageParked] = useState(1);
   const [currentPageComplete, setCurrentPageComplete] = useState(1);
-  const [ currencySymbol, setCurrenySymbol ] = useState("")
-  const itemsPerPage=6
+  const navigate = useNavigate();
+  const itemsPerPage = 6;
   const { cartItems, setCartItems } = useContext(CartContext);
- const [PageCount, setPageCount] = useState(1);
-  const [Data,setData]=useState([])
-  const GetSalesOrderList=async(PageCount)=>{
-        try{
-          const { email } = JSON.parse(localStorage.getItem("user"));
-          const orderList = await fetchSalesOrderList(email, PageCount);
-          setData(orderList)
-          setLoading(false);
-        }catch(error){
-             console.log("Error occur",error);
-             setLoading(false);
-        }
-  }
-  useEffect(()=>{
-    GetSalesOrderList(PageCount)
-  },[PageCount,hubManagerEmail])
+  const [PageCount, setPageCount] = useState(1);
+  const [Data, setData] = useState([]);
+  const GetSalesOrderList = async (PageCount) => {
+    try {
+      const { email } = JSON.parse(localStorage.getItem("user"));
+      const orderList = await fetchSalesOrderList(email, PageCount);
+      setData(orderList);
+      setLoading(false);
+    } catch (error) {
+      console.log("Error occur", error);
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    GetSalesOrderList(PageCount);
+  }, [PageCount, hubManagerEmail]);
   // const handleCompletePageChange = (pageNumber) => {
   //   setCurrentPageComplete(pageNumber);
   // };
@@ -43,30 +47,12 @@ const OrderPage = ({ hubManagerEmail }) => {
     setCurrentPageParked(pageNumber);
   };
 
-  const handleGetGuestCustomer = async () => {
-    try {
-      const res = await getGuestCustomer();
-      if (res.status === 200) {
-        console.log(res.data.message.data.currency_symbol)
-        setCurrenySymbol(res.data.message.data.currency_symbol)
-      } else {
-        console.log("Error in getting the Guest Customer");
-      }
-    } catch (error) {
-      console.log("Error in fetching guest customer:", error.message);
-    }
-  };
-
   useEffect(() => {
-    handleGetGuestCustomer();
-  }, []);
-
-  useEffect(()=>{
     const { email } = JSON.parse(localStorage.getItem("user"));
-    fetchSearchSalesOrderList(email,searchTerm).then((res)=>{
-      setData(res)
-    })
-  },[searchTerm])
+    fetchSearchSalesOrderList(email, searchTerm).then((res) => {
+      setData(res);
+    });
+  }, [searchTerm]);
 
   const fetchParkedOrders = () => {
     const parkedOrders = JSON.parse(localStorage.getItem("parkedOrders")) || [];
@@ -148,8 +134,13 @@ const OrderPage = ({ hubManagerEmail }) => {
       const found = SearchItem(data, order);
       if (isEmpty(found)) {
         // Remove the order from parked orders
-        const updatedParkedOrders = fetchParkedOrders().filter((o) => o.name !== order.name);
-        localStorage.setItem("parkedOrders", JSON.stringify(updatedParkedOrders));
+        const updatedParkedOrders = fetchParkedOrders().filter(
+          (o) => o.name !== order.name
+        );
+        localStorage.setItem(
+          "parkedOrders",
+          JSON.stringify(updatedParkedOrders)
+        );
         // Update the orders state to remove the moved order
         const updatedOrders = orders.filter((o) => o.name !== order.name);
         setOrders(updatedOrders);
@@ -157,8 +148,12 @@ const OrderPage = ({ hubManagerEmail }) => {
         const newCartItems = [...cartItems, ...order.items];
         setCartItems(newCartItems);
         // Save cart items and selected customer to local storage
+        navigate("/main");
         localStorage.setItem("cartItems", JSON.stringify(newCartItems));
-        localStorage.setItem("selectedCustomer", JSON.stringify(order.customer));
+        localStorage.setItem(
+          "selectedCustomer",
+          JSON.stringify(order.customer)
+        );
       } else {
         const msg = showAlert(found);
         Modal.warning({
@@ -172,25 +167,38 @@ const OrderPage = ({ hubManagerEmail }) => {
   const updateOrderStatus = (orderId, status) => {
     setOrders((prevOrders) =>
       prevOrders.map((order) =>
-        order.name === orderId ? { ...order, return_order_status: status } : order
+        order.name === orderId
+          ? { ...order, return_order_status: status }
+          : order
       )
     );
   };
   const handleDeleteOrder = (orderId) => {
     const updatedOrders = orders.filter((order) => order.name !== orderId);
     setOrders(updatedOrders);
-    const parkedOrders = fetchParkedOrders().filter((order) => order.name !== orderId);
+    const parkedOrders = fetchParkedOrders().filter(
+      (order) => order.name !== orderId
+    );
     localStorage.setItem("parkedOrders", JSON.stringify(parkedOrders));
   };
-  const filteredOrders = orders.filter(
-    (order) =>
-      (order.customer_name && order.customer_name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (order.contact_mobile && order.contact_mobile.includes(searchTerm))
-  );
+
+  const filteredOrders = orders.filter((order) => {
+    console.log(order);
+    return (
+      (order.customer_name &&
+        order.customer_name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (order.contact_mobile && order.contact_mobile.includes(searchTerm)) ||
+      (order.contact_name &&
+        order.contact_name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (order.name && order.name.toString().includes(searchTerm))
+    );
+  });
   const categorizedOrders = {
     parked: filteredOrders.filter((order) => order.status === "cartItems"),
     complete: filteredOrders.filter((order) => order.status !== "cartItems"),
-    failed: filteredOrders.filter((order) => order.return_order_status === "Failed"),
+    failed: filteredOrders.filter(
+      (order) => order.return_order_status === "Failed"
+    ),
   };
   const startIndexParked = (currentPageParked - 1) * itemsPerPage;
   const currentParkedOrders = categorizedOrders.parked.slice(
@@ -209,12 +217,12 @@ const OrderPage = ({ hubManagerEmail }) => {
       </div>
     );
   }
-  const handlePrevBtn=async()=>{
-     setPageCount((prev)=>prev-1)
-  }
-  const handleNextBtn=async()=>{
-     setPageCount((prev)=>prev+1)
-  }
+  const handlePrevBtn = async () => {
+    setPageCount((prev) => prev - 1);
+  };
+  const handleNextBtn = async () => {
+    setPageCount((prev) => prev + 1);
+  };
   // console.log("Data",Data);
   return (
     <Layout>
@@ -224,7 +232,7 @@ const OrderPage = ({ hubManagerEmail }) => {
           <div className="searchField">
             <input
               type="text"
-              placeholder="Search order"
+              placeholder="Search customer name /number"
               value={searchTerm}
               onChange={handleSearchChange}
               className="order-search"
@@ -250,7 +258,6 @@ const OrderPage = ({ hubManagerEmail }) => {
                     onClick={() => moveOrderToCart(order)}
                     onDelete={() => handleDeleteOrder(order.name)}
                     indicator={false}
-                    currency={currencySymbol}
                   />
                 ))
               )}
@@ -276,7 +283,6 @@ const OrderPage = ({ hubManagerEmail }) => {
                     showMoveToCart={false}
                     onClick={handleOrderClick}
                     indicator={false}
-                    currency={currencySymbol}
                   />
                 ))
               )}
@@ -284,10 +290,10 @@ const OrderPage = ({ hubManagerEmail }) => {
           </TabPane>
           <TabPane tab={<span className="tab-complete">Complete</span>} key="3">
             <div className="tab-inner-cont content-complete">
-              {Data.length === 0 ? (
+              {!Data || Data?.length === 0 ? (
                 <div className="no-data">No Complete order</div>
               ) : (
-                Data.map((order, index) => (
+                Data?.map((order, index) => (
                   <OrderBox
                     key={index}
                     order={order}
@@ -296,7 +302,6 @@ const OrderPage = ({ hubManagerEmail }) => {
                     showMoveToCart={false}
                     onClick={handleOrderClick}
                     indicator={true}
-                    currency={currencySymbol}
                   />
                 ))
               )}
@@ -313,7 +318,7 @@ const OrderPage = ({ hubManagerEmail }) => {
               <button
                 className="next"
                 onClick={handleNextBtn}
-                disabled={Data.length===0}
+                disabled={Data?.length === 0}
               >
                 Next
               </button>
@@ -326,7 +331,6 @@ const OrderPage = ({ hubManagerEmail }) => {
         onClose={handleModalClose}
         order={selectedOrder}
         onUpdateOrder={updateOrderStatus}
-        currency={currencySymbol}
       />
     </Layout>
   );

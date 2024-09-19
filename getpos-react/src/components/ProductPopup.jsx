@@ -3,11 +3,14 @@ import NoImage from "../assets/images/no-img.png";
 import Close from "../assets/images/cross.png";
 import { CartContext } from "../common/CartContext";
 import { Modal } from "antd";
+import { useThemeSettings } from "./ThemeSettingContext";
+
 // import { getImageUrl } from "../utils/imageUtils";
 
-const ProductPopup = ({ product, onClose, selectedCustomer, currency }) => {
+const ProductPopup = ({ product, onClose, selectedCustomer }) => {
   const [quantity, setQuantity] = useState(1);
   const { addItemToCart } = useContext(CartContext);
+  const themeSettings = useThemeSettings();
 
   useEffect(() => {
     if (!selectedCustomer) {
@@ -19,7 +22,6 @@ const ProductPopup = ({ product, onClose, selectedCustomer, currency }) => {
   }, [selectedCustomer]);
 
   const handleAddItem = () => {
-
     const selectedCustomer = getSelectedCustomer();
 
     if (!selectedCustomer) {
@@ -32,20 +34,20 @@ const ProductPopup = ({ product, onClose, selectedCustomer, currency }) => {
 
     const updatedProduct = { ...product, quantity };
     addItemToCart(updatedProduct);
-    console.log(updatedProduct,"Product manually")
+    console.log(updatedProduct, "Product manually");
     onClose();
   };
 
   const getSelectedCustomer = () => {
     const customer = localStorage.getItem("selectedCustomer");
     return customer ? JSON.parse(customer) : null;
-};
+  };
 
   const handleQuantityChange = (e) => {
     setQuantity(parseInt(e.target.value, 10));
   };
 
-  const stockQtyMap = product.stock.reduce((map, stockItem) => {
+  const stockQtyMap = product?.stock.reduce((map, stockItem) => {
     map[stockItem.product_id] = stockItem.stock_qty;
     return map;
   }, {});
@@ -103,7 +105,10 @@ const ProductPopup = ({ product, onClose, selectedCustomer, currency }) => {
           <div className="popup-footer">
             <div className="btn-total">
               Item Total <br />
-              <span>{(currency || "$")}{(product.product_price * quantity).toFixed(2)}</span>
+              <span>
+                {themeSettings.currency_symbol || "$"}
+                {(product.product_price * quantity).toFixed(2)}
+              </span>
             </div>
             <button onClick={handleAddItem}>Add to Cart</button>
           </div>

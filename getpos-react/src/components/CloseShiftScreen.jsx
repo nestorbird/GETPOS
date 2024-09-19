@@ -3,6 +3,7 @@ import Layout from "./Layout";
 import { getCloseShiftDetails, getClosingShift } from "../modules/LandingPage";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../common/CartContext";
+import { useThemeSettings } from "./ThemeSettingContext";
 
 const CloseShiftScreen = () => {
   const [openShift, setOpenShift] = useState({});
@@ -15,6 +16,7 @@ const CloseShiftScreen = () => {
   const [totalSalesOrderAmount, setTotalSalesOrderAmount] = useState(0);
   const navigate = useNavigate();
   const { cartItems, setCartItems } = useContext(CartContext);
+  const themeSettings = useThemeSettings();
 
   // Fetch and update openShift data from local storage
   const fetchOpenShiftData = () => {
@@ -72,7 +74,8 @@ const CloseShiftScreen = () => {
       setTotalSalesOrderAmount(totalSalesOrderAmount);
 
       const expectedCashAmount =
-        (cashOpeningDetail ? cashOpeningDetail.amount : 0) + totalSalesOrderAmount;
+        (cashOpeningDetail ? cashOpeningDetail.amount : 0) +
+        totalSalesOrderAmount;
 
       // const expectedCreditCardAmount =
       //   (creditCardOpeningDetail ? creditCardOpeningDetail.amount : 0) + totalSalesOrderAmount;
@@ -99,16 +102,22 @@ const CloseShiftScreen = () => {
   // Handle Close Shift action
   const handleLogout = async () => {
     try {
-      const openingShiftResponseStr =
-        localStorage.getItem("openingShiftResponse");
-  
+      const openingShiftResponseStr = localStorage.getItem(
+        "openingShiftResponse"
+      );
+
       if (!openingShiftResponseStr) {
         console.error("No opening shift response found in local storage.");
+        setTimeout(() => {
+          localStorage.clear();
+          navigate("/");
+          setCartItems([]);
+        }, 1000);
         return;
       }
-  
+
       const openingShiftResponse = JSON.parse(openingShiftResponseStr);
-  
+
       if (
         !openingShiftResponse ||
         !openingShiftResponse.message ||
@@ -124,20 +133,28 @@ const CloseShiftScreen = () => {
         );
         return;
       }
-  
+
       const periodStartDate =
         openingShiftResponse.message.pos_opening_shift.period_start_date || "";
-  
+
       const postingDate = new Date().toISOString();
       const periodEndDate = new Date().toISOString();
-  
+
       // Log expected and entered balances for debugging
-      console.log("Expected Cash Balance:", expectedCashBalance, typeof expectedCashBalance);
+      console.log(
+        "Expected Cash Balance:",
+        expectedCashBalance,
+        typeof expectedCashBalance
+      );
       console.log("Entered Cash Balance:", cashBalance, typeof cashBalance);
-  
+
       // console.log("Expected Digital Balance:", expectedDigitalBalance, typeof expectedDigitalBalance);
-      console.log("Entered Digital Balance:", digitalBalance, typeof digitalBalance);
-  
+      console.log(
+        "Entered Digital Balance:",
+        digitalBalance,
+        typeof digitalBalance
+      );
+
       // Validate cash and digital balances
       if (
         parseFloat(cashBalance) !== parseFloat(expectedCashBalance)
@@ -148,9 +165,9 @@ const CloseShiftScreen = () => {
         );
         return;
       }
-  
+
       const paymentReconciliation = [];
-  
+
       if (showCashInput) {
         paymentReconciliation.push({
           mode_of_payment: "Cash",
@@ -160,7 +177,7 @@ const CloseShiftScreen = () => {
           difference: 0.0,
         });
       }
-  
+
       if (showDigitalInput) {
         paymentReconciliation.push({
           mode_of_payment: "Credit Card",
@@ -170,21 +187,22 @@ const CloseShiftScreen = () => {
           difference: 0.0,
         });
       }
-  
+
       const closingShiftData = {
         closing_shift: {
           period_start_date: formatDateString(periodStartDate),
           posting_date: formatDateString(postingDate),
           pos_profile: openingShiftResponse.message.pos_profile.name,
-          pos_opening_shift: openingShiftResponse.message.pos_opening_shift.name,
+          pos_opening_shift:
+            openingShiftResponse.message.pos_opening_shift.name,
           doctype: "POS Closing Shift",
           payment_reconciliation: paymentReconciliation,
           period_end_date: formatDateString(periodEndDate),
         },
       };
-  
+
       const response = await getClosingShift(closingShiftData);
-  
+
       if (response) {
         console.log("Shift closed successfully");
         navigate("/closeshift");
@@ -201,7 +219,6 @@ const CloseShiftScreen = () => {
       alert("Error closing shift: " + error.message);
     }
   };
-  
 
   // Helper function to format date strings
   const formatDateString = (dateString) => {
@@ -250,8 +267,8 @@ const CloseShiftScreen = () => {
   //   }
   // };
 
-  console.log(expectedCashBalance,"pppppp")
-  console.log(cashBalance)
+  console.log(expectedCashBalance, "pppppp");
+  console.log(cashBalance);
 
   return (
     <Layout>
@@ -268,7 +285,8 @@ const CloseShiftScreen = () => {
                 onChange={handleCashBalanceChange}
               />
               <span>
-                System Closing Cash Balance: $
+                System Closing Cash Balance:{" "}
+                {themeSettings?.currency_symbol || "$"}
                 {parseFloat(expectedCashBalance).toFixed(2)}
               </span>
             </div>
@@ -289,7 +307,11 @@ const CloseShiftScreen = () => {
             </div>
           )} */}
           <div className="form-group">
-            <button type="button" onClick={handleLogout}>
+            <button
+              className="button-close-shift"
+              type="button"
+              onClick={handleLogout}
+            >
               Close Shift
             </button>
           </div>

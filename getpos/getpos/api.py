@@ -1158,7 +1158,7 @@ def get_warehouse_for_cost_center(cost_center):
     return warehouse
 
 
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist(allow_guest=True,allow_csrf=False)
 def create_sales_order_kiosk():
     order_list = frappe.request.data
     order_list = json.loads(order_list)

@@ -12,17 +12,18 @@ import CloseShiftScreen from './components/CloseShiftScreen';
 import Location from "./components/getLocation"
 import { OpenShiftProvider } from './components/OpenShiftContext';
 import Barcode from './components/barcode'
-import {Link } from "react-router-dom"
+import { ThemeSettingsProvider } from './components/ThemeSettingContext';
+
 const AppRoutes = () => {
   return (
+    <ThemeSettingsProvider>
     <OpenShiftProvider>
 
-      <Router>
-     
-          <Link to="/">Click To Login</Link>
-      
-        <Routes>
-          <Route path="/" element={<LoginPage />} />
+      <Router basename="/getpos-react">
+      {/* <Router > */}
+
+        <Routes >
+          <Route path="/" exact element={<LoginPage />} />
           <Route path="/Barcode" element={<Barcode />} />
           <Route path="/location" element={<Location/>} />
           <Route path="/category" element={<MainScreen />} />
@@ -36,6 +37,7 @@ const AppRoutes = () => {
         </Routes>
       </Router>
     </OpenShiftProvider>
+    </ThemeSettingsProvider>
   );
 };
 
