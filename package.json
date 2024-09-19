@@ -1,7 +1,7 @@
 {
-  "name": "getpos",
+  "name": "getpos-react",
   "version": "1.0.0",
-  "description": "<div align=\"center\"> <!-- TODO: add link to website once it is ready --> <h1>     GETPOS </h1> Simple, yet powerful POS solutions for businesses </div>",
+  "description": "<div align=\"center\"> <!-- TODO: add link to website once it is ready --> <h1>     getpos-react </h1> Simple, yet powerful POS solutions for businesses </div>",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
