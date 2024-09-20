@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ProductCard from "./ProductCard";
 import Pagination from "./pagination"; // Import the Pagination component
 
-const ProductCatalog = ({ categoryName, products, onAddToCart, currency }) => {
+const ProductCatalog = ({ categoryName, products, onAddToCart }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage, setProductsPerPage] = useState(10);
 
@@ -62,7 +62,6 @@ const ProductCatalog = ({ categoryName, products, onAddToCart, currency }) => {
               key={product.id}
               product={product}
               onAddToCart={onAddToCart}
-              currency={currency}
             />
           ))
         ) : (

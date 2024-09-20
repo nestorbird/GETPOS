@@ -114,7 +114,7 @@ const Location = () => {
                 ))}
               </select>
             </div>
-            <button type="submit">
+            <button className="button-location-submit" type="submit">
               Submit
             </button>
           </form>

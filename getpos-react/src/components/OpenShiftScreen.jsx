@@ -2,13 +2,17 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Layout from "./Layout";
 import { useOpenShift } from "./OpenShiftContext";
-import { fetchOpeningData, getGuestCustomer, getOpeningShift } from "../modules/LandingPage";
+import {
+  fetchOpeningData,
+  getGuestCustomer,
+  getOpeningShift,
+} from "../modules/LandingPage";
 
 const OpenShiftScreen = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const loginResponse = location.state && location.state.loginResponse;
-  const [company,setCompany] = useState("")
+  const [company, setCompany] = useState("");
 
   const { openShiftData, setOpenShiftData } = useOpenShift();
   const { selectedProfile } = openShiftData;
@@ -43,7 +47,7 @@ const OpenShiftScreen = () => {
       clearFields();
       clearLocalStorage();
     }
-    handleGetGuestCustomer()
+    handleGetGuestCustomer();
   }, [loginResponse]);
 
   const fetchData = async () => {
@@ -105,7 +109,9 @@ const OpenShiftScreen = () => {
 
     filteredPaymentMethods.forEach((method) => {
       if (!paymentBalances[method.mode_of_payment]) {
-        errors[method.mode_of_payment] = `Opening ${method.mode_of_payment} Balance is required.`;
+        errors[
+          method.mode_of_payment
+        ] = `Opening ${method.mode_of_payment} Balance is required.`;
       }
     });
 
@@ -122,13 +128,13 @@ const OpenShiftScreen = () => {
 
     navigate("/main");
   };
- 
+
   const storedResponse = localStorage.getItem("openingShiftResponse");
   const parsedResponse = storedResponse ? JSON.parse(storedResponse) : null;
 
   console.log("Stored Response:", parsedResponse);
 
-   const handleProfileChange = (event) => {
+  const handleProfileChange = (event) => {
     const value = event.target.value;
     const newOpenShiftData = {
       ...openShiftData,
@@ -141,20 +147,20 @@ const OpenShiftScreen = () => {
   };
 
   const handlePaymentBalanceChange = (method, value) => {
-    const numericValue = value.replace(/[^\d.]/g, '');
+    const numericValue = value.replace(/[^\d.]/g, "");
 
-  const parts = numericValue.split('.');
-  let formattedValue = parts[0]; 
+    const parts = numericValue.split(".");
+    let formattedValue = parts[0];
 
-  if (parts.length === 2) {
-    formattedValue += '.' + parts[1].slice(0, 2);
-  }
+    if (parts.length === 2) {
+      formattedValue += "." + parts[1].slice(0, 2);
+    }
 
-  const newPaymentBalances = {
-    ...paymentBalances,
-    [method]: formattedValue,
-  };
-  
+    const newPaymentBalances = {
+      ...paymentBalances,
+      [method]: formattedValue,
+    };
+
     setPaymentBalances(newPaymentBalances);
     localStorage.setItem("paymentBalances", JSON.stringify(newPaymentBalances));
     setFormErrors((prevErrors) => ({ ...prevErrors, [method]: "" })); // Clear specific field error
@@ -174,7 +180,7 @@ const OpenShiftScreen = () => {
     localStorage.removeItem("paymentBalances");
     localStorage.removeItem("openingShiftResponse");
   };
-  
+
   return (
     <div className="login-page">
       <Layout showFooter={false} showDropdown={false}>
@@ -182,12 +188,14 @@ const OpenShiftScreen = () => {
           <h1>OPEN SHIFT</h1>
           <form className="login-form">
             <div className="form-group">
-            <select
+              <select
                 id="pos-profile"
                 value={selectedProfile || ""}
                 onChange={handleProfileChange}
               >
-                <option value="" disabled>Select POS Profile Name</option>
+                <option value="" disabled>
+                  Select POS Profile Name
+                </option>
                 {posProfiles.map((profile) => (
                   <option key={profile} value={profile}>
                     {profile}
@@ -213,7 +221,7 @@ const OpenShiftScreen = () => {
                         )
                       }
                     />
-                      {formErrors[method.mode_of_payment] && (
+                    {formErrors[method.mode_of_payment] && (
                       <span className="error">
                         {formErrors[method.mode_of_payment]}
                       </span>
@@ -222,7 +230,11 @@ const OpenShiftScreen = () => {
                 ))}
               </>
             )}
-            <button type="button" onClick={handleLogin}>
+            <button
+              className="button-open-shift"
+              type="button"
+              onClick={handleLogin}
+            >
               Login
             </button>
           </form>

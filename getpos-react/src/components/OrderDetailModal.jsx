@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Checkbox, Modal, message } from "antd";
 import { returnSalesOrder } from "../modules/LandingPage";
+import { useThemeSettings } from './ThemeSettingContext';
 
-const OrderDetailModal = ({ visible, onClose, order, onUpdateOrder, currency }) => {
+const OrderDetailModal = ({ visible, onClose, order, onUpdateOrder }) => {
   const [selectedItems, setSelectedItems] = useState({});
   const [itemQuantities, setItemQuantities] = useState({});
   const [disabledInputs, setDisabledInputs] = useState({});
   const [loading, setLoading] = useState(false);
   const [returnedItems, setReturnedItems] = useState(null);
+  const themeSettings = useThemeSettings();
 
 
   console.log(order,"checking in the order modal")
@@ -211,7 +213,7 @@ const OrderDetailModal = ({ visible, onClose, order, onUpdateOrder, currency }) 
               <br />
               <strong>Amount:</strong>
               <span className="text-red">
-                - {(currency || "$")}{totalAmount.toFixed(2)}
+                - {(themeSettings.currency_symbol || "$")} {totalAmount.toFixed(2)}
               </span>
               {/* <br />
               <strong>Tax (10%):</strong> <span className="text-red">-${taxAmount.toFixed(2)}</span> */}
@@ -259,7 +261,7 @@ const OrderDetailModal = ({ visible, onClose, order, onUpdateOrder, currency }) 
         </div>
       )}
       <h3>
-        <span>ID: {order.name} </span> <span>{(currency || "$")}{order.grand_total.toFixed(2)}</span>
+        <span>ID: {order.name} </span> <span>{(themeSettings.currency_symbol || "$")} {order.grand_total.toFixed(2)}</span>
       </h3>
       <span className="return-msg">
         {getReturnStatusText(order.return_order_status)}
@@ -277,17 +279,17 @@ const OrderDetailModal = ({ visible, onClose, order, onUpdateOrder, currency }) 
           <li key={index}>
             
             <span className="select-name">
-            {order.mode_of_payment !== "Credit" && (
+            {/* {order.mode_of_payment !== "Credit" && (
               <Checkbox
                 className="custom-checkbox"
                 onChange={() => handleCheckboxChange(item.item_code)}
                 checked={selectedItems[item.item_code]}
               />
-              )}
+              )} */}
               {item.item_name}
             </span>
             
-            <span className="prod-detail-price">{(currency || "$")} {item.rate.toFixed(2)}</span>
+            <span className="prod-detail-price"> {(themeSettings.currency_symbol || "$")} {item.rate.toFixed(2)}</span>
             <span>
               <input
                 type="number"
@@ -300,24 +302,66 @@ const OrderDetailModal = ({ visible, onClose, order, onUpdateOrder, currency }) 
                 disabled={!selectedItems[item.item_code]}
               />
             </span>
-            <span className="prod-detail-price">{(currency || "$")} {item.amount.toFixed(2)}</span>
+            <span className="prod-detail-price"> ${(themeSettings.currency_symbol || "$")}{item.amount.toFixed(2)}</span>
           </li>
         ))}
       </ul>
       <div className="order-pricing">
         <p>
           <span>Subtotal</span>
-          <span>{(currency || "$")} {order.total.toFixed(2)}</span>
+          <span>{(themeSettings.currency_symbol || "$")}{order.total.toFixed(2)}</span>
         </p>
+        {order.coupon_code ? (
+          <p>
+          <span>Promocode - {order.coupon_code} </span>
+          <span>
+            - {(themeSettings.currency_symbol || "$")} {order.discount_amount.toFixed(2)}
+          </span>
+        </p>
+        ):""}
+        {order.gift_card_code ? (
+        <p>
+          <span>Gift card - {order.gift_card_code} </span>
+          <span>
+            - {(themeSettings.currency_symbol || "$")} {order.discount_amount.toFixed(2)}
+          </span>
+        </p>
+        ):""}
+        {order.loyalty_points ? (
+        <p>
+          <span>Loyality - {order.loyalty_points}</span>
+          <span>
+          - {(themeSettings.currency_symbol || "$")} {order.loyalty_amount.toFixed(2)}
+          </span>
+        </p>
+        ):""}
         <p>
           <span>Tax</span>
-          <span>{(currency || "$")} {order.total_taxes_and_charges}</span>
+          <span>{(themeSettings.currency_symbol || "$")} {order.total_taxes_and_charges}</span>
         </p>
         <p>
           <span>Total</span>
-          <span>{(currency || "$")} {(order.total).toFixed(2)}</span>
+          <span>{(themeSettings.currency_symbol || "$")} {(order.grand_total - order.loyalty_amount).toFixed(2)}</span>
         </p>
       </div>
+      {/* <div className="return-btns">
+        {order.mode_of_payment !== "Credit" && (
+          <>
+          <button
+            onClick={handleReturnOrder}
+            disabled={isReturnOrderDisabled || loading}
+          >
+            Return Order
+          </button>
+          <button
+            onClick={handleReturnItems}
+            disabled={isReturnItemsDisabled || loading}
+          >
+            Return Item/s
+          </button>
+          </>
+        )}
+      </div> */}
     </Modal>
   );
 };

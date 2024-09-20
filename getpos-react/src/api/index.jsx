@@ -1,4 +1,4 @@
-// import { getCouponCode } from "../modules/LandingPage";
+
 
 const APIs = {
   getGuestCustomer: '/api/method/getpos.getpos.api.get_theme_settings',

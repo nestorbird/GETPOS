@@ -3,7 +3,7 @@ import Layout from "../components/Layout";
 import { fetchCustomers, updateCustomer } from "../modules/LandingPage";
 import SearchIcon from "../assets/images/icon-search.png";
 import EditIcon from "../assets/images/icon-edit.png";
-import { Button, Input, Modal, Spin, notification } from "antd"; 
+import { Button, Input, Modal, Spin, notification } from "antd";
 
 const CustomerPage = () => {
   const [customers, setCustomers] = useState([]);
@@ -36,9 +36,12 @@ const CustomerPage = () => {
     setSearchTerm(event.target.value);
   };
 
-  const filteredCustomers = customers.filter((customer) =>
-    customer.customer_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    customer.mobile_no.includes(searchTerm)
+  const filteredCustomers = customers.filter(
+    (customer) =>
+      customer.customer_name
+        ?.toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      customer.mobile_no?.toString()?.includes(searchTerm)
   );
 
   const handleUpdateCustomerClick = (customer) => {
@@ -87,7 +90,9 @@ const CustomerPage = () => {
       });
       setCustomers((prevCustomers) =>
         prevCustomers.map((cust) =>
-          cust.name === updatedCustomer.name ? { ...updatedCustomer, email_id: newEmailID } : cust
+          cust.name === updatedCustomer.name
+            ? { ...updatedCustomer, email_id: newEmailID }
+            : cust
         )
       );
       setIsModalOpen(false);
@@ -151,15 +156,15 @@ const CustomerPage = () => {
       <Modal
         title="Edit Customer"
         visible={isModalOpen}
-        onCancel={() => setIsModalOpen(false)} 
+        onCancel={() => setIsModalOpen(false)}
         footer={[
           <Button key="submit" type="primary" onClick={handleUpdateCustomer}>
             Update
-          </Button>
+          </Button>,
         ]}
         className="edit-customer-modal"
       >
-        <div className="edit-cus-row"> 
+        <div className="edit-cus-row">
           <Input
             type="text"
             placeholder="Name"
@@ -167,23 +172,23 @@ const CustomerPage = () => {
             onChange={(e) => setNewName(e.target.value)}
           />
         </div>
-        <div className="edit-cus-row"> 
+        <div className="edit-cus-row">
           <Input
             type="text"
             placeholder="Mobile Number"
             value={newMobile}
             onChange={(e) => setNewMobile(e.target.value)}
           />
-          {errors.mobile && <p style={{ color: 'red' }}>{errors.mobile}</p>}
+          {errors.mobile && <p style={{ color: "red" }}>{errors.mobile}</p>}
         </div>
-        <div className="edit-cus-row"> 
+        <div className="edit-cus-row">
           <Input
             type="email"
             placeholder="Email Address"
             value={newEmailID}
             onChange={handleEmailChange}
           />
-          {errors.email && <p style={{ color: 'red' }}>{errors.email}</p>}
+          {errors.email && <p style={{ color: "red" }}>{errors.email}</p>}
         </div>
       </Modal>
     </Layout>
