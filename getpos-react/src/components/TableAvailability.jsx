@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Button } from "antd";
 
-const DynamicTableAvailabilityPopup = ({ visible, onClose }) => {
+const DynamicTableAvailabilityPopup = ({ visible, onClose, onSubmit }) => {
   const [selectedTables, setSelectedTables] = useState([]);
 
   // Mock API data for tables
@@ -39,6 +39,9 @@ const DynamicTableAvailabilityPopup = ({ visible, onClose }) => {
       }
     });
   };
+  const handleBookClick = () => {
+    onSubmit(selectedTables);
+  };
 
   const renderTables = (tables) =>
     tables.map((table) => (
@@ -70,7 +73,7 @@ const DynamicTableAvailabilityPopup = ({ visible, onClose }) => {
         </Button>
         <Button
           className="table-availability-book"
-          onClick={onClose}
+          onClick={handleBookClick}
           type="primary"
         >
           Book

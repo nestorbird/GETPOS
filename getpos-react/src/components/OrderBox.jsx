@@ -84,7 +84,7 @@ const OrderBox = ({
       printRef.current.handlePrint();
     }
   };
-  console.log(order,"Check")
+  // console.log(order,"Check")
 
   return (
     <Card className={boxClassName} onClick={handleClickOrder}>
@@ -106,8 +106,8 @@ const OrderBox = ({
       </span>
       <p className="status-row">
         <span>
-          {order.contact_mobile}{" "} |
-          <span className="light-text"> {order.contact_name}</span>
+          {order.contact_mobile}{" "}
+          <span className="light-text">| {order.contact_name}</span>
         </span>
         <span>
           {showDelete && (

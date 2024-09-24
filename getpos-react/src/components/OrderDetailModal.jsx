@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Checkbox, Modal, message } from "antd";
 import { returnSalesOrder } from "../modules/LandingPage";
-import { useThemeSettings } from './ThemeSettingContext';
+import { useThemeSettings } from "./ThemeSettingContext";
 
 const OrderDetailModal = ({ visible, onClose, order, onUpdateOrder }) => {
   const [selectedItems, setSelectedItems] = useState({});
@@ -11,9 +11,7 @@ const OrderDetailModal = ({ visible, onClose, order, onUpdateOrder }) => {
   const [returnedItems, setReturnedItems] = useState(null);
   const themeSettings = useThemeSettings();
 
-
-  console.log(order,"checking in the order modal")
-  
+  console.log(order, "checking in the order modal");
 
   useEffect(() => {
     if (order) {
@@ -129,8 +127,11 @@ const OrderDetailModal = ({ visible, onClose, order, onUpdateOrder }) => {
         });
 
         // Calculate the total amount for the returned items
-        const totalAmount = returnedItems.reduce((sum, item) => sum + item.amount, 0);
-        const taxAmount = totalAmount * 0.10; // Calculate tax at 10%
+        const totalAmount = returnedItems.reduce(
+          (sum, item) => sum + item.amount,
+          0
+        );
+        const taxAmount = totalAmount * 0.1; // Calculate tax at 10%
 
         setReturnedItems(returnedItems);
 
@@ -141,11 +142,14 @@ const OrderDetailModal = ({ visible, onClose, order, onUpdateOrder }) => {
             </span>
             <span>
               <strong>ID:</strong> {order.name}
-            </span> 
+            </span>
             <br />
             <span>
-              <strong>Amount:</strong> 
-              <span className="text-red">-${item.amount.toFixed(2)}</span>
+              <strong>Amount:</strong>
+              <span className="text-red">
+                - {themeSettings.currency_symbol || "$"}
+                {response.message.amount.toFixed(2)}
+              </span>
             </span>
             <br />
           </div>
@@ -201,7 +205,7 @@ const OrderDetailModal = ({ visible, onClose, order, onUpdateOrder }) => {
 
       if (response && response.message && response.message.success_key === 1) {
         const totalAmount = order.grand_total;
-        const taxAmount = totalAmount * 0.10; // Calculate tax at 10%
+        const taxAmount = totalAmount * 0.1; // Calculate tax at 10%
 
         Modal.success({
           message: "Success",
@@ -213,7 +217,8 @@ const OrderDetailModal = ({ visible, onClose, order, onUpdateOrder }) => {
               <br />
               <strong>Amount:</strong>
               <span className="text-red">
-                - {(themeSettings.currency_symbol || "$")} {totalAmount.toFixed(2)}
+                - {themeSettings.currency_symbol || "$"}{" "}
+                {totalAmount.toFixed(2)}
               </span>
               {/* <br />
               <strong>Tax (10%):</strong> <span className="text-red">-${taxAmount.toFixed(2)}</span> */}
@@ -236,13 +241,16 @@ const OrderDetailModal = ({ visible, onClose, order, onUpdateOrder }) => {
     }
   };
 
-  const isReturnItemsDisabled = !Object.values(selectedItems).some(
-    (isSelected) => isSelected
-  ) || Object.values(itemQuantities).filter((quantity) => quantity === 0).length > 0 || loading;
-  
-  const isReturnOrderDisabled = Object.values(selectedItems).some(
-    (isSelected) => isSelected
-  ) || Object.values(itemQuantities).filter((quantity) => quantity === 0).length > 0;
+  const isReturnItemsDisabled =
+    !Object.values(selectedItems).some((isSelected) => isSelected) ||
+    Object.values(itemQuantities).filter((quantity) => quantity === 0).length >
+      0 ||
+    loading;
+
+  const isReturnOrderDisabled =
+    Object.values(selectedItems).some((isSelected) => isSelected) ||
+    Object.values(itemQuantities).filter((quantity) => quantity === 0).length >
+      0;
 
   const modalClassName = `order-detail ${
     order.return_order_status === "Fully" ? "returned" : ""
@@ -261,13 +269,18 @@ const OrderDetailModal = ({ visible, onClose, order, onUpdateOrder }) => {
         </div>
       )}
       <h3>
-        <span>ID: {order.name} </span> <span>{(themeSettings.currency_symbol || "$")} {order.grand_total.toFixed(2)}</span>
+        <span>ID: {order.name} </span>{" "}
+        <span>
+          {themeSettings.currency_symbol || "$"} {order.grand_total.toFixed(2)}
+        </span>
       </h3>
       <span className="return-msg">
         {getReturnStatusText(order.return_order_status)}
       </span>
       <p className="order-time">
-        <p>{order.transaction_date}, {order.transaction_time}</p>
+        <p>
+          {order.transaction_date}, {order.transaction_time}
+        </p>
         <p>{order.mode_of_payment}</p>
       </p>
       <p className="order-cus-details">
@@ -277,19 +290,21 @@ const OrderDetailModal = ({ visible, onClose, order, onUpdateOrder }) => {
       <ul className="order-items">
         {order.items.map((item, index) => (
           <li key={index}>
-            
             <span className="select-name">
-            {/* {order.mode_of_payment !== "Credit" && (
-              <Checkbox
-                className="custom-checkbox"
-                onChange={() => handleCheckboxChange(item.item_code)}
-                checked={selectedItems[item.item_code]}
-              />
+              {/* {order.mode_of_payment !== "Credit" && (
+                <Checkbox
+                  className="custom-checkbox"
+                  onChange={() => handleCheckboxChange(item.item_code)}
+                  checked={selectedItems[item.item_code]}
+                />
               )} */}
               {item.item_name}
             </span>
-            
-            <span className="prod-detail-price"> {(themeSettings.currency_symbol || "$")} {item.rate.toFixed(2)}</span>
+
+            <span className="prod-detail-price">
+              {" "}
+              {themeSettings.currency_symbol || "$"} {item.rate.toFixed(2)}
+            </span>
             <span>
               <input
                 type="number"
@@ -302,63 +317,84 @@ const OrderDetailModal = ({ visible, onClose, order, onUpdateOrder }) => {
                 disabled={!selectedItems[item.item_code]}
               />
             </span>
-            <span className="prod-detail-price"> ${(themeSettings.currency_symbol || "$")}{item.amount.toFixed(2)}</span>
+            <span className="prod-detail-price">
+              {themeSettings.currency_symbol || "$"}
+              {item.amount.toFixed(2)}
+            </span>
           </li>
         ))}
       </ul>
       <div className="order-pricing">
         <p>
           <span>Subtotal</span>
-          <span>{(themeSettings.currency_symbol || "$")}{order.total.toFixed(2)}</span>
+          <span>
+            {themeSettings.currency_symbol || "$"}
+            {order.total.toFixed(2)}
+          </span>
         </p>
         {order.coupon_code ? (
           <p>
-          <span>Promocode - {order.coupon_code} </span>
-          <span>
-            - {(themeSettings.currency_symbol || "$")} {order.discount_amount.toFixed(2)}
-          </span>
-        </p>
-        ):""}
+            <span>Promocode - {order.coupon_code} </span>
+            <span>
+              - {themeSettings.currency_symbol || "$"}{" "}
+              {order.discount_amount.toFixed(2)}
+            </span>
+          </p>
+        ) : (
+          ""
+        )}
         {order.gift_card_code ? (
-        <p>
-          <span>Gift card - {order.gift_card_code} </span>
-          <span>
-            - {(themeSettings.currency_symbol || "$")} {order.discount_amount.toFixed(2)}
-          </span>
-        </p>
-        ):""}
+          <p>
+            <span>Gift card - {order.gift_card_code} </span>
+            <span>
+              - {themeSettings.currency_symbol || "$"}{" "}
+              {order.discount_amount.toFixed(2)}
+            </span>
+          </p>
+        ) : (
+          ""
+        )}
         {order.loyalty_points ? (
-        <p>
-          <span>Loyality - {order.loyalty_points}</span>
-          <span>
-          - {(themeSettings.currency_symbol || "$")} {order.loyalty_amount.toFixed(2)}
-          </span>
-        </p>
-        ):""}
+          <p>
+            <span>Loyality - {order.loyalty_points}</span>
+            <span>
+              - {themeSettings.currency_symbol || "$"}{" "}
+              {order.loyalty_amount.toFixed(2)}
+            </span>
+          </p>
+        ) : (
+          ""
+        )}
         <p>
           <span>Tax</span>
-          <span>{(themeSettings.currency_symbol || "$")} {order.total_taxes_and_charges}</span>
+          <span>
+            {themeSettings.currency_symbol || "$"}{" "}
+            {order.total_taxes_and_charges}
+          </span>
         </p>
         <p>
           <span>Total</span>
-          <span>{(themeSettings.currency_symbol || "$")} {(order.grand_total - order.loyalty_amount).toFixed(2)}</span>
+          <span>
+            {themeSettings.currency_symbol || "$"}{" "}
+            {(order.grand_total - order.loyalty_amount).toFixed(2)}
+          </span>
         </p>
       </div>
       {/* <div className="return-btns">
         {order.mode_of_payment !== "Credit" && (
           <>
-          <button
-            onClick={handleReturnOrder}
-            disabled={isReturnOrderDisabled || loading}
-          >
-            Return Order
-          </button>
-          <button
-            onClick={handleReturnItems}
-            disabled={isReturnItemsDisabled || loading}
-          >
-            Return Item/s
-          </button>
+            <button
+              onClick={handleReturnOrder}
+              disabled={isReturnOrderDisabled || loading}
+            >
+              Return Order
+            </button>
+            <button
+              onClick={handleReturnItems}
+              disabled={isReturnItemsDisabled || loading}
+            >
+              Return Item/s
+            </button>
           </>
         )}
       </div> */}

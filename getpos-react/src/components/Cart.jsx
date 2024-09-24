@@ -163,10 +163,23 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
       console.error("Invalid items array:", items);
       return 0;
     }
-    return items.reduce(
-      (sum, item) => sum + item.product_price * item.quantity,
-      0
-    );
+
+    return items.reduce((sum, item) => {
+      const selectedAttributesTotal = item.selectedAttributes
+        ? Object.values(item.selectedAttributes)
+            .flat()
+            .reduce((attrSum, attr) => {
+              // Find the attribute price from item's attributes
+              const attributeOption = item.attributes
+                .flatMap((attrGroup) => attrGroup.options)
+                .find((option) => option.item_name === attr);
+              return attrSum + (attributeOption?.price || 0);
+            }, 0)
+        : 0;
+
+      const itemTotalPrice = item.product_price + selectedAttributesTotal;
+      return sum + itemTotalPrice * item.quantity;
+    }, 0);
   };
 
   const calculateTaxForItem = (item) => {
@@ -185,8 +198,24 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
     return items.reduce((total, item) => {
       if (!item.tax || item.tax.length === 0) return total;
 
+      const selectedAttributesTotal = item.selectedAttributes
+        ? Object.values(item.selectedAttributes)
+            .flat()
+            .reduce((attrSum, attr) => {
+              const attributeOption = item.attributes
+                .flatMap((attrGroup) => attrGroup.options)
+                .find((option) => option.item_name === attr);
+              return attrSum + (attributeOption?.price || 0);
+            }, 0)
+        : 0;
+
+      const itemTotalPrice = item.product_price + selectedAttributesTotal;
+
       const itemTotalTax = item.tax.reduce((itemTaxSum, taxEntry) => {
-        return itemTaxSum + calculateTaxForEntry(item, taxEntry);
+        return (
+          itemTaxSum +
+          (itemTotalPrice * parseFloat(taxEntry.custom_tax_percentage)) / 100
+        );
       }, 0);
 
       return total + itemTotalTax;
@@ -203,7 +232,6 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
     const taxGroups = {};
 
     items.forEach((item) => {
-      // Sort the tax entries to ensure CGST comes before SGST
       const sortedTaxes = item.tax.sort((a, b) => {
         if (a.tax_type.includes("CGST") && b.tax_type.includes("SGST"))
           return -1;
@@ -212,21 +240,45 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
         return 0;
       });
 
+      const selectedAttributesTotal = item.selectedAttributes
+        ? Object.values(item.selectedAttributes)
+            .flat()
+            .reduce((attrSum, attr) => {
+              const attributeOption = item.attributes
+                .flatMap((attrGroup) => attrGroup.options)
+                .find((option) => option.item_name === attr);
+              return attrSum + (attributeOption?.price || 0);
+            }, 0)
+        : 0;
+
+      const itemTotalPrice = item.product_price + selectedAttributesTotal;
+
       sortedTaxes.forEach((taxEntry) => {
-        const taxLabel = taxEntry.tax_type.includes("SGST") ? "SGST" : "CGST";
+        const taxType = taxEntry.tax_type;
+        const hyphenIndex = taxType.lastIndexOf(" -");
+        let taxLabel = "";
+
+        if (hyphenIndex !== -1) {
+          const taxFragment = taxType
+            .slice(Math.max(0, hyphenIndex - 4), hyphenIndex)
+            .trim();
+          taxLabel = taxFragment.length >= 3 ? taxFragment : "Unknown";
+        } else {
+          taxLabel = "Unknown";
+        }
+
         const taxKey = `${taxLabel}-${taxEntry.custom_tax_percentage}`;
 
         if (!taxGroups[taxKey]) {
           taxGroups[taxKey] = {
-            taxLabel, // CGST or SGST
+            taxLabel,
             custom_tax_percentage: taxEntry.custom_tax_percentage,
             totalTaxAmount: 0,
           };
         }
 
-        const itemTotal = item.product_price * item.quantity;
         const taxAmount =
-          (itemTotal * parseFloat(taxEntry.custom_tax_percentage)) / 100;
+          (itemTotalPrice * parseFloat(taxEntry.custom_tax_percentage)) / 100;
         taxGroups[taxKey].totalTaxAmount += taxAmount;
       });
     });
@@ -315,6 +367,8 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
     if (value.trim() === "") {
       setFilteredCustomers(customers);
       setShowAddCustomerForm(false);
+      setSelectedCustomer(null);
+      localStorage.removeItem("selectedCustomer");
     } else {
       const filtered = customers.filter(
         (customer) =>
@@ -641,11 +695,10 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
   };
   // const subtotal = calculateSubtotal(cartItems);
   // const tax = subtotal * taxRate;
-  let grandTotal =
-    totalWithTax - loyaltyAmount - discountAmount - couponDiscount;
-  // grandTotal = Math.max(grandTotal - couponDiscount, 0);
+  let grandTotal = totalWithTax - loyaltyAmount - discountAmount;
+  grandTotal = Math.max(grandTotal - couponDiscount, 0);
   const placeOrder = async (customer) => {
-    if (grandTotal < 0) {
+    if (grandTotal <= 0) {
       Modal.error({
         title: "Please add more items.",
         className: "success-modal",
@@ -665,6 +718,7 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
     const user = JSON.parse(localStorage.getItem("user"));
 
     const costCenter = localStorage.getItem("costCenter");
+
     const orderDetails = {
       pos_profile: openingShiftResponse?.message?.pos_profile?.name || "",
       pos_opening_shift:
@@ -681,7 +735,7 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
         sub_items: [],
         qty: item.quantity,
         ordered_price: item.product_price * item.quantity,
-        tax: [],
+        tax: item.tax || [],
         estimated_time: 30,
       })),
       mode_of_payment: selectedPaymentMethod || "Credit",
@@ -968,6 +1022,7 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
         </div>
       );
     }
+
     const calculateTotalTaxPercentage = (item) => {
       if (!item.tax || item.tax.length === 0) return "0.0%";
 
@@ -978,10 +1033,36 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
       return `${totalPercentage}%`;
     };
 
+    // Helper to calculate the price including selected attributes
+    const calculateItemPriceWithAttributes = (item) => {
+      let itemPrice = item.product_price;
+
+      if (item.selectedAttributes) {
+        Object.keys(item.selectedAttributes).forEach((attributeIndex) => {
+          const selectedOptions = item.selectedAttributes[attributeIndex];
+
+          selectedOptions.forEach((selectedItemName) => {
+            const attribute = item.attributes[attributeIndex];
+            const selectedOption = attribute.options.find(
+              (option) => option.item_name === selectedItemName
+            );
+
+            if (selectedOption && selectedOption.price) {
+              itemPrice += selectedOption.price; // Add the price of the selected attribute
+            }
+          });
+        });
+      }
+
+      return itemPrice;
+    };
+
     return cartItems.map((item, index) => {
       const totalTaxRate = item?.tax?.length
         ? item.tax.reduce((acc, tax) => acc + tax.rate, 0)
         : 0;
+
+      const finalItemPrice = calculateItemPriceWithAttributes(item);
 
       return (
         <div key={index} className="cart-item">
@@ -999,7 +1080,7 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
               value={
                 editedPrices[item.id] !== undefined
                   ? editedPrices[item.id]
-                  : item.product_price
+                  : finalItemPrice
               }
               onChange={(e) =>
                 handleUnitPriceChange(index, parseFloat(e.target.value))
@@ -1025,7 +1106,7 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
           {/* Total Price */}
           <span className="cart-item-totalprice">
             {themeSettings?.currency_symbol || "$"}
-            {(item.product_price * item.quantity).toFixed(2)}
+            {(finalItemPrice * item.quantity).toFixed(2)}
           </span>
 
           {/* Delete Action */}
@@ -1201,6 +1282,7 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
 
   return (
     <div className="cartItems">
+      {console.log(cartItems)}
       <div>
         <ul className="tab-header">
           {/* <li
@@ -1209,22 +1291,22 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
               setSelectedTab("Delivery");
             }}
           >
-         
-          </li> */}
-          {/* <li
+          
+          </li>
+          <li
             className={selectedTab === "Takeaway" ? "active" : "active"} // remove active from 2nd part after testing
             onClick={() => setSelectedTab("Takeaway")}
           >
-         
-          </li> */}
-          {/* <li
+          
+          </li>
+          <li
             className={selectedTab === "Delivery" ? "active" : "active"} // remove active from 2nd part
             onClick={() => {
               setSelectedTab("Booking");
               onReservationClick();
             }}
           >
-          
+            
           </li> */}
           <li className="active"></li>
         </ul>
@@ -1315,9 +1397,9 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
                       {subtotal.toFixed(2)}
                     </span>
                   </div>
-                  {/* <div className="promo-header" onClick={toggleExpand}>
+                  <div className="promo-header" onClick={toggleExpand}>
                     <span>{isExpanded ? "▼" : "►"} Promotion</span>
-                  </div> */}
+                  </div>
                   {isExpanded && (
                     <div className="promocode">
                       <div>
@@ -1536,9 +1618,9 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
             className={`tab-pane ${selectedTab === "Delivery" ? "active" : ""}`}
           >
             <h2>Delivery</h2>
-            {/* <div className="quick-order">
+            <div className="quick-order">
               <Button className="quick-order-btn">Quick Order</Button>
-            </div> */}
+            </div>
             <div className="cart-header d-flex justify-content-between">
               <div className="cart-head-left">
                 <h3>Cart</h3>

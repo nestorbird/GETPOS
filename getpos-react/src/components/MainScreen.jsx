@@ -15,6 +15,7 @@ import { CartContext } from "../common/CartContext";
 import ProductPopup from "./ProductPopup";
 import ReservationPopup from "./ReservationPopup";
 import DynamicTableAvailabilityPopup from "./TableAvailability";
+import BookingSummaryPopup from "./BookingSummary";
 
 const MainScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -29,8 +30,11 @@ const MainScreen = () => {
     useState(false);
   const [isTableAvailabilityPopupVisible, setIsTableAvailabilityPopupVisible] =
     useState(false);
+  const [isBookingSummaryPopupVisible, setIsBookingSummaryPopupVisible] =
+    useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [barcode, setBarcode] = useState("");
+  const [bookingData, setBookingData] = useState({});
   const lastKeyPressTime = useRef(0);
 
   const isSmallScreen = useIsSmallScreen();
@@ -178,7 +182,7 @@ const MainScreen = () => {
       if (error instanceof TypeError) {
         Modal.warning({
           title: "Item Not Found",
-          content: "There was an issue processing the scanned item.",
+          content: "There was an issue while processing the scanned item.",
         });
       } else {
         Modal.error({
@@ -267,9 +271,24 @@ const MainScreen = () => {
         {isReservaionPopupVisible && (
           <ReservationPopup
             visible={isReservaionPopupVisible}
-            onClose={() => {
+            onSubmit={(
+              selectedDate,
+              selectedTime,
+              numGuests,
+              specialRequest
+            ) => {
               setIsReservaionPopupVisible(false);
               setIsTableAvailabilityPopupVisible(true);
+              setBookingData({
+                selectedDate,
+                selectedTime,
+                numGuests,
+                specialRequest,
+              });
+              console.log("1st submitted", bookingData);
+            }}
+            onClose={() => {
+              setIsReservaionPopupVisible(false);
             }}
           />
         )}
@@ -278,6 +297,24 @@ const MainScreen = () => {
             visible={isTableAvailabilityPopupVisible}
             onClose={() => {
               setIsTableAvailabilityPopupVisible(false);
+            }}
+            onSubmit={(SelectedTables) => {
+              setIsTableAvailabilityPopupVisible(false);
+              setIsBookingSummaryPopupVisible(true);
+              setBookingData((prevData) => ({
+                ...prevData,
+                tableNumbers: SelectedTables,
+              }));
+              console.log("2nd submitted");
+            }}
+          />
+        )}
+        {isBookingSummaryPopupVisible && (
+          <BookingSummaryPopup
+            bookingData={bookingData}
+            visible={isBookingSummaryPopupVisible}
+            onClose={() => {
+              setIsBookingSummaryPopupVisible(false);
             }}
           />
         )}

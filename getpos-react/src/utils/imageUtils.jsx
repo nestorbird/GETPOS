@@ -4,3 +4,4 @@ export const getImageUrl = (imagePath) => {
   const baseUrl = "https://getposdev.frappe.cloud";
   return imagePath ? `${baseUrl}${imagePath}` : NoImage;
 };
+

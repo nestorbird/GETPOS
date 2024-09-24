@@ -1,14 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
 import NoImage from "../assets/images/no-img.png";
-import Close from "../assets/images/cross.png";
+import Close from "../assets/images/cross.png"; // Cross icon for closing
 import { CartContext } from "../common/CartContext";
 import { Modal } from "antd";
 import { useThemeSettings } from "./ThemeSettingContext";
 
-// import { getImageUrl } from "../utils/imageUtils";
-
 const ProductPopup = ({ product, onClose, selectedCustomer }) => {
   const [quantity, setQuantity] = useState(1);
+  const [selectedAttributes, setSelectedAttributes] = useState({});
   const { addItemToCart } = useContext(CartContext);
   const themeSettings = useThemeSettings();
 
@@ -32,9 +31,8 @@ const ProductPopup = ({ product, onClose, selectedCustomer }) => {
       return;
     }
 
-    const updatedProduct = { ...product, quantity };
+    const updatedProduct = { ...product, quantity, selectedAttributes };
     addItemToCart(updatedProduct);
-    console.log(updatedProduct, "Product manually");
     onClose();
   };
 
@@ -47,20 +45,13 @@ const ProductPopup = ({ product, onClose, selectedCustomer }) => {
     setQuantity(parseInt(e.target.value, 10));
   };
 
-  const stockQtyMap = product?.stock.reduce((map, stockItem) => {
-    map[stockItem.product_id] = stockItem.stock_qty;
-    return map;
-  }, {});
-
-  const stockQty = stockQtyMap[product.product_id];
-
   const incrementQuantity = () => {
-    if (quantity < stockQty) {
+    if (quantity < product.stock[0].stock_qty) {
       setQuantity(quantity + 1);
     } else {
       Modal.warning({
         title: "Stock Limit Reached",
-        content: `You cannot add more than ${stockQty} items to the cart.`,
+        content: `You cannot add more than ${product.stock[0].stock_qty} items to the cart.`,
       });
     }
   };
@@ -71,25 +62,71 @@ const ProductPopup = ({ product, onClose, selectedCustomer }) => {
     }
   };
 
+  const handleSelectionChange = (attributeIndex, option) => {
+    const description = product.attributes[attributeIndex].description;
+    const maxSelection = parseInt(description.match(/\d+/)[0], 10);
+    const selectedOptions = selectedAttributes[attributeIndex] || [];
+
+    if (maxSelection === 1) {
+      setSelectedAttributes({
+        ...selectedAttributes,
+        [attributeIndex]: [option],
+      });
+    } else {
+      const isSelected = selectedOptions.includes(option);
+      const updatedOptions = isSelected
+        ? selectedOptions.filter((o) => o !== option)
+        : [...selectedOptions, option];
+
+      if (updatedOptions.length <= maxSelection) {
+        setSelectedAttributes({
+          ...selectedAttributes,
+          [attributeIndex]: updatedOptions,
+        });
+      }
+    }
+  };
+
+  const calculateTotalPrice = () => {
+    let totalPrice = product.product_price * quantity;
+    Object.values(selectedAttributes).forEach((attribute) => {
+      attribute.forEach((option) => {
+        const attributeOption = product.attributes
+          .flatMap((attr) => attr.options)
+          .find((opt) => opt.item === option);
+        if (attributeOption && attributeOption.price) {
+          totalPrice += attributeOption.price * quantity;
+        }
+      });
+    });
+    return totalPrice.toFixed(2);
+  };
+
   return (
     <>
-      <div className="overlay"></div>
-      <div className="product-popup">
-        <div className="popup-head">
-          <button className="popup-close" onClick={onClose}>
-            <img src={Close} alt="close" />
-          </button>
-        </div>
-        <div className="popup-body">
-          <div className="heading-img">
-            <span>
-              <img src={product.image || NoImage} alt={product.name} />
-            </span>
-            <h2>{product.name}</h2>
-          </div>
-          <div className="popup-qty">
-            <label>
-              <div className="quantity-control">
+      <div className="add-to-cart-overlay"></div>
+      <div className="add-to-cart-product-popup">
+        {/* Cross button at the top right */}
+        <button className="add-to-cart-popup-close" onClick={onClose}>
+          <img src={Close} alt="Close" />
+        </button>
+
+        <div className="add-to-cart-popup-body">
+          {/* Static Item Price */}
+          <div className="add-to-cart-heading-img">
+            <img src={product.image || NoImage} alt={product.name} />
+            <div className="add-to-cart-heading-text">
+              {/* Item Name and Price in the same line */}
+              <div className="add-to-cart-name-price">
+                <h2>{product.name}</h2>
+                <span className="static-item-price">
+                  {themeSettings.currency_symbol || "$"}
+                  {product.product_price.toFixed(2)}
+                </span>
+              </div>
+
+              {/* Quantity in the next line */}
+              <div className="add-to-cart-quantity-control">
                 <button onClick={decrementQuantity}>-</button>
                 <input
                   type="text"
@@ -100,16 +137,49 @@ const ProductPopup = ({ product, onClose, selectedCustomer }) => {
                 />
                 <button onClick={incrementQuantity}>+</button>
               </div>
-            </label>
+            </div>
           </div>
-          <div className="popup-footer">
-            <div className="btn-total">
+
+          <div className="add-to-cart-attributes-container">
+            {product.attributes.map((attribute, index) => (
+              <div className="add-to-cart-popup-attribute" key={index}>
+                <h3>{attribute.name}</h3>
+                <div className="add-to-cart-popup-options">
+                  {attribute.options.map((option, optionIndex) => (
+                    <label key={optionIndex}>
+                      <input
+                        type={
+                          attribute.description.includes("Select 1")
+                            ? "radio"
+                            : "checkbox"
+                        }
+                        name={`attribute-${index}`}
+                        checked={selectedAttributes[index]?.includes(
+                          option.item
+                        )}
+                        onChange={() =>
+                          handleSelectionChange(index, option.item)
+                        }
+                      />
+                      {option.item_name} -{" "}
+                      {option.price ? `$${option.price}` : "Free"}
+                    </label>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Updated Dynamic Item Total */}
+          <div className="add-to-cart-popup-footer">
+            <div className="add-to-cart-btn-total">
               Item Total <br />
               <span>
                 {themeSettings.currency_symbol || "$"}
-                {(product.product_price * quantity).toFixed(2)}
+                {calculateTotalPrice()}
               </span>
             </div>
+
             <button onClick={handleAddItem}>Add to Cart</button>
           </div>
         </div>

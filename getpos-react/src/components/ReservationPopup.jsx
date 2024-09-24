@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Modal, Button, Input, message } from "antd";
 import moment from "moment";
 
-const ReservationPopup = ({ visible, onClose }) => {
+const ReservationPopup = ({ visible, onClose, onSubmit }) => {
   const [selectedDate, setSelectedDate] = useState(moment());
   const [selectedTime, setSelectedTime] = useState(null);
   const [numGuests, setNumGuests] = useState("");
@@ -32,7 +32,7 @@ const ReservationPopup = ({ visible, onClose }) => {
       numGuests,
       specialRequest,
     });
-    onClose();
+    onSubmit(selectedDate, selectedTime, numGuests, specialRequest);
   };
 
   const renderDaysOfMonth = () => {
