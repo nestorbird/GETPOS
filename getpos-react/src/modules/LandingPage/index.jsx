@@ -56,7 +56,7 @@ export const getClosingShift = async (closingShiftData) => {
     return response.data;
   } catch (error) {
     console.error("Error Closing the shift:", error);
-    throw error;setProducts
+    throw error;
   }
 };
 

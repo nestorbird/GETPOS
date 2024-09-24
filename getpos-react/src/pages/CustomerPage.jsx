@@ -114,7 +114,7 @@ const CustomerPage = () => {
           <div className="searchField">
             <input
               type="text"
-              placeholder="Search Customer"
+              placeholder="Search customer/name"
               value={searchTerm}
               onChange={handleSearchChange}
               className="customer-search"
@@ -130,6 +130,8 @@ const CustomerPage = () => {
           </div>
         ) : error ? (
           <p>Error loading customers: {error}</p>
+        ) : filteredCustomers.length === 0 ? (
+          <div className="no-customer-found">No customer found</div>
         ) : (
           <ul className="customer-list">
             {filteredCustomers.map((customer) => (

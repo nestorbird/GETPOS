@@ -21,19 +21,19 @@ const AppRoutes = () => {
 
       <Router basename="/getpos-react">
       {/* <Router > */}
-
+          
         <Routes >
-          <Route path="/" exact element={<LoginPage />} />
-          <Route path="/Barcode" element={<Barcode />} />
-          <Route path="/location" element={<Location/>} />
-          <Route path="/category" element={<MainScreen />} />
-          <Route path="/openshift" element={<OpenShiftScreen />} />
-          <Route path="/closeshift" element={<CloseShiftScreen />} />
-          <Route path="/main" element={<HomePage />} />
-          <Route path="/order" element={<OrderPage />} />
-          <Route path="/customer" element={<CustomerPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/logout" element={<LoginPage />} />
+        <Route path="/" element={<LoginPage />} />
+            <Route path="/Barcode" element={<Barcode />} />
+            <Route path="/location" element={<Location />} />
+            <Route path="/category" element={<MainScreen />} />
+            <Route path="/openshift" element={<OpenShiftScreen />} />
+            <Route path="/closeshift" element={<CloseShiftScreen />} />
+            <Route path="/main" element={<HomePage />} />
+            <Route path="/order" element={<OrderPage />} />
+            <Route path="/customer" element={<CustomerPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            
         </Routes>
       </Router>
     </OpenShiftProvider>

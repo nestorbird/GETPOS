@@ -1,6 +1,6 @@
 import frappe,json
 
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def get_opening_data():
     data = {}
     data["companys"] = frappe.get_list("Company", limit_page_length=0, order_by="name")

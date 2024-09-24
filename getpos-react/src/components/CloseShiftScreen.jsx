@@ -110,7 +110,7 @@ const CloseShiftScreen = () => {
         console.error("No opening shift response found in local storage.");
         setTimeout(() => {
           localStorage.clear();
-          navigate("/");
+          navigate("/getpos-react");
           setCartItems([]);
         }, 1000);
         return;
@@ -207,7 +207,7 @@ const CloseShiftScreen = () => {
         console.log("Shift closed successfully");
         navigate("/closeshift");
         setTimeout(() => {
-          navigate("/");
+          navigate("/getpos-react");
           setCartItems([]);
         }, 1000);
         localStorage.clear();

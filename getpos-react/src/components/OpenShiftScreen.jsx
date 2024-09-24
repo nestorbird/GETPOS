@@ -41,7 +41,7 @@ const OpenShiftScreen = () => {
 
   useEffect(() => {
     if (!loginResponse) {
-      navigate("/");
+      navigate("/getpos-react"); //debug
     } else {
       fetchData();
       clearFields();
