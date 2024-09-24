@@ -776,7 +776,7 @@ ul.ant-dropdown-menu.ant-dropdown-menu-root.ant-dropdown-menu-vertical {
   text-align: left;
   text-align: left;
   color: #232f3e;
-  font-size: 16px;
+  font-size: 11px;
   font-weight: 500;
   line-height: 21px;
 }
@@ -787,7 +787,7 @@ ul.ant-dropdown-menu.ant-dropdown-menu-root.ant-dropdown-menu-vertical {
 
 .cart-item.cart-item-head span {
   color: var(--border-color);
-  font-size: 14px;
+  font-size: 11px;
   font-style: normal;
   font-weight: 500;
   line-height: 20px;
@@ -835,7 +835,7 @@ span.cart-item-qty.quantity-control {
 
 span.cart-item-qty.quantity-control span {
   height: 100%;
-  width: 20px;
+  width: auto;
   padding: 0;
   border-radius: 0;
   border: 0;
@@ -851,6 +851,7 @@ span.cart-item-qty.quantity-control span {
 
 span.cart-item-qty.quantity-control button {
   height: auto;
+  width: 10px;
   padding: 0 5px;
   border-radius: 0;
   border: 0;
