@@ -117,17 +117,7 @@ const OrderBox = ({
           {showPayNow && <a href="#"> Pay Now</a>}
         </span>
       </p>
-      {indicator && (
-        <div className="button-container">
-          <button className="icon-button" onClick={handleButtonClick}>
-            <img src={IconPrintButton} alt="Print Button" />
-          </button>
-          <PrintFormateOfOrder ref={printRef} doc={order} />
-          <button className="icon-button" onClick={emailClickHandler}>
-            <img src={IconEmailButton} alt="Email Button" />
-          </button>
-        </div>
-      )}
+     
     </Card>
   );
 };

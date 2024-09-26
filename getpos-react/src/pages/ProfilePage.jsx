@@ -10,7 +10,7 @@ import IconLogout from "../assets/images/icon-logout.svg";
 import { Drawer, Button } from "antd";
 import { DoubleRightOutlined } from "@ant-design/icons"; 
 import useIsSmallScreen from "../hooks/useIsSmallScreen";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 const MyAccount = () => {
   const { openShiftData } = useOpenShift();
   const { cashBalance, digitalBalance, selectedProfile } = openShiftData;
@@ -52,7 +52,7 @@ const MyAccount = () => {
           Change Password
         </span>
       </li>
-      <li
+      {/* <li
         className={selectedTab === "Finance" ? "active" : ""}
         onClick={() => setSelectedTab("Finance")}
       >
@@ -60,12 +60,12 @@ const MyAccount = () => {
           <img src={IconFinance} alt="Finance" />
           Finance
         </span>
-      </li>
+      </li> */}
       <li>
-        <Link href="/closeshift">
+        <NavLink to="/closeshift">
           <img src={IconLogout} alt="Close Shift" />
           Close Shift 
-        </Link>
+        </NavLink>
       </li>
     </ul>
   );

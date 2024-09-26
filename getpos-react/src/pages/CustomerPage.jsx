@@ -114,7 +114,7 @@ const CustomerPage = () => {
           <div className="searchField">
             <input
               type="text"
-              placeholder="Search customer/name"
+              placeholder="Search customer name / number"
               value={searchTerm}
               onChange={handleSearchChange}
               className="customer-search"
