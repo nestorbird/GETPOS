@@ -253,6 +253,7 @@ after_migrate = "getpos.getpos.after_migrate.main"
 # 	"nbpos.auth.validate"
 # ]
 
+# no_csrf=["getpos.getpos.api.login"]
 
 
 website_route_rules = [{'from_route': '/getpos-react/<path:app_path>', 'to_route': 'getpos-react'},]
