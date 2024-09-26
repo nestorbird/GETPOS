@@ -182,16 +182,14 @@ def get_shift_details(opening_shift):
     res = frappe._dict()
     closing_balance = frappe.db.sql(
             """SELECT   
-            IFNULL(SUM(CASE WHEN si.is_return = 0 THEN sii.base_net_amount ELSE 0 END),0) AS sales_order_amount,
-            IFNULL(SUM(CASE WHEN si.is_return = 1 THEN sii.base_net_amount ELSE 0 END),0) AS return_order_amount,
-            IFNULL(SUM(CASE WHEN si.is_return = 0 and si.mode_of_payment="Cash" THEN sii.base_net_amount ELSE 0 END),0) AS cash_collected,
-            IFNULL(SUM(CASE WHEN si.is_return = 0 and si.mode_of_payment="Credit" THEN sii.base_net_amount ELSE 0 END),0) AS credit_collected,           
-            IFNULL(SUM(CASE WHEN si.is_return = 0 THEN sii.base_net_amount ELSE 0 END) - SUM(CASE WHEN si.is_return = 1 THEN sii.base_net_amount ELSE 0 END),0) AS total_sales_order_amount
-        FROM 
+            IFNULL(SUM(CASE WHEN si.is_return = 0 THEN si.grand_total ELSE 0 END),0) AS sales_order_amount,
+            IFNULL(SUM(CASE WHEN si.is_return = 1 THEN si.grand_total ELSE 0 END),0) AS return_order_amount,
+            IFNULL(SUM(CASE WHEN si.is_return = 0 and si.mode_of_payment="Cash" THEN si.grand_total ELSE 0 END),0) AS cash_collected,
+            IFNULL(SUM(CASE WHEN si.is_return = 0 and si.mode_of_payment="Credit" THEN si.grand_total ELSE 0 END),0) AS credit_collected,
+            IFNULL(SUM(CASE WHEN si.is_return = 0 THEN si.grand_total ELSE 0 END) - SUM(CASE WHEN si.is_return = 1 THEN sii.base_net_amount ELSE 0 END),0) AS total_sales_order_amount
+        FROM
             `tabPOS Opening Shift` pos
-            LEFT JOIN `tabSales Order` so ON pos.name = so.custom_pos_shift
-            LEFT JOIN `tabSales Invoice Item` sii ON sii.sales_order = so.name
-            LEFT JOIN `tabSales Invoice` si ON si.name = sii.parent
+            LEFT JOIN `tabSales Invoice` si ON pos.name = so.posa_pos_opening_shift
             LEFT JOIN `tabSales Invoice Payment` sip ON si.name = sip.parent
             LEFT JOIN `tabPOS Opening Shift Detail` posd ON pos.name = posd.parent
         WHERE          

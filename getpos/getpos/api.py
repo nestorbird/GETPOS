@@ -1962,6 +1962,7 @@ def create_sales_invoice_from_sales_order(doc,gift_card_code,discount_amount):
         sales_invoice.posting_time = doc.transaction_time
         sales_invoice.due_date = doc.transaction_date        
         sales_invoice.update_stock = 1
+        sales_invoice.posa_pos_opening_shift=doc.custom_pos_shift
         if doc.custom_redeem_loyalty_points:
             sales_invoice.redeem_loyalty_points = doc.custom_redeem_loyalty_points
             sales_invoice.loyalty_points = doc.loyalty_points

@@ -105,59 +105,8 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
     }
   }, []);
 
-  const handleApplyPromoCode = async (code) => {
-    console.log(`Applying promo code: ${code}`);
-    const validationResponse = await validatePromoCode(code);
-    if (validationResponse && validationResponse.status === "valid") {
-      if (validationResponse.coupon.pricing_rule.discount_percentage > 0) {
-        const discountPercentage =
-          validationResponse.coupon.pricing_rule.discount_percentage;
-        const discountValue = (subtotal * discountPercentage) / 100;
-        setCouponDiscount(discountValue);
-        setValidatedPromoCode(code);
-        setPromoCode(code);
-        localStorage.setItem("promoCode", code);
-        localStorage.setItem("couponDiscount", discountValue);
-        notification.success({
-          message: "Promo Code Applied",
-          description: `Promo code ${code} applied successfully!`,
-        });
-      } else {
-        const discountValue =
-          validationResponse.coupon.pricing_rule.discount_amount;
-        setCouponDiscount(discountValue);
-        setValidatedPromoCode(code);
-        setPromoCode(code);
-        localStorage.setItem("promoCode", code);
-        localStorage.setItem("couponDiscount", discountValue);
-        notification.success({
-          message: "Promo Code Applied",
-          description: `Promo code ${code} applied successfully!`,
-        });
-      }
-    } else {
-      notification.error({
-        message: "Invalid Promo Code",
-        description: `Promo code ${code} is not valid.`,
-      });
-    }
-  };
-  const handleRemovePromoCode = () => {
-    setValidatedPromoCode("");
-    setCouponDiscount(0);
-    setPromoCode("");
-    setIsPromoCodeValid(false);
-    localStorage.removeItem("promoCode");
-    localStorage.removeItem("couponDiscount");
-    notification.info({
-      message: "Promo Code Removed",
-      description: `Promo code has been removed.`,
-    });
-  };
-  const handleSetCouponCodes = (codes) => {
-    setCouponCodes(codes);
-  };
-
+ 
+  
   const calculateSubtotal = (items) => {
     if (!Array.isArray(items)) {
       console.error("Invalid items array:", items);
@@ -778,6 +727,7 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
         setCouponCodes("");
         setCouponDiscount("");
         setValidatedPromoCode("");
+        localStorage.removeItem("selectedCustomer")
         localStorage.removeItem("couponDiscount");
         localStorage.removeItem("promoCode");
         setRedeem(0);
@@ -862,48 +812,8 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
   useEffect(() => {
     handleGetGuestCustomer();
   }, []);
-  const handleQuickOrder = () => {
-    if (!guestCustomer) {
-      Modal.error({
-        title: "Guest Customer Not Found",
-        content: "Please wait while we fetch the guest customer information.",
-      });
-      return;
-    }
-
-    // Find matching customer in local storage
-    const matchedCustomer = customers.find(
-      (customer) => guestCustomer === customer.name
-    );
-
-    if (matchedCustomer) {
-      // Set matched customer as selectedCustomer and update local storage
-      setSelectedCustomer(matchedCustomer);
-      localStorage.setItem("selectedCustomer", JSON.stringify(matchedCustomer));
-
-      setSearchTerm(
-        `${matchedCustomer.mobile_no} | ${matchedCustomer.customer_name}`
-      );
-      setCustomerSelected(true);
-    } else {
-      Modal.warning({
-        title: "Customer Not Found",
-        content: "The guest customer does not match any existing customer.",
-      });
-      setSearchTerm(""); // Clear search term if no match found
-      setSelectedCustomer(null);
-      setCustomerSelected(false);
-      localStorage.removeItem("selectedCustomer"); // Remove from local storage if no match found
-    }
-  };
-
-  const handleUnitPriceChange = (index, newPrice) => {
-    const item = cartItems[index];
-    if (item) {
-      setEditedPrices((prev) => ({ ...prev, [item.id]: newPrice }));
-    }
-  };
-
+  
+ 
   const validatePriceChange = (index) => {
     const originalPrices = JSON.parse(localStorage.getItem("originalPrices"));
     const cartItem = cartItems[index];
@@ -1075,16 +985,14 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
 
           {/* Unit Price Input */}
           <span className="cart-item-unitprice">
-            <Input
+            <Input disabled
               type="number"
               value={
                 editedPrices[item.id] !== undefined
                   ? editedPrices[item.id]
                   : finalItemPrice
               }
-              onChange={(e) =>
-                handleUnitPriceChange(index, parseFloat(e.target.value))
-              }
+            
               onBlur={() => validatePriceChange(index)}
               className="unit-price-input"
               onKeyPress={(e) => {
@@ -1166,51 +1074,7 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
     setIsLoyaltyPointsValid(true);
   };
 
-  const handleGiftCardClick = async () => {
-    try {
-      if (giftCard) {
-        setIsGiftCardValid(true);
-        setIsPromoCodeValid(false);
-      }
-
-      const validationResponse2 = await validateGiftCard(
-        giftCard,
-        selectedCustomer.customer_name
-      );
-      console.log("validationResponse2", validationResponse2);
-      if (validationResponse2 && validationResponse2.message === "success") {
-        let discount_amount = parseInt(
-          validationResponse2.gift_card[0].amount_balance
-        );
-
-        if (discount_amount === subtotal || subtotal > discount_amount) {
-          setDiscountAmount(discount_amount);
-
-          notification.success({
-            message: "Gift Code Applied",
-            description: `Gift code ${giftCard} applied successfully!`,
-          });
-        } else if (discount_amount > subtotal) {
-          setDiscountAmount(subtotal);
-          notification.success({
-            message: "Gift Code Applied",
-            description: `Gift code ${giftCard} applied successfully!`,
-          });
-        }
-      } else {
-        setDiscountAmount(0);
-        setGiftCard("");
-        setIsGiftCardValid(false);
-        setIsPromoCodeValid(false);
-        notification.error({
-          message: "Invalid Gift card",
-          description: validationResponse2.message,
-        });
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+ 
 
   const handleRemoveGiftCard = () => {
     setGiftCard("");
@@ -1232,82 +1096,14 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
 
   const isguestCustomer = selectedCustomer?.customer_name === "Guest Customer";
 
-  const handleCreditClick = () => {
-    if (validatedPromoCode || isGiftCardValid || isLoyaltyPointsValid) {
-      Modal.warning({
-        title: "Payment Method Restriction",
-        content:
-          "You cannot use credit with a promo code, gift card, or loyalty points applied.",
-      });
-      return;
-    }
-
-    const availableCredit =
-      customerSelectedDetails.credit_limit -
-      customerSelectedDetails.outstanding_amount;
-
-    handleSelectPaymentMethod("Credit");
-
-    if (customerSelectedDetails.credit_limit === 0) {
-      Modal.warning({
-        title: "Credit Limit Zero",
-        content: (
-          <div style={{ textAlign: "center" }}>
-            <p>Credit limit is zero. Please add the credit limit.</p>
-          </div>
-        ),
-      });
-    } else if (
-      customerSelectedDetails.outstanding_amount + grandTotal >
-      customerSelectedDetails.credit_limit
-    ) {
-      Modal.warning({
-        title: "Insufficient Credit Limit",
-        content: (
-          <div style={{ textAlign: "center" }}>
-            <p>
-              Insufficient Credit Limit, please make a payment entry to increase
-              the credit limit
-            </p>
-            <h4>
-              <strong>Available Credit: {availableCredit}</strong>
-            </h4>
-          </div>
-        ),
-      });
-    } else {
-      placeOrder(selectedCustomer);
-    }
-  };
+  
 
   return (
     <div className="cartItems">
       {console.log(cartItems)}
       <div>
         <ul className="tab-header">
-          {/* <li
-            className={selectedTab === "Delivery" ? "active" : "active"} // remove active from 2nd part
-            onClick={() => {
-              setSelectedTab("Delivery");
-            }}
-          >
-          
-          </li>
-          <li
-            className={selectedTab === "Takeaway" ? "active" : "active"} // remove active from 2nd part after testing
-            onClick={() => setSelectedTab("Takeaway")}
-          >
-          
-          </li>
-          <li
-            className={selectedTab === "Delivery" ? "active" : "active"} // remove active from 2nd part
-            onClick={() => {
-              setSelectedTab("Booking");
-              onReservationClick();
-            }}
-          >
-            
-          </li> */}
+         
           <li className="active"></li>
         </ul>
         <div className="tab-content">
@@ -1340,11 +1136,7 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
                     )}
                 </div>
               </div>
-              {/* <div className="quick-order-btn-div">
-                <Button className="quick-order-btn" onClick={handleQuickOrder}>
-                  Quick Order
-                </Button>
-              </div> */}
+            
             </div>
             <div className="cart-header d-flex justify-content-between">
               <div className="cart-head-left">
@@ -1397,150 +1189,10 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
                       {subtotal.toFixed(2)}
                     </span>
                   </div>
-                  <div className="promo-header" onClick={toggleExpand}>
-                    <span>{isExpanded ? "▼" : "►"} Promotion</span>
-                  </div>
-                  {isExpanded && (
-                    <div className="promocode">
-                      <div>
-                        <label>Enter Promo Code</label>
-                        <span className="promo-input-wrap">
-                          <input
-                            type="text"
-                            placeholder=" "
-                            value={
-                              validatedPromoCode
-                                ? `${validatedPromoCode} Applied`
-                                : ""
-                            }
-                            onClick={handlePromoCodeClick}
-                            readOnly
-                            disabled={isGiftCardValid}
-                          />
-                          {validatedPromoCode ? (
-                            <Button
-                              type="submit"
-                              onClick={handleRemovePromoCode}
-                            >
-                              <img src={ButtonCross} alt="Remove Promo Code" />
-                            </Button>
-                          ) : (
-                            <Button
-                              type="submit"
-                              onClick={handlePromoCodeClick}
-                            >
-                              <img src={ButtonTick} alt="Apply Promo Code" />
-                            </Button>
-                          )}
-                        </span>
-                      </div>
-                      {!isguestCustomer && (
-                        <>
-                          <div>
-                            <label>Enter Gift Card</label>
-                            <span className="promo-input-wrap">
-                              <input
-                                type="text"
-                                placeholder=""
-                                value={giftCard}
-                                onChange={(e) => setGiftCard(e.target.value)}
-                                readOnly={isGiftCardValid}
-                                disabled={validatedPromoCode}
-                              />
-                              {isGiftCardValid ? (
-                                <Button
-                                  type="submit"
-                                  onClick={handleRemoveGiftCard}
-                                >
-                                  <img
-                                    src={ButtonCross}
-                                    alt="Remove Gift Card"
-                                  />
-                                </Button>
-                              ) : (
-                                <Button
-                                  type="submit"
-                                  onClick={handleGiftCardClick}
-                                >
-                                  <img src={ButtonTick} alt="Apply Gift Card" />
-                                </Button>
-                              )}
-                            </span>
-                          </div>
-                          <div>
-                            <label>
-                              Loyalty Points (
-                              {customerSelectedDetails.loyalty_points})
-                            </label>
-                            <span className="promo-input-wrap">
-                              <input
-                                type="text"
-                                placeholder=""
-                                value={loyaltyInput}
-                                onChange={handleLoyaltyInputChange}
-                                max={customerSelectedDetails.loyalty_points}
-                              />
-                              {isLoyaltyPointsValid ? (
-                                <Button
-                                  type="button"
-                                  onClick={handleRemoveLoyaltyPoints}
-                                >
-                                  <img
-                                    src={ButtonCross}
-                                    alt="Remove Loyalty Points"
-                                  />
-                                </Button>
-                              ) : (
-                                <Button type="button" onClick={handleSubmit}>
-                                  <img src={ButtonTick} alt="" />
-                                </Button>
-                              )}
-                            </span>
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  )}
+                
                   <div className="cart-footer">
                     <div className="cart-summary">
-                      {validatedPromoCode && (
-                        <div>
-                          <span>
-                            Promo Code -{" "}
-                            <span className="deal-name">
-                              {validatedPromoCode}
-                            </span>
-                          </span>
-                          <span className="color-text">
-                            {" "}
-                            - {themeSettings?.currency_symbol || "$"}
-                            {couponDiscount
-                              ? couponDiscount.toFixed(2)
-                              : "0.00"}
-                          </span>
-                        </div>
-                      )}
-                      {loyaltyAmount > 0 && (
-                        <div>
-                          <span>Loyalty Points</span>
-                          <span className="color-text">
-                            - {themeSettings?.currency_symbol || "$"}
-                            {loyaltyAmount ? loyaltyAmount.toFixed(2) : "0.00"}
-                          </span>
-                        </div>
-                      )}
-                      {discountAmount > 0 && (
-                        <div>
-                          <span>Gift card</span>
-                          <span className="color-text">
-                            - {themeSettings?.currency_symbol || "$"}
-                            {discountAmount
-                              ? discountAmount.toFixed(2)
-                              : "0.00"}
-                          </span>
-                        </div>
-                      )}
-
+                     
                       <div className="tax-header" onClick={toggleTaxExpand}>
                         <span>{isTaxExpanded ? "▼" : "►"} Total Tax</span>
                         <span>
@@ -1789,13 +1441,7 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
           Place Order
         </Button>
       </div> */}
-      <PromoCodePopup
-        open={isPromoCodePopupVisible}
-        onClose={handlePromoPopupClose}
-        onApply={handleApplyPromoCode}
-        setCouponCodes={handleSetCouponCodes}
-        validatedPromoCode={validatedPromoCode}
-      />
+     
       <CashPaymentPopup
         total={grandTotal}
         isVisible={isPopupVisible}
@@ -1830,16 +1476,7 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
             <img src={IconCard} alt="" />
             Card
           </Button>
-          {!isguestCustomer && (
-            <Button
-              className="cash-card-btn"
-              type={selectedPaymentMethod === "Credit" ? "primary" : "default"}
-              onClick={() => handleCreditClick("Credit")}
-            >
-              <img src={IconCredit} alt="" />
-              Credit
-            </Button>
-          )}
+        
         </div>
       </div>
       {authModalVisible && (
