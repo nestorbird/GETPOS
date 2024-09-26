@@ -33,7 +33,7 @@ const AppRoutes = () => {
             <Route path="/order" element={<OrderPage />} />
             <Route path="/customer" element={<CustomerPage />} />
             <Route path="/profile" element={<ProfilePage />} />
-            
+            <Route path="/login" element={<LoginPage />} />
         </Routes>
       </Router>
     </OpenShiftProvider>

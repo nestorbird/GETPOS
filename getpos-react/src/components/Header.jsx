@@ -3,7 +3,7 @@ import "./style.css";
 import Logo from "../assets/images/logo.png";
 import SearchIcon from "../assets/images/Search-icon.png";
 import { useLocation } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 const Header = ({ onSearch }) => {
   const [user, setUser] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -36,9 +36,9 @@ const Header = ({ onSearch }) => {
     <header className="header">
       <div className="header-logo">
         {user && costCenter && Openshift ? (
-          <a href="/main">
+          <Link href="/main">
             <img src={Logo} alt="Logo" />
-          </a>
+          </Link>
         ) : (
           <img src={Logo} alt="Logo" />
         )}
@@ -89,11 +89,11 @@ const Header = ({ onSearch }) => {
         <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
           {user ? (
             <>
-              <a href="/profile">Profile</a>
-              <a href="/logout">Logout</a>
+              <Link href="/profile">Profile</Link>
+              <Link href="/logout">Logout</Link>
             </>
           ) : (
-            <a href="/">Login</a>
+            <Link href="/">Login</Link>
           )}
         </div>
       </div>

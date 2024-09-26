@@ -3,12 +3,22 @@ import APIs from "../../api";
 
 export const login = async (email, password) => {
   try {
+    // Make the POST request to the login API
     const response = await axiosInstance.post(APIs.login, {
       usr: email,
       pwd: password,
     });
-    return response.data;
+
+    // Check if the response contains the expected data
+    if (response.data && response.data.message && response.data.message.success_key === 1) {
+      // Login successful, return the response data
+      return response.data;
+    } else {
+      // Login failed, throw an error with the server's message
+      throw new Error(response.data.message.message || 'Login failed.');
+    }
   } catch (error) {
+    // Handle errors, such as network issues or server errors
     throw error;
   }
 };

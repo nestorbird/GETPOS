@@ -6,18 +6,17 @@ import Layout from "./Layout";
 import { login } from "../modules/LandingPage";
 
 const LoginScreen = () => {
+ 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-
   useEffect(() => {
     const user = localStorage.getItem("user");
     if (user) {
       navigate("/main");
     }
   }, [navigate]);
-
   const handleLogin = async (e) => {
     e.preventDefault(); // Prevent default form submission behavior
     try {
@@ -35,9 +34,7 @@ const LoginScreen = () => {
         localStorage.setItem("sid", data.message.sid);
         localStorage.setItem("api_key", data.message.api_key);
         localStorage.setItem("api_secret", data.message.api_secret);
-
         navigate("/location", { state: { loginResponse: data } });
-
         // Clean up sensitive info from local storage
         localStorage.removeItem("sid");
         localStorage.removeItem("api_key");
@@ -60,6 +57,7 @@ const LoginScreen = () => {
 
   return (
     <div className="login-page">
+    
       <Layout showFooter={false} showDropdown={false}>
         <div className="login-screen">
           <form className="login-form" onSubmit={handleLogin}>
