@@ -207,7 +207,7 @@ const CloseShiftScreen = () => {
         console.log("Shift closed successfully");
         navigate("/getpos-react/closeshift");
         setTimeout(() => {
-          navigate("/getpos-react/login");
+          navigate("/login");
           setCartItems([]);
         }, 1000);
         localStorage.clear();
