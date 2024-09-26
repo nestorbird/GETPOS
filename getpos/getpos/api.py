@@ -21,11 +21,45 @@ from erpnext.selling.doctype.customer.customer import get_customer_outstanding
 from getpos.controllers import frappe_response,handle_exception
 
 
+@frappe.whitelist( allow_guest=True,methods=["GET"] )
+def get_user_details(usr,pwd):
+    try:
+             # Check if the user is already logged in
+        login_manager = frappe.auth.LoginManager()
+        login_manager.authenticate(user=usr, pwd=pwd)
+        login_manager.post_login()
 
+        user = frappe.get_doc('User', usr)
+        
+        if user.api_key and user.api_secret:
+                user.api_secret = user.get_password('api_secret')
+        else:
+                api_generate = generate_keys(usr)     
+
+
+        frappe.response["message"] = {
+                "success_key":1,
+                "message":"success",
+                "sid":frappe.session.sid,
+                "api_key":user.api_key if user.api_key else api_generate[1],
+                "api_secret": user.api_secret if user.api_secret else api_generate[0],
+                "username":user.username,
+                "email":user.email
+        }
+    except Exception as e:
+        frappe.clear_messages()
+        frappe.local.response["message"] = {
+            "success_key":0,
+            "message":"Incorrect username or password",
+            "error":e
+        }
+        
+        return 
 
 @frappe.whitelist( allow_guest=True )
 def login(usr, pwd):
     try:
+             # Check if the user is already logged in       
         login_manager = frappe.auth.LoginManager()
         login_manager.authenticate(user=usr, pwd=pwd)
         login_manager.post_login()
