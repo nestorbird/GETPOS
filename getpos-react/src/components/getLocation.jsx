@@ -76,7 +76,9 @@ const Location = () => {
   };
 
   return (
+    
     <div className="login-page">
+      {console.log(loginResponse)}
       <Layout showFooter={false} showDropdown={false}>
         <div className="login-screen">
           <form

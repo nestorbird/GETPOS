@@ -33,9 +33,11 @@ const OpenShiftScreen = () => {
         console.log("Guest customer", company);
       } else {
         console.log("Error in getting the Guest Customer");
+      
       }
     } catch (error) {
       console.log("Error in fetching guest customer:", error.message);
+    
     }
   };
 
@@ -117,7 +119,7 @@ const OpenShiftScreen = () => {
 
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
-      return;
+      navigate('/getpos-react')
     }
 
     console.log("Logging in...");

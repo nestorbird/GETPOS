@@ -6,6 +6,7 @@ const CustomIcon = <span style={{ fontSize: '48px' }}>💀</span>;
 const axiosInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
+    "X-Frappe-CSRF-Token": window.csrf_token || '', // Include CSRF token here
   },
 });
 const history = createBrowserHistory();

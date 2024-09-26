@@ -10,7 +10,7 @@ import IconLogout from "../assets/images/icon-logout.svg";
 import { Drawer, Button } from "antd";
 import { DoubleRightOutlined } from "@ant-design/icons"; 
 import useIsSmallScreen from "../hooks/useIsSmallScreen";
-
+import { Link } from "react-router-dom";
 const MyAccount = () => {
   const { openShiftData } = useOpenShift();
   const { cashBalance, digitalBalance, selectedProfile } = openShiftData;
@@ -62,10 +62,10 @@ const MyAccount = () => {
         </span>
       </li>
       <li>
-        <a href="/closeshift">
+        <Link href="/closeshift">
           <img src={IconLogout} alt="Close Shift" />
           Close Shift 
-        </a>
+        </Link>
       </li>
     </ul>
   );
