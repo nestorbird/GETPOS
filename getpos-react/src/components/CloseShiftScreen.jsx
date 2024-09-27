@@ -242,7 +242,7 @@ const CloseShiftScreen = () => {
     const expectedBalance = parseFloat(expectedCashBalance); // Ensure it's a number
     if (value > expectedBalance) {
       alert(
-        `The entered amount exceeds the expected cash balance of $${expectedBalance.toFixed(
+        `The entered amount exceeds the expected cash balance of ${expectedBalance.toFixed(
           2
         )}. Please enter a valid amount.`
       );
