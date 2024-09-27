@@ -46,6 +46,7 @@ const ProductPopup = ({ product, onClose, selectedCustomer }) => {
   };
 
   const incrementQuantity = () => {
+    console.log("product",product)
     if (quantity < product.stock[0].stock_qty) {
       setQuantity(quantity + 1);
     } else {
@@ -132,7 +133,7 @@ const ProductPopup = ({ product, onClose, selectedCustomer }) => {
                   type="text"
                   value={quantity}
                   onChange={handleQuantityChange}
-                  min="1"
+                  min="0"
                   disabled
                 />
                 <button onClick={incrementQuantity}>+</button>

@@ -245,10 +245,13 @@ const OrderPage = ({ hubManagerEmail }) => {
         <Tabs defaultActiveKey="1">
           <TabPane tab={<span className="tab-parked">Parked</span>} key="1">
             <div className="tab-inner-cont content-parked">
+              {console.log("currentParkedOrders",currentParkedOrders)}
               {categorizedOrders.parked.length === 0 ? (
                 <div className="no-data">No Parked order</div>
               ) : (
+                
                 currentParkedOrders.map((order, index) => (
+                
                   <OrderBox
                     key={index}
                     order={order}
@@ -290,6 +293,7 @@ const OrderPage = ({ hubManagerEmail }) => {
           </TabPane>
           <TabPane tab={<span className="tab-complete">Complete</span>} key="3">
             <div className="tab-inner-cont content-complete">
+            {console.log("Data",Data)}
               {!Data || Data?.length === 0 ? (
                 <div className="no-data">No Complete order</div>
               ) : (

@@ -49,28 +49,29 @@ const MainScreen = () => {
     const customer = localStorage.getItem("selectedCustomer");
     return customer ? JSON.parse(customer) : null;
   };
+  const fetchData = async () => {
+    try {
+      const data = await fetchCategoriesAndProducts(costCenter);
+      setCategories(data);
+      if (data.length > 0) {
+        setSelectedCategory(data[0].item_group);
+        const allProducts = data.flatMap((category) =>
+          category.items.map((item) => ({
+            ...item,
+            category: category.item_group,
+          }))
+        );
+        setProducts(allProducts);
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching data", error);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await fetchCategoriesAndProducts(costCenter);
-        setCategories(data);
-        if (data.length > 0) {
-          setSelectedCategory(data[0].item_group);
-          const allProducts = data.flatMap((category) =>
-            category.items.map((item) => ({
-              ...item,
-              category: category.item_group,
-            }))
-          );
-          setProducts(allProducts);
-        }
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching data", error);
-        setLoading(false);
-      }
-    };
+  
 
     fetchData();
   }, [costCenter]);
@@ -247,7 +248,7 @@ const MainScreen = () => {
         <div
           className={`cart-container ${isCartVisible ? "cart-visible" : ""}`}
         >
-          <Cart
+          <Cart fetchData={fetchData}
             onReservationClick={() => {
               setIsReservaionPopupVisible(true);
             }}

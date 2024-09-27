@@ -6,7 +6,7 @@ const CustomIcon = <span style={{ fontSize: '48px' }}>💀</span>;
 const axiosInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
-    "X-Frappe-CSRF-Token": window.csrf_token || '', // Include CSRF token here
+    // "X-Frappe-CSRF-Token": window.csrf_token || '', // Include CSRF token here
   },
 });
 const history = createBrowserHistory();
@@ -32,6 +32,9 @@ axiosInstance.interceptors.response.use(
           }
         });
       }
+      else if(localStorage.setItem("selectedProfile")===""){
+        handleGuestUser();
+      }
     }
     return Promise.reject(error);
   }
@@ -48,10 +51,10 @@ const handleGuestUser = () => {
     localStorage.removeItem("api_key");
     localStorage.removeItem("api_secret");
     if (window.location.pathname !== '/') {
-      history.push('/');
+      history.push('/getpos-react');
       window.location.reload();
     } else {
-      history.push('/');
+      history.push('/getpos-react/');
     }
   // }
 };
