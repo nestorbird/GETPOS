@@ -31,7 +31,7 @@ import AddCustomerForm from "./Addcustomer";
 import PromoCodePopup from "./PromoCodePopup";
 import { useThemeSettings } from "./ThemeSettingContext";
 
-const Cart = ({ onPlaceOrder, onReservationClick }) => {
+const Cart = ({ fetchData, onReservationClick }) => {
   const [selectedTab, setSelectedTab] = useState("Takeaway");
   const [customers, setCustomers] = useState([]);
   const [guestCustomer, setGuestCustomer] = useState();
@@ -158,7 +158,7 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
             }, 0)
         : 0;
 
-      const itemTotalPrice = item.product_price + selectedAttributesTotal;
+      const itemTotalPrice = (item.product_price + selectedAttributesTotal) * item.quantity;
 
       const itemTotalTax = item.tax.reduce((itemTaxSum, taxEntry) => {
         return (
@@ -200,7 +200,7 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
             }, 0)
         : 0;
 
-      const itemTotalPrice = item.product_price + selectedAttributesTotal;
+      const itemTotalPrice = (item.product_price + selectedAttributesTotal) * item.quantity;
 
       sortedTaxes.forEach((taxEntry) => {
         const taxType = taxEntry.tax_type;
@@ -240,6 +240,7 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
       taxEntry.custom_tax_percentage.replace("%", "")
     );
     const itemTotal = item.product_price * item.quantity;
+    console.log("quantity",item.quantity)
     return (itemTotal * taxPercentage) / 100;
   };
 
@@ -720,6 +721,8 @@ const Cart = ({ onPlaceOrder, onReservationClick }) => {
           ),
           className: "success-modal",
         });
+        // Call fetchData function after order is successfully placed
+        fetchData();
         completeOrder();
         setCartItems([]);
         setSelectedCustomer(null);

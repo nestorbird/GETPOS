@@ -34,7 +34,7 @@ const MyAccount = () => {
 
   const sidebarContent = (
     <ul>
-      <li
+      {/* <li
         className={selectedTab === "Basic Info" ? "active" : ""}
         onClick={() => setSelectedTab("Basic Info")}
       >
@@ -42,7 +42,7 @@ const MyAccount = () => {
           <img src={IconPassword} alt="Basic Info" />
           Basic Info
         </span>
-      </li>
+      </li> */}
       <li
         className={selectedTab === "Change Password" ? "active" : ""}
         onClick={() => setSelectedTab("Change Password")}

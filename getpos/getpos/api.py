@@ -1690,11 +1690,24 @@ def edit_customer():
                 update_customer = frappe.get_doc("Customer",customer_detail.get("name"))
                 frappe.db.sql("update `tabContact` set `mobile_no` =%s  where name=%s",(customer_detail.get("mobile_no"), update_customer.customer_primary_contact))
                 update_customer.customer_name = customer_detail.get("customer_name")  
-                update_customer.mobile_no = customer_detail.get("mobile_no")  
-                if customer_detail.get("email_id"):
-                                frappe.db.sql("update `tabContact` set `email_id` =%s  where name=%s",(customer_detail.get("email_id"), update_customer.customer_primary_contact))
-                                update_customer.email_id=customer_detail.get("email_id")
-                update_customer.save(ignore_permissions=True)                
+                update_customer.mobile_no = customer_detail.get("mobile_no")
+                # Check if customer email is not provided or is an empty string
+                if not customer_detail.get("email_id") or customer_detail.get("email_id") == "":
+                        email_id = ""
+                else:
+                        email_id = customer_detail.get("email_id")
+
+                # Update the email_id in the 'tabContact' table
+                frappe.db.sql(
+                "UPDATE `tabContact` SET `email_id` = %s WHERE name = %s",
+                (email_id, update_customer.customer_primary_contact)
+                )
+
+                # Set the email_id in the update_customer object
+                update_customer.email_id = email_id
+
+                # Save the update_customer object with ignore_permissions=True
+                update_customer.save(ignore_permissions=True)               
                 res['success_key'] = 1
                 res['message'] = "Customer updated successfully"
                 res["customer"] ={"name" : customer_detail.get("name") ,

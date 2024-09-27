@@ -369,7 +369,7 @@ const OrderDetailModal = ({ visible, onClose, order, onUpdateOrder }) => {
           <span>Tax</span>
           <span>
             {themeSettings.currency_symbol || "$"}{" "}
-            {order.total_taxes_and_charges}
+            {order.total_taxes_and_charges.toFixed(2)}
           </span>
         </p>
         <p>

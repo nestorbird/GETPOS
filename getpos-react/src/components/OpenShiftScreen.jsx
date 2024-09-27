@@ -33,17 +33,15 @@ const OpenShiftScreen = () => {
         console.log("Guest customer", company);
       } else {
         console.log("Error in getting the Guest Customer");
-      
       }
     } catch (error) {
       console.log("Error in fetching guest customer:", error.message);
-    
     }
   };
 
   useEffect(() => {
     if (!loginResponse) {
-      navigate("/getpos-react"); //debug
+      navigate("/getpos-react"); // debug
     } else {
       fetchData();
       clearFields();
@@ -93,22 +91,15 @@ const OpenShiftScreen = () => {
     }
   };
 
-  // const handleLogin = async () => {
-  //   console.log("Logging in...");
-  //   localStorage.setItem("openShiftData", JSON.stringify(openShiftData));
-  //   localStorage.setItem("paymentBalances", JSON.stringify(paymentBalances));
-
-  //   await handleCreateOpeningShift();
-
-  //   navigate("/main");
-  // };
   const handleLogin = async () => {
     const errors = {};
 
+    // Validate POS Profile
     if (!selectedProfile) {
       errors.selectedProfile = "POS Profile is required.";
     }
 
+    // Validate Payment Balances
     filteredPaymentMethods.forEach((method) => {
       if (!paymentBalances[method.mode_of_payment]) {
         errors[
@@ -117,11 +108,13 @@ const OpenShiftScreen = () => {
       }
     });
 
+    // If there are errors, update state and do not proceed
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
-      navigate('/getpos-react')
+      return; // Stop function execution if errors exist
     }
 
+    // No errors, proceed with login
     console.log("Logging in...");
     localStorage.setItem("openShiftData", JSON.stringify(openShiftData));
     localStorage.setItem("paymentBalances", JSON.stringify(paymentBalances));
@@ -191,6 +184,7 @@ const OpenShiftScreen = () => {
           <form className="login-form">
             <div className="form-group">
               <select
+                required
                 id="pos-profile"
                 value={selectedProfile || ""}
                 onChange={handleProfileChange}
@@ -214,6 +208,7 @@ const OpenShiftScreen = () => {
                   <div key={method.name} className="form-group payment-method">
                     <input
                       type="text"
+                      required
                       placeholder={`Enter Opening ${method.mode_of_payment} Balance`}
                       value={paymentBalances[method.mode_of_payment] || ""}
                       onChange={(e) =>

@@ -1,5 +1,6 @@
+import Item from "antd/es/list/Item";
 import React, { createContext, useState, useEffect } from "react";
-
+import { Modal } from "antd";
 const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
@@ -28,12 +29,23 @@ const CartProvider = ({ children }) => {
   const addItemToCart = (item) => {
     setCartItems((prevItems) => {
       const itemIndex = prevItems.findIndex((prevItem) => prevItem.id === item.id);
-
+      
       if (itemIndex >= 0) {
         const updatedItems = [...prevItems];
-        updatedItems[itemIndex].quantity += item.quantity;
+
+        if(updatedItems[itemIndex].stock[0].stock_qty>=updatedItems[itemIndex].quantity +item.quantity){
+          updatedItems[itemIndex].quantity += item.quantity;
+        }else{
+          Modal.error({
+            title: "Attention!",
+            content: `Can't add More than stock ${updatedItems[itemIndex].stock[0].stock_qty}`,
+          });
+
+        }
+        
         if (item.isScanned && !updatedItems[itemIndex].price) {
           updatedItems[itemIndex].price = item.price;
+          
         }
         return updatedItems;
       } else {
