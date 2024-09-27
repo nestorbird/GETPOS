@@ -634,16 +634,7 @@ to{opacity:1}
 .news-section .blog-post-page p{margin:0 0 22px;color:#333;font-size:18px;line-height:32px;}
 .news-section picture{margin-top:0!important}
 .blog-whatsapp-flex{margin: 54px 0 2px 0;display: flex;gap: 20px;}
-.blog-bookdemo {
-    color: #f9f8fb;
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 24px;
-    letter-spacing: .8px;
-    border-radius: 10px;
-    background: #0e0d15;
-    transition: all .3s ease-in-out;
-}
+.blog-bookdemo {color: #f9f8fb;font-size: 16px;font-weight: 600;line-height: 24px;letter-spacing: .8px;border-radius: 10px;background: #0e0d15;transition: all .3s ease-in-out;}
 .blog-whatsapp {
     gap: 8px;
     display: flex;
@@ -665,47 +656,343 @@ to{opacity:1}
 } */
 }
 
-.btn-tertiary {
-    display: inline-flex;
-    cursor: pointer;
-    align-items: center;
-    justify-content: center;
-    border-radius: 9999px;
-    border-width: 1px;
-    --tw-border-opacity: 1;
-    border-color: rgb(156 163 175 / var(--tw-border-opacity));
-    background-color: transparent;
-    padding: .875rem 1.5rem;
-    text-align: center;
-    font-size: 18px;
-    line-height: 1.5rem;
-    font-weight: 600;
-    line-height: 1.375;
-    opacity: .9;
-    border-style: none;
-    --tw-shadow: 0 0 #0000;
-    --tw-shadow-colored: 0 0 #0000;
-    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-    color: var(--aw-color-text-muted);
-}
+.btn-tertiary {display: inline-flex;cursor: pointer;align-items: center;justify-content: center;border-radius: 9999px;border-width: 1px;--tw-border-opacity: 1;border-color: rgb(156 163 175 / var(--tw-border-opacity));background-color: transparent;padding: .875rem 1.5rem;text-align: center;font-size: 18px;line-height: 1.5rem;font-weight: 600;line-height: 1.375;opacity: .9;border-style: none;--tw-shadow: 0 0 #0000;--tw-shadow-colored: 0 0 #0000;box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);color: var(--aw-color-text-muted);}
 .blog-detail .max-w-3xl{max-width: 860px;}
-.btn-tertiary:hover {
-    opacity: 1;
-    color: rgb(17 24 39 / var(--tw-text-opacity));
-    border-color: rgb(75 85 99 / var(--tw-border-opacity));
-    --tw-bg-opacity: 1;
-    background-color: rgb(243 244 246 / var(--tw-bg-opacity));
-}
-.news-banner-img2 img{
-    border-radius: 10px;
-}
+.btn-tertiary:hover {opacity: 1;color: rgb(17 24 39 / var(--tw-text-opacity));border-color: rgb(75 85 99 / var(--tw-border-opacity));--tw-bg-opacity: 1;background-color: rgb(243 244 246 / var(--tw-bg-opacity));}
+.news-banner-img2 img{border-radius: 10px;}
 .blog-gray-line{color: #606574;border-top-width:1.333px;padding-bottom: 56px;opacity: 1;}
 .booking-page .cta-section-about h3,.retail-page .cta-section-about h3,.food-page .cta-section-about h3{padding-bottom: 30px;}
+.case-detail-banner .written-likes a {
+    color: #263238;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -1.5px;
+    flex-direction: column;
+    align-items: baseline;
+}
+
+.case-detail-banner .written-likes img {
+    width: 42px;
+    height: 42px;
+    border-radius: 42px;
+    margin-right: 10px;
+}
+
+.case-detail-banner .written-likes a span {
+    color: #A5A5AD;
+    font-size: 16px;
+}
+
+
+.case-detail-banner {
+    padding: 77px 20px 66px 20px;
+}
+
+.case-detail-banner .share-btns {
+    gap: 19px;
+}
+
+.case-detail-banner h1 {
+    color: #252F41;
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 60px;
+    letter-spacing: -0.8px;
+}
+
+.written-likes-case {
+    padding: 14px 0 32px 0;
+}
+
+.case-detail-img img {
+    width: 100%;
+    /* height: 390px; */
+    object-fit: cover;
+}
+
+.ryk-cs-updated .case-detail-img img {
+    height: auto;
+    object-position: top;
+}
+
+.case-navigation {
+    border-radius: 8px;
+    border: 1px solid #DFE4EA;
+    padding: 24px 0;
+}
+
+.case-navigation h3 {
+    color: #000;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 30px;
+    letter-spacing: -0.8px;
+    padding: 0 24px 14px 24px;
+}
+
+.client-section2 h3 {
+    color: #000;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 30px;
+    letter-spacing: -0.8px;
+    padding: 0 0 14px 0;
+}
+
+.case-blog-list h3 {
+    color: #000;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 30px;
+    letter-spacing: -0.8px;
+    padding: 0 0 24px 0;
+}
+
+.case-navigation a {
+    color: #5C516F;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+    /* 125% */
+    letter-spacing: -0.8px;
+    padding: 10px 24px;
+}
+
+.case-navigation .active {
+    background: #F5F2FA;
+}
+
+.fixed-section-class .client-section {
+    display: none;
+}
+
+.erp-healthcare-cs .client-section2 p {
+    color: #5C516F;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 26px;
+    letter-spacing: -0.8px;
+}
+
+.erp-healthcare-cs .client-section2 img {
+    height: auto;
+    display: flex;
+    margin: auto;
+    width: 183px;
+    padding-bottom: 20px;
+}
+
+.erp-healthcare-cs .client-section2 {
+    border-radius: 8px;
+    border: 1px solid #DFE4EA;
+    background: #F5F2FA;
+    padding: 24px;
+    margin-top: 32px;
+}
+
+.erp-healthcare-cs .client-section2 h5 {
+    color: #343A50;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -0.5px;
+    padding: 20px 0 12px 0;
+}
+
+.erp-healthcare-cs .client-section2 h6 {
+    color: #6D6F78;
+    font-size: 18px;
+    font-style: italic !important;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: -0.5px;
+}
+
+.erp-healthcare-cs .home .grid-pagination {
+    width: 150px;
+}
+
+.erp-healthcare-cs .grid-pagination .swiper-button-prev,
+.erp-healthcare-cs .grid-pagination .swiper-button-next {
+    background: #EAEAEB;
+    border: 1px solid #fff;
+    box-shadow: 0px 0px 23px 0px rgba(0, 0, 0, 0.09);
+}
+
+.erp-healthcare-cs .blog-cont .blog-title {
+    font-size: 18px;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    line-height: 26px;
+    height: 50px;
+}
+
+.erp-healthcare-cs .blog-grid .blog-cont .blog-text {
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--styles-500, #343A50);
+    font-weight: 400;
+    letter-spacing: -0.26px;
+}
+
+.fixed-section-class .client-section2,
+.fixed-section-class .case-blog-list,
+.date-format-mobile {
+    display: none;
+}
+
+.case-blog-list {
+    margin-top: 32px;
+}
+
+
+.case-blog-list .blog-div {
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.case-blog-list .blog-div a {
+    color: #5C516F;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 28px;
+    letter-spacing: -0.8px;
+}
+
+.new-download-btn {
+    padding: 10px 20px !important;
+}
+
+.casestudy-wrap h4 {
+    color: #252F41;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: -0.8px;
+    padding: 32px 0 12px 0;
+}
+
+.casestudy-wrap h4.challenge-sub {
+    font-size: 20px;
+    padding-bottom: 12px;
+}
+
+.casestudy-wrap h4.challenge-main-sub {
+    font-size: 18px;
+    padding-bottom: 12px;
+}
+
+.erp-healthcare-cs .home .blog-grid .healthcare {
+    padding: 0 20px;
+}
+
+#Reasons-gray {
+    color: #000 !important;
+}
+
+.casestudy-wrap p {
+    padding: 16px 0 24px 0;
+}
+
+.casestudy-wrap h2 {
+    color: #13A8EF;
+    font-size: 30px;
+    line-height: 1.21em;
+    text-align: left;
+    padding: 40px 0;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.casestudy-wrap h3 {
+    color: #252F41;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 48px;
+    /* 150% */
+    letter-spacing: -0.8px;
+    padding: 32px 0 16px 0;
+}
+
+.casestudy-wrap h3.summary-text-case {
+    padding: 0;
+}
+
+
+.casestudy-wrap h3 span {
+    background: linear-gradient(93.32deg, #0DD9A8 0%, #48A3FE 112.6%);
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+.casestudy-wrap,
+.casestudy-wrap p {
+    font-size: 18px !important;
+    line-height: 28px !important;
+    color: #343A50;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+}
+
+.erpcase-list {
+    list-style-type: disc;
+    padding-left: 45px;
+}
+
+.casestudy-wrap ul li::before {
+    content: "";
+    background: url("/assets/images/rightarrow.png") no-repeat left;
+    display: inline-block;
+    height: 15px;
+    width: 40px;
+}
+
+.erp-healthcare-cs .client-section2 p {
+    color: #5C516F;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 26px;
+    letter-spacing: -0.8px;
+}
+
+.erp-healthcare-cs .client-section2 {
+    border-radius: 8px;
+    border: 1px solid #DFE4EA;
+    background: #F5F2FA;
+    padding: 24px;
+    margin-top: 32px;
+}
+
+.erp-healthcare-cs .client-section2 h5 {
+    color: #343A50;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -0.5px;
+    padding: 20px 0 12px 0;
+}
+
+.erp-healthcare-cs .client-section2 h6 {
+    color: #6D6F78;
+    font-size: 18px;
+    font-style: italic !important;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: -0.5px;
+}
+.main-case-content{padding-bottom:108px ;}
 @media screen and (min-width: 1921px) {
 body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important}
 }
 @media screen and (max-width: 1708px) {
+.case-detail-banner {padding: 77px 54px 66px 54px;}
 .news-section h1{font-size:36px;line-height:46px}
+.main-case-content {padding: 0 70px 80px 70px;}
 .booking-page .cta-section-about h3,.retail-page .cta-section-about h3,.food-page .cta-section-about h3{padding-bottom: 30px;}
 .single-news h3{font-size:18px;line-height:28px}
 .accounts-cta-para{padding-left:0}
@@ -836,6 +1123,8 @@ body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important
 }
 @media screen and (max-width: 1500px) {
 .oms-banner-text{width:45%}
+.main-case-content {padding: 0 16px 100px 16px;}
+.case-detail-banner {padding: 77px 0 66px 0;}
 .our-jrny-box{width:65%}
 .our-jrny-line{margin:26rem 0 0 54%}
 .single-news h3{font-size:16px;line-height:26px}
@@ -906,6 +1195,12 @@ body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important
     font-size: 48px;
     line-height: 64px;
 }
+.main-case-content {
+    padding: 0 40px 100px 40px;
+}
+.case-detail-banner {
+    padding: 77px 40px 66px 40px;
+}
 .accounts-cta p {
     font-size: 22px;
     line-height: 32px;
@@ -954,6 +1249,10 @@ footer .pr-28{padding-right:0!important}
 }
 @media screen and (max-width: 1300px) {
 .modal-img{min-width:40px}
+.case-detail-banner h1 {
+    font-size: 32px;
+    line-height: 48px;
+}
 .account-need-bg2{width:50%;}
 .news-section .tracking-tighter br{display:none}
 .our-jrny-line{margin:28rem 0 0 54%}
@@ -1084,6 +1383,8 @@ header span.mr-4{display:flex;height:45px}
 }
 @media screen and (max-width: 1200px) {
 .single-news-header{gap:24px}
+.case-detail-banner {padding: 77px 20px 66px 20px;}
+.main-case-content {padding: 0 20px 100px 20px;}
 .our-jrny-box{width:75%}
 .booking-page .cta-section-about h3,.retail-page .cta-section-about h3,.food-page .cta-section-about h3{padding-bottom: 10px;}
 .accounts-cta{padding:50px}
@@ -1236,6 +1537,13 @@ footer h2{font-size:18px;line-height:30px}
 }
 @media screen and (max-width: 1023px) {
 .nav-grid a{padding:10px 0}
+#case-detail-right,
+    .case-detail-banner h1 br {
+        display: none;
+    }
+    #case-detail{
+        width: 100% !important;
+    }
 .single-news header h1{padding-bottom:16px}
 .account-need h2{font-size:32px;line-height:40px}
 .account-need p{font-size:18px;line-height:30px}
@@ -1448,6 +1756,44 @@ footer .pr-28.pr-28{padding-right:0}
 .hr-page .reversed-flex{flex-direction:row}
 }
 @media screen and (max-width: 767px) {
+    .case-detail-banner .written-likes img {
+        width: 32px;
+        height: 32px;
+        border-radius: 32px;
+        margin-right: 5px;
+    }
+    .main-case-content {
+        padding: 0 20px 16px 20px;
+    }
+    .casestudy-wrap h4 {
+        font-size: 24px;
+        padding: 32px 0 12px 0;
+    }
+    .erp-healthcare-cs .casestudy-wrap .rounded-xl{
+        height: auto !important;
+        width: auto !important;
+    }
+    .casestudy-wrap h3 {
+        font-size: 24px;
+        line-height: 36px;
+    }
+    .erp-healthcare-cs .erpsection-btn {
+        margin: 0 !important;
+        font-size: 14px;
+    }
+
+    .case-detail-banner {
+        padding: 10px 20px 32px 20px;
+    }
+    .case-detail-banner .share-btns {
+        display: none;
+    }
+    .case-detail-banner .written-likes a span {
+        font-size: 12px;
+    }
+    .case-detail-banner .written-likes a {
+        font-size: 14px;
+    }
 .accounts-right, .accounts-animation .accounts-left img{opacity: 1 !important;}
 .booking-page .cta-section-about h3,.retail-page .cta-section-about h3,.food-page .cta-section-about h3{padding-bottom: 0;}
 .translate-right,.translate-left {transform: translateX(0);}
@@ -1636,6 +1982,10 @@ footer{padding:0}
 .blog-whatsapp-flex {
     flex-direction: column;
     gap: 0;
+}
+.case-detail-banner h1 {
+    font-size: 30px;
+    line-height: 45px;
 }
 .blog-whatsapp{margin: 0 !important;}
 }
