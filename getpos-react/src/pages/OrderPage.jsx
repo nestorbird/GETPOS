@@ -251,7 +251,7 @@ const OrderPage = ({ hubManagerEmail }) => {
               ) : (
                 
                 currentParkedOrders.map((order, index) => (
-                
+                <>
                   <OrderBox
                     key={index}
                     order={order}
@@ -262,15 +262,22 @@ const OrderPage = ({ hubManagerEmail }) => {
                     onDelete={() => handleDeleteOrder(order.name)}
                     indicator={false}
                   />
+                </>
                 ))
               )}
             </div>
+            {categorizedOrders.parked.length > 0  ?
             <Pagination
-              totalItems={categorizedOrders.parked.length}
-              itemsPerPage={itemsPerPage}
-              currentPage={currentPageParked}
-              onPageChange={handleParkedPageChange}
-            />
+            totalItems={categorizedOrders.parked.length}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPageParked}
+            onPageChange={handleParkedPageChange}
+
+          />  
+          :""
+          
+          }
+            
           </TabPane>
           <TabPane tab={<span className="tab-failed">Failed</span>} key="2">
             <div className="tab-inner-cont content-failed">

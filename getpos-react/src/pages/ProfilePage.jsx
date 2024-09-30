@@ -14,15 +14,15 @@ import { NavLink } from "react-router-dom";
 const MyAccount = () => {
   const { openShiftData } = useOpenShift();
   const { cashBalance, digitalBalance, selectedProfile } = openShiftData;
-  const [selectedTab, setSelectedTab] = useState("Basic Info");
+  const [selectedTab, setSelectedTab] = useState("Change Password");
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
 
   const isSmallScreen = useIsSmallScreen();  
 
   const renderContent = () => {
     switch (selectedTab) {
-      case "Basic Info":
-        return <BasicInfo />;
+      // case "Basic Info":
+      //   return <BasicInfo />;
       case "Change Password":
         return <ChangePassword />;
       case "Finance":
