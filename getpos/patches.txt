@@ -1,0 +1,1 @@
+getpos.patches.delete_fields

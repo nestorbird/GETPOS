@@ -1,0 +1,15 @@
+{
+  "name": "getpos-react",
+  "version": "1.0.0",
+  "description": "<div align=\"center\"> <!-- TODO: add link to website once it is ready --> <h1>     getpos-react </h1> Simple, yet powerful POS solutions for businesses </div>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "cd getpos-react && yarn install",
+    "dev": "cd getpos-react && yarn dev",
+    "build": "cd getpos-react && yarn build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

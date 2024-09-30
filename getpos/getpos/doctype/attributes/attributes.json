@@ -1,0 +1,92 @@
+{
+ "actions": [],
+ "autoname": "format:{attribute_heading}-{parent_item}",
+ "creation": "2024-06-21 09:31:33.608461",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "attribute_heading",
+  "parent_item",
+  "column_break_zhyr0",
+  "mandatory",
+  "count",
+  "section_break_naza7",
+  "attribute_items",
+  "cost_center"
+ ],
+ "fields": [
+  {
+   "fieldname": "parent_item",
+   "fieldtype": "Link",
+   "label": "Parent Item",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "attribute_items",
+   "fieldtype": "Table",
+   "label": "Attribute Items",
+   "options": "Attribute Items",
+   "reqd": 1
+  },
+  {
+   "fieldname": "attribute_heading",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Attribute Heading",
+   "reqd": 1
+  },
+  {
+   "fieldname": "count",
+   "fieldtype": "Data",
+   "label": "SELECT COUNT"
+  },
+  {
+   "default": "0",
+   "fieldname": "mandatory",
+   "fieldtype": "Check",
+   "label": "Mandatory"
+  },
+  {
+   "fieldname": "column_break_zhyr0",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_naza7",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-08-03 14:01:38.884132",
+ "modified_by": "Administrator",
+ "module": "getpos",
+ "name": "Attributes",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

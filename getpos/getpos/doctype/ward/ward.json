@@ -1,0 +1,50 @@
+{
+  "actions": [],
+  "allow_rename": 1,
+  "autoname": "format:{abbr}-{####}",
+  "creation": "2021-10-13 13:17:33.244519",
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": ["ward", "abbr"],
+  "fields": [
+    {
+      "fieldname": "ward",
+      "fieldtype": "Data",
+      "in_list_view": 1,
+      "label": "Ward",
+      "reqd": 1,
+      "unique": 1
+    },
+    {
+      "fieldname": "abbr",
+      "fieldtype": "Data",
+      "label": "Abbr"
+    }
+  ],
+  "index_web_pages_for_search": 1,
+  "links": [],
+  "modified": "2022-01-27 15:15:19.943424",
+  "modified_by": "Administrator",
+  "module": "getpos",
+  "name": "Ward",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "System Manager",
+      "share": 1,
+      "write": 1
+    }
+  ],
+  "search_fields": "ward",
+  "sort_field": "modified",
+  "sort_order": "DESC",
+  "track_changes": 1
+}

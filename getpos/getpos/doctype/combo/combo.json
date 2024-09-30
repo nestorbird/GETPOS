@@ -1,0 +1,92 @@
+{
+ "actions": [],
+ "autoname": "format:{combo_heading}-{parent_combo_item}",
+ "creation": "2024-07-04 19:42:46.789434",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "combo_heading",
+  "parent_combo_item",
+  "column_break_jqsor",
+  "mandatory",
+  "count",
+  "section_break_lolck",
+  "combo_item",
+  "cost_center"
+ ],
+ "fields": [
+  {
+   "fieldname": "combo_heading",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Combo Heading",
+   "reqd": 1
+  },
+  {
+   "fieldname": "parent_combo_item",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Parent Combo Item",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "count",
+   "fieldtype": "Int",
+   "label": "SELECT COUNT"
+  },
+  {
+   "fieldname": "combo_item",
+   "fieldtype": "Table",
+   "label": "Combo Item",
+   "options": "Combo Item"
+  },
+  {
+   "fieldname": "column_break_jqsor",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "mandatory",
+   "fieldtype": "Check",
+   "label": "Mandatory"
+  },
+  {
+   "fieldname": "section_break_lolck",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-08-03 14:03:47.983933",
+ "modified_by": "Administrator",
+ "module": "getpos",
+ "name": "Combo",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

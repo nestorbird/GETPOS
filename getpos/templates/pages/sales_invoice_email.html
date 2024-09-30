@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Invoice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+        .container {
+            border: 1px solid black;
+            padding: 3%;
+            width: 35%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: auto;
+        }
+        .line {
+            border-bottom: 1px dotted black;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+        }
+        .content {
+            width: 100%;
+        }
+        .items {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .items span {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px dotted black;
+            padding: 5px 0;
+        }
+        .totals {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .totals td {
+            padding: 5px;
+        }
+        .totals .label {
+            text-align: right;
+            width: 70%;
+        }
+        .totals .value {
+            text-align: right;
+            width: 30%;
+        }
+        .footer {
+            text-align: center;
+            width: 100%;
+            border-top: 1px solid black;
+            margin-top: 10px;
+            padding-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <section class="container">
+        <div class="line">
+            <h1>GETPOS</h1>
+            <p>Address: 123 Main St, City, Country</p>
+        </div>
+        <div class="content">
+            <p>Check#: {{ doc.name }}</p>
+            <p>Date: {{ doc.posting_date }} - {{ doc.posting_time }}</p>
+            <p>Cashier: {{ doc.owner }}</p>
+            <div class="items">
+                {% for item in doc.items %}
+                <span>
+                    <p>{{ loop.index }}</p>
+                    <p>{{ item.item_name }} - {{ item.description }}</p>
+                    <p>Qty: {{ item.qty }}</p>
+                    <p>Rate: {{ item.rate }}</p>
+                </span>
+                {% endfor %}
+            </div>
+            <table class="totals">
+                <tr>
+                    <td class="label">Sub-total</td>
+                    <td class="value">{{ doc.total }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Discount {{ doc.additional_discount_percentage }}%</td>
+                    <td class="value">-{{ doc.discount_amount }}</td>
+                </tr>
+                <tr>
+                    <td class="label"><strong>Total</strong></td>
+                    <td class="value"><strong>{{ doc.grand_total }}</strong></td>
+                </tr>
+            </table>
+        </div>
+        <div class="footer">
+            <p>GETPOS</p>
+            <p>Thank You. Please come again</p>
+            <p>Date: {{ doc.posting_date }}</p>
+        </div>
+    </section>
+</body>
+</html>

@@ -1,0 +1,115 @@
+{
+  "actions": [],
+  "allow_import": 1,
+  "allow_rename": 1,
+  "autoname": "field:title",
+  "creation": "2021-11-03 15:04:12.709785",
+  "doctype": "DocType",
+  "document_type": "Setup",
+  "engine": "InnoDB",
+  "field_order": [
+    "title",
+    "disabled",
+    "privacy_policy",
+    "privacy_policy_help",
+    "terms_and_conditions"
+  ],
+  "fields": [
+    {
+      "fieldname": "title",
+      "fieldtype": "Data",
+      "label": "Title",
+      "no_copy": 1,
+      "oldfieldname": "title",
+      "oldfieldtype": "Data",
+      "reqd": 1,
+      "unique": 1
+    },
+    {
+      "default": "0",
+      "fieldname": "disabled",
+      "fieldtype": "Check",
+      "in_list_view": 1,
+      "label": "Disabled"
+    },
+    {
+      "allow_in_quick_entry": 1,
+      "fieldname": "privacy_policy",
+      "fieldtype": "HTML Editor",
+      "in_global_search": 1,
+      "label": "Privacy Policy",
+      "oldfieldname": "terms",
+      "oldfieldtype": "Text Editor"
+    },
+    {
+      "fieldname": "privacy_policy_help",
+      "fieldtype": "HTML",
+      "label": "Privacy Policy Help"
+    },
+    {
+      "fieldname": "terms_and_conditions",
+      "fieldtype": "HTML Editor",
+      "label": "Terms and Conditions"
+    }
+  ],
+  "icon": "icon-legal",
+  "links": [],
+  "modified": "2022-01-27 15:07:49.788276",
+  "modified_by": "Administrator",
+  "module": "getpos",
+  "name": "Privacy Policy and Terms",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "export": 1,
+      "import": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "Sales Master Manager",
+      "share": 1,
+      "write": 1
+    },
+    {
+      "read": 1,
+      "role": "Sales User"
+    },
+    {
+      "read": 1,
+      "role": "Purchase User"
+    },
+    {
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "System Manager",
+      "share": 1,
+      "write": 1
+    },
+    {
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "Accounts User",
+      "share": 1,
+      "write": 1
+    },
+    {
+      "read": 1,
+      "role": "Stock User"
+    }
+  ],
+  "quick_entry": 1,
+  "show_name_in_global_search": 1,
+  "sort_field": "modified",
+  "sort_order": "ASC"
+}
