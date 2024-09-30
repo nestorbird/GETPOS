@@ -1,8 +1,7 @@
 import frappe
 from frappe.utils import today,getdate,flt
 
-settings = frappe.get_cached_doc('nbpos Setting')
-base_url = settings.get('base_url')
+
 
 
 def get_price_list(item_code):
@@ -89,7 +88,8 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
     data = []
     filters = {'is_group': 0, 'name': ['not in', ('Extra')],
                'parent_item_group': ['not in', ('Extra')]}
-    
+    settings = frappe.get_cached_doc('nbpos Setting')
+    base_url = settings.get('base_url')
     if item_order_by=='desc':
         item_order_by='item_name desc'
     else:
@@ -217,6 +217,8 @@ def get_items(from_date=None, item_group=None, extra_item_group=None, item_code=
 
 def get_allergens(item_name):
     allergens=[]
+    settings = frappe.get_cached_doc('nbpos Setting')
+    base_url = settings.get('base_url')
     get_allergens_=frappe.get_all('Item Allergens',filters={"parent": item_name},fields=['allergens']) 
     if get_allergens_:
         for allergens_item in get_allergens_:           
