@@ -19,7 +19,7 @@ from erpnext.accounts.doctype.payment_entry.payment_entry import get_payment_ent
 from datetime import datetime, timedelta, time
 from erpnext.selling.doctype.customer.customer import get_customer_outstanding
 from getpos.controllers import frappe_response,handle_exception
-
+from frappe.core.doctype.user.user import check_password
 
 @frappe.whitelist( allow_guest=True,methods=["GET"] )
 def get_user_details(usr,pwd):
@@ -158,25 +158,28 @@ def reset_password( user,send_email=False, password_expired=False):
 def password_reset_mail(user, link):
                 user.send_login_mail(("Password Reset"),
                         "password_reset", {"link": link}, now=True)
-
 @frappe.whitelist()
-def change_password(usr, pwd):
-        username = frappe.db.get_value("User", usr, 'name')
-        if username:
-                user_doc = frappe.get_doc("User", usr)
-                user_doc.new_password = pwd
-                user_doc.save()
-                frappe.db.commit()
-                frappe.local.response["message"] = {
-                "success_key":1,
-                "message":"success"
-                }
-        else:
-                frappe.local.response["message"] = {
-                "success_key":1,
-                "message":"User not found"
-                }
-
+def change_password(usr,new_pwd,old_pwd):
+    try:
+        user=frappe.get_doc("User",usr)
+        
+        if check_password(user.name,old_pwd, delete_tracker_cache=False):
+            user.new_password = new_pwd
+            user.flags.ignore_password_policy = True
+            user.save()
+            frappe.clear_messages()
+            frappe.local.response["message"] = {
+                "success_key": 1,
+                "message": "Password changed successfully"
+            }
+            frappe.local.response["http_status_code"] = 200
+    except Exception as e:
+        frappe.clear_messages()
+        frappe.local.response["message"] = {
+            "success_key": 0,
+            "message": "Please enter valid password"
+        }
+        frappe.local.response["http_status_code"] = 403  
 @frappe.whitelist( allow_guest=True )                
 def send_login_mail(user, subject, template, add_args, now=None):
                 """send mail with login details"""

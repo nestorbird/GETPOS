@@ -4396,3 +4396,30 @@ th.ant-table-cell.booking-column {
   background-color: #3e4b5c !important;
   color: var(--secondary-text-color) !important;
 }
+
+.autoCompleteForm .form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.autoCompleteForm .close-button {
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px 8px;
+  font-weight: bold;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.autoCompleteForm .close-button:hover {
+  color: #ff4d4f;
+}
+
+.autoCompleteForm .error-message {
+  color: red;
+  font-size: 12px;
+}

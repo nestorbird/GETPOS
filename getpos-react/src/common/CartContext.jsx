@@ -38,9 +38,8 @@ const CartProvider = ({ children }) => {
         }else{
           Modal.error({
             title: "Attention!",
-            content: `Can't add More than stock ${updatedItems[itemIndex].stock[0].stock_qty}`,
+            content: `Cannot add more Items. Available stock:${updatedItems[itemIndex].stock[0].stock_qty}`,
           });
-
         }
         
         if (item.isScanned && !updatedItems[itemIndex].price) {

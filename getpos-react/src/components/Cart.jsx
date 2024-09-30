@@ -105,7 +105,12 @@ const Cart = ({ fetchData, onReservationClick }) => {
     }
   }, []);
 
- 
+  const handleCloseForm = () => {
+    console.log("handleCloseForm")
+    setSearchTerm("")
+    setShowAddCustomerForm(false); // Hide the formAddCustomerForm
+  
+  };
   
   const calculateSubtotal = (items) => {
     if (!Array.isArray(items)) {
@@ -479,8 +484,10 @@ const Cart = ({ fetchData, onReservationClick }) => {
       {!selectedCustomer && showAddCustomerForm && (
         <Menu.Item key="addCustomer">
           <AddCustomerForm
-            searchTerm={searchTerm}
-            onAddCustomer={handleAddCustomer}
+              searchTerm={searchTerm}
+              onAddCustomer={handleAddCustomer}
+              handleCloseForm={handleCloseForm}
+              loadCustomers={loadCustomers}
           />
         </Menu.Item>
       )}
@@ -988,7 +995,7 @@ const Cart = ({ fetchData, onReservationClick }) => {
 
           {/* Unit Price Input */}
           <span className="cart-item-unitprice">
-            <Input disabled
+            {/* <Input disabled
               type="number"
               value={
                 editedPrices[item.id] !== undefined
@@ -1004,7 +1011,13 @@ const Cart = ({ fetchData, onReservationClick }) => {
                 }
               }}
               step="any"
-            />
+            /> */}
+              {
+                editedPrices[item.id] !== undefined
+                  ? editedPrices[item.id]
+                  : finalItemPrice
+              }
+
           </span>
 
           {/* Quantity Controls */}
@@ -1135,7 +1148,9 @@ const Cart = ({ fetchData, onReservationClick }) => {
                       <AddCustomerForm
                         searchTerm={searchTerm}
                         onAddCustomer={handleAddCustomer}
-                      />
+                        handleCloseForm={handleCloseForm}
+                        loadCustomers={loadCustomers}
+                        />
                     )}
                 </div>
               </div>
