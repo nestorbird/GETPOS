@@ -65,13 +65,22 @@ const CustomerPage = () => {
   const handleUpdateCustomer = async () => {
     let validationErrors = {};
 
-    if (newEmailID && !validateEmail(newEmailID)) {
-      validationErrors.email = "Please enter a valid email address";
-    }
-    if (!validateMobile(newMobile)) {
-      validationErrors.mobile = "Please enter a valid 10-digit mobile number";
+    // Name validation: Ensure the name field is not empty
+    if (!newName.trim()) {
+      validationErrors.name = "Please enter Name";
     }
 
+    // Email validation
+    if (newEmailID && !validateEmail(newEmailID)) {
+      validationErrors.email = "Please enter valid email address";
+    }
+
+    // Mobile validation
+    if (!validateMobile(newMobile)) {
+      validationErrors.mobile = "Please enter valid 10-digit mobile number";
+    }
+
+    // If there are any validation errors, display the error messages
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       notification.error({
@@ -88,6 +97,7 @@ const CustomerPage = () => {
         mobile_no: newMobile,
         email_id: newEmailID,
       });
+
       setCustomers((prevCustomers) =>
         prevCustomers.map((cust) =>
           cust.name === updatedCustomer.name
@@ -173,6 +183,7 @@ const CustomerPage = () => {
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
           />
+          {errors.name && <p style={{ color: "red" }}>{errors.name}</p>}
         </div>
         <div className="edit-cus-row">
           <Input

@@ -3,7 +3,7 @@ import "./style.css";
 import Logo from "../assets/images/logo.png";
 import SearchIcon from "../assets/images/Search-icon.png";
 import { useLocation } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 const Header = ({ onSearch }) => {
   const [user, setUser] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -36,9 +36,9 @@ const Header = ({ onSearch }) => {
     <header className="header">
       <div className="header-logo">
         {user && costCenter && Openshift ? (
-          <Link href="/main">
+          <NavLink to="/main">
             <img src={Logo} alt="Logo" />
-          </Link>
+          </NavLink>
         ) : (
           <img src={Logo} alt="Logo" />
         )}
@@ -69,8 +69,8 @@ const Header = ({ onSearch }) => {
                 <img src={Arrow} alt="" />
               </button>
               <div className="dropdown-content">
-                <a href="/profile">Profile</a>
-                <a href="/closeshift">Logout</a>
+                <a to="/profile">Profile</a>
+                <a to="/closeshift">Logout</a>
               </div>
             </div>
           </div> */}
@@ -89,11 +89,11 @@ const Header = ({ onSearch }) => {
         <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
           {user ? (
             <>
-              <Link href="/profile">Profile</Link>
-              <Link href="/logout">Logout</Link>
+              <NavLink to="/profile">Profile</NavLink>
+              <NavLink to="/logout">Logout</NavLink>
             </>
           ) : (
-            <Link href="/">Login</Link>
+            <NavLink to="/">Login</NavLink>
           )}
         </div>
       </div>

@@ -92,7 +92,7 @@ const OrderPage = ({ hubManagerEmail }) => {
   };
   const ProductAPICall = async () => {
     try {
-      const data = await fetchCategoriesAndProducts();
+      const data = await fetchCategoriesAndProducts();      
       return data;
     } catch (error) {
       console.error("Error fetching data in OrderPage", error);
@@ -232,7 +232,7 @@ const OrderPage = ({ hubManagerEmail }) => {
           <div className="searchField">
             <input
               type="text"
-              placeholder="Search customer name /number"
+              placeholder="Search customer name"
               value={searchTerm}
               onChange={handleSearchChange}
               className="order-search"
@@ -329,7 +329,7 @@ const OrderPage = ({ hubManagerEmail }) => {
               <button
                 className="next"
                 onClick={handleNextBtn}
-                disabled={Data?.length === 0}
+                disabled={Data?.length === 0||Math.ceil(Data[0].total_order/Data[0].items_perpage)===PageCount}
               >
                 Next
               </button>

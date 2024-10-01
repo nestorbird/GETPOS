@@ -3749,8 +3749,6 @@ input[type="number"]::-webkit-inner-spin-button {
 
 /* Main container for tax details */
 .tax-details-section {
-  /* margin-top: 20px; */
-  /* padding: 10px; */
 
   border-radius: 5px;
   display: block !important;
@@ -3824,15 +3822,8 @@ input[type="number"]::-webkit-inner-spin-button {
   /* padding: 10px 0; */
 }
 
-/* Add a border-bottom between CGST and SGST pairs */
-.tax-group.with-separator {
-  border-bottom: 1px solid #576474;
-  margin-bottom: 10px;
-}
 
-.tax-group.sgst {
-  padding-bottom: 10px;
-}
+
 .cart-item-taxrate {
   width: 100px;
   text-align: right;
