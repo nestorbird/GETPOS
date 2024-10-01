@@ -1,0 +1,37 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"zZwaU4Evq5\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">GetPOS</span>\",\"col\":12}},{\"id\":\"qYdfC9aICu\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"GetPOS\",\"col\":3}}]",
+ "creation": "2024-10-01 12:08:53.942465",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "color-energy-points",
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "GetPOS",
+ "links": [],
+ "modified": "2024-10-01 12:10:15.312848",
+ "modified_by": "Administrator",
+ "module": "getpos",
+ "name": "GetPOS",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 28.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "GetPOS",
+   "type": "URL",
+   "url": "/getpos-react"
+  }
+ ],
+ "title": "GetPOS"
+}

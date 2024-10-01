@@ -581,6 +581,16 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
                          {conditions}
         """.format(conditions=conditions, hub_manager= frappe.db.escape(hub_manager),
         base_url= frappe.db.escape(base_url)), as_dict= True)
+        if mobile_no:
+                conditions += f" and s.contact_mobile like '%{str(mobile_no).strip()}%'"
+
+                number_of_orders = frappe.db.sql(f"SELECT COUNT(*) FROM `tabSales Order` s WHERE s.hub_manager = {frappe.db.escape(hub_manager)} and s.docstatus = 1 and s.contact_mobile like '%{str(mobile_no).strip()}%'")[0][0]
+
+        else:
+                number_of_orders = get_sales_order_count(hub_manager)
+                
+        if from_date:
+                number_of_orders = len(order_list)
         for item in order_list:
                 item_details = frappe.db.sql("""
                         SELECT
@@ -614,19 +624,14 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
                 item['items'] = new_item_details
                 tax_details = frappe.db.sql("""SELECT st.charge_type, st.account_head, st.tax_amount, st.description, st.rate 
                                    FROM `tabSales Order` s, `tabSales Taxes and Charges` st 
-                                   WHERE st.parent = %s and st.parenttype = 'Sales Order' """,
+                                   WHERE st.parent = %s and st.parent=s.name and st.parenttype = 'Sales Order' """,
                                    (item.name,), as_dict=True)
                 item['tax_detail'] = tax_details
-        if mobile_no:
-                conditions += f" and s.contact_mobile like '%{str(mobile_no).strip()}%'"
-
-                number_of_orders = frappe.db.sql(f"SELECT COUNT(*) FROM `tabSales Order` s WHERE s.hub_manager = {frappe.db.escape(hub_manager)} and s.docstatus = 1 and s.contact_mobile like '%{str(mobile_no).strip()}%'")[0][0]
-
-        else:
-                number_of_orders = get_sales_order_count(hub_manager)
+                item['items_perpage']=sales_history_count
+                item['total_order']=number_of_orders
+        
                 
-        if from_date:
-                number_of_orders = len(order_list)
+        
 
         if len(order_list) == 0 and number_of_orders == 0:
             frappe.clear_messages()
@@ -639,6 +644,7 @@ def get_sales_order_list(hub_manager = None, page_no = 1, from_date = None, to_d
             res["message"] = "success"
             res['order_list'] = order_list
             res['number_of_orders'] = number_of_orders
+        #     res['items_perpage']=sales_history_count
             return res
        
 
