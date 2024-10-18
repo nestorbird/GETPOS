@@ -7,7 +7,7 @@
 .app-logo{display:flex;margin:auto}
 .nav-links.highlight{color:#145FFF;border-bottom:3px solid #145FFF}
 .hover-highlight:hover{color:#145FFF;border-bottom:3px solid #145FFF}
-.header-btn{border-radius:8px; background:#000;box-shadow:0 -4px 4px 0 rgba(0,0,0,0.25) inset;display:flex;padding:12.5px 30.22px;align-items:center;gap:10px;transition:all .3s ease-in-out;color:#FFF;font-size:20px;font-weight:600;line-height:30px}
+.header-btn{border-radius:8px;background:#000;box-shadow:0 -4px 4px 0 rgba(0,0,0,0.25) inset;display:flex;padding:12.5px 30.22px;align-items:center;gap:10px;transition:all .3s ease-in-out;color:#FFF;font-size:20px;font-weight:600;line-height:30px}
 #header{padding:20px 0 17px}
 .lg\:max-w-7xl{max-width:1600px!important}
 .mobile-screen{display:none}
@@ -72,14 +72,14 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 .about-button{animation-delay:0}
 .heading-welcome h2{color:#000718;font-size:48px;font-weight:600;line-height:30px;padding-bottom:32px}
 .heading-welcome h2 span{font-size:56px;font-weight:700;line-height:normal}
-.heading-welcome h2 span b{font-weight:700;background: linear-gradient(270deg, #995DE5 0%, #4E87D2 47.04%, #3C36BD 100%);-webkit-background-clip: text;-webkit-text-fill-color: transparent;}
+.heading-welcome h2 span b{font-weight:700;background:linear-gradient(270deg,#995DE5 0%,#4E87D2 47.04%,#3C36BD 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .heading-welcome{gap:11px;display:flex;justify-content:start}
 .nb-logo{width:267px;height:71.2px;object-fit:contain}
 .about-welcome{padding:180px 0;background:url(/assets/getpos/images/welcome-left.webp)no-repeat;background-size:contain}
 .welcome-left{width:486px;display:none}
 .about-welcome p{color:#343C4F;font-size:20px;font-weight:400;line-height:32px;padding-bottom:24px}
 .about-welcome p span{color:var(--Hue-01,#000718);font-size:44px;font-weight:700;line-height:30px}
-.about-welcome p span b{font-weight:700;background: linear-gradient(270deg, #995DE5 0%, #4E87D2 47.04%, #3C36BD 100%);-webkit-background-clip: text;-webkit-text-fill-color: transparent;}
+.about-welcome p span b{font-weight:700;background:linear-gradient(270deg,#995DE5 0%,#4E87D2 47.04%,#3C36BD 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .about-welcome h3{padding:64px 0 12px;color:#343C4F;font-size:20px;font-weight:400;line-height:32px}
 .about-welcome h4{color:#000718;font-size:28px;font-weight:600;line-height:36px}
 .about-welcome-flex{gap:150px}
@@ -120,9 +120,7 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 .our-box-bottom h5 b{font-weight:600}
 .at-nestorbird{padding-top:85px}
 .at-nestorbird h3{color:var(--Hue-01,#000718);font-size:32px;font-weight:500;line-height:30px;padding-bottom:42px;text-align:center}
-.pink-span{background: linear-gradient(270deg, #995DE5 0%, #4E87D2 47.04%, #3C36BD 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;}
+.pink-span{background:linear-gradient(270deg,#995DE5 0%,#4E87D2 47.04%,#3C36BD 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .at-nestorbird h4{color:var(--Hue-01,#000718);text-align:center;font-size:28px;font-weight:400;line-height:52px}
 .at-nestorbird h5{color:var(--Hue-01,#000718);text-align:center;font-size:36px;font-weight:600;line-height:52px;padding-top:8px}
 @keyframes fadeIn {
@@ -164,7 +162,7 @@ button.btn.btn-sm.btn-primary.btn-block.btn-login{width:100%}
 .cta-section-about h3{color:#fff;font-size:48px;font-weight:600;line-height:70px;text-transform:capitalize;padding-bottom:60px}
 .cta-section-about p{color:#EAEAEA;font-size:20px;font-weight:400;line-height:32px;text-transform:capitalize;padding:40px 0 80px}
 .oms-page .cta-section-about p{font-size:24px;line-height:36px}
-.cta-section-about a{border-radius:10px;background:#fff;padding:16px 40px;justify-content:center;align-items:center;color:#000A3B !important;font-size:20px;font-weight:600;line-height:30px;border:1px solid #fff;transition:all .3s ease-in-out;text-decoration:none}
+.cta-section-about a{border-radius:10px;background:#fff;padding:16px 40px;justify-content:center;align-items:center;color:#000A3B!important;font-size:20px;font-weight:600;line-height:30px;border:1px solid #fff;transition:all .3s ease-in-out;text-decoration:none}
 .cta-section-about a:hover{opacity:.6;color:#fff}
 .oms-page .cta-section-about a{color:#000;background:#fff}
 .our-values{padding:100px 0}
@@ -581,7 +579,7 @@ to{opacity:1}
 .account-need{padding:108px 0 0}
 .account-need-div{margin-top:80px}
 .account-need h3{color:#B3CBFF;font-size:128px;font-weight:600;line-height:normal;text-transform:uppercase;opacity:.1}
-.account-need-bg{background:url(/assets/getpos/images/account-need-bg.webp)no-repeat center;background-size:cover;background-position:center 20px;display:flex;margin:auto;padding-top:40px;width:100%;justify-content: center;}
+.account-need-bg{background:url(/assets/getpos/images/account-need-bg.webp)no-repeat center;background-size:cover;background-position:center 20px;display:flex;margin:auto;padding-top:40px;width:100%;justify-content:center}
 .acount-need-bg2{right:0;margin-top:8rem}
 .acount-need-bg1{margin-top:8rem}
 .account-need-bg2{opacity:0;transform:translateY(20%);transition:all .4s ease-in-out;width:56%;display:flex;margin:auto}
@@ -631,369 +629,96 @@ to{opacity:1}
 .news-section h1{color:#000718;font-size:42px;font-weight:700;line-height:60px;letter-spacing:-.8px;margin-bottom:26px}
 .blog-post-page h2{color:#252F41;font-family:Inter;font-size:32px;font-style:normal;font-weight:700;line-height:48px;letter-spacing:-.8px;margin:32px 0 16px}
 .news-section p{color:#606574;font-size:16px;font-weight:400;line-height:30px;letter-spacing:-.5px;margin:0 0 17px;font-family:Inter;font-style:normal}
-.news-section .blog-post-page p{margin:0 0 22px;color:#333;font-size:18px;line-height:32px;}
+.news-section .blog-post-page p{margin:0 0 22px;color:#333;font-size:18px;line-height:32px}
 .news-section picture{margin-top:0!important}
-.blog-whatsapp-flex{margin: 54px 0 2px 0;display: flex;gap: 20px;}
-.blog-bookdemo {color: #f9f8fb;font-size: 16px;font-weight: 600;line-height: 24px;letter-spacing: .8px;border-radius: 10px;background: #0e0d15;transition: all .3s ease-in-out;}
-.blog-whatsapp {
-    gap: 8px;
-    display: flex;
-    align-items: center;
-}
-@-moz-document url-prefix() {
-    .mt-99px {
-        top: 70px;
-    }
+.blog-whatsapp-flex{margin:54px 0 2px;display:flex;gap:20px}
+.blog-bookdemo{color:#f9f8fb;font-size:16px;font-weight:600;line-height:24px;letter-spacing:.8px;border-radius:10px;background:#0e0d15;transition:all .3s ease-in-out}
+.blog-whatsapp{gap:8px;display:flex;align-items:center}
 @media screen and (max-width: 1708px) {
-    .mt-99px {
-        top: 63px;
-    }
+.mt-99px{top:63px}
 }
-/* @media screen and (max-width: 1023px) {
-    .mt-99px {
-        top: initial;
-    }
-} */
-}
-
-.btn-tertiary {display: inline-flex;cursor: pointer;align-items: center;justify-content: center;border-radius: 9999px;border-width: 1px;--tw-border-opacity: 1;border-color: rgb(156 163 175 / var(--tw-border-opacity));background-color: transparent;padding: .875rem 1.5rem;text-align: center;font-size: 18px;line-height: 1.5rem;font-weight: 600;line-height: 1.375;opacity: .9;border-style: none;--tw-shadow: 0 0 #0000;--tw-shadow-colored: 0 0 #0000;box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);color: var(--aw-color-text-muted);}
-.blog-detail .max-w-3xl{max-width: 860px;}
-.btn-tertiary:hover {opacity: 1;color: rgb(17 24 39 / var(--tw-text-opacity));border-color: rgb(75 85 99 / var(--tw-border-opacity));--tw-bg-opacity: 1;background-color: rgb(243 244 246 / var(--tw-bg-opacity));}
-.news-banner-img2 img{border-radius: 10px;}
-.blog-gray-line{color: #606574;border-top-width:1.333px;padding-bottom: 56px;opacity: 1;}
-.booking-page .cta-section-about h3,.retail-page .cta-section-about h3,.food-page .cta-section-about h3{padding-bottom: 30px;}
-.case-detail-banner .written-likes a {
-    color: #263238;
-    font-size: 18px;
-    font-weight: 400;
-    line-height: normal;
-    letter-spacing: -1.5px;
-    flex-direction: column;
-    align-items: baseline;
-}
-
-.case-detail-banner .written-likes img {
-    width: 42px;
-    height: 42px;
-    border-radius: 42px;
-    margin-right: 10px;
-}
-
-.case-detail-banner .written-likes a span {
-    color: #A5A5AD;
-    font-size: 16px;
-}
-
-
-.case-detail-banner {
-    padding: 77px 20px 66px 20px;
-}
-
-.case-detail-banner .share-btns {
-    gap: 19px;
-}
-
-.case-detail-banner h1 {
-    color: #252F41;
-    font-size: 42px;
-    font-weight: 700;
-    line-height: 60px;
-    letter-spacing: -0.8px;
-}
-
-.written-likes-case {
-    padding: 14px 0 32px 0;
-}
-
-.case-detail-img img {
-    width: 100%;
-    /* height: 390px; */
-    object-fit: cover;
-}
-
-.ryk-cs-updated .case-detail-img img {
-    height: auto;
-    object-position: top;
-}
-
-.case-navigation {
-    border-radius: 8px;
-    border: 1px solid #DFE4EA;
-    padding: 24px 0;
-}
-
-.case-navigation h3 {
-    color: #000;
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 30px;
-    letter-spacing: -0.8px;
-    padding: 0 24px 14px 24px;
-}
-
-.client-section2 h3 {
-    color: #000;
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 30px;
-    letter-spacing: -0.8px;
-    padding: 0 0 14px 0;
-}
-
-.case-blog-list h3 {
-    color: #000;
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 30px;
-    letter-spacing: -0.8px;
-    padding: 0 0 24px 0;
-}
-
-.case-navigation a {
-    color: #5C516F;
-    font-family: Inter;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 20px;
-    /* 125% */
-    letter-spacing: -0.8px;
-    padding: 10px 24px;
-}
-
-.case-navigation .active {
-    background: #F5F2FA;
-}
-
-.fixed-section-class .client-section {
-    display: none;
-}
-
-.erp-healthcare-cs .client-section2 p {
-    color: #5C516F;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 26px;
-    letter-spacing: -0.8px;
-}
-
-.erp-healthcare-cs .client-section2 img {
-    height: auto;
-    display: flex;
-    margin: auto;
-    width: 183px;
-    padding-bottom: 20px;
-}
-
-.erp-healthcare-cs .client-section2 {
-    border-radius: 8px;
-    border: 1px solid #DFE4EA;
-    background: #F5F2FA;
-    padding: 24px;
-    margin-top: 32px;
-}
-
-.erp-healthcare-cs .client-section2 h5 {
-    color: #343A50;
-    font-size: 18px;
-    font-weight: 600;
-    line-height: normal;
-    letter-spacing: -0.5px;
-    padding: 20px 0 12px 0;
-}
-
-.erp-healthcare-cs .client-section2 h6 {
-    color: #6D6F78;
-    font-size: 18px;
-    font-style: italic !important;
-    font-weight: 500;
-    line-height: normal;
-    letter-spacing: -0.5px;
-}
-
-.erp-healthcare-cs .home .grid-pagination {
-    width: 150px;
-}
-
-.erp-healthcare-cs .grid-pagination .swiper-button-prev,
-.erp-healthcare-cs .grid-pagination .swiper-button-next {
-    background: #EAEAEB;
-    border: 1px solid #fff;
-    box-shadow: 0px 0px 23px 0px rgba(0, 0, 0, 0.09);
-}
-
-.erp-healthcare-cs .blog-cont .blog-title {
-    font-size: 18px;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    line-height: 26px;
-    height: 50px;
-}
-
-.erp-healthcare-cs .blog-grid .blog-cont .blog-text {
-    font-size: 16px;
-    line-height: 24px;
-    color: var(--styles-500, #343A50);
-    font-weight: 400;
-    letter-spacing: -0.26px;
-}
-
-.fixed-section-class .client-section2,
-.fixed-section-class .case-blog-list,
-.date-format-mobile {
-    display: none;
-}
-
-.case-blog-list {
-    margin-top: 32px;
-}
-
-
-.case-blog-list .blog-div {
-    gap: 12px;
-    margin-bottom: 25px;
-}
-
-.case-blog-list .blog-div a {
-    color: #5C516F;
-    font-size: 18px;
-    font-weight: 400;
-    line-height: 28px;
-    letter-spacing: -0.8px;
-}
-
-.new-download-btn {
-    padding: 10px 20px !important;
-}
-
-.casestudy-wrap h4 {
-    color: #252F41;
-    font-size: 24px;
-    font-weight: 700;
-    line-height: normal;
-    letter-spacing: -0.8px;
-    padding: 32px 0 12px 0;
-}
-
-.casestudy-wrap h4.challenge-sub {
-    font-size: 20px;
-    padding-bottom: 12px;
-}
-
-.casestudy-wrap h4.challenge-main-sub {
-    font-size: 18px;
-    padding-bottom: 12px;
-}
-
-.erp-healthcare-cs .home .blog-grid .healthcare {
-    padding: 0 20px;
-}
-
-#Reasons-gray {
-    color: #000 !important;
-}
-
-.casestudy-wrap p {
-    padding: 16px 0 24px 0;
-}
-
-.casestudy-wrap h2 {
-    color: #13A8EF;
-    font-size: 30px;
-    line-height: 1.21em;
-    text-align: left;
-    padding: 40px 0;
-    font-style: italic;
-    font-weight: bold;
-}
-
-.casestudy-wrap h3 {
-    color: #252F41;
-    font-size: 32px;
-    font-weight: 700;
-    line-height: 48px;
-    /* 150% */
-    letter-spacing: -0.8px;
-    padding: 32px 0 16px 0;
-}
-
-.casestudy-wrap h3.summary-text-case {
-    padding: 0;
-}
-
-
-.casestudy-wrap h3 span {
-    background: linear-gradient(93.32deg, #0DD9A8 0%, #48A3FE 112.6%);
-    -webkit-background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-}
-
-.casestudy-wrap,
-.casestudy-wrap p {
-    font-size: 18px !important;
-    line-height: 28px !important;
-    color: #343A50;
-    font-family: Inter;
-    font-style: normal;
-    font-weight: 400;
-    letter-spacing: -0.5px;
-}
-
-.erpcase-list {
-    list-style-type: disc;
-    padding-left: 45px;
-}
-
-.casestudy-wrap ul li::before {
-    content: "";
-    background: url("/assets/images/rightarrow.png") no-repeat left;
-    display: inline-block;
-    height: 15px;
-    width: 40px;
-}
-
-.erp-healthcare-cs .client-section2 p {
-    color: #5C516F;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 26px;
-    letter-spacing: -0.8px;
-}
-
-.erp-healthcare-cs .client-section2 {
-    border-radius: 8px;
-    border: 1px solid #DFE4EA;
-    background: #F5F2FA;
-    padding: 24px;
-    margin-top: 32px;
-}
-
-.erp-healthcare-cs .client-section2 h5 {
-    color: #343A50;
-    font-size: 18px;
-    font-weight: 600;
-    line-height: normal;
-    letter-spacing: -0.5px;
-    padding: 20px 0 12px 0;
-}
-
-.erp-healthcare-cs .client-section2 h6 {
-    color: #6D6F78;
-    font-size: 18px;
-    font-style: italic !important;
-    font-weight: 500;
-    line-height: normal;
-    letter-spacing: -0.5px;
-}
-.main-case-content{padding-bottom:108px ;}
+.btn-tertiary{display:inline-flex;cursor:pointer;align-items:center;justify-content:center;border-radius:9999px;border-width:1px;--tw-border-opacity:1;border-color:#9c0000;background-color:transparent;padding:.875rem 1.5rem;text-align:center;font-size:18px;line-height:1.5rem;font-weight:600;line-height:1.375;opacity:1;border-style:none;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);color:var(--aw-color-text-muted)}
+.blog-detail .max-w-3xl{max-width:1300px}
+.btn-tertiary:hover{opacity:1;color:#100;border-color:#4b0000;--tw-bg-opacity:1;background-color:#f30000}
+.news-banner-img2 img{border-radius:10px}
+.blog-gray-line{color:#606574;border-top-width:1.333px;padding-bottom:56px;opacity:1}
+.booking-page .cta-section-about h3,.retail-page .cta-section-about h3,.food-page .cta-section-about h3{padding-bottom:30px}
+.case-detail-banner .written-likes a{color:#263238;font-size:18px;font-weight:400;line-height:normal;letter-spacing:-1.5px;flex-direction:column;align-items:baseline}
+.case-detail-banner .written-likes img{width:42px;height:42px;border-radius:42px;margin-right:10px}
+.case-detail-banner .written-likes a span{color:#A5A5AD;font-size:16px}
+.case-detail-banner{padding:77px 20px 66px}
+.case-detail-banner .share-btns{gap:19px}
+.case-detail-banner h1{color:#252F41;font-size:42px;font-weight:700;line-height:60px;letter-spacing:-.8px}
+.written-likes-case{padding:14px 0 32px}
+.case-detail-img img{width:100%;object-fit:cover}
+.ryk-cs-updated .case-detail-img img{height:auto;object-position:top}
+.case-navigation{border-radius:8px;border:1px solid #DFE4EA;padding:24px 0}
+.case-navigation h3{color:#000;font-size:20px;font-weight:700;line-height:30px;letter-spacing:-.8px;padding:0 24px 14px}
+.client-section2 h3{color:#000;font-size:20px;font-weight:700;line-height:30px;letter-spacing:-.8px;padding:0 0 14px}
+.case-blog-list h3{color:#000;font-size:20px;font-weight:700;line-height:30px;letter-spacing:-.8px;padding:0 0 24px}
+.case-navigation a{color:#5C516F;font-family:Inter;font-size:16px;font-style:normal;font-weight:600;line-height:20px;letter-spacing:-.8px;padding:10px 24px}
+.case-navigation .active{background:#F5F2FA}
+.fixed-section-class .client-section{display:none}
+.erp-healthcare-cs .client-section2 p{color:#5C516F;font-size:16px;font-weight:400;line-height:26px;letter-spacing:-.8px}
+.erp-healthcare-cs .client-section2 img{height:auto;display:flex;margin:auto;width:183px;padding-bottom:20px}
+.erp-healthcare-cs .client-section2{border-radius:8px;border:1px solid #DFE4EA;background:#F5F2FA;padding:24px;margin-top:32px}
+.erp-healthcare-cs .client-section2 h5{color:#343A50;font-size:18px;font-weight:600;line-height:normal;letter-spacing:-.5px;padding:20px 0 12px}
+.erp-healthcare-cs .client-section2 h6{color:#6D6F78;font-size:18px;font-style:italic!important;font-weight:500;line-height:normal;letter-spacing:-.5px}
+.erp-healthcare-cs .home .grid-pagination{width:150px}
+.erp-healthcare-cs .grid-pagination .swiper-button-prev,.erp-healthcare-cs .grid-pagination .swiper-button-next{background:#EAEAEB;border:1px solid #fff;box-shadow:0 0 23px 0 rgba(0,0,0,0.09)}
+.erp-healthcare-cs .blog-cont .blog-title{font-size:18px;-webkit-line-clamp:2;line-clamp:2;line-height:26px;height:50px}
+.erp-healthcare-cs .blog-grid .blog-cont .blog-text{font-size:16px;line-height:24px;color:var(--styles-500,#343A50);font-weight:400;letter-spacing:-.26px}
+.fixed-section-class .client-section2,.fixed-section-class .case-blog-list,.date-format-mobile{display:none}
+.case-blog-list{margin-top:32px}
+.fixed-section-class{position:sticky;top:130px}
+.case-blog-list .blog-div{gap:12px;margin-bottom:25px}
+.case-blog-list .blog-div a{color:#5C516F;font-size:18px;font-weight:400;line-height:28px;letter-spacing:-.8px}
+.new-download-btn{padding:10px 20px!important}
+.casestudy-wrap h4{color:#252F41;font-size:24px;font-weight:700;line-height:normal;letter-spacing:-.8px;padding:32px 0 12px}
+.casestudy-wrap h4.challenge-sub{font-size:20px;padding-bottom:12px}
+.casestudy-wrap h4.challenge-main-sub{font-size:18px;padding-bottom:12px}
+.erp-healthcare-cs .home .blog-grid .healthcare{padding:0 20px}
+#Reasons-gray{color:#000!important}
+.casestudy-wrap p{padding:16px 0 24px}
+.casestudy-wrap h2{color:#13A8EF;font-size:30px;line-height:1.21em;text-align:left;padding:40px 0;font-style:italic;font-weight:700}
+.casestudy-wrap h3{color:#252F41;font-size:32px;font-weight:700;line-height:48px;letter-spacing:-.8px;padding:32px 0 16px}
+.casestudy-wrap h3.summary-text-case{padding:0}
+.casestudy-wrap h3 span{background:linear-gradient(93.32deg,#0DD9A8 0%,#48A3FE 112.6%);-webkit-background-clip:text!important;-webkit-text-fill-color:transparent!important}
+.casestudy-wrap,.casestudy-wrap p{font-size:18px!important;line-height:28px!important;color:#343A50;font-family:Inter;font-style:normal;font-weight:400;letter-spacing:-.5px}
+.erpcase-list{list-style-type:disc;padding-left:45px}
+.casestudy-wrap ul li::before{content:"";background:url(/assets/images/rightarrow.png) no-repeat left;display:inline-block;height:15px;width:40px}
+.erp-healthcare-cs .client-section2 p{color:#5C516F;font-size:16px;font-weight:400;line-height:26px;letter-spacing:-.8px}
+.erp-healthcare-cs .client-section2{border-radius:8px;border:1px solid #DFE4EA;background:#F5F2FA;padding:24px;margin-top:32px}
+.erp-healthcare-cs .client-section2 h5{color:#343A50;font-size:18px;font-weight:600;line-height:normal;letter-spacing:-.5px;padding:20px 0 12px}
+.erp-healthcare-cs .client-section2 h6{color:#6D6F78;font-size:18px;font-style:italic!important;font-weight:500;line-height:normal;letter-spacing:-.5px}
+.main-case-content{padding-bottom:108px}
+.blog-left{width:900px;padding-right:40px}
+.blog-right{width:400px;display:flex}
+.blog-main-div{width:1300px;padding-bottom:86px}
+.blog-left-para{border-radius:8px;border:1px solid #DFE4EA;padding:24px;background:#F5F2FA}
+.blog-form{border-radius:8px;border:1px solid #DFE4EA;padding:24px;background:#FFF;margin:32px 0;width:400px}
+.blog-left-para h4,.blog-right h4{color:#000;font-size:22px;font-weight:600;line-height:32px;letter-spacing:-.8px;padding-bottom:12px}
+.news-section .blog-left-para p{line-height:30px;color:#5C516F;font-size:18px}
+.fixed-section-class .blog-left-para{display:none}
+.fixed-section-class .blog-form{margin-top:0}
+.btn.blog-main-back:hover,.blog-back-mobile .btn:hover{box-shadow:none!important;background:none;transform:initial}
+.blog-back-mobile{display:none}
+.blog-share-btns span{font-size:18px}
+.blog-share-btns{padding-bottom:14px}
+.news-section.news-section-blog{padding-bottom:0}
+.blog-left-para h4,.blog-right h4{color:#000;font-size:22px;font-weight:600;line-height:32px;letter-spacing:-.8px;padding-bottom:12px}
 @media screen and (min-width: 1921px) {
 body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important}
 }
 @media screen and (max-width: 1708px) {
-.case-detail-banner {padding: 77px 54px 66px 54px;}
+.blog-main-div{padding:0 45px 86px}
+.blog-left{width:840px}
+.fixed-section-class{top:100px}
+.blog-right,.blog-left-para,.blog-form{width:350px}
+.case-detail-banner{padding:77px 54px 66px}
 .news-section h1{font-size:36px;line-height:46px}
-.main-case-content {padding: 0 70px 80px 70px;}
-.booking-page .cta-section-about h3,.retail-page .cta-section-about h3,.food-page .cta-section-about h3{padding-bottom: 30px;}
+.main-case-content{padding:0 70px 80px}
+.booking-page .cta-section-about h3,.retail-page .cta-section-about h3,.food-page .cta-section-about h3{padding-bottom:30px}
 .single-news h3{font-size:18px;line-height:28px}
 .accounts-cta-para{padding-left:0}
 .our-jrny-box p{font-size:16px;line-height:28px}
@@ -1123,8 +848,8 @@ body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important
 }
 @media screen and (max-width: 1500px) {
 .oms-banner-text{width:45%}
-.main-case-content {padding: 0 16px 100px 16px;}
-.case-detail-banner {padding: 77px 0 66px 0;}
+.main-case-content{padding:0 16px 100px}
+.case-detail-banner{padding:77px 0 66px}
 .our-jrny-box{width:65%}
 .our-jrny-line{margin:26rem 0 0 54%}
 .single-news h3{font-size:16px;line-height:26px}
@@ -1190,21 +915,12 @@ body{width:1920px;justify-content:center;margin:auto;overflow-x:hidden!important
 }
 @media screen and (max-width: 1400px) {
 .wms-cta2{padding:108px 85px}
+.blog-left-para h4,.blog-right h4{color:#000;font-size:20px;font-weight:600;line-height:28px}
 .flip-animate{width:80%}
-.accounts-cta h3 {
-    font-size: 48px;
-    line-height: 64px;
-}
-.main-case-content {
-    padding: 0 40px 100px 40px;
-}
-.case-detail-banner {
-    padding: 77px 40px 66px 40px;
-}
-.accounts-cta p {
-    font-size: 22px;
-    line-height: 32px;
-}
+.accounts-cta h3{font-size:48px;line-height:64px}
+.main-case-content{padding:0 40px 100px}
+.case-detail-banner{padding:77px 40px 66px}
+.accounts-cta p{font-size:22px;line-height:32px}
 .accounts-cta{padding:100px 80px}
 .about-partner p{font-size:20px;line-height:32px}
 .wizards-section p{font-size:20px;line-height:32px}
@@ -1249,11 +965,12 @@ footer .pr-28{padding-right:0!important}
 }
 @media screen and (max-width: 1300px) {
 .modal-img{min-width:40px}
-.case-detail-banner h1 {
-    font-size: 32px;
-    line-height: 48px;
-}
-.account-need-bg2{width:50%;}
+.blog-left{width:70%}
+.blog-right{width:30%}
+.blog-left-para,.blog-form,.blog-main-div{width:100%}
+.case-detail-banner h1{font-size:32px;line-height:48px}
+.blog-main-div{padding:0 50px 86px}
+.account-need-bg2{width:50%}
 .news-section .tracking-tighter br{display:none}
 .our-jrny-line{margin:28rem 0 0 54%}
 .single-news header p{font-size:16px;line-height:30px}
@@ -1383,10 +1100,12 @@ header span.mr-4{display:flex;height:45px}
 }
 @media screen and (max-width: 1200px) {
 .single-news-header{gap:24px}
-.case-detail-banner {padding: 77px 20px 66px 20px;}
-.main-case-content {padding: 0 20px 100px 20px;}
+.blog-bookdemo{font-size:14px}
+.blog-main-div{padding:0 30px 36px}
+.case-detail-banner{padding:77px 20px 66px}
+.main-case-content{padding:0 20px 100px}
 .our-jrny-box{width:75%}
-.booking-page .cta-section-about h3,.retail-page .cta-section-about h3,.food-page .cta-section-about h3{padding-bottom: 10px;}
+.booking-page .cta-section-about h3,.retail-page .cta-section-about h3,.food-page .cta-section-about h3{padding-bottom:10px}
 .accounts-cta{padding:50px}
 .accounts-cta-gap{flex-direction:column;align-items:baseline;gap:40px}
 .logo-size{width:200px}
@@ -1537,13 +1256,8 @@ footer h2{font-size:18px;line-height:30px}
 }
 @media screen and (max-width: 1023px) {
 .nav-grid a{padding:10px 0}
-#case-detail-right,
-    .case-detail-banner h1 br {
-        display: none;
-    }
-    #case-detail{
-        width: 100% !important;
-    }
+#case-detail-right,.case-detail-banner h1 br{display:none}
+#case-detail{width:100%!important}
 .single-news header h1{padding-bottom:16px}
 .account-need h2{font-size:32px;line-height:40px}
 .account-need p{font-size:18px;line-height:30px}
@@ -1664,8 +1378,16 @@ footer .pr-28.pr-28{padding-right:0}
 .manufacturing-features h2{font-size:36px;line-height:42px}
 }
 @media screen and (max-width: 991px) {
+.btn-tertiary{padding-left:0!important}
+.blog-share-btns{padding:20px 0}
+.blog-main-flex{flex-direction:column}
+.blog-main-back,.fixed-section-class .blog-form,.blog-main-back{display:none}
+.blog-back-mobile{display:block}
+.blog-left{width:100%;padding:0}
+.client-trust-gradient{width:50%}
+.blog-right{width:100%;display:flex}
 .hr-banner h1{font-size:80px}
-.blog-detail .max-w-3xl {max-width: initial;}
+.blog-detail .max-w-3xl{max-width:initial}
 .news-section{padding:40px 8px}
 .hr-cta p{padding-right:0}
 .our-jrny-gap{gap:100px}
@@ -1756,59 +1478,35 @@ footer .pr-28.pr-28{padding-right:0}
 .hr-page .reversed-flex{flex-direction:row}
 }
 @media screen and (max-width: 767px) {
-    .case-detail-banner .written-likes img {
-        width: 32px;
-        height: 32px;
-        border-radius: 32px;
-        margin-right: 5px;
-    }
-    .main-case-content {
-        padding: 0 20px 16px 20px;
-    }
-    .casestudy-wrap h4 {
-        font-size: 24px;
-        padding: 32px 0 12px 0;
-    }
-    .erp-healthcare-cs .casestudy-wrap .rounded-xl{
-        height: auto !important;
-        width: auto !important;
-    }
-    .casestudy-wrap h3 {
-        font-size: 24px;
-        line-height: 36px;
-    }
-    .erp-healthcare-cs .erpsection-btn {
-        margin: 0 !important;
-        font-size: 14px;
-    }
-
-    .case-detail-banner {
-        padding: 10px 20px 32px 20px;
-    }
-    .case-detail-banner .share-btns {
-        display: none;
-    }
-    .case-detail-banner .written-likes a span {
-        font-size: 12px;
-    }
-    .case-detail-banner .written-likes a {
-        font-size: 14px;
-    }
-.accounts-right, .accounts-animation .accounts-left img{opacity: 1 !important;}
-.booking-page .cta-section-about h3,.retail-page .cta-section-about h3,.food-page .cta-section-about h3{padding-bottom: 0;}
-.translate-right,.translate-left {transform: translateX(0);}
-.our-jrny-box h5{font-size:24px;line-height:normal;padding-top: 16px;}
-.our-jrny-box p {padding-top: 16px;}
-.blog-whatsapp-flex {margin: 0 0 4px 0;gap: 8px;}
+.case-detail-banner .written-likes img{width:32px;height:32px;border-radius:32px;margin-right:5px}
+.fixed-section-class .blog-form{display:block}
+.blog-share-btns{padding:0 0 24px}
+.blog-right{width:100%;margin-top:32px}
+.blog-main-div{padding:10px 0 40px}
+.main-case-content{padding:0 20px 16px}
+.casestudy-wrap h4{font-size:24px;padding:32px 0 12px}
+.erp-healthcare-cs .casestudy-wrap .rounded-xl{height:auto!important;width:auto!important}
+.casestudy-wrap h3{font-size:24px;line-height:36px}
+.erp-healthcare-cs .erpsection-btn{margin:0!important;font-size:14px}
+.case-detail-banner{padding:10px 20px 32px}
+.case-detail-banner .share-btns{display:none}
+.case-detail-banner .written-likes a span{font-size:12px}
+.case-detail-banner .written-likes a{font-size:14px}
+.accounts-right,.accounts-animation .accounts-left img{opacity:1!important}
+.booking-page .cta-section-about h3,.retail-page .cta-section-about h3,.food-page .cta-section-about h3{padding-bottom:0}
+.translate-right,.translate-left{transform:translateX(0)}
+.our-jrny-box h5{font-size:24px;line-height:normal;padding-top:16px}
+.our-jrny-box p{padding-top:16px}
+.blog-whatsapp-flex{margin:0 0 4px;gap:8px}
 .hr-complete-box1{padding:20px;gap:24px;align-items:end}
 .single-news h3{font-size:20px;line-height:30px}
 .news-section .blog-post-page p{margin:0 0 18px}
 .blog-post-page h2{font-size:26px;line-height:38px;margin:0 0 12px}
 .news-section h1{font-size:32px;font-weight:700;line-height:42px;letter-spacing:-.8px}
-.news-section p{font-size:18px!important;line-height:28px !important;}
+.news-section p{font-size:18px!important;line-height:28px!important}
 .news-section .tracking-tighter br{display:block}
 .news-section .tracking-tighter{margin-bottom:20px}
-.news-banner-img2 img,.blog-gray-line{margin-bottom: 24px !important;padding: 0 !important;}
+.news-banner-img2 img,.blog-gray-line{margin-bottom:24px!important;padding:0!important}
 .account-need{padding:40px 0}
 .our-jrny-box h6{margin:-70px 0 0 -25px;position:absolute}
 .our-jrny-box p{padding-top:24px}
@@ -1979,17 +1677,10 @@ footer{padding:0}
 .cta2-retail-div{margin:32px 0}
 }
 @media screen and (max-width: 385px) {
-.blog-whatsapp-flex {
-    flex-direction: column;
-    gap: 0;
+.blog-whatsapp-flex{flex-direction:column;gap:0}
+.case-detail-banner h1{font-size:30px;line-height:45px}
+.blog-whatsapp{margin:0!important}
 }
-.case-detail-banner h1 {
-    font-size: 30px;
-    line-height: 45px;
-}
-.blog-whatsapp{margin: 0 !important;}
-}
-
 @media screen and (max-width: 480px) {
 .retail-banner h2 br,.cta1-section-retail h2 br{display:none}
 .retail-module-box p{font-size:15px;line-height:24px}
